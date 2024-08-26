@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# Geopandas
+
+>[GeoPandas](https://geopandas.org/)は、Pythonでの地理空間データの操作を容易にするためのオープンソースプロジェクトです。`GeoPandas`は、`pandas`で使用されるデータ型を拡張し、幾何学的な型に対する空間演算を可能にします。
+幾何学演算は`shapely`によって実行されます。
+
+## インストールとセットアップ
+
+いくつかのPythonパッケージをインストールする必要があります。
+
+```bash
+pip install -U sodapy pandas geopandas
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/geopandas)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OpenCityDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.open_city_data.OpenCityDataLoader.html", "title": "Geopandas"}]-->
+from langchain_community.document_loaders import OpenCityDataLoader
+```

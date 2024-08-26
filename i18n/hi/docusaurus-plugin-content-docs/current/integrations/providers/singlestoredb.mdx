@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# SingleStoreDB
+
+>[SingleStoreDB](https://singlestore.com/) एक उच्च-प्रदर्शन वितरित SQL डेटाबेस है जो [क्लाउड](https://www.singlestore.com/cloud/) और ऑन-प्रिमाइसेस दोनों में तैनाती का समर्थन करता है। यह वेक्टर स्टोरेज और वेक्टर फंक्शंस प्रदान करता है जिसमें [dot_product](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/dot_product.html) और [euclidean_distance](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/euclidean_distance.html) शामिल हैं, जिससे उन एआई एप्लिकेशन का समर्थन होता है जिन्हें टेक्स्ट समानता मिलान की आवश्यकता होती है।
+
+## इंस्टॉलेशन और सेटअप
+
+डेटाबेस से [कनेक्शन](https://singlestoredb-python.labs.singlestore.com/generated/singlestoredb.connect.html) स्थापित करने के कई तरीके हैं। आप या तो एनवायरनमेंट वेरिएबल्स सेट कर सकते हैं या `SingleStoreDB constructor` को नामित पैरामीटर पास कर सकते हैं। वैकल्पिक रूप से, आप इन पैरामीटर्स को `from_documents` और `from_texts` मेथड्स को भी प्रदान कर सकते हैं।
+
+```bash
+pip install singlestoredb
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/singlestoredb) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.singlestoredb.SingleStoreDB.html", "title": "SingleStoreDB"}]-->
+from langchain_community.vectorstores import SingleStoreDB
+```
+
+## मेमोरी
+
+एक [उपयोग उदाहरण](/docs/integrations/memory/singlestoredb_chat_message_history) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDBChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory.html", "title": "SingleStoreDB"}]-->
+from langchain.memory import SingleStoreDBChatMessageHistory
+```

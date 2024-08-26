@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# रेडिट
+
+>[रेडिट](https://www.reddit.com) एक अमेरिकी सामाजिक समाचार एकत्रीकरण, सामग्री रेटिंग और चर्चा वेबसाइट है।
+
+## इंस्टॉलेशन और सेटअप
+
+पहले, आपको एक पायथन पैकेज इंस्टॉल करना होगा।
+
+```bash
+pip install praw
+```
+
+एक [रेडिट एप्लिकेशन](https://www.reddit.com/prefs/apps/) बनाएं और अपने रेडिट API credentials के साथ लोडर को इनिशियलाइज़ करें।
+
+## डॉक्यूमेंट लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/reddit) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "RedditPostsLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.reddit.RedditPostsLoader.html", "title": "Reddit"}]-->
+from langchain_community.document_loaders import RedditPostsLoader
+```

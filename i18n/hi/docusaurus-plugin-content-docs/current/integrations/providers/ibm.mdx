@@ -1,0 +1,51 @@
+---
+translated: true
+---
+
+# IBM
+
+[IBM watsonx.ai](https://www.ibm.com/products/watsonx-ai) प्लेटफॉर्म से संबंधित `LangChain` एकीकरण।
+
+IBM® watsonx.ai™ AI स्टूडियो IBM [watsonx](https://www.ibm.com/watsonx)™ AI और डेटा प्लेटफॉर्म का हिस्सा है, जो [फाउंडेशन मॉडल](https://www.ibm.com/products/watsonx-ai/foundation-models) और परंपरागत मशीन लर्निंग (ML) द्वारा संचालित नई जनरेटिव AI क्षमताओं को एक शक्तिशाली स्टूडियो में एकत्रित करता है जो AI जीवनचक्र को कवर करता है। अपने उद्यम डेटा के साथ मॉडल को ट्यून और गाइड करें ताकि आसान-से-उपयोग वाले उपकरणों के साथ प्रदर्शनशील प्रॉम्प्ट्स को बनाने और रिफाइन करने के लिए आपकी जरूरतों को पूरा किया जा सके। watsonx.ai के साथ, आप कम समय और कम डेटा के साथ AI अनुप्रयोग बना सकते हैं।
+watsonx.ai प्रदान करता है:
+
+- **बहु-मॉडल विविधता और लचीलापन:** IBM-विकसित, ओपन-सोर्स और तृतीय-पक्ष मॉडलों में से चुनें, या अपना मॉडल बनाएं।
+- **अलग-अलग क्लाइंट सुरक्षा:** IBM IBM-विकसित मॉडलों का समर्थन करता है और क्लाइंट को तीसरे-पक्ष आईपी दावों से क्षतिपूर्ति प्रदान करता है।
+- **एंड-टू-एंड AI गवर्नेंस:** उद्यम डेटा पर भरोसा करके AI के प्रभाव को स्केल और त्वरित कर सकते हैं, जो कि व्यवसाय में कहीं भी उपलब्ध है।
+- **हाइब्रिड, बहु-क्लाउड तैनाती:** IBM आपको अपने पसंदीदा हाइब्रिड-क्लाउड स्टैक में अपने AI कार्यभार को एकीकृत और तैनात करने की लचीलता प्रदान करता है।
+
+## स्थापना और सेटअप
+
+एकीकरण पैकेज को इंस्टॉल करें
+
+```bash
+pip install -qU langchain-ibm
+```
+
+IBM watsonx.ai api कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`WATSONX_APIKEY`) के रूप में सेट करें।
+
+```python
+import os
+
+os.environ["WATSONX_APIKEY"] = "your IBM watsonx.ai api key"
+```
+
+## LLMs
+
+### WatsonxLLM
+
+[उपयोग उदाहरण](/docs/integrations/llms/ibm_watsonx) देखें।
+
+```python
+from langchain_ibm import WatsonxLLM
+```
+
+## एम्बेडिंग मॉडल
+
+### WatsonxEmbeddings
+
+[उपयोग उदाहरण](/docs/integrations/text_embedding/ibm_watsonx) देखें।
+
+```python
+from langchain_ibm import WatsonxEmbeddings
+```

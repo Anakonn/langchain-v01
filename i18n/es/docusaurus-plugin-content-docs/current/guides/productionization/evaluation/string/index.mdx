@@ -1,0 +1,29 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# Evaluadores de cadenas
+
+Un evaluador de cadenas es un componente dentro de LangChain diseñado para evaluar el rendimiento de un modelo de lenguaje comparando sus salidas generadas (predicciones) con una cadena de referencia o una entrada. Esta comparación es un paso crucial en la evaluación de modelos de lenguaje, proporcionando una medida de la precisión o calidad del texto generado.
+
+En la práctica, los evaluadores de cadenas se utilizan típicamente para evaluar una cadena predicha frente a una entrada dada, como una pregunta o un mensaje. A menudo, se proporciona una etiqueta de referencia o una cadena de contexto para definir cómo sería una respuesta correcta o ideal. Estos evaluadores se pueden personalizar para adaptar el proceso de evaluación a los requisitos específicos de tu aplicación.
+
+Para crear un evaluador de cadenas personalizado, hereda de la clase `StringEvaluator` e implementa el método `_evaluate_strings`. Si requieres soporte asíncrono, también implementa el método `_aevaluate_strings`.
+
+Aquí hay un resumen de los atributos y métodos clave asociados con un evaluador de cadenas:
+
+- `evaluation_name`: Especifica el nombre de la evaluación.
+- `requires_input`: Atributo booleano que indica si el evaluador requiere una cadena de entrada. Si es True, el evaluador generará un error cuando no se proporcione la entrada. Si es False, se registrará una advertencia si se proporciona una entrada, indicando que no se tendrá en cuenta en la evaluación.
+- `requires_reference`: Atributo booleano que especifica si el evaluador requiere una etiqueta de referencia. Si es True, el evaluador generará un error cuando no se proporcione la referencia. Si es False, se registrará una advertencia si se proporciona una referencia, indicando que no se tendrá en cuenta en la evaluación.
+
+Los evaluadores de cadenas también implementan los siguientes métodos:
+
+- `aevaluate_strings`: Evalúa de forma asíncrona la salida de la Cadena o el Modelo de Lenguaje, con soporte para entrada y etiqueta opcionales.
+- `evaluate_strings`: Evalúa de forma síncrona la salida de la Cadena o el Modelo de Lenguaje, con soporte para entrada y etiqueta opcionales.
+
+Las siguientes secciones proporcionan información detallada sobre las implementaciones de evaluadores de cadenas disponibles, así como sobre cómo crear un evaluador de cadenas personalizado.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

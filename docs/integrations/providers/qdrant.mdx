@@ -1,0 +1,32 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/qdrant
+translated: false
+---
+
+# Qdrant
+
+>[Qdrant](https://qdrant.tech/documentation/) (read: quadrant) is a vector similarity search engine.
+> It provides a production-ready service with a convenient API to store, search, and manage
+> points - vectors with an additional payload. `Qdrant` is tailored to extended filtering support.
+
+## Installation and Setup
+
+Install the Python SDK:
+
+```bash
+pip install qdrant-client
+```
+
+## Vector Store
+
+There exists a wrapper around `Qdrant` indexes, allowing you to use it as a vectorstore,
+whether for semantic search or example selection.
+
+To import this vectorstore:
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Qdrant"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+For a more detailed walkthrough of the Qdrant wrapper, see [this notebook](/docs/integrations/vectorstores/qdrant)

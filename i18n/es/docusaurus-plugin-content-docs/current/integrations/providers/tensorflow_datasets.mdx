@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# Conjuntos de datos de TensorFlow
+
+>[Conjuntos de datos de TensorFlow](https://www.tensorflow.org/datasets) es una colección de conjuntos de datos listos para usar,
+> con TensorFlow u otros marcos de trabajo de aprendizaje automático de Python, como Jax. Todos los conjuntos de datos se exponen
+> como [tf.data.Datasets](https://www.tensorflow.org/api_docs/python/tf/data/Dataset),
+> lo que permite crear canalizaciones de entrada fáciles de usar y de alto rendimiento. Para comenzar, consulte
+> la [guía](https://www.tensorflow.org/datasets/overview) y
+> la [lista de conjuntos de datos](https://www.tensorflow.org/datasets/catalog/overview#all_datasets).
+
+## Instalación y configuración
+
+Necesitas instalar los paquetes de Python `tensorflow` y `tensorflow-datasets`.
+
+```bash
+pip install tensorflow
+```
+
+```bash
+pip install tensorflow-dataset
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/tensorflow_datasets).
+
+```python
+<!--IMPORTS:[{"imported": "TensorflowDatasetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tensorflow_datasets.TensorflowDatasetLoader.html", "title": "TensorFlow Datasets"}]-->
+from langchain_community.document_loaders import TensorflowDatasetLoader
+```

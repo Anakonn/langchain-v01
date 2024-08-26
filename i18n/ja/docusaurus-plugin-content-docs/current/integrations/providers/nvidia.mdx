@@ -1,0 +1,58 @@
+---
+translated: true
+---
+
+# NVIDIA
+
+>NVIDIA は LangChain のためのインテグレーションパッケージ `langchain-nvidia-ai-endpoints` を提供しています。
+
+## NVIDIA AI Foundation Endpoints
+
+> [NVIDIA AI Foundation Endpoints](https://www.nvidia.com/en-us/ai-data-science/foundation-models/) は、NVIDIA がホストする API エンドポイントに簡単にアクセスできるようにするものです。これらのエンドポイントには、`Mixtral 8x7B`、`Llama 2`、`Stable Diffusion` などの NVIDIA AI Foundation モデルが含まれています。これらのモデルは、[NVIDIA API カタログ](https://build.nvidia.com/)でホストされており、最適化、テスト、NVIDIA AI プラットフォームでホストされているため、どの高速化スタックでも簡単に評価、カスタマイズ、ピーク性能で実行できます。
+>
+> [NVIDIA AI Foundation Endpoints](https://www.nvidia.com/en-us/ai-data-science/foundation-models/) を使うと、[NVIDIA DGX Cloud](https://www.nvidia.com/en-us/data-center/dgx-cloud/) で完全に高速化されたスタックから迅速な結果を得ることができます。カスタマイズ後は、[NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise/) を使って、エンタープライズレベルのセキュリティ、安定性、サポートを備えた任意の場所にデプロイできます。
+
+LangChain では、一般的な API を使って NVIDIA AI Foundation モデルの選択がサポートされています。
+
+サポートされているモデルは、[build.nvidia.com](https://build.nvidia.com/) で確認できます。
+
+これらのモデルは、以下のように [`langchain-nvidia-ai-endpoints`](https://pypi.org/project/langchain-nvidia-ai-endpoints/) パッケージからアクセスできます。
+
+### セットアップ
+
+1. [NVIDIA](https://build.nvidia.com/) のフリーアカウントを作成する (NVIDIA AI Foundation モデルがホストされている)
+2. 使用したいモデルをクリックする
+3. `Input` の下の `Python` タブを選択し、`Get API Key` をクリックして `Generate Key` をクリックする
+4. 生成されたキーを `NVIDIA_API_KEY` として保存する。これで、エンドポイントにアクセスできるはずです。
+
+```bash
+export NVIDIA_API_KEY=nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+- パッケージをインストールする:
+
+```bash
+pip install -U langchain-nvidia-ai-endpoints
+```
+
+### チャットモデル
+
+[使用例](/docs/integrations/chat/nvidia_ai_endpoints)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatNVIDIA", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_nvidia_ai_endpoints.chat_models.ChatNVIDIA.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
+
+llm = ChatNVIDIA(model="mixtral_8x7b")
+result = llm.invoke("Write a ballad about LangChain.")
+print(result.content)
+```
+
+### 埋め込みモデル
+
+[使用例](/docs/integrations/text_embedding/nvidia_ai_endpoints)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "NVIDIAEmbeddings", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_nvidia_ai_endpoints.embeddings.NVIDIAEmbeddings.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+```

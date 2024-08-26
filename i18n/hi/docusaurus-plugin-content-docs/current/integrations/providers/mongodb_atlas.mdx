@@ -1,0 +1,96 @@
+---
+translated: true
+---
+
+# MongoDB Atlas
+
+>[MongoDB Atlas](https://www.mongodb.com/docs/atlas/) एक पूरी तरह से प्रबंधित क्लाउड
+> डेटाबेस है जो AWS, Azure और GCP में उपलब्ध है। अब इसमें MongoDB दस्तावेज़ डेटा पर नेटिव
+> वेक्टर सर्च का समर्थन है।
+
+## इंस्टॉलेशन और सेटअप
+
+[विस्तृत कॉन्फ़िगरेशन निर्देश](/docs/integrations/vectorstores/mongodb_atlas) देखें।
+
+हमें `langchain-mongodb` पायथन पैकेज इंस्टॉल करना होगा।
+
+```bash
+pip install langchain-mongodb
+```
+
+## वेक्टर स्टोर
+
+[उपयोग उदाहरण](/docs/integrations/vectorstores/mongodb_atlas) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBAtlasVectorSearch", "source": "langchain_mongodb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb import MongoDBAtlasVectorSearch
+```
+
+## LLM कैशेज
+
+### MongoDBCache
+
+MongoDB में एक सरल कैश स्टोर करने के लिए एक अमूर्त। इसमें सेमांटिक कैशिंग का उपयोग नहीं किया जाता है, और उत्पादन से पहले संग्रह पर सूचकांक बनाने की आवश्यकता नहीं है।
+
+इस कैश को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBCache", "source": "langchain_mongodb.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_mongodb.cache.MongoDBCache.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb.cache import MongoDBCache
+```
+
+अपने LLM के साथ इस कैश का उपयोग करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain_core.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain_core.globals.set_llm_cache.html", "title": "MongoDB Atlas"}]-->
+from langchain_core.globals import set_llm_cache
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+mongodb_atlas_uri = "<YOUR_CONNECTION_STRING>"
+COLLECTION_NAME="<YOUR_CACHE_COLLECTION_NAME>"
+DATABASE_NAME="<YOUR_DATABASE_NAME>"
+
+set_llm_cache(MongoDBCache(
+    connection_string=mongodb_atlas_uri,
+    collection_name=COLLECTION_NAME,
+    database_name=DATABASE_NAME,
+))
+```
+
+### MongoDBAtlasSemanticCache
+
+सेमांटिक कैशिंग उपयोगकर्ताओं को उपयोगकर्ता इनपुट और पहले से कैश किए गए परिणामों के बीच सेमांटिक समानता के आधार पर कैश किए गए प्रॉम्प्ट को पुनः प्राप्त करने की अनुमति देता है। इसके तहत यह MongoDBAtlas को एक कैश और एक वेक्टर स्टोर के रूप में मिश्रित करता है।
+MongoDBAtlasSemanticCache `MongoDBAtlasVectorSearch` से वारिस होता है और काम करने के लिए एक एटलस वेक्टर सर्च इंडेक्स की आवश्यकता होती है। कृपया [उपयोग उदाहरण](/docs/integrations/vectorstores/mongodb_atlas) देखें कि इंडेक्स कैसे सेट किया जाए।
+
+इस कैश को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBAtlasSemanticCache", "source": "langchain_mongodb.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_mongodb.cache.MongoDBAtlasSemanticCache.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb.cache import MongoDBAtlasSemanticCache
+```
+
+अपने LLM के साथ इस कैश का उपयोग करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain_core.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain_core.globals.set_llm_cache.html", "title": "MongoDB Atlas"}]-->
+from langchain_core.globals import set_llm_cache
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+mongodb_atlas_uri = "<YOUR_CONNECTION_STRING>"
+COLLECTION_NAME="<YOUR_CACHE_COLLECTION_NAME>"
+DATABASE_NAME="<YOUR_DATABASE_NAME>"
+
+set_llm_cache(MongoDBAtlasSemanticCache(
+    embedding=FakeEmbeddings(),
+    connection_string=mongodb_atlas_uri,
+    collection_name=COLLECTION_NAME,
+    database_name=DATABASE_NAME,
+))
+```
+
+``

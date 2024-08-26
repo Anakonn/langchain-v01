@@ -1,0 +1,109 @@
+---
+translated: true
+---
+
+# Déploiement
+
+Dans le paysage technologique actuel en pleine évolution, l'utilisation des modèles de langage à grande échelle (LLM) se développe rapidement. Par conséquent, il est crucial pour les développeurs de comprendre comment déployer efficacement ces modèles dans des environnements de production. Les interfaces LLM se classent généralement dans deux catégories :
+
+- **Cas 1 : Utilisation de fournisseurs LLM externes (OpenAI, Anthropic, etc.)**
+    Dans ce scénario, la majeure partie de la charge de calcul est gérée par les fournisseurs LLM, tandis que LangChain simplifie la mise en œuvre de la logique métier autour de ces services. Cette approche inclut des fonctionnalités telles que le modèle de prompt, la génération de messages de discussion, la mise en cache, la création de bases de données d'intégration vectorielle, le prétraitement, etc.
+
+- **Cas 2 : Modèles open-source hébergés en interne**
+    Alternativement, les développeurs peuvent choisir d'utiliser des modèles LLM open-source plus petits mais comparables. Cette approche peut considérablement réduire les coûts, la latence et les problèmes de confidentialité associés au transfert de données vers des fournisseurs LLM externes.
+
+Quel que soit le cadre qui forme la colonne vertébrale de votre produit, le déploiement d'applications LLM comporte ses propres défis. Il est essentiel de comprendre les compromis et les principales considérations lors de l'évaluation des frameworks de service.
+
+## Plan
+
+Ce guide vise à fournir un aperçu complet des exigences pour le déploiement de LLM dans un environnement de production, en se concentrant sur :
+
+- **Conception d'un service d'application LLM robuste**
+- **Maintien de l'efficacité des coûts**
+- **Assurer une itération rapide**
+
+La compréhension de ces composants est cruciale lors de l'évaluation des systèmes de service. LangChain s'intègre à plusieurs projets open-source conçus pour relever ces défis, offrant un cadre solide pour la production de vos applications LLM. Quelques frameworks notables incluent :
+
+- [Ray Serve](/docs/integrations/providers/ray_serve)
+- [BentoML](https://github.com/bentoml/BentoML)
+- [OpenLLM](/docs/integrations/providers/openllm)
+- [Modal](/docs/integrations/providers/modal)
+- [Jina](/docs/integrations/providers/jina)
+
+Ces liens fourniront plus d'informations sur chaque écosystème, vous aidant à trouver le meilleur choix pour vos besoins de déploiement LLM.
+
+## Conception d'un service d'application LLM robuste
+
+Lors du déploiement d'un service LLM en production, il est impératif de fournir une expérience utilisateur fluide et exempte de pannes. Atteindre une disponibilité du service 24h/24 et 7j/7 implique de créer et de maintenir plusieurs sous-systèmes autour de votre application.
+
+### Surveillance
+
+La surveillance fait partie intégrante de tout système fonctionnant dans un environnement de production. Dans le contexte des LLM, il est essentiel de surveiller à la fois les métriques de performance et de qualité.
+
+**Métriques de performance :** Ces métriques fournissent des informations sur l'efficacité et la capacité de votre modèle. Voici quelques exemples clés :
+
+- Requêtes par seconde (QPS) : Cette mesure le nombre de requêtes que votre modèle traite en une seconde, offrant un aperçu de son utilisation.
+- Latence : Cette métrique quantifie le délai entre l'envoi d'une requête par votre client et la réception de la réponse.
+- Tokens par seconde (TPS) : Cela représente le nombre de tokens que votre modèle peut générer en une seconde.
+
+**Métriques de qualité :** Ces métriques sont généralement personnalisées en fonction du cas d'utilisation métier. Par exemple, comment la sortie de votre système se compare-t-elle à une référence, comme une version précédente ? Bien que ces métriques puissent être calculées hors ligne, vous devez enregistrer les données nécessaires pour les utiliser ultérieurement.
+
+### Tolérance aux pannes
+
+Votre application peut rencontrer des erreurs telles que des exceptions dans votre code d'inférence de modèle ou de logique métier, provoquant des défaillances et perturbant le trafic. D'autres problèmes potentiels pourraient provenir de la machine exécutant votre application, comme des pannes de matériel imprévues ou la perte d'instances spot pendant les périodes de forte demande. Une façon d'atténuer ces risques est d'augmenter la redondance grâce à la mise à l'échelle des réplicas et de mettre en œuvre des mécanismes de récupération pour les réplicas défaillants. Cependant, les réplicas de modèles ne sont pas les seuls points de défaillance potentiels. Il est essentiel de construire une résilience contre divers types de pannes qui pourraient survenir à n'importe quel niveau de votre pile.
+
+### Mise à niveau sans temps d'arrêt
+
+Les mises à niveau du système sont souvent nécessaires mais peuvent entraîner des interruptions de service si elles ne sont pas gérées correctement. Une façon d'éviter les temps d'arrêt pendant les mises à niveau est de mettre en œuvre un processus de transition en douceur de l'ancienne version à la nouvelle. Idéalement, la nouvelle version de votre service LLM est déployée, et le trafic bascule progressivement de l'ancienne à la nouvelle version, maintenant un QPS constant tout au long du processus.
+
+### Équilibrage de charge
+
+L'équilibrage de charge, en termes simples, est une technique permettant de répartir équitablement le travail sur plusieurs ordinateurs, serveurs ou autres ressources afin d'optimiser l'utilisation du système, de maximiser le débit, de minimiser le temps de réponse et d'éviter la surcharge d'une seule ressource. Pensez-y comme un agent de circulation dirigeant les voitures (requêtes) vers différentes routes (serveurs) afin qu'aucune route ne devienne trop encombrée.
+
+Il existe plusieurs stratégies d'équilibrage de charge. Par exemple, une méthode courante est la stratégie *Round Robin*, où chaque requête est envoyée au serveur suivant dans la file, revenant au premier lorsque tous les serveurs ont reçu une requête. Cela fonctionne bien lorsque tous les serveurs sont également capables. Cependant, si certains serveurs sont plus puissants que d'autres, vous pourriez utiliser une stratégie *Weighted Round Robin* ou *Least Connections*, où plus de requêtes sont envoyées aux serveurs les plus puissants ou à ceux qui gèrent actuellement le moins de requêtes actives. Imaginons que vous exécutiez une chaîne LLM. Si votre application devient populaire, vous pourriez avoir des centaines, voire des milliers d'utilisateurs posant des questions en même temps. Si un serveur devient trop occupé (charge élevée), l'équilibreur de charge dirigerait les nouvelles requêtes vers un autre serveur moins occupé. De cette façon, tous vos utilisateurs obtiennent une réponse rapide et le système reste stable.
+
+## Maintenir l'efficacité des coûts et la mise à l'échelle
+
+Le déploiement de services de LLM peut être coûteux, surtout lorsque vous gérez un grand volume d'interactions avec les utilisateurs. Les frais des fournisseurs de LLM sont généralement basés sur les jetons utilisés, ce qui rend l'inférence d'un système de chat sur ces modèles potentiellement coûteuse. Cependant, plusieurs stratégies peuvent aider à gérer ces coûts sans compromettre la qualité du service.
+
+### Auto-hébergement de modèles
+
+Plusieurs LLM plus petits et open-source émergent pour s'attaquer au problème de la dépendance aux fournisseurs de LLM. L'auto-hébergement vous permet de maintenir une qualité similaire aux modèles des fournisseurs de LLM tout en gérant les coûts. Le défi consiste à construire un système de service LLM fiable et performant sur vos propres machines.
+
+### Gestion des ressources et mise à l'échelle automatique
+
+La logique de calcul au sein de votre application nécessite une allocation précise des ressources. Par exemple, si une partie de votre trafic est desservie par un point de terminaison OpenAI et une autre partie par un modèle auto-hébergé, il est essentiel d'allouer des ressources appropriées pour chacun. La mise à l'échelle automatique - l'ajustement de l'allocation des ressources en fonction du trafic - peut avoir un impact significatif sur le coût d'exécution de votre application. Cette stratégie nécessite un équilibre entre le coût et la réactivité, en veillant à ne pas avoir de sur-provisionnement des ressources ni de compromis sur la réactivité de l'application.
+
+### Utilisation d'instances spot
+
+Sur des plateformes comme AWS, les instances spot offrent des économies de coûts substantielles, généralement facturées environ un tiers du prix des instances à la demande. L'inconvénient est un taux de plantage plus élevé, nécessitant un mécanisme de tolérance aux pannes robuste pour une utilisation efficace.
+
+### Mise à l'échelle indépendante
+
+Lorsque vous auto-hébergez vos modèles, vous devez envisager une mise à l'échelle indépendante. Par exemple, si vous avez deux modèles de traduction, l'un affiné pour le français et l'autre pour l'espagnol, les demandes entrantes peuvent nécessiter des exigences de mise à l'échelle différentes pour chacun.
+
+### Regroupement des demandes
+
+Dans le contexte des modèles de langage de grande taille, le regroupement des demandes peut améliorer l'efficacité en utilisant mieux les ressources de votre GPU. Les GPU sont des processeurs intrinsèquement parallèles, conçus pour gérer plusieurs tâches simultanément. Si vous envoyez des demandes individuelles au modèle, le GPU peut ne pas être pleinement utilisé car il ne travaille que sur une seule tâche à la fois. En revanche, en regroupant les demandes, vous permettez au GPU de travailler sur plusieurs tâches à la fois, maximisant son utilisation et améliorant la vitesse d'inférence. Cela conduit non seulement à des économies de coûts, mais peut également améliorer la latence globale de votre service LLM.
+
+En résumé, la gestion des coûts tout en mettant à l'échelle vos services LLM nécessite une approche stratégique. L'utilisation de modèles auto-hébergés, la gestion efficace des ressources, l'emploi de la mise à l'échelle automatique, l'utilisation d'instances spot, la mise à l'échelle indépendante des modèles et le regroupement des demandes sont des stratégies clés à envisager. Les bibliothèques open-source comme Ray Serve et BentoML sont conçues pour gérer ces complexités.
+
+## Assurer une itération rapide
+
+Le paysage des LLM évolue à un rythme sans précédent, avec de nouvelles bibliothèques et architectures de modèles introduites constamment. Par conséquent, il est crucial d'éviter de vous lier à une solution spécifique à un cadre particulier. Cela est particulièrement pertinent dans le service, où les changements apportés à votre infrastructure peuvent être chronophages, coûteux et risqués. Visez une infrastructure qui ne soit pas verrouillée dans une bibliothèque ou un framework d'apprentissage automatique spécifique, mais qui offre plutôt une couche de service polyvalente et évolutive. Voici quelques aspects où la flexibilité joue un rôle clé :
+
+### Composition de modèles
+
+Le déploiement de systèmes comme LangChain nécessite la capacité d'assembler différents modèles et de les connecter via une logique. Prenons l'exemple de la construction d'un moteur de requête SQL à saisie en langage naturel. Interroger un LLM et obtenir la commande SQL n'est qu'une partie du système. Vous devez extraire les métadonnées de la base de données connectée, construire une invite pour le LLM, exécuter la requête SQL sur un moteur, collecter et renvoyer la réponse au LLM pendant que la requête s'exécute, et présenter les résultats à l'utilisateur. Cela démontre la nécessité d'intégrer de manière transparente divers composants complexes construits en Python dans une chaîne dynamique de blocs logiques pouvant être servis ensemble.
+
+## Fournisseurs de cloud
+
+De nombreuses solutions hébergées sont limitées à un seul fournisseur de cloud, ce qui peut restreindre vos options dans le monde multi-cloud d'aujourd'hui. Selon l'endroit où vos autres composants d'infrastructure sont construits, vous pourriez préférer rester avec votre fournisseur de cloud choisi.
+
+## Infrastructure as Code (IaC)
+
+Une itération rapide implique également la capacité de recréer votre infrastructure rapidement et de manière fiable. C'est là qu'interviennent les outils d'Infrastructure as Code (IaC) comme Terraform, CloudFormation ou les fichiers YAML de Kubernetes. Ils vous permettent de définir votre infrastructure dans des fichiers de code, qui peuvent être gérés dans un système de contrôle de version et rapidement déployés, permettant ainsi des itérations plus rapides et plus fiables.
+
+## CI/CD
+
+Dans un environnement en évolution rapide, la mise en place de pipelines CI/CD peut accélérer considérablement le processus d'itération. Ils aident à automatiser les tests et le déploiement de vos applications LLM, réduisant les risques d'erreurs et permettant une rétroaction et une itération plus rapides.

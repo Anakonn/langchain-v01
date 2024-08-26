@@ -1,0 +1,44 @@
+---
+sidebar_position: 2
+title: タイプ
+translated: true
+---
+
+# エージェントのタイプ
+
+これは、いくつかの次元に沿って利用可能なすべてのエージェントを分類するものです。
+
+**対象モデルタイプ**
+
+このエージェントがチャットモデル(メッセージを受け取り、メッセージを出力する)またはLLM(文字列を受け取り、文字列を出力する)を対象としているかどうかを示します。これが影響するのは主にプロンプト戦略です。対象とは異なるタイプのモデルでエージェントを使用することはできますが、同じ品質の結果が得られない可能性があります。
+
+**チャット履歴のサポート**
+
+これらのエージェントタイプがチャット履歴をサポートするかどうかを示します。サポートする場合、それはチャットボットとして使用できることを意味します。サポートしない場合は、単一のタスクに適しています。チャット履歴のサポートには一般により優れたモデルが必要なため、より低性能なモデルを対象とした初期のエージェントタイプではサポートされていない可能性があります。
+
+**複数入力ツールのサポート**
+
+これらのエージェントタイプが複数の入力を持つツールをサポートするかどうかを示します。ツールが単一の入力しか必要としない場合、LLMがどのように呼び出せばよいかを知るのは一般的に簡単です。したがって、より低性能なモデルを対象とした初期のエージェントタイプの多くはこれをサポートしていない可能性があります。
+
+**並列関数呼び出しのサポート**
+
+LLMが複数のツールを同時に呼び出すことができると、エージェントのタスクを大幅に高速化できます。ただし、LLMがこれを行うのは非常に難しいため、一部のエージェントタイプではサポートされていません。
+
+**必要なモデルパラメータ**
+
+このエージェントが追加のパラメータをモデルにサポートさせる必要があるかどうかを示します。一部のエージェントタイプは、OpenAI の関数呼び出しのようなものを利用しており、それには他のモデルパラメータが必要です。必要なパラメータがない場合は、すべてがプロンプティングによって行われることを意味します。
+
+**使用時期**
+
+このエージェントタイプを使用するべき時期についてのコメントです。
+
+| エージェントタイプ | 対象モデルタイプ | チャット履歴のサポート | 複数入力ツールのサポート | 並列関数呼び出しのサポート | 必要なモデルパラメータ | 使用時期 | API |
+|--------------------------------------------|---------------------|-----------------------|----------------------------|-------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| [ツール呼び出し](/docs/modules/agents/agent_types/tool_calling)             | チャット                | ✅                    | ✅                         | ✅                                   | `tools`              | ツール呼び出しモデルを使用している場合 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.tool_calling_agent.base.create_tool_calling_agent.html) |
+| [OpenAI ツール](./openai_tools)             | チャット                | ✅                    | ✅                         | ✅                                   | `tools`              | [レガシー] 最近のOpenAIモデル(`1106`以降)を使用している場合。代わりにジェネリックなツール呼び出しエージェントをお勧めします。 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_tools.base.create_openai_tools_agent.html) |
+| [OpenAI 関数](./openai_functions_agent)| チャット                | ✅                    | ✅                         |                                     | `functions`          | [レガシー] OpenAIモデル、または関数呼び出しに最適化されたオープンソースモデルを使用している場合。代わりにジェネリックなツール呼び出しエージェントをお勧めします | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html) |
+| [XML](./xml_agent)                         | LLM                 | ✅                    |                            |                                     |                      | Anthropicモデル、またはXMLに優れた他のモデルを使用している場合 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.xml.base.create_xml_agent.html)                                                                                               |
+| [構造化チャット](./structured_chat)       | チャット                | ✅                    | ✅                         |                                     |                      | 複数の入力を持つツールをサポートする必要がある場合 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.structured_chat.base.create_structured_chat_agent.html) |
+| [JSON チャット](./json_agent)                  | チャット                | ✅                    |                            |                                     |                      | JSONに優れたモデルを使用している場合 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.json_chat.base.create_json_chat_agent.html) |
+| [ReAct](./react)                           | LLM                 | ✅                    |                            |                                     |                      | シンプルなモデルを使用している場合 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html) |
+| [Self Ask With Search](./self_ask_with_search)| LLM              |                       |                            |                                     |                      | シンプルなモデルを使用しており、検索ツールが1つしかない場合 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.self_ask_with_search.base.create_self_ask_with_search_agent.html) |

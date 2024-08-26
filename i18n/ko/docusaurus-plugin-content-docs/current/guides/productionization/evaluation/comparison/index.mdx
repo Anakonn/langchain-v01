@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# 비교 평가기
+
+LangChain의 비교 평가기는 두 개의 다른 체인 또는 LLM 출력을 측정하는 데 도움이 됩니다. 이러한 평가기는 두 언어 모델 간의 A/B 테스트나 동일한 모델의 다른 버전을 비교하는 등 비교 분석에 유용합니다. 또한 AI 지원 강화 학습을 위한 선호도 점수를 생성하는 데도 유용할 수 있습니다.
+
+이 평가기는 `PairwiseStringEvaluator` 클래스를 상속받아 두 문자열을 비교하는 인터페이스를 제공합니다. 일반적으로 이는 두 개의 다른 프롬프트 또는 모델, 혹은 동일한 모델의 두 버전에서 출력된 문자열을 비교합니다. 본질적으로, 비교 평가는 문자열 쌍을 평가하고 평가 점수 및 기타 관련 세부 사항을 포함하는 사전을 반환합니다.
+
+커스텀 비교 평가기를 만들려면 `PairwiseStringEvaluator` 클래스를 상속받고 `_evaluate_string_pairs` 메서드를 덮어씁니다. 비동기 평가가 필요한 경우 `_aevaluate_string_pairs` 메서드도 덮어씁니다.
+
+다음은 비교 평가기의 주요 메서드 및 속성 요약입니다:
+
+- `evaluate_string_pairs`: 출력 문자열 쌍을 평가합니다. 커스텀 평가기를 만들 때 이 함수를 덮어써야 합니다.
+- `aevaluate_string_pairs`: 출력 문자열 쌍을 비동기식으로 평가합니다. 비동기 평가를 위해 이 함수를 덮어써야 합니다.
+- `requires_input`: 이 평가기가 입력 문자열을 필요로 하는지 여부를 나타내는 속성입니다.
+- `requires_reference`: 이 평가기가 참조 라벨을 필요로 하는지 여부를 나타내는 속성입니다.
+
+:::note LangSmith 지원
+[run_on_dataset](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.smith) 평가 메서드는 한 번에 단일 모델만 평가하도록 설계되어 있어 이러한 평가기를 지원하지 않습니다.
+:::
+
+커스텀 평가기 생성 및 사용 가능한 내장 비교 평가기에 대한 자세한 정보는 다음 섹션에서 확인할 수 있습니다.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

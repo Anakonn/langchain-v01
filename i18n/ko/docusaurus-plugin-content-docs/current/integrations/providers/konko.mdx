@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# Konko
+
+Konko와 관련된 모든 기능
+
+>[Konko AI](https://www.konko.ai/)는 애플리케이션 개발자들을 위해 완전히 관리되는 API를 제공합니다.
+
+>1. 자신의 애플리케이션에 적합한 오픈 소스 또는 독점 LLM을 **선택**합니다.
+>2. 선도적인 애플리케이션 프레임워크와의 통합 및 완전히 관리되는 API를 통해 애플리케이션을 **더 빨리 구축**합니다.
+>3. 업계 최고 수준의 성능을 저렴한 비용으로 달성하기 위해 더 작은 오픈 소스 LLM을 **미세 조정**합니다.
+>4. Konko AI의 SOC 2 인증, 멀티 클라우드 인프라를 사용하여 보안, 프라이버시, 처리량 및 지연 시간 SLA를 충족하는 프로덕션 규모의 API를 **배포**합니다.
+
+## 설치 및 설정
+
+1. 웹 앱에 로그인하여 [API 키를 생성](https://platform.konko.ai/settings/api-keys)하여 [채팅 완성](https://docs.konko.ai/reference/post-chat-completions) 및 [완성](https://docs.konko.ai/reference/post-completions) 엔드포인트를 통해 모델에 액세스합니다.
+2. Python3.8+ 환경을 활성화합니다.
+3. SDK를 설치합니다.
+
+```bash
+pip install konko
+```
+
+4. API 키를 환경 변수(`KONKO_API_KEY`, `OPENAI_API_KEY`)로 설정합니다.
+
+```bash
+export KONKO_API_KEY={your_KONKO_API_KEY_here}
+export OPENAI_API_KEY={your_OPENAI_API_KEY_here} #Optional
+```
+
+자세한 내용은 [Konko 문서](https://docs.konko.ai/docs/getting-started)를 참조하세요.
+
+## LLM
+
+**사용 가능한 모델 탐색:** [사용 가능한 모델](https://docs.konko.ai/docs/list-of-models)을 살펴보세요. 각 모델은 다양한 사용 사례와 기능을 제공합니다.
+
+Konko 인스턴스에서 실행 중인 모델 목록을 확인하는 다른 방법은 이 [엔드포인트](https://docs.konko.ai/reference/get-models)를 통해서입니다.
+
+사용 [예제](/docs/integrations/llms/konko)를 확인하세요.
+
+### 엔드포인트 사용 예
+
+- **mistralai/Mistral-7B-v0.1을 사용한 완성:**
+
+  ```python
+  from langchain.llms import Konko
+  llm = Konko(max_tokens=800, model='mistralai/Mistral-7B-v0.1')
+  prompt = "Apple Iphone 15에 대한 제품 설명을 생성하세요."
+  response = llm.invoke(prompt)
+  ```
+
+## 채팅 모델
+
+사용 [예제](/docs/integrations/chat/konko)를 확인하세요.
+
+- **Mistral-7B를 사용한 ChatCompletion:**
+
+  ```python
+  from langchain_core.messages import HumanMessage
+  from langchain_community.chat_models import ChatKonko
+  chat_instance = ChatKonko(max_tokens=10, model = 'mistralai/mistral-7b-instruct-v0.1')
+  msg = HumanMessage(content="안녕하세요")
+  chat_response = chat_instance([msg])
+  ```
+
+추가 지원이 필요하시면 [support@konko.ai](mailto:support@konko.ai)로 문의하거나 [Discord](https://discord.gg/TXV2s3z7RZ)에 참여하세요.

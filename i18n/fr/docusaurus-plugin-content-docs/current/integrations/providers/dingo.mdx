@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# DingoDB
+
+Cette page couvre comment utiliser l'écosystème DingoDB dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers DingoDB spécifiques.
+
+## Installation et configuration
+
+- Installez le SDK Python avec `pip install dingodb`
+
+## VectorStore
+
+Il existe un wrapper autour des index DingoDB, vous permettant de l'utiliser comme un vectorstore,
+que ce soit pour la recherche sémantique ou la sélection d'exemples.
+
+Pour importer ce vectorstore :
+
+```python
+<!--IMPORTS:[{"imported": "Dingo", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.dingo.Dingo.html", "title": "DingoDB"}]-->
+from langchain_community.vectorstores import Dingo
+```
+
+Pour un guide détaillé du wrapper DingoDB, voir [ce notebook](/docs/integrations/vectorstores/dingo)

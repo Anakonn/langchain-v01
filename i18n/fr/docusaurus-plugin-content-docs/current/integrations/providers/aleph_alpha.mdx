@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Aleph Alpha
+
+>[Aleph Alpha](https://docs.aleph-alpha.com/) a été fondé en 2019 avec pour mission de rechercher et de construire la technologie fondamentale pour une ère d'IA forte. L'équipe de scientifiques, d'ingénieurs et d'innovateurs internationaux mène des recherches, développe et déploie une IA transformatrice comme de grands modèles de langage et multimodaux, et gère le plus grand cluster commercial d'IA en Europe.
+
+>[La série Luminous](https://docs.aleph-alpha.com/docs/introduction/luminous/) est une famille de grands modèles de langage.
+
+## Installation et configuration
+
+```bash
+pip install aleph-alpha-client
+```
+
+Vous devez créer un nouveau jeton. Veuillez consulter les [instructions](https://docs.aleph-alpha.com/docs/account/#create-a-new-token).
+
+```python
+from getpass import getpass
+
+ALEPH_ALPHA_API_KEY = getpass()
+```
+
+## LLM
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/aleph_alpha).
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlpha", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.aleph_alpha.AlephAlpha.html", "title": "Aleph Alpha"}]-->
+from langchain_community.llms import AlephAlpha
+```
+
+## Modèles d'intégration de texte
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/aleph_alpha).
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlphaSymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaSymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}, {"imported": "AlephAlphaAsymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaAsymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}]-->
+from langchain_community.embeddings import AlephAlphaSymmetricSemanticEmbedding, AlephAlphaAsymmetricSemanticEmbedding
+```

@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# TigerGraph
+
+>[TigerGraph](https://www.tigergraph.com/tigergraph-db/)は、ネイティブに分散されたハイパフォーマンスなグラフデータベースです。
+> 頂点とエッジのグラフ形式でデータを保存することで、LLMレスポンスを深化させるための豊かな関係性が生まれます。
+
+`TigerGraph`と`LangChain`の統合の大きな例が[ここ](https://github.com/tigergraph/graph-ml-notebooks/blob/main/applications/large_language_models/TigerGraph_LangChain_Demo.ipynb)で紹介されています。
+
+## インストールとセットアップ
+
+[`TigerGraph`データベースに接続する方法](https://docs.tigergraph.com/pytigergraph/current/getting-started/connection)の手順に従ってください。
+
+PythonのSDKをインストールします:
+
+```bash
+pip install pyTigerGraph
+```
+
+## 例
+
+`TigerGraph InquiryAI`機能を利用するには、`langchain_community.graphs`から`TigerGraph`をインポートできます。
+
+```python
+<!--IMPORTS:[{"imported": "TigerGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.tigergraph_graph.TigerGraph.html", "title": "TigerGraph"}]-->
+import pyTigerGraph as tg
+
+conn = tg.TigerGraphConnection(host="DATABASE_HOST_HERE", graphname="GRAPH_NAME_HERE", username="USERNAME_HERE", password="PASSWORD_HERE")
+
+### ==== CONFIGURE INQUIRYAI HOST ====
+conn.ai.configureInquiryAIHost("INQUIRYAI_HOST_HERE")
+
+from langchain_community.graphs import TigerGraph
+
+graph = TigerGraph(conn)
+result = graph.query("How many servers are there?")
+print(result)
+```

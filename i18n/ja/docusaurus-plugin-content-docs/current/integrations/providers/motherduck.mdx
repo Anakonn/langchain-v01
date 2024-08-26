@@ -1,0 +1,54 @@
+---
+translated: true
+---
+
+# 母鴨
+
+>[母鴨](https://motherduck.com/)は、クラウド上でDuckDBを管理するサービスです。
+
+## インストールとセットアップ
+
+まず、`duckdb`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install duckdb
+```
+
+また、[Motherduck](https://motherduck.com/)でアカウントを登録する必要があります。
+
+その後、接続文字列を設定する必要があります。Motherduckとの統合は主にSQLAlchemyを通して行います。
+接続文字列は次のような形式になります。
+
+```python
+token="..."
+
+conn_str = f"duckdb:///md:{token}@my_db"
+```
+
+## SQLChain
+
+SQLChainを使用して、Motherduckインスタンス内のデータを自然言語で照会することができます。
+
+```python
+from langchain_openai import OpenAI
+from langchain_community.utilities import SQLDatabase
+from langchain_experimental.sql import SQLDatabaseChain
+db = SQLDatabase.from_uri(conn_str)
+db_chain = SQLDatabaseChain.from_llm(OpenAI(temperature=0), db, verbose=True)
+```
+
+詳しくは、[SQL Chain](/docs/use_cases/sql/)のドキュメントを参照してください。
+
+## LLMCache
+
+Motherduckを使ってLLMリクエストをキャッシュすることもできます。
+これも、SQLAlchemyラッパーを通して行います。
+
+```python
+import sqlalchemy
+from langchain.globals import set_llm_cache
+eng = sqlalchemy.create_engine(conn_str)
+set_llm_cache(SQLAlchemyCache(engine=eng))
+```
+
+詳しくは、[LLMキャッシング](/docs/integrations/llms/llm_caching)のドキュメントを参照してください。

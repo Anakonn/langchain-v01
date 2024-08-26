@@ -1,0 +1,371 @@
+---
+translated: true
+---
+
+# LangChain 장식품 ✨
+
+~~~
+면책 조항: `LangChain 장식품`은 LangChain 팀이 만들지 않았으며 LangChain 팀의 지원을 받지 않습니다.
+~~~
+
+>`LangChain 장식품`은 LangChain 위에 있는 계층으로, 사용자 정의 langchain 프롬프트와 체인을 작성하는 데 있어 구문적 설탕 🍭을 제공합니다.
+>
+>피드백, 문제, 기여 - 여기에 문제를 제기해 주세요:
+>[ju-bezdek/langchain-decorators](https://github.com/ju-bezdek/langchain-decorators)
+
+주요 원칙과 이점:
+
+- 더 `pythonic`한 코드 작성 방식
+- 들여쓰기로 인해 코드 흐름이 깨지지 않는 다중 행 프롬프트 작성
+- **힌팅**, **유형 검사** 및 **문서 팝업**과 같은 IDE 내장 지원을 활용하여 프롬프트, 소비하는 매개변수 등을 빠르게 살펴볼 수 있습니다.
+- 🦜🔗 LangChain 생태계의 모든 힘을 활용
+- **선택적 매개변수** 지원 추가
+- 하나의 클래스에 바인딩하여 프롬프트 간에 매개변수를 쉽게 공유
+
+**LangChain 장식품 ✨**을 사용하여 작성된 간단한 예제입니다.
+
+```python
+
+@llm_prompt
+def write_me_short_post(topic:str, platform:str="twitter", audience:str = "developers")->str:
+    """
+    Write me a short header for my post about {topic} for {platform} platform.
+    It should be for {audience} audience.
+    (Max 15 words)
+    """
+    return
+
+# run it naturally
+write_me_short_post(topic="starwars")
+# or
+write_me_short_post(topic="starwars", platform="redit")
+```
+
+# 빠른 시작
+
+## 설치
+
+```bash
+pip install langchain_decorators
+```
+
+## 예제
+
+시작하는 좋은 방법은 여기에서 예제를 검토하는 것입니다:
+ - [jupyter notebook](https://github.com/ju-bezdek/langchain-decorators/blob/main/example_notebook.ipynb)
+ - [colab notebook](https://colab.research.google.com/drive/1no-8WfeP6JaLD9yUtkPgym6x0G9ZYZOG#scrollTo=N4cf__D0E2Yk)
+
+# 다른 매개변수 정의
+
+여기서는 단순히 `llm_prompt` 장식자로 함수를 표시하여 효과적으로 LLMChain이 되게 합니다. 대신 실행하는 것
+
+표준 LLMchain은 입력 변수와 프롬프트 외에도 훨씬 더 많은 초기화 매개변수를 필요로 합니다... 여기에 이 구현 세부 사항이 장식자에 숨겨져 있습니다.
+작동 방식은 다음과 같습니다:
+
+1. **전역 설정** 사용:
+
+```python
+# define global settings for all prompty (if not set - chatGPT is the current default)
+from langchain_decorators import GlobalSettings
+
+GlobalSettings.define_settings(
+    default_llm=ChatOpenAI(temperature=0.0), this is default... can change it here globally
+    default_streaming_llm=ChatOpenAI(temperature=0.0,streaming=True), this is default... can change it here for all ... will be used for streaming
+)
+```
+
+2. 미리 정의된 **프롬프트 유형** 사용
+
+```python
+#You can change the default prompt types
+from langchain_decorators import PromptTypes, PromptTypeSettings
+
+PromptTypes.AGENT_REASONING.llm = ChatOpenAI()
+
+# Or you can just define your own ones:
+class MyCustomPromptTypes(PromptTypes):
+    GPT4=PromptTypeSettings(llm=ChatOpenAI(model="gpt-4"))
+
+@llm_prompt(prompt_type=MyCustomPromptTypes.GPT4)
+def write_a_complicated_code(app_idea:str)->str:
+    ...
+
+```
+
+3. 장식자에서 **직접 설정 정의**
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "LangChain Decorators \u2728"}]-->
+from langchain_openai import OpenAI
+
+@llm_prompt(
+    llm=OpenAI(temperature=0.7),
+    stop_tokens=["\nObservation"],
+    ...
+    )
+def creative_writer(book_title:str)->str:
+    ...
+```
+
+## 메모리 및/또는 콜백 전달:
+
+이를 전달하려면 함수에 선언하기만 하면 됩니다(또는 kwargs를 사용하여 어떤 것이든 전달할 수 있습니다).
+
+```python
+
+@llm_prompt()
+async def write_me_short_post(topic:str, platform:str="twitter", memory:SimpleMemory = None):
+    """
+    {history_key}
+    Write me a short header for my post about {topic} for {platform} platform.
+    It should be for {audience} audience.
+    (Max 15 words)
+    """
+    pass
+
+await write_me_short_post(topic="old movies")
+
+```
+
+# 간소화된 스트리밍
+
+스트리밍을 활용하려면:
+ - 프롬프트를 비동기 함수로 정의해야 합니다.
+ - 장식자에서 스트리밍을 켜거나 PromptType에서 스트리밍을 정의할 수 있습니다.
+ - StreamingContext를 사용하여 스트림을 캡처합니다.
+
+이 방식으로 어떤 프롬프트가 스트리밍되어야 하는지만 표시하면 되며, 어떤 LLM을 사용해야 하는지, 스트리밍 핸들러를 생성하고 체인의 특정 부분에 배포해야 하는지 등을 신경 쓰지 않아도 됩니다... 프롬프트/프롬프트 유형에서 스트리밍을 켜거나 끄기만 하면 됩니다.
+
+스트리밍은 스트리밍 컨텍스트에서 호출하는 경우에만 발생합니다... 여기서 스트림을 처리하는 간단한 함수를 정의할 수 있습니다.
+
+```python
+# this code example is complete and should run as it is
+
+from langchain_decorators import StreamingContext, llm_prompt
+
+# this will mark the prompt for streaming (useful if we want stream just some prompts in our app... but don't want to pass distribute the callback handlers)
+# note that only async functions can be streamed (will get an error if it's not)
+@llm_prompt(capture_stream=True)
+async def write_me_short_post(topic:str, platform:str="twitter", audience:str = "developers"):
+    """
+    Write me a short header for my post about {topic} for {platform} platform.
+    It should be for {audience} audience.
+    (Max 15 words)
+    """
+    pass
+
+
+
+# just an arbitrary  function to demonstrate the streaming... will be some websockets code in the real world
+tokens=[]
+def capture_stream_func(new_token:str):
+    tokens.append(new_token)
+
+# if we want to capture the stream, we need to wrap the execution into StreamingContext...
+# this will allow us to capture the stream even if the prompt call is hidden inside higher level method
+# only the prompts marked with capture_stream will be captured here
+with StreamingContext(stream_to_stdout=True, callback=capture_stream_func):
+    result = await run_prompt()
+    print("Stream finished ... we can distinguish tokens thanks to alternating colors")
+
+
+print("\nWe've captured",len(tokens),"tokens🎉\n")
+print("Here is the result:")
+print(result)
+```
+
+# 프롬프트 선언
+
+기본적으로 프롬프트는 전체 함수 문서이지만, 프롬프트를 표시할 수 있습니다.
+
+## 프롬프트 문서화
+
+`<prompt>` 언어 태그가 있는 코드 블록을 지정하여 문서의 어느 부분이 프롬프트 정의인지 지정할 수 있습니다.
+
+```python
+@llm_prompt
+def write_me_short_post(topic:str, platform:str="twitter", audience:str = "developers"):
+    """
+    Here is a good way to write a prompt as part of a function docstring, with additional documentation for devs.
+
+    It needs to be a code block, marked as a `<prompt>` language
+    ```<prompt>
+    Write me a short header for my post about {topic} for {platform} platform.
+    It should be for {audience} audience.
+    (Max 15 words)
+    ```
+
+    Now only to code block above will be used as a prompt, and the rest of the docstring will be used as a description for developers.
+    (It has also a nice benefit that IDE (like VS code) will display the prompt properly (not trying to parse it as markdown, and thus not showing new lines properly))
+    """
+    return
+```
+
+## 채팅 메시지 프롬프트
+
+채팅 모델의 경우 프롬프트를 메시지 템플릿 집합으로 정의하는 것이 매우 유용합니다... 다음과 같이 수행할 수 있습니다:
+
+```python
+@llm_prompt
+def simulate_conversation(human_input:str, agent_role:str="a pirate"):
+    """
+    ## System message
+     - note the `:system` sufix inside the <prompt:_role_> tag
+
+
+    ```<prompt:system>
+    You are a {agent_role} hacker. You mus act like one.
+    You reply always in code, using python or javascript code block...
+    for example:
+
+    ... do not reply with anything else.. just with code - respecting your role.
+    ```
+
+    # human message
+    (we are using the real role that are enforced by the LLM - GPT supports system, assistant, user)
+    ``` <prompt:user>
+    Helo, who are you
+    ```
+    a reply:
+
+
+    ``` <prompt:assistant>
+    \``` python <<- escaping inner code block with \ that should be part of the prompt
+    def hello():
+        print("Argh... hello you pesky pirate")
+    \```
+    ```
+
+    we can also add some history using placeholder
+    ```<prompt:placeholder>
+    {history}
+    ```
+    ```<prompt:user>
+    {human_input}
+    ```
+
+    Now only to code block above will be used as a prompt, and the rest of the docstring will be used as a description for developers.
+    (It has also a nice benefit that IDE (like VS code) will display the prompt properly (not trying to parse it as markdown, and thus not showing new lines properly))
+    """
+    pass
+
+```
+
+여기서 역할은 모델 기본 역할(chatGPT의 assistant, user, system)입니다.
+
+# 선택적 섹션
+
+- 프롬프트의 전체 섹션을 선택적으로 정의할 수 있습니다.
+- 섹션의 입력 중 하나라도 누락되면 전체 섹션이 렌더링되지 않습니다.
+
+이에 대한 구문은 다음과 같습니다:
+
+```python
+@llm_prompt
+def prompt_with_optional_partials():
+    """
+    this text will be rendered always, but
+
+    {? anything inside this block will be rendered only if all the {value}s parameters are not empty (None | "")   ?}
+
+    you can also place it in between the words
+    this too will be rendered{? , but
+        this  block will be rendered only if {this_value} and {this_value}
+        is not empty?} !
+    """
+```
+
+# 출력 파서
+
+- llm_prompt 장식자는 기본적으로 출력 유형에 따라 최적의 출력 파서를 감지하려고 합니다(설정되지 않은 경우 원시 문자열 반환).
+- 목록, 사전 및 pydantic 출력도 기본적으로 지원됩니다(자동으로).
+
+```python
+# this code example is complete and should run as it is
+
+from langchain_decorators import llm_prompt
+
+@llm_prompt
+def write_name_suggestions(company_business:str, count:int)->list:
+    """ Write me {count} good name suggestions for company that {company_business}
+    """
+    pass
+
+write_name_suggestions(company_business="sells cookies", count=5)
+```
+
+## 더 복잡한 구조
+
+사전/pydantic의 경우 형식 지정 지침을 지정해야 합니다...
+이것은 번거로울 수 있으므로 출력 파서가 모델(pydantic)을 기반으로 지침을 생성하도록 할 수 있습니다.
+
+```python
+from langchain_decorators import llm_prompt
+from pydantic import BaseModel, Field
+
+
+class TheOutputStructureWeExpect(BaseModel):
+    name:str = Field (description="The name of the company")
+    headline:str = Field( description="The description of the company (for landing page)")
+    employees:list[str] = Field(description="5-8 fake employee names with their positions")
+
+@llm_prompt()
+def fake_company_generator(company_business:str)->TheOutputStructureWeExpect:
+    """ Generate a fake company that {company_business}
+    {FORMAT_INSTRUCTIONS}
+    """
+    return
+
+company = fake_company_generator(company_business="sells cookies")
+
+# print the result nicely formatted
+print("Company name: ",company.name)
+print("company headline: ",company.headline)
+print("company employees: ",company.employees)
+
+```
+
+# 프롬프트를 객체에 바인딩
+
+```python
+from pydantic import BaseModel
+from langchain_decorators import llm_prompt
+
+class AssistantPersonality(BaseModel):
+    assistant_name:str
+    assistant_role:str
+    field:str
+
+    @property
+    def a_property(self):
+        return "whatever"
+
+    def hello_world(self, function_kwarg:str=None):
+        """
+        We can reference any {field} or {a_property} inside our prompt... and combine it with {function_kwarg} in the method
+        """
+
+
+    @llm_prompt
+    def introduce_your_self(self)->str:
+        """
+        ``` <prompt:system>
+        You are an assistant named {assistant_name}.
+        Your role is to act as {assistant_role}
+        ```
+        ```<prompt:user>
+        Introduce your self (in less than 20 words)
+        ```
+        """
+
+
+
+personality = AssistantPersonality(assistant_name="John", assistant_role="a pirate")
+
+print(personality.introduce_your_self(personality))
+```
+
+# 더 많은 예제:
+
+- 이러한 예제와 몇 가지 추가 예제는 [여기 colab 노트북](https://colab.research.google.com/drive/1no-8WfeP6JaLD9yUtkPgym6x0G9ZYZOG#scrollTo=N4cf__D0E2Yk)에서도 확인할 수 있습니다.
+- [ReAct Agent 재구현](https://colab.research.google.com/drive/1no-8WfeP6JaLD9yUtkPgym6x0G9ZYZOG#scrollTo=3bID5fryE2Yp)도 포함되어 있습니다.

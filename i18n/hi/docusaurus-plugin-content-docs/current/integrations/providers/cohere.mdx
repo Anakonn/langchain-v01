@@ -1,0 +1,114 @@
+---
+translated: true
+---
+
+# Cohere
+
+>[Cohere](https://cohere.ai/about) एक कनाडाई स्टार्टअप है जो मशीन-मानव संवाद में सुधार करने में मदद करने वाले प्राकृतिक भाषा प्रसंस्करण मॉडल प्रदान करता है।
+
+## स्थापना और सेटअप
+
+- पायथन एसडीके स्थापित करें:
+
+```bash
+pip install langchain-cohere
+```
+
+एक [Cohere api कुंजी](https://dashboard.cohere.ai/) प्राप्त करें और इसे एक पर्यावरण चर (`COHERE_API_KEY`) के रूप में सेट करें
+
+## Cohere langchain एकीकरण
+
+|API|वर्णन|एंडपॉइंट दस्तावेज़|आयात|उदाहरण उपयोग|
+|---|---|---|---|---|
+|चैट|चैटबॉट बनाएं|[चैट](https://docs.cohere.com/reference/chat)|`from langchain_cohere import ChatCohere`|[cohere.ipynb](/docs/integrations/chat/cohere)|
+|LLM|पाठ उत्पन्न करें|[उत्पन्न करें](https://docs.cohere.com/reference/generate)|`from langchain_cohere.llms import Cohere`|[cohere.ipynb](/docs/integrations/llms/cohere)|
+|RAG रिट्रीवर|बाहरी डेटा स्रोतों से कनेक्ट करें|[चैट + rag](https://docs.cohere.com/reference/chat)|`from langchain.retrievers import CohereRagRetriever`|[cohere.ipynb](/docs/integrations/retrievers/cohere)|
+|पाठ एम्बेडिंग|स्ट्रिंग को量量 में एम्बेड करें|[एम्बेड](https://docs.cohere.com/reference/embed)|`from langchain_cohere import CohereEmbeddings`|[cohere.ipynb](/docs/integrations/text_embedding/cohere)|
+|रीरैंक रिट्रीवर|प्रासंगिकता के आधार पर स्ट्रिंग को रैंक करें|[रीरैंक](https://docs.cohere.com/reference/rerank)|`from langchain.retrievers.document_compressors import CohereRerank`|[cohere.ipynb](/docs/integrations/retrievers/cohere-reranker)|
+
+## त्वरित कॉपी उदाहरण
+
+### चैट
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Cohere"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Cohere"}]-->
+from langchain_cohere import ChatCohere
+from langchain_core.messages import HumanMessage
+chat = ChatCohere()
+messages = [HumanMessage(content="knock knock")]
+print(chat.invoke(messages))
+```
+
+Cohere [चैट मॉडल](/docs/integrations/chat/cohere) का उपयोग
+
+### LLM
+
+```python
+<!--IMPORTS:[{"imported": "Cohere", "source": "langchain_cohere.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_cohere.llms.Cohere.html", "title": "Cohere"}]-->
+from langchain_cohere.llms import Cohere
+
+llm = Cohere()
+print(llm.invoke("Come up with a pet name"))
+```
+
+Cohere (पुराना) [LLM मॉडल](/docs/integrations/llms/cohere) का उपयोग
+
+### ReAct एजेंट
+
+```python
+<!--IMPORTS:[{"imported": "TavilySearchResults", "source": "langchain_community.tools.tavily_search", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.tavily_search.tool.TavilySearchResults.html", "title": "Cohere"}, {"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Cohere"}, {"imported": "create_cohere_react_agent", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/react_multi_hop/langchain_cohere.react_multi_hop.agent.create_cohere_react_agent.html", "title": "Cohere"}, {"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Cohere"}, {"imported": "AgentExecutor", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html", "title": "Cohere"}]-->
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_cohere import ChatCohere, create_cohere_react_agent
+from langchain_core.prompts import ChatPromptTemplate
+from langchain.agents import AgentExecutor
+
+llm = ChatCohere()
+
+internet_search = TavilySearchResults(max_results=4)
+internet_search.name = "internet_search"
+internet_search.description = "Route a user query to the internet"
+
+prompt = ChatPromptTemplate.from_template("{input}")
+
+agent = create_cohere_react_agent(
+    llm,
+    [internet_search],
+    prompt
+)
+
+agent_executor = AgentExecutor(agent=agent, tools=[internet_search], verbose=True)
+
+agent_executor.invoke({
+    "input": "In what year was the company that was founded as Sound of Music added to the S&P 500?",
+})
+```
+
+### RAG रिट्रीवर
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Cohere"}, {"imported": "CohereRagRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.cohere_rag_retriever.CohereRagRetriever.html", "title": "Cohere"}, {"imported": "Document", "source": "langchain_core.documents", "docs": "https://api.python.langchain.com/en/latest/documents/langchain_core.documents.base.Document.html", "title": "Cohere"}]-->
+from langchain_cohere import ChatCohere
+from langchain.retrievers import CohereRagRetriever
+from langchain_core.documents import Document
+
+rag = CohereRagRetriever(llm=ChatCohere())
+print(rag.invoke("What is cohere ai?"))
+```
+
+Cohere [RAG रिट्रीवर](/docs/integrations/retrievers/cohere) का उपयोग
+
+### पाठ एम्बेडिंग
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Cohere"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
+print(embeddings.embed_documents(["This is a test document."]))
+```
+
+Cohere [पाठ एम्बेडिंग मॉडल](/docs/integrations/text_embedding/cohere) का उपयोग
+
+### रीरैंकर
+
+Cohere [रीरैंकर](/docs/integrations/retrievers/cohere-reranker) का उपयोग

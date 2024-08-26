@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# माइक्रोसॉफ्ट ऑफिस
+
+>[माइक्रोसॉफ्ट ऑफिस](https://www.office.com/) उत्पादकता सॉफ्टवेयर सूट में माइक्रोसॉफ्ट वर्ड, माइक्रोसॉफ्ट एक्सेल, माइक्रोसॉफ्ट पावरपॉइंट, माइक्रोसॉफ्ट आउटलुक और माइक्रोसॉफ्ट वनोट शामिल हैं। यह माइक्रोसॉफ्ट विंडोज और macOS ऑपरेटिंग सिस्टम के लिए उपलब्ध है। यह एंड्रॉइड और iOS पर भी उपलब्ध है।
+
+यह `DOCX`, `XLSX` और `PPTX` दस्तावेज़ों सहित आम तौर पर उपयोग किए जाने वाले फ़ाइल प्रारूपों को लोड करने के बारे में बताता है जिसका हम आगे उपयोग कर सकते हैं।
+
+## AzureAIDocumentIntelligenceLoader के साथ DOCX, XLSX, PPTX लोड करना
+
+[Azure AI Document Intelligence](https://aka.ms/doc-intelligence) (पहले `Azure Form Recognizer` के रूप में जाना जाता था) एक मशीन-लर्निंग आधारित सेवा है जो डिजिटल या स्कैन किए गए PDF, छवियों, ऑफिस और HTML फ़ाइलों से पाठ (हस्तलिखित सहित), तालिकाएं, दस्तावेज़ संरचनाएं (जैसे शीर्षक, अनुभाग शीर्षक आदि) और कुंजी-मूल्य-युग्मों को निकालती है। Document Intelligence `PDF`, `JPEG/JPG`, `PNG`, `BMP`, `TIFF`, `HEIF`, `DOCX`, `XLSX`, `PPTX` और `HTML` का समर्थन करता है।
+
+`Document Intelligence` का उपयोग करते हुए एक लोडर का यह [वर्तमान कार्यान्वयन](https://aka.ms/di-langchain) सामग्री को पृष्ठ-वार शामिल कर सकता है और इसे LangChain दस्तावेज़ों में बदल सकता है। डिफ़ॉल्ट आउटपुट प्रारूप मार्कडाउन है, जिसे `MarkdownHeaderTextSplitter` के साथ आसानी से सेमांटिक दस्तावेज़ चंकिंग के लिए श्रृंखलित किया जा सकता है। आप `mode="single"` या `mode="page"` का भी उपयोग कर सकते हैं ताकि एक पृष्ठ या दस्तावेज़ में शुद्ध पाठ वापस मिल सके।
+
+### पूर्वापेक्षा
+
+**पूर्व-दृश्य** क्षेत्रों में से किसी एक में एक Azure AI Document Intelligence संसाधन: **पूर्वी संयुक्त राज्य अमेरिका**, **पश्चिमी संयुक्त राज्य अमेरिका 2**, **पश्चिमी यूरोप** - यदि आपके पास नहीं है तो [इस दस्तावेज़](https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource?view=doc-intel-4.0.0) का पालन करके एक बनाएं। आप लोडर को `<endpoint>` और `<key>` पैरामीटर के रूप में पास करेंगे।
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDocumentIntelligenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.doc_intelligence.AzureAIDocumentIntelligenceLoader.html", "title": "Microsoft Office"}]-->
+%pip install --upgrade --quiet  langchain langchain-community azure-ai-documentintelligence
+
+from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
+
+file_path = "<filepath>"
+endpoint = "<endpoint>"
+key = "<key>"
+loader = AzureAIDocumentIntelligenceLoader(
+    api_endpoint=endpoint, api_key=key, file_path=file_path, api_model="prebuilt-layout"
+)
+
+documents = loader.load()
+```

@@ -1,0 +1,25 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/weather
+translated: false
+---
+
+# Weather
+
+>[OpenWeatherMap](https://openweathermap.org/) is an open-source weather service provider.
+
+## Installation and Setup
+
+```bash
+pip install pyowm
+```
+
+We must set up the `OpenWeatherMap API token`.
+
+## Document Loader
+
+See a [usage example](/docs/integrations/document_loaders/weather).
+
+```python
+<!--IMPORTS:[{"imported": "WeatherDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.weather.WeatherDataLoader.html", "title": "Weather"}]-->
+from langchain_community.document_loaders import WeatherDataLoader
+```

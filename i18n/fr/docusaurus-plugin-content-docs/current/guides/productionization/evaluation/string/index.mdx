@@ -1,0 +1,29 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# Évaluateurs de chaînes
+
+Un évaluateur de chaîne est un composant au sein de LangChain conçu pour évaluer les performances d'un modèle de langage en comparant ses sorties générées (prédictions) à une chaîne de référence ou à une entrée. Cette comparaison est une étape cruciale dans l'évaluation des modèles de langage, fournissant une mesure de la précision ou de la qualité du texte généré.
+
+Dans la pratique, les évaluateurs de chaînes sont généralement utilisés pour évaluer une chaîne prédite par rapport à une entrée donnée, comme une question ou une invite. Souvent, une étiquette de référence ou une chaîne de contexte est fournie pour définir à quoi ressemblerait une réponse correcte ou idéale. Ces évaluateurs peuvent être personnalisés pour adapter le processus d'évaluation aux exigences spécifiques de votre application.
+
+Pour créer un évaluateur de chaîne personnalisé, héritez de la classe `StringEvaluator` et implémentez la méthode `_evaluate_strings`. Si vous avez besoin d'un support asynchrone, implémentez également la méthode `_aevaluate_strings`.
+
+Voici un résumé des principaux attributs et méthodes associés à un évaluateur de chaîne :
+
+- `evaluation_name` : Spécifie le nom de l'évaluation.
+- `requires_input` : Attribut booléen indiquant si l'évaluateur nécessite une chaîne d'entrée. Si True, l'évaluateur lèvera une erreur lorsque l'entrée ne sera pas fournie. Si False, un avertissement sera journalisé si une entrée _est_ fournie, indiquant qu'elle ne sera pas prise en compte dans l'évaluation.
+- `requires_reference` : Attribut booléen spécifiant si l'évaluateur nécessite une étiquette de référence. Si True, l'évaluateur lèvera une erreur lorsque la référence ne sera pas fournie. Si False, un avertissement sera journalisé si une référence _est_ fournie, indiquant qu'elle ne sera pas prise en compte dans l'évaluation.
+
+Les évaluateurs de chaînes implémentent également les méthodes suivantes :
+
+- `aevaluate_strings` : Évalue de manière asynchrone la sortie de la chaîne ou du modèle de langage, avec un support pour l'entrée et l'étiquette optionnelles.
+- `evaluate_strings` : Évalue de manière synchrone la sortie de la chaîne ou du modèle de langage, avec un support pour l'entrée et l'étiquette optionnelles.
+
+Les sections suivantes fournissent des informations détaillées sur les implémentations d'évaluateurs de chaînes disponibles ainsi que sur la façon de créer un évaluateur de chaîne personnalisé.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

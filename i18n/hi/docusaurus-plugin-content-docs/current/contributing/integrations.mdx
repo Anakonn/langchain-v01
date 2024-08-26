@@ -1,0 +1,190 @@
+---
+sidebar_position: 5
+translated: true
+---
+
+# योगदान एकीकरण
+
+शुरू करने के लिए, सुनिश्चित करें कि आपके पास [कोड में योगदान](/docs/contributing/code/) गाइड में उल्लिखित सभी निर्भरताएँ हैं।
+
+LangChain के लिए एकीकरण में योगदान करने के लिए कई अलग-अलग स्थान हैं:
+
+- **सामुदायिक**: हल्के-भार वाले एकीकरण के लिए जो मुख्य रूप से LangChain और ओपन सोर्स समुदाय द्वारा बनाए रखा जाता है।
+- **साझेदार पैकेज**: स्वतंत्र पैकेजों के लिए जो LangChain और एक साझेदार द्वारा सह-रक्षित होते हैं।
+
+ज्यादातर मामलों में, नए एकीकरण सामुदायिक पैकेज में जोड़े जाने चाहिए। साझेदार पैकेजों को अलग-अलग पैकेजों के रूप में अधिक रखरखाव की आवश्यकता होती है, इसलिए कृपया नया साझेदार पैकेज बनाने से पहले LangChain टीम से पुष्टि करें।
+
+अगले अनुभागों में, हम एक नकली कंपनी, `Parrot Link AI`, से प्रत्येक पैकेज में योगदान करने का तरीका बताएंगे।
+
+## सामुदायिक पैकेज
+
+`langchain-community` पैकेज `libs/community` में है और अधिकांश एकीकरण शामिल करता है।
+
+इसे `pip install langchain-community` के साथ स्थापित किया जा सकता है, और निर्यात किए गए सदस्यों को इस कोड के साथ आयात किया जा सकता है:
+
+```python
+from langchain_community.chat_models import ChatParrotLink
+from langchain_community.llms import ParrotLinkLLM
+from langchain_community.vectorstores import ParrotLinkVectorStore
+```
+
+`community` पैकेज मैन्युअल रूप से स्थापित निर्भर पैकेजों पर निर्भर करता है, इसलिए आपको त्रुटियाँ दिखाई देंगी यदि आप किसी पैकेज को आयात करने का प्रयास करते हैं जो स्थापित नहीं है। हमारे नकली उदाहरण में, यदि आप `parrot-link-sdk` स्थापित किए बिना `ParrotLinkLLM` आयात करने का प्रयास करते हैं, तो आपको इसे उपयोग करने का प्रयास करते समय एक `ImportError` दिखाई देगा जो आपको इसे स्थापित करने के लिए कहेगा।
+
+मान लीजिए हम Parrot Link AI के लिए एक चैट मॉडल लागू करना चाहते हैं। हम `libs/community/langchain_community/chat_models/parrot_link.py` में निम्नलिखित कोड के साथ एक नई फ़ाइल बनाएंगे:
+
+```python
+<!--IMPORTS:[{"imported": "BaseChatModel", "source": "langchain_core.language_models.chat_models", "docs": "https://api.python.langchain.com/en/latest/language_models/langchain_core.language_models.chat_models.BaseChatModel.html", "title": "Contribute Integrations"}]-->
+from langchain_core.language_models.chat_models import BaseChatModel
+
+class ChatParrotLink(BaseChatModel):
+    """ChatParrotLink chat model.
+
+    Example:
+        .. code-block:: python
+
+            from langchain_community.chat_models import ChatParrotLink
+
+            model = ChatParrotLink()
+    """
+
+    ...
+```
+
+और हम परीक्षण लिखेंगे:
+
+- यूनिट परीक्षण: `libs/community/tests/unit_tests/chat_models/test_parrot_link.py`
+- एकीकरण परीक्षण: `libs/community/tests/integration_tests/chat_models/test_parrot_link.py`
+
+और दस्तावेज़ जोड़ें:
+
+- `docs/docs/integrations/chat/parrot_link.ipynb`
+
+## LangChain रिपॉजिटरी में साझेदार पैकेज
+
+साझेदार पैकेज `LangChain` मोनोरेपो या बाहरी रिपॉजिटरी में होस्ट किए जा सकते हैं।
+
+`LangChain` रिपॉजिटरी में साझेदार पैकेज `libs/partners/{partner}` में स्थित है और पैकेज का स्रोत कोड `libs/partners/{partner}/langchain_{partner}` में है।
+
+एक पैकेज उपयोगकर्ताओं द्वारा `pip install langchain-{partner}` के साथ स्थापित किया जाता है, और पैकेज के सदस्यों को इस कोड के साथ आयात किया जा सकता है:
+
+```python
+from langchain_{partner} import X
+```
+
+### नया पैकेज सेट करें
+
+नया साझेदार पैकेज सेट करने के लिए, LangChain CLI का नवीनतम संस्करण उपयोग करें। आप इसे स्थापित या अपडेट कर सकते हैं:
+
+```bash
+pip install -U langchain-cli
+```
+
+मान लीजिए आप Parrot Link AI नामक कंपनी के लिए एक नया साझेदार पैकेज बनाना चाहते हैं।
+
+फिर, नया साझेदार पैकेज बनाने के लिए निम्नलिखित कमांड चलाएँ:
+
+```bash
+cd libs/partners
+langchain-cli integration new
+> Name: parrot-link
+> Name of integration in PascalCase [ParrotLink]: ParrotLink
+```
+
+यह `libs/partners/parrot-link` में निम्नलिखित संरचना के साथ एक नया पैकेज बनाएगा:
+
+```text
+libs/partners/parrot-link/
+  langchain_parrot_link/ # folder containing your package
+    ...
+  tests/
+    ...
+  docs/ # bootstrapped docs notebooks, must be moved to /docs in monorepo root
+    ...
+  scripts/ # scripts for CI
+    ...
+  LICENSE
+  README.md # fill out with information about your package
+  Makefile # default commands for CI
+  pyproject.toml # package metadata, mostly managed by Poetry
+  poetry.lock # package lockfile, managed by Poetry
+  .gitignore
+```
+
+### अपना पैकेज लागू करें
+
+सबसे पहले, अपने पैकेज को जिन निर्भरताओं की आवश्यकता है, उन्हें जोड़ें, जैसे कि आपकी कंपनी का SDK:
+
+```bash
+poetry add parrot-link-sdk
+```
+
+यदि आपको टाइप चेकिंग के लिए अलग-अलग निर्भरताओं की आवश्यकता है, तो आप उन्हें `typing` समूह में जोड़ सकते हैं:
+
+```bash
+poetry add --group typing types-parrot-link-sdk
+```
+
+फिर, अपने पैकेज को `libs/partners/parrot-link/langchain_parrot_link` में लागू करें।
+
+डिफ़ॉल्ट रूप से, इसमें एक चैट मॉडल, एक LLM, और/या एक वेक्टर स्टोर के लिए स्टब्स शामिल होंगे। आपको उन फ़ाइलों को हटाना चाहिए जिन्हें आप उपयोग नहीं करेंगे और उन्हें `__init__.py` से हटा देना चाहिए।
+
+### यूनिट और एकीकरण परीक्षण लिखें
+
+कुछ बुनियादी परीक्षण `tests/` डायरेक्टरी में प्रस्तुत किए गए हैं। आपको अपने पैकेज की कार्यक्षमता को कवर करने के लिए और अधिक परीक्षण जोड़ने चाहिए।
+
+परीक्षण चलाने और लागू करने के बारे में जानकारी के लिए, [परीक्षण गाइड](/docs/contributing/testing/) देखें।
+
+### दस्तावेज़ लिखें
+
+दस्तावेज़ीकरण `docs/` डायरेक्टरी में Jupyter नोटबुक से उत्पन्न होता है। आपको उदाहरणों के साथ नोटबुक्स को मोनोरेपो रूट में प्रासंगिक `docs/docs/integrations` डायरेक्टरी में रखना चाहिए।
+
+### (यदि आवश्यक हो) सामुदायिक एकीकरण को अप्रचलित करें
+
+नोट: यह केवल तभी आवश्यक है जब आप किसी मौजूदा सामुदायिक एकीकरण को साझेदार पैकेज में माइग्रेट कर रहे हों। यदि आप जिस घटक को एकीकृत कर रहे हैं वह LangChain के लिए नया है (यानी पहले से `community` पैकेज में नहीं है), तो आप इस चरण को छोड़ सकते हैं।
+
+मान लें कि हमने अपने `ChatParrotLink` चैट मॉडल को सामुदायिक पैकेज से साझेदार पैकेज में माइग्रेट कर लिया। हमें सामुदायिक पैकेज में पुराने मॉडल को अप्रचलित करना होगा।
+
+हम ऐसा पुराने मॉडल में `@deprecated` डेकोरेटर जोड़कर करेंगे, इस प्रकार `libs/community/langchain_community/chat_models/parrot_link.py` में।
+
+हमारे परिवर्तन से पहले, हमारा चैट मॉडल इस प्रकार दिख सकता है:
+
+```python
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+हमारे परिवर्तन के बाद, यह इस प्रकार दिखेगा:
+
+```python
+<!--IMPORTS:[{"imported": "deprecated", "source": "langchain_core._api.deprecation", "docs": "https://api.python.langchain.com/en/latest/_api/langchain_core._api.deprecation.deprecated.html", "title": "Contribute Integrations"}]-->
+from langchain_core._api.deprecation import deprecated
+
+@deprecated(
+    since="0.0.<next community version>",
+    removal="0.2.0",
+    alternative_import="langchain_parrot_link.ChatParrotLink"
+)
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+आपको उस *प्रत्येक* घटक के लिए ऐसा करना चाहिए जिसे आप साझेदार पैकेज में माइग्रेट कर रहे हैं।
+
+### अतिरिक्त कदम
+
+योगदानकर्ता कदम:
+
+- [ ] मैनुअल एकीकरण वर्कफ़्लो में गुप्त नाम जोड़ें `.github/workflows/_integration_test.yml`
+- [ ] रिलीज़ वर्कफ़्लो में गुप्त जोड़ें (पूर्व-रिलीज़ परीक्षण के लिए) `.github/workflows/_release.yml`
+
+रखरखावकर्ता कदम (योगदानकर्ताओं को **नहीं** करना चाहिए):
+
+- [ ] pypi और परीक्षण pypi प्रोजेक्ट सेट करें
+- [ ] Github Actions में क्रेडेंशियल गुप्त जोड़ें
+- [ ] पैकेज को conda-forge में जोड़ें
+
+## बाहरी रिपॉजिटरी में साझेदार पैकेज
+
+बाहरी रिपॉजिटरी में साझेदार पैकेजों का समन्वय LangChain टीम और साझेदार संगठन के बीच किया जाना चाहिए ताकि यह सुनिश्चित हो सके कि उन्हें बनाए रखा और अपडेट किया जा रहा है।
+
+यदि आप बाहरी रिपॉजिटरी में साझेदार पैकेज बनाने में रुचि रखते हैं, तो कृपया LangChain रिपॉजिटरी में एक के साथ शुरू करें, और फिर इसे बाहरी रिपॉजिटरी में स्थानांतरित करने पर चर्चा करने के लिए LangChain टीम से संपर्क करें।

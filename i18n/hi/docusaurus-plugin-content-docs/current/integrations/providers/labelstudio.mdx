@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# लेबल स्टूडियो
+
+>[लेबल स्टूडियो](https://labelstud.io/guide/get_started) एक ओपन-सोर्स डेटा लेबलिंग प्लेटफॉर्म है जो LangChain को बड़े भाषा मॉडलों (LLM) के लिए डेटा को लेबल करने में लचीलापन प्रदान करता है। यह कस्टम प्रशिक्षण डेटा तैयार करने और मानव प्रतिक्रिया के माध्यम से प्रतिक्रियाओं को एकत्र और मूल्यांकन करने में भी सक्षम है।
+
+## इंस्टॉलेशन और सेटअप
+
+स्थापना विकल्पों के लिए [लेबल स्टूडियो स्थापना गाइड](https://labelstud.io/guide/install) देखें।
+
+हमें `label-studio` और `label-studio-sdk-python` Python पैकेज इंस्टॉल करने की आवश्यकता है:
+
+```bash
+pip install label-studio label-studio-sdk
+```
+
+## कॉलबैक
+
+[उपयोग उदाहरण](/docs/integrations/callbacks/labelstudio) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "LabelStudioCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.labelstudio_callback.LabelStudioCallbackHandler.html", "title": "Label Studio"}]-->
+from langchain.callbacks import LabelStudioCallbackHandler
+```

@@ -1,0 +1,236 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 3
+translated: true
+---
+
+# [Beta] Mémoire
+
+La plupart des applications d'apprentissage automatique de langage (LLM) ont une interface conversationnelle. Un composant essentiel d'une conversation est la possibilité de se référer à des informations introduites précédemment dans la conversation.
+Au minimum, un système conversationnel devrait pouvoir accéder directement à une fenêtre de messages passés.
+Un système plus complexe aura besoin d'avoir un modèle du monde qu'il met constamment à jour, ce qui lui permet de faire des choses comme maintenir des informations sur les entités et leurs relations.
+
+Nous appelons cette capacité à stocker des informations sur les interactions passées "mémoire".
+LangChain fournit de nombreuses utilitaires pour ajouter de la mémoire à un système.
+Ces utilitaires peuvent être utilisés seuls ou intégrés de manière transparente dans une chaîne.
+
+La plupart des fonctionnalités liées à la mémoire dans LangChain sont marquées comme bêta. Cela pour deux raisons :
+
+1. La plupart des fonctionnalités (à quelques exceptions près, voir ci-dessous) ne sont pas prêtes pour la production
+
+2. La plupart des fonctionnalités (à quelques exceptions près, voir ci-dessous) fonctionnent avec les chaînes héritées, pas avec la nouvelle syntaxe LCEL.
+
+L'exception principale à cela est la fonctionnalité `ChatMessageHistory`. Cette fonctionnalité est largement prête pour la production et s'intègre avec les runnables LCEL.
+
+- [LCEL Runnables](/docs/expression_language/how_to/message_history) : Pour un aperçu de la façon d'utiliser `ChatMessageHistory` avec les runnables LCEL, consultez ces documents
+
+- [Intégrations](/docs/integrations/memory) : Pour une introduction aux différentes intégrations `ChatMessageHistory`, consultez ces documents
+
+## Introduction
+
+Un système de mémoire doit prendre en charge deux actions de base : la lecture et l'écriture.
+Rappelez-vous que chaque chaîne définit une logique d'exécution de base qui attend certaines entrées.
+Certaines de ces entrées proviennent directement de l'utilisateur, mais d'autres peuvent provenir de la mémoire.
+Une chaîne interagira avec son système de mémoire deux fois lors d'une exécution donnée.
+1. APRÈS avoir reçu les entrées initiales de l'utilisateur mais AVANT d'exécuter la logique de base, une chaîne lira dans son système de mémoire et augmentera les entrées de l'utilisateur.
+2. APRÈS avoir exécuté la logique de base mais AVANT de renvoyer la réponse, une chaîne écrira les entrées et les sorties de l'exécution actuelle dans la mémoire, afin qu'elles puissent être référencées dans les exécutions futures.
+
+![Diagramme illustrant les opérations de LECTURE et d'ÉCRITURE d'un système de mémoire dans une interface conversationnelle.](/img/memory_diagram.png "Diagramme du système de mémoire")
+
+## Intégrer la mémoire dans un système
+
+Les deux décisions de conception clés dans tout système de mémoire sont :
+- Comment l'état est stocké
+- Comment l'état est interrogé
+
+### Stockage : Liste des messages de discussion
+
+Sous-jacent à toute mémoire se trouve un historique de toutes les interactions de discussion.
+Même si elles ne sont pas toutes utilisées directement, elles doivent être stockées sous une forme quelconque.
+L'une des parties clés du module de mémoire LangChain est une série d'intégrations pour stocker ces messages de discussion,
+des listes en mémoire aux bases de données persistantes.
+
+- [Stockage des messages de discussion](/docs/modules/memory/chat_messages/) : Comment travailler avec les messages de discussion et les différentes intégrations offertes.
+
+### Interrogation : Structures de données et algorithmes sur les messages de discussion
+
+Conserver une liste de messages de discussion est assez simple.
+Ce qui l'est moins, ce sont les structures de données et les algorithmes construits sur les messages de discussion qui fournissent une vue de ces messages la plus utile possible.
+
+Un système de mémoire très simple pourrait simplement renvoyer les messages les plus récents à chaque exécution. Un système de mémoire légèrement plus complexe pourrait renvoyer un résumé concis des K derniers messages.
+Un système encore plus sophistiqué pourrait extraire des entités des messages stockés et ne renvoyer des informations que sur les entités référencées dans l'exécution en cours.
+
+Chaque application peut avoir des exigences différentes quant à la façon dont la mémoire est interrogée. Le module de mémoire devrait faciliter la prise en main de systèmes de mémoire simples et permettre d'écrire ses propres systèmes personnalisés si nécessaire.
+
+- [Types de mémoire](/docs/modules/memory/types/) : Les différentes structures de données et algorithmes qui constituent les types de mémoire pris en charge par LangChain
+
+## Démarrer
+
+Examinons à quoi ressemble concrètement la mémoire dans LangChain.
+Ici, nous couvrirons les bases de l'interaction avec une classe de mémoire arbitraire.
+
+Voyons comment utiliser `ConversationBufferMemory` dans les chaînes.
+`ConversationBufferMemory` est une forme extrêmement simple de mémoire qui conserve simplement une liste de messages de discussion dans un tampon
+et les transmet au modèle d'invite.
+
+```python
+<!--IMPORTS:[{"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "[Beta] Memory"}]-->
+from langchain.memory import ConversationBufferMemory
+
+memory = ConversationBufferMemory()
+memory.chat_memory.add_user_message("hi!")
+memory.chat_memory.add_ai_message("what's up?")
+```
+
+Lors de l'utilisation de la mémoire dans une chaîne, il y a quelques concepts clés à comprendre.
+Notez que nous couvrons ici des concepts généraux qui sont utiles pour la plupart des types de mémoire.
+Chaque type de mémoire individuel peut très bien avoir ses propres paramètres et concepts nécessaires à la compréhension.
+
+### Quelles variables sont renvoyées par la mémoire
+
+Avant d'entrer dans la chaîne, diverses variables sont lues à partir de la mémoire.
+Celles-ci ont des noms spécifiques qui doivent correspondre aux variables que la chaîne attend.
+Vous pouvez voir quelles sont ces variables en appelant `memory.load_memory_variables({})`.
+Notez que le dictionnaire vide que nous passons est juste un espace réservé pour de vraies variables.
+Si le type de mémoire que vous utilisez dépend des variables d'entrée, vous devrez peut-être en passer quelques-unes.
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': "Human: hi!\nAI: what's up?"}
+```
+
+Dans ce cas, vous pouvez voir que `load_memory_variables` renvoie une seule clé, `history`.
+Cela signifie que votre chaîne (et probablement votre invite) devrait s'attendre à une entrée nommée `history`.
+Vous pouvez généralement contrôler cette variable via les paramètres de la classe de mémoire.
+Par exemple, si vous voulez que les variables de mémoire soient renvoyées dans la clé `chat_history`, vous pouvez faire :
+
+```python
+memory = ConversationBufferMemory(memory_key="chat_history")
+memory.chat_memory.add_user_message("hi!")
+memory.chat_memory.add_ai_message("what's up?")
+```
+
+```output
+    {'chat_history': "Human: hi!\nAI: what's up?"}
+```
+
+Le nom du paramètre pour contrôler ces clés peut varier selon le type de mémoire, mais il est important de comprendre que (1) cela est contrôlable, et (2) comment le contrôler.
+
+### Si la mémoire est une chaîne ou une liste de messages
+
+L'un des types de mémoire les plus courants implique le renvoi d'une liste de messages de discussion.
+Ceux-ci peuvent être renvoyés soit sous la forme d'une seule chaîne, tous concaténés ensemble (utile lorsqu'ils seront passés dans les LLM)
+soit sous la forme d'une liste de ChatMessages (utile lorsqu'ils sont passés dans les ChatModels).
+
+Par défaut, ils sont renvoyés sous la forme d'une seule chaîne.
+Pour les renvoyer sous la forme d'une liste de messages, vous pouvez définir `return_messages=True`
+
+```python
+memory = ConversationBufferMemory(return_messages=True)
+memory.chat_memory.add_user_message("hi!")
+memory.chat_memory.add_ai_message("what's up?")
+```
+
+```output
+    {'history': [HumanMessage(content='hi!', additional_kwargs={}, example=False),
+  AIMessage(content='what's up?', additional_kwargs={}, example=False)]}
+```
+
+### Quelles clés sont enregistrées dans la mémoire
+
+Souvent, les chaînes prennent en entrée ou renvoient plusieurs clés d'entrée/sortie.
+Dans ces cas, comment pouvons-nous savoir quelles clés nous voulons enregistrer dans l'historique des messages de discussion ?
+Cela est généralement contrôlable par les paramètres `input_key` et `output_key` des types de mémoire.
+Ceux-ci sont par défaut définis sur `None` - et s'il n'y a qu'une seule clé d'entrée/sortie, il est connu qu'il faut juste utiliser celle-ci.
+Cependant, s'il y a plusieurs clés d'entrée/sortie, vous DEVEZ spécifier le nom de celle que vous voulez utiliser.
+
+### Exemple de bout en bout
+
+Enfin, examinons l'utilisation de cela dans une chaîne.
+Nous utiliserons une `LLMChain` et montrerons le travail avec à la fois un LLM et un ChatModel.
+
+#### Utilisation d'un LLM
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "[Beta] Memory"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "[Beta] Memory"}, {"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "[Beta] Memory"}]-->
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+
+
+llm = OpenAI(temperature=0)
+# Notice that "chat_history" is present in the prompt template
+template = """You are a nice chatbot having a conversation with a human.
+
+Previous conversation:
+{chat_history}
+
+New human question: {question}
+Response:"""
+prompt = PromptTemplate.from_template(template)
+# Notice that we need to align the `memory_key`
+memory = ConversationBufferMemory(memory_key="chat_history")
+conversation = LLMChain(
+    llm=llm,
+    prompt=prompt,
+    verbose=True,
+    memory=memory
+)
+```
+
+```python
+# Notice that we just pass in the `question` variables - `chat_history` gets populated by memory
+conversation({"question": "hi"})
+```
+
+#### Utilisation d'un ChatModel
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "[Beta] Memory"}, {"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "MessagesPlaceholder", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.MessagesPlaceholder.html", "title": "[Beta] Memory"}, {"imported": "SystemMessagePromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.SystemMessagePromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "HumanMessagePromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "[Beta] Memory"}, {"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "[Beta] Memory"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import (
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+
+
+llm = ChatOpenAI()
+prompt = ChatPromptTemplate(
+    messages=[
+        SystemMessagePromptTemplate.from_template(
+            "You are a nice chatbot having a conversation with a human."
+        ),
+        # The `variable_name` here is what must align with memory
+        MessagesPlaceholder(variable_name="chat_history"),
+        HumanMessagePromptTemplate.from_template("{question}")
+    ]
+)
+# Notice that we `return_messages=True` to fit into the MessagesPlaceholder
+# Notice that `"chat_history"` aligns with the MessagesPlaceholder name.
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+conversation = LLMChain(
+    llm=llm,
+    prompt=prompt,
+    verbose=True,
+    memory=memory
+)
+```
+
+```python
+# Notice that we just pass in the `question` variables - `chat_history` gets populated by memory
+conversation({"question": "hi"})
+```
+
+## Prochaines étapes
+
+Et voilà pour les bases !
+Veuillez consulter les autres sections pour des tutoriels sur des sujets plus avancés,
+comme la mémoire personnalisée, les mémoires multiples et plus encore.

@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# 골든
+
+>[골든](https://golden.com)은 골든 지식 그래프를 사용하여 쿼리와 강화를 위한 자연어 API 세트를 제공합니다. 예를 들어 `OpenAI의 제품`, `시리즈 A 펀딩을 받은 생성형 AI 기업`, `투자하는 래퍼` 등의 쿼리를 사용하여 관련 엔티티에 대한 구조화된 데이터를 검색할 수 있습니다.
+
+>`golden-query` langchain 도구는 [골든 쿼리 API](https://docs.golden.com/reference/query-api)를 래핑하여 이러한 결과에 프로그래밍 방식으로 액세스할 수 있습니다.
+>[골든 쿼리 API 문서](https://docs.golden.com/reference/query-api)에서 자세한 정보를 확인하세요.
+
+## 설치 및 설정
+
+- [골든 API 문서](https://docs.golden.com/)를 방문하여 골든 API에 대한 개요를 확인하세요.
+- [골든 API 설정](https://golden.com/settings/api) 페이지에서 API 키를 가져오세요.
+- API 키를 GOLDEN_API_KEY 환경 변수에 저장하세요.
+
+## 래퍼
+
+### 유틸리티
+
+GoldenQueryAPIWrapper 유틸리티가 있어 이 API를 래핑할 수 있습니다. 이 유틸리티를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "GoldenQueryAPIWrapper", "source": "langchain_community.utilities.golden_query", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.golden_query.GoldenQueryAPIWrapper.html", "title": "Golden"}]-->
+from langchain_community.utilities.golden_query import GoldenQueryAPIWrapper
+```
+
+이 래퍼에 대한 자세한 연습은 [이 노트북](/docs/integrations/tools/golden_query)을 참조하세요.
+
+### 도구
+
+이 래퍼를 도구(Agent와 함께 사용하기 위해)로 쉽게 로드할 수도 있습니다.
+다음과 같이 수행할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Golden"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["golden-query"])
+```
+
+도구에 대한 자세한 내용은 [이 페이지](/docs/modules/tools/)를 참조하세요.

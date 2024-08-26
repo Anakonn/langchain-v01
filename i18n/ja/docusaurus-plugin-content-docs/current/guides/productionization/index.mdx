@@ -1,0 +1,16 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 製品化
+
+プロトタイプを開発した後の次のステップは、製品化の準備をすることです。
+このセクションには、アプリケーションを本番環境で使えるよう準備するためのベストプラクティスに関するガイドが含まれています。
+実際の使用に備えて、アプリケーションを準備する方法について説明しています。
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/productionization/")} />

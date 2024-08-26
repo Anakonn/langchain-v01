@@ -1,0 +1,75 @@
+---
+keywords:
+- 互換性
+- bind_tools
+- ツールの呼び出し
+- 関数の呼び出し
+- 構造化された出力
+- with_structured_output
+sidebar_class_name: hidden
+sidebar_position: 0
+translated: true
+---
+
+# チャットモデル
+
+## 機能 (ネイティブでサポートされている)
+
+すべての ChatModels は Runnable インターフェースを実装しており、すべてのメソッド (つまり `ainvoke`、`batch`、`abatch`、`stream`、`astream`) のデフォルトの実装が用意されています。これにより、すべての ChatModels に基本的な非同期、ストリーミング、バッチのサポートが提供されます。デフォルトでは以下のように実装されています:
+- *非同期*サポートは、それぞれの同期メソッドを asyncio のデフォルトのスレッドプールエグゼキューターで呼び出すことになっています。これにより、ChatModel の実行中に、アプリケーションの他の非同期関数が進行できるようになります。
+- *ストリーミング*サポートは、基礎となる ChatModel プロバイダーが返す最終結果を含む単一の値の `Iterator` (または非同期ストリーミングの場合は `AsyncIterator`) を返すことになっています。これは、トークンごとのストリーミングをサポートしていませんが、トークンの反復子を期待するコードが、すべての ChatModel インテグレーションで動作するようになります。
+- *バッチ*サポートは、スレッドプールエグゼキューター (同期バッチの場合) または `asyncio.gather` (非同期バッチの場合) を使って、各入力を並行して基礎となる ChatModel に呼び出すことになっています。並行性は `RunnableConfig` の `max_concurrency` キーで制御できます。
+
+各 ChatModel インテグレーションは、非同期やストリーミングを真に有効にするためのネイティブの実装を提供することができます。
+表には、各インテグレーションでネイティブサポートが実装されている機能が示されています。
+
+モデル|呼び出し|非同期呼び出し|ストリーミング|非同期ストリーミング|[ツールの呼び出し](/docs/modules/model_io/chat/function_calling/)|[構造化出力](/docs/modules/model_io/chat/structured_output/)|Pythonパッケージ
+:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:
+AzureChatOpenAI|✅|❌|❌|❌|✅|✅|langchain-openai
+BedrockChat|✅|❌|✅|❌|❌|❌|langchain-community
+ChatAnthropic|✅|❌|❌|❌|✅|✅|langchain-anthropic
+ChatAnyscale|✅|✅|✅|✅|❌|❌|langchain-community
+ChatBaichuan|✅|❌|✅|❌|❌|❌|langchain-community
+ChatCohere|✅|❌|❌|❌|✅|✅|langchain-cohere
+ChatCoze|✅|❌|✅|❌|❌|❌|langchain-community
+ChatDatabricks|✅|❌|✅|❌|❌|❌|langchain-community
+ChatDeepInfra|✅|✅|✅|✅|❌|❌|langchain-community
+ChatEverlyAI|✅|✅|✅|✅|❌|❌|langchain-community
+ChatFireworks|✅|❌|❌|❌|✅|✅|langchain-fireworks
+ChatFriendli|✅|✅|✅|✅|❌|❌|langchain-community
+ChatGooglePalm|✅|✅|❌|❌|❌|❌|langchain-community
+ChatGroq|✅|❌|❌|❌|✅|✅|langchain-groq
+ChatHuggingFace|✅|✅|✅|✅|❌|❌|langchain-community
+ChatHunyuan|✅|❌|✅|❌|❌|❌|langchain-community
+ChatJavelinAIGateway|✅|✅|❌|❌|❌|❌|langchain-community
+ChatKinetica|✅|❌|❌|❌|❌|❌|langchain-community
+ChatKonko|✅|❌|❌|❌|❌|❌|langchain-community
+ChatLiteLLM|✅|✅|✅|✅|❌|❌|langchain-community
+ChatLiteLLMRouter|✅|✅|✅|✅|❌|❌|langchain-community
+ChatMLX|✅|✅|✅|❌|❌|❌|langchain-community
+ChatMLflowAIGateway|✅|❌|❌|❌|❌|❌|langchain-community
+ChatMaritalk|✅|✅|✅|✅|❌|❌|langchain-community
+ChatMistralAI|✅|❌|❌|❌|✅|✅|langchain-mistralai
+ChatMlflow|✅|❌|✅|❌|❌|❌|langchain-community
+ChatOctoAI|✅|✅|✅|✅|❌|❌|langchain-community
+ChatOllama|✅|✅|✅|✅|❌|❌|langchain-community
+ChatOpenAI|✅|❌|❌|❌|✅|✅|langchain-openai
+ChatPerplexity|✅|❌|✅|❌|❌|❌|langchain-community
+ChatPremAI|✅|❌|✅|❌|❌|❌|langchain-community
+ChatSparkLLM|✅|❌|✅|❌|❌|❌|langchain-community
+ChatTongyi|✅|✅|✅|✅|❌|❌|langchain-community
+ChatVertexAI|✅|❌|❌|❌|✅|✅|langchain-google-vertexai
+ChatYandexGPT|✅|✅|❌|❌|❌|❌|langchain-community
+ChatYuan2|✅|✅|✅|✅|❌|❌|langchain-community
+ChatZhipuAI|✅|✅|✅|✅|❌|❌|langchain-community
+ErnieBotChat|✅|❌|❌|❌|❌|❌|langchain-community
+GPTRouter|✅|✅|✅|✅|❌|❌|langchain-community
+GigaChat|✅|✅|✅|✅|❌|❌|langchain-community
+JinaChat|✅|✅|✅|✅|❌|❌|langchain-community
+LlamaEdgeChatService|✅|❌|✅|❌|❌|❌|langchain-community
+MiniMaxChat|✅|✅|❌|❌|❌|❌|langchain-community
+PaiEasChatEndpoint|✅|❌|❌|✅|❌|❌|langchain-community
+PromptLayerChatOpenAI|✅|❌|❌|❌|❌|❌|langchain-community
+QianfanChatEndpoint|✅|✅|✅|✅|❌|❌|langchain-community
+SolarChat|✅|✅|✅|✅|❌|❌|langchain-community
+VolcEngineMaasChat|✅|❌|✅|❌|❌|❌|langchain-community

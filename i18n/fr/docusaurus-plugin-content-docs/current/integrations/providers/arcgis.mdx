@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# ArcGIS
+
+>[ArcGIS](https://www.esri.com/en-us/arcgis/about-arcgis/overview) est une famille de logiciels client, serveur et en ligne de système d'information géographique développée et maintenue par [Esri](https://www.esri.com/).
+
+>`ArcGISLoader` utilise le package `arcgis`.
+> `arcgis` est une bibliothèque Python pour l'analyse vectorielle et raster, le géocodage, la cartographie,
+> le routage et les directions. Il administre, organise et gère les utilisateurs,
+> les groupes et les éléments d'information dans votre SIG.
+>Il permet d'accéder à des cartes prêtes à l'emploi et à des données géographiques sélectionnées à partir d'`Esri`
+> et d'autres sources faisant autorité, et fonctionne également avec vos propres données.
+
+## Installation et configuration
+
+Nous devons installer le package `arcgis`.
+
+```bash
+pip install -U arcgis
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/arcgis).
+
+```python
+<!--IMPORTS:[{"imported": "ArcGISLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arcgis_loader.ArcGISLoader.html", "title": "ArcGIS"}]-->
+from langchain_community.document_loaders import ArcGISLoader
+```

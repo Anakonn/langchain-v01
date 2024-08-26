@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+# DataForSEO
+
+>[DataForSeo](https://dataforseo.com/) एपीआई के माध्यम से व्यापक एसईओ और डिजिटल मार्केटिंग डेटा समाधान प्रदान करता है।
+
+यह पृष्ठ DataForSEO खोज एपीआई का उपयोग करने के लिए LangChain में निर्देश प्रदान करता है।
+
+## स्थापना और सेटअप
+
+[DataForSEO एपीआई एक्सेस लॉगिन और पासवर्ड](https://app.dataforseo.com/register) प्राप्त करें, और उन्हें पर्यावरण चर (`DATAFORSEO_LOGIN` और `DATAFORSEO_PASSWORD` क्रमशः) के रूप में सेट करें।
+
+```python
+import os
+
+os.environ["DATAFORSEO_LOGIN"] = "your_login"
+os.environ["DATAFORSEO_PASSWORD"] = "your_password"
+```
+
+## उपयोगिता
+
+DataForSEO उपयोगिता एपीआई को लपेटता है। इस उपयोगिता को आयात करने के लिए, उपयोग करें:
+
+```python
+<!--IMPORTS:[{"imported": "DataForSeoAPIWrapper", "source": "langchain_community.utilities.dataforseo_api_search", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dataforseo_api_search.DataForSeoAPIWrapper.html", "title": "DataForSEO"}]-->
+from langchain_community.utilities.dataforseo_api_search import DataForSeoAPIWrapper
+```
+
+इस रैपर के विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/tools/dataforseo) देखें।
+
+## उपकरण
+
+आप इस रैपर को एक उपकरण के रूप में भी लोड कर सकते हैं ताकि एजेंट के साथ उपयोग किया जा सके:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "DataForSEO"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["dataforseo-api-search"])
+```
+
+## उदाहरण उपयोग
+
+```python
+dataforseo = DataForSeoAPIWrapper(api_login="your_login", api_password="your_password")
+result = dataforseo.run("Bill Gates")
+print(result)
+```

@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# Konko
+
+Toute la fonctionnalité liée à Konko
+
+>[Konko AI](https://www.konko.ai/) fournit une API entièrement gérée pour aider les développeurs d'applications
+
+>1. **Sélectionnez** les bons modèles de langage (LLM) open source ou propriétaires pour leur application
+>2. **Construisez** des applications plus rapidement avec des intégrations aux principaux frameworks d'application et des API entièrement gérées
+>3. **Affinez** les petits LLM open source pour atteindre des performances de niveau industriel à une fraction du coût
+>4. **Déployez des API à l'échelle de la production** qui répondent aux exigences de sécurité, de confidentialité, de débit et de latence sans configuration ni administration d'infrastructure en utilisant l'infrastructure multi-cloud conforme SOC 2 de Konko AI
+
+## Installation et configuration
+
+1. Connectez-vous à notre application web pour [créer une clé API](https://platform.konko.ai/settings/api-keys) afin d'accéder aux modèles via nos points de terminaison pour [les compléments de chat](https://docs.konko.ai/reference/post-chat-completions) et [les compléments](https://docs.konko.ai/reference/post-completions).
+2. Activez un environnement Python3.8+
+3. Installez le SDK
+
+```bash
+pip install konko
+```
+
+4. Définissez les clés API en tant que variables d'environnement (`KONKO_API_KEY`, `OPENAI_API_KEY`)
+
+```bash
+export KONKO_API_KEY={your_KONKO_API_KEY_here}
+export OPENAI_API_KEY={your_OPENAI_API_KEY_here} #Optional
+```
+
+Veuillez consulter [la documentation de Konko](https://docs.konko.ai/docs/getting-started) pour plus de détails.
+
+## LLM
+
+**Explorez les modèles disponibles :** Commencez par parcourir les [modèles disponibles](https://docs.konko.ai/docs/list-of-models) sur Konko. Chaque modèle est adapté à différents cas d'utilisation et capacités.
+
+Une autre façon de trouver la liste des modèles exécutés sur l'instance Konko est via ce [point de terminaison](https://docs.konko.ai/reference/get-models).
+
+Voir un [exemple](/docs/integrations/llms/konko) d'utilisation.
+
+### Exemples d'utilisation des points de terminaison
+
+- **Complétion avec mistralai/Mistral-7B-v0.1 :**
+
+  ```python
+  from langchain.llms import Konko
+  llm = Konko(max_tokens=800, model='mistralai/Mistral-7B-v0.1')
+  prompt = "Générer une description de produit pour l'iPhone 15 d'Apple"
+  response = llm.invoke(prompt)
+  ```
+
+## Modèles de chat
+
+Voir un [exemple](/docs/integrations/chat/konko) d'utilisation.
+
+- **ChatCompletion avec Mistral-7B :**
+
+  ```python
+  from langchain_core.messages import HumanMessage
+  from langchain_community.chat_models import ChatKonko
+  chat_instance = ChatKonko(max_tokens=10, model = 'mistralai/mistral-7b-instruct-v0.1')
+  msg = HumanMessage(content="Salut")
+  chat_response = chat_instance([msg])
+  ```
+
+Pour plus d'aide, contactez [support@konko.ai](mailto:support@konko.ai) ou rejoignez notre [Discord](https://discord.gg/TXV2s3z7RZ).

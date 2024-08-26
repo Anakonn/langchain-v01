@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Jina
+
+이 페이지에서는 LangChain 내에서 Jina Embeddings를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 특정 Jina 래퍼에 대한 참조로 구성되어 있습니다.
+
+## 설치 및 설정
+
+- [여기](https://jina.ai/embeddings/)에서 Jina AI API 토큰을 받아 환경 변수(`JINA_API_TOKEN`)로 설정하세요.
+
+Jina Embeddings 래퍼가 존재하며, 다음과 같이 액세스할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "JinaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.jina.JinaEmbeddings.html", "title": "Jina"}]-->
+from langchain_community.embeddings import JinaEmbeddings
+
+# you can pas jina_api_key, if none is passed it will be taken from `JINA_API_TOKEN` environment variable
+embeddings = JinaEmbeddings(jina_api_key='jina_**', model_name='jina-embeddings-v2-base-en')
+```
+
+사용 가능한 모델 목록은 [여기](https://jina.ai/embeddings/)에서 확인할 수 있습니다.
+
+이에 대한 자세한 연습은 [이 노트북](/docs/integrations/text_embedding/jina)에서 확인할 수 있습니다.

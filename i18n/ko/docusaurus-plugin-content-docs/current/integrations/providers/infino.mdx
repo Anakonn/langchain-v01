@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# 인피노
+
+>[인피노](https://github.com/infinohq/infino)는 메트릭과 애플리케이션 로그를 함께 저장하는 오픈 소스 관찰 플랫폼입니다.
+
+`인피노`의 주요 기능은 다음과 같습니다:
+- **메트릭 추적**: LLM 모델이 요청을 처리하는 데 걸리는 시간, 오류, 토큰 수, 특정 LLM에 대한 비용 지표를 캡처합니다.
+- **데이터 추적**: 각 LangChain 상호 작용에 대한 프롬프트, 요청 및 응답 데이터를 기록하고 저장합니다.
+- **그래프 시각화**: 요청 기간, 오류 발생, 토큰 수, 비용 등의 메트릭을 시간에 따라 기본 그래프로 생성합니다.
+
+## 설치 및 설정
+
+먼저 `infinopy` Python 패키지를 다음과 같이 설치해야 합니다:
+
+```bash
+pip install infinopy
+```
+
+이미 `Infino Server`가 실행 중인 경우 준비가 되었지만, 그렇지 않은 경우 다음 단계를 따라 시작하세요:
+
+- Docker가 설치되어 있는지 확인하세요
+- 터미널에서 다음을 실행하세요:
+    ```
+    docker run --rm --detach --name infino-example -p 3000:3000 infinohq/infino:latest
+    ```
+
+## Infino 사용하기
+
+`InfinoCallbackHandler`의 [사용 예제](/docs/integrations/callbacks/infino)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "InfinoCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.infino_callback.InfinoCallbackHandler.html", "title": "Infino"}]-->
+from langchain.callbacks import InfinoCallbackHandler
+```

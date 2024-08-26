@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+title: Types de messages
+translated: true
+---
+
+# Types de messages
+
+Les modèles de discussion prennent une liste de messages en entrée et renvoient un message. Il existe plusieurs types de messages différents. Tous les messages ont une propriété `role` et une propriété `content`. Le `role` décrit QUI dit le message. LangChain a différentes classes de messages pour différents rôles. La propriété `content` décrit le contenu du message. Cela peut être de plusieurs types différents :
+
+- Une chaîne de caractères (la plupart des modèles traitent ce type de contenu)
+- Une liste de dictionnaires (cela est utilisé pour l'entrée multimodale, où le dictionnaire contient des informations sur ce type d'entrée et son emplacement)
+
+De plus, les messages ont une propriété `additional_kwargs`. C'est là que des informations supplémentaires sur les messages peuvent être transmises. Cela est largement utilisé pour les paramètres d'entrée qui sont *spécifiques au fournisseur* et non généraux. Le meilleur exemple connu de cela est `function_call` d'OpenAI.
+
+### HumanMessage
+
+Cela représente un message de l'utilisateur. Il ne consiste généralement que du contenu.
+
+### AIMessage
+
+Cela représente un message du modèle. Celui-ci peut avoir des `additional_kwargs` - par exemple `tool_calls` si l'on utilise l'appel d'outil OpenAI.
+
+### SystemMessage
+
+Cela représente un message système, qui indique au modèle comment se comporter. Cela ne consiste généralement que du contenu. Tous les modèles ne prennent pas en charge cela.
+
+### FunctionMessage
+
+Cela représente le résultat d'un appel de fonction. En plus de `role` et `content`, ce message a un paramètre `name` qui transmet le nom de la fonction qui a été appelée pour produire ce résultat.
+
+### ToolMessage
+
+Cela représente le résultat d'un appel d'outil. Cela est distinct d'un FunctionMessage afin de correspondre aux types de messages `function` et `tool` d'OpenAI. En plus de `role` et `content`, ce message a un paramètre `tool_call_id` qui transmet l'identifiant de l'appel à l'outil qui a été appelé pour produire ce résultat.

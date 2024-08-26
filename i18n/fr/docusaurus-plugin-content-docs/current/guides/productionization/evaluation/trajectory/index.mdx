@@ -1,0 +1,29 @@
+---
+sidebar_position: 4
+translated: true
+---
+
+# Évaluateurs de trajectoire
+
+Les évaluateurs de trajectoire dans LangChain offrent une approche plus holistique pour évaluer un agent. Ces évaluateurs évaluent la séquence complète des actions prises par un agent et leurs réponses correspondantes, que nous appelons la "trajectoire". Cela vous permet de mieux mesurer l'efficacité et les capacités d'un agent.
+
+Un évaluateur de trajectoire implémente l'interface `AgentTrajectoryEvaluator`, qui nécessite deux méthodes principales :
+
+- `evaluate_agent_trajectory` : Cette méthode évalue de manière synchrone la trajectoire d'un agent.
+- `aevaluate_agent_trajectory` : Cette contrepartie asynchrone permet d'exécuter les évaluations en parallèle pour plus d'efficacité.
+
+Les deux méthodes acceptent trois paramètres principaux :
+
+- `input` : L'entrée initiale donnée à l'agent.
+- `prediction` : La réponse finale prédite par l'agent.
+- `agent_trajectory` : Les étapes intermédiaires prises par l'agent, données sous forme de liste de tuples.
+
+Ces méthodes renvoient un dictionnaire. Il est recommandé que les implémentations personnalisées renvoient un `score` (un float indiquant l'efficacité de l'agent) et un `reasoning` (une chaîne expliquant le raisonnement derrière le score).
+
+Vous pouvez capturer la trajectoire d'un agent en initialisant l'agent avec le paramètre `return_intermediate_steps=True`. Cela vous permet de collecter toutes les étapes intermédiaires sans vous appuyer sur des rappels spéciaux.
+
+Pour une exploration plus approfondie de la mise en œuvre et de l'utilisation des évaluateurs de trajectoire, reportez-vous aux sections ci-dessous.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

@@ -1,0 +1,46 @@
+---
+translated: true
+---
+
+# Kinetica
+
+[Kinetica](https://www.kinetica.com/)は、時系列データと空間データの分析とジェネレーティブAIを可能にするために特別に設計されたリアルタイムデータベースです。
+
+## チャットモデル
+
+KineticaのLLMラッパーは、[Kinetica SqlAssist LLM](https://docs.kinetica.com/7.2/sql-gpt/concepts/)を使用して、自然言語をSQLに変換することで、データ取得プロセスを簡素化しています。
+
+[Kinetica SqlAssist LLMデモ](/docs/integrations/chat/kinetica)の使用方法をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatKinetica", "source": "langchain_community.chat_models.kinetica", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.kinetica.ChatKinetica.html", "title": "Kinetica"}]-->
+from langchain_community.chat_models.kinetica import ChatKinetica
+```
+
+## ベクトルストア
+
+Kineticaのベクトルストアラッパーは、[ベクトル類似性検索](https://docs.kinetica.com/7.2/vector_search/)のKineticaネイティブサポートを活用しています。
+
+[Kinetica Vectorsore API](/docs/integrations/vectorstores/kinetica)の使用方法をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "Kinetica", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.kinetica.Kinetica.html", "title": "Kinetica"}]-->
+from langchain_community.vectorstores import Kinetica
+```
+
+## ドキュメントローダー
+
+Kineticaドキュメントローダーを使用して、KineticaデータベースからLangChainドキュメントをロードできます。
+
+[Kinetica Document Loader](/docs/integrations/document_loaders/kinetica)の使用方法をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "KineticaLoader", "source": "langchain_community.document_loaders.kinetica_loader", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.kinetica_loader.KineticaLoader.html", "title": "Kinetica"}]-->
+from langchain_community.document_loaders.kinetica_loader import KineticaLoader
+```
+
+## リトリーバー
+
+Kineticaリトリーバーは、構造化されていないクエリからドキュメントを返すことができます。
+
+[Kinetica VectorStore based Retriever](/docs/integrations/retrievers/kinetica)の使用方法をご覧ください。

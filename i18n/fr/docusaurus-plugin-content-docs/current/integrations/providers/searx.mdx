@@ -1,0 +1,95 @@
+---
+translated: true
+---
+
+# API de recherche SearxNG
+
+Cette page couvre comment utiliser l'API de recherche SearxNG dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références à l'enveloppe API SearxNG spécifique.
+
+## Installation et configuration
+
+Bien qu'il soit possible d'utiliser l'enveloppe en conjonction avec [les instances publiques searx](https://searx.space/), ces instances n'autorisent souvent pas l'accès à l'API (voir la remarque sur le format de sortie ci-dessous) et ont des limitations sur la fréquence des requêtes. Il est recommandé d'opter pour une instance auto-hébergée à la place.
+
+### Instance auto-hébergée :
+
+Voir [cette page](https://searxng.github.io/searxng/admin/installation.html) pour les instructions d'installation.
+
+Lorsque vous installez SearxNG, le seul format de sortie actif par défaut est le format HTML.
+Vous devez activer le format `json` pour utiliser l'API. Cela peut être fait en ajoutant la ligne suivante au fichier `settings.yml` :
+
+```yaml
+search:
+    formats:
+        - html
+        - json
+```
+
+Vous pouvez vous assurer que l'API fonctionne en émettant une requête curl vers le point de terminaison de l'API :
+
+`curl -kLX GET --data-urlencode q='langchain' -d format=json http://localhost:8888`
+
+Cela devrait renvoyer un objet JSON avec les résultats.
+
+## Enveloppes
+
+### Utilitaire
+
+Pour utiliser l'enveloppe, nous devons transmettre l'hôte de l'instance SearxNG à l'enveloppe avec :
+    1. le paramètre nommé `searx_host` lors de la création de l'instance.
+    2. exporter la variable d'environnement `SEARXNG_HOST`.
+
+Vous pouvez utiliser l'enveloppe pour obtenir des résultats à partir d'une instance SearxNG.
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searx_search.SearxSearchWrapper.html", "title": "SearxNG Search API"}]-->
+from langchain_community.utilities import SearxSearchWrapper
+s = SearxSearchWrapper(searx_host="http://localhost:8888")
+s.run("what is a large language model?")
+```
+
+### Outil
+
+Vous pouvez également charger cette enveloppe en tant qu'outil (à utiliser avec un agent).
+
+Vous pouvez le faire avec :
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "SearxNG Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["searx-search"],
+                    searx_host="http://localhost:8888",
+                    engines=["github"])
+```
+
+Notez que nous pourrions _éventuellement_ passer des moteurs personnalisés à utiliser.
+
+Si vous voulez obtenir des résultats avec des métadonnées au format *json*, vous pouvez utiliser :
+
+```python
+tools = load_tools(["searx-search-results-json"],
+                    searx_host="http://localhost:8888",
+                    num_results=5)
+```
+
+#### Création rapide d'outils
+
+Cet exemple montre un moyen rapide de créer plusieurs outils à partir de la même enveloppe.
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchResults", "source": "langchain_community.tools.searx_search.tool", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.searx_search.tool.SearxSearchResults.html", "title": "SearxNG Search API"}]-->
+from langchain_community.tools.searx_search.tool import SearxSearchResults
+
+wrapper = SearxSearchWrapper(searx_host="**")
+github_tool = SearxSearchResults(name="Github", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["github"],
+                                })
+
+arxiv_tool = SearxSearchResults(name="Arxiv", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["arxiv"]
+                                })
+```
+
+Pour plus d'informations sur les outils, voir [cette page](/docs/modules/tools/).

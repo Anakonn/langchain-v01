@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# BibTeX
+
+>[BibTeX](https://www.ctan.org/pkg/bibtex)は、`LaTeX`組版と併用される一般的なファイル形式およびリファレンス管理システムです。学術および研究文書の書誌情報を整理および保存する方法として機能します。
+
+## インストールとセットアップ
+
+`bibtexparser`および`pymupdf`パッケージをインストールする必要があります。
+
+```bash
+pip install bibtexparser pymupdf
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/bibtex)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "BibtexLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.bibtex.BibtexLoader.html", "title": "BibTeX"}]-->
+from langchain_community.document_loaders import BibtexLoader
+```

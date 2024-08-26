@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# हिमपुष्प
+
+> [हिमपुष्प](https://www.snowflake.com/) एक क्लाउड-आधारित डेटा-वेयरहाउसिंग प्लेटफॉर्म है
+> जो आपको बड़ी मात्रा में डेटा को संग्रहित और क्वेरी करने की अनुमति देता है।
+
+यह पृष्ठ `LangChain` में `Snowflake` पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+
+## एम्बेडिंग मॉडल
+
+Snowflake अपने खुले वजन `arctic` एम्बेडिंग मॉडल लाइन को [Hugging Face](https://huggingface.co/Snowflake/snowflake-arctic-embed-l) पर मुफ्त में प्रदान करता है।
+आप [HuggingFaceEmbeddings](/docs/integrations/text_embedding/huggingfacehub) कनेक्टर के माध्यम से इन मॉडलों का उपयोग कर सकते हैं:
+
+```shell
+pip install langchain-community sentence-transformers
+```
+
+```python
+from langchain_community.text_embeddings import HuggingFaceEmbeddings
+
+model = HuggingFaceEmbeddings(model_name="snowflake/arctic-embed-l")
+```
+
+## दस्तावेज़ लोडर
+
+आप [`SnowflakeLoader`](/docs/integrations/document_loaders/snowflake) का उपयोग कर सकते हैं
+Snowflake से डेटा लोड करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "SnowflakeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.snowflake_loader.SnowflakeLoader.html", "title": "Snowflake"}]-->
+from langchain_community.document_loaders import SnowflakeLoader
+```

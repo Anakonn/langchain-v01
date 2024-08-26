@@ -1,0 +1,14 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# विकास
+
+यह खंड LangChain के साथ ऐप्स बनाने के बारे में सामान्य जानकारी वाले मार्गदर्शिकाओं को शामिल करता है।
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/development/")} />

@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Weaviate
+
+>[Weaviate](https://weaviate.io/) es una base de datos de vectores de código abierto. Te permite almacenar objetos de datos y incrustaciones de vectores de
+>tus modelos de ML favoritos, y escalar sin problemas hasta miles de millones de objetos de datos.
+
+¿Qué es `Weaviate`?
+- Weaviate es una base de datos de código abierto del tipo ​motor de búsqueda de vectores.
+- Weaviate te permite almacenar documentos JSON en una propiedad de clase, mientras adjuntas vectores de aprendizaje automático a estos documentos para representarlos en el espacio vectorial.
+- Weaviate se puede usar de forma independiente (es decir, trae tus vectores) o con una variedad de módulos que pueden hacer la vectorización por ti y ampliar las capacidades básicas.
+- Weaviate tiene una API de GraphQL para acceder fácilmente a tus datos.
+- Nuestro objetivo es llevar tu configuración de búsqueda de vectores a producción para consultar en milisegundos (consulta nuestros [benchmarks de código abierto](https://weaviate.io/developers/weaviate/current/benchmarks/) para ver si Weaviate se ajusta a tu caso de uso).
+- Conoce a Weaviate en la [guía básica de inicio rápido](https://weaviate.io/developers/weaviate/current/core-knowledge/basics.html) en menos de cinco minutos.
+
+**Weaviate en detalle:**
+
+`Weaviate` es un motor de búsqueda de vectores de baja latencia con soporte integrado para diferentes tipos de medios (texto, imágenes, etc.). Ofrece Búsqueda Semántica, Extracción de Preguntas-Respuestas, Clasificación, Modelos Personalizables (PyTorch/TensorFlow/Keras), etc. Construido desde cero en Go, Weaviate almacena tanto objetos como vectores, permitiendo combinar la búsqueda de vectores con filtrado estructurado y la tolerancia a fallos de una base de datos nativa de la nube. Todo esto es accesible a través de GraphQL, REST y varios lenguajes de programación del lado del cliente.
+
+## Instalación y configuración
+
+Instala el SDK de Python:
+
+```bash
+pip install langchain-weaviate
+```
+
+## Vector Store
+
+Existe un wrapper alrededor de los índices `Weaviate`, lo que te permite usarlo como un vectorstore,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+Para importar este vectorstore:
+
+```python
+from langchain_weaviate import WeaviateVectorStore
+```
+
+Para una guía más detallada del wrapper de Weaviate, consulta [este cuaderno](/docs/integrations/vectorstores/weaviate)

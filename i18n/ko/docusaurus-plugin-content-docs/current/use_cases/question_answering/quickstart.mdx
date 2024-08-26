@@ -1,0 +1,469 @@
+---
+sidebar_position: 0
+title: Quickstart
+translated: true
+---
+
+# Quickstart
+
+LangChain에는 질문-응답 애플리케이션을 구축하는 데 도움이 되는 여러 구성 요소가 있으며, 일반적으로 RAG 애플리케이션도 지원합니다. 이러한 구성 요소에 익숙해지기 위해 텍스트 데이터 소스를 통해 간단한 Q&A 애플리케이션을 구축해보겠습니다. 이 과정에서 일반적인 Q&A 아키텍처를 살펴보고, 관련된 LangChain 구성 요소를 논의하며, 더 고급 Q&A 기술에 대한 추가 리소스를 강조할 것입니다. 또한, LangSmith가 애플리케이션을 추적하고 이해하는 데 어떻게 도움이 되는지 확인할 것입니다. 애플리케이션이 복잡해짐에 따라 LangSmith는 점점 더 유용해질 것입니다.
+
+## 아키텍처
+
+[Q&A 소개](/docs/use_cases/question_answering/)에서 설명한 대로 일반적인 RAG 애플리케이션을 만들겠습니다. 여기에는 두 가지 주요 구성 요소가 있습니다:
+
+**인덱싱**: 소스에서 데이터를 수집하고 인덱싱하는 파이프라인입니다. _이 작업은 일반적으로 오프라인에서 이루어집니다._
+
+**검색 및 생성**: 실제 RAG 체인으로, 실행 시간에 사용자 쿼리를 받아 인덱스에서 관련 데이터를 검색한 다음 모델에 전달합니다.
+
+원시 데이터에서 답변까지의 전체 시퀀스는 다음과 같습니다:
+
+### 인덱싱
+
+1.  **로드**: 먼저 데이터를 로드해야 합니다. 이를 위해 [DocumentLoaders](/docs/modules/data_connection/document_loaders/)를 사용합니다.
+2.  **분할**: [텍스트 분할기](/docs/modules/data_connection/document_transformers/)는 큰 `문서`를 더 작은 청크로 나눕니다. 이는 데이터 인덱싱과 모델에 전달하는 데 모두 유용합니다. 큰 청크는 검색하기 어렵고 모델의 유한한 컨텍스트 창에 맞지 않기 때문입니다.
+3.  **저장**: 나중에 검색할 수 있도록 분할된 데이터를 저장하고 인덱싱할 곳이 필요합니다. 이는 종종 [VectorStore](/docs/modules/data_connection/vectorstores/) 및 [Embeddings](/docs/modules/data_connection/text_embedding/) 모델을 사용하여 수행됩니다.
+
+### 검색 및 생성
+
+1.  **검색**: 사용자 입력을 받으면 [Retriever](/docs/modules/data_connection/retrievers/)를 사용하여 저장소에서 관련 청크를 검색합니다.
+2.  **생성**: [ChatModel](/docs/modules/model_io/chat/) / [LLM](/docs/modules/model_io/llms/)이 질문과 검색된 데이터를 포함하는 프롬프트를 사용하여 답변을 생성합니다.
+
+## 설정
+
+### 종속성
+
+이 가이드에서는 OpenAI 채팅 모델과 임베딩, 그리고 Chroma 벡터 스토어를 사용하지만, 여기서 보여주는 모든 내용은 모든 [ChatModel](/docs/modules/model_io/chat/), [LLM](/docs/modules/model_io/llms/), [Embeddings](/docs/modules/data_connection/text_embedding/), [VectorStore](/docs/modules/data_connection/vectorstores/) 또는 [Retriever](/docs/modules/data_connection/retrievers/)와 함께 작동합니다.
+
+다음 패키지를 사용할 것입니다:
+
+```python
+%pip install --upgrade --quiet langchain langchain-community langchainhub langchain-openai langchain-chroma bs4
+```
+
+임베딩 모델을 위해 환경 변수 `OPENAI_API_KEY`를 설정해야 합니다. 이를 직접 설정하거나 `.env` 파일에서 로드할 수 있습니다:
+
+```python
+import getpass
+import os
+
+os.environ["OPENAI_API_KEY"] = getpass.getpass()
+
+# import dotenv
+
+# dotenv.load_dotenv()
+
+```
+
+### LangSmith
+
+LangChain으로 구축하는 많은 애플리케이션에는 여러 LLM 호출이 포함된 여러 단계가 포함될 것입니다. 이러한 애플리케이션이 점점 더 복잡해짐에 따라 체인이나 에이전트 내부에서 정확히 무슨 일이 일어나고 있는지 확인하는 것이 중요해집니다. 이를 위한 가장 좋은 방법은 [LangSmith](https://smith.langchain.com)를 사용하는 것입니다.
+
+LangSmith는 필수는 아니지만 도움이 됩니다. LangSmith를 사용하려면 위 링크에서 가입한 후 환경 변수를 설정하여 트레이스를 기록하세요:
+
+```python
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = getpass.getpass()
+```
+
+## 미리보기
+
+이 가이드에서는 Lilian Weng의 [LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) 블로그 게시물에 대한 Q&A 앱을 구축할 것입니다. 이를 통해 게시물의 내용에 대한 질문을 할 수 있습니다.
+
+간단한 인덱싱 파이프라인과 RAG 체인을 만들어 약 20줄의 코드로 이를 수행할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "WebBaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html", "title": "Quickstart"}, {"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Quickstart"}, {"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Quickstart"}, {"imported": "RunnablePassthrough", "source": "langchain_core.runnables", "docs": "https://api.python.langchain.com/en/latest/runnables/langchain_core.runnables.passthrough.RunnablePassthrough.html", "title": "Quickstart"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Quickstart"}, {"imported": "RecursiveCharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html", "title": "Quickstart"}]-->
+import bs4
+from langchain import hub
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_chroma import Chroma
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+```
+
+import ChatModelTabs from '@theme/ChatModelTabs';
+
+<ChatModelTabs customVarName='llm' />
+
+```python
+# 블로그의 내용을 로드, 청크 및 인덱싱합니다.
+
+loader = WebBaseLoader(
+    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    bs_kwargs=dict(
+        parse_only=bs4.SoupStrainer(
+            class_=("post-content", "post-title", "post-header")
+        )
+    ),
+)
+docs = loader.load()
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+splits = text_splitter.split_documents(docs)
+vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+
+# 블로그의 관련 스니펫을 사용하여 검색 및 생성합니다.
+
+retriever = vectorstore.as_retriever()
+prompt = hub.pull("rlm/rag-prompt")
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+```
+
+```python
+rag_chain.invoke("What is Task Decomposition?")
+```
+
+```text
+'Task decomposition is a technique used to break down complex tasks into smaller and simpler steps. It can be done through prompting techniques like Chain of Thought or Tree of Thoughts, or by using task-specific instructions or human inputs. Task decomposition helps agents plan ahead and manage complicated tasks more effectively.'
+```
+
+```python
+# 정리
+
+vectorstore.delete_collection()
+```
+
+[LangSmith 트레이스](https://smith.langchain.com/public/1c6ca97e-445b-4d00-84b4-c7befcbc59fe/r)를 확인하세요.
+
+## 자세한 설명
+
+위 코드를 단계별로 살펴보며 무엇이 일어나고 있는지 이해해 보겠습니다.
+
+## 1. 인덱싱: 로드 {#indexing-load}
+
+먼저 블로그 게시물의 내용을 로드해야 합니다. 이를 위해 [DocumentLoaders](/docs/modules/data_connection/document_loaders/)를 사용할 수 있으며, 이는 소스에서 데이터를 로드하고 [Documents](https://api.python.langchain.com/en/latest/documents/langchain_core.documents.base.Document.html) 목록을 반환하는 객체입니다. `Document`는 `page_content`(문자열) 및 `metadata`(사전) 속성을 가진 객체입니다.
+
+이 경우 `urllib`을 사용하여 웹 URL에서 HTML을 로드하고 `BeautifulSoup`을 사용하여 텍스트로 구문 분석하는 [WebBaseLoader](/docs/integrations/document_loaders/web_base)를 사용합니다. `BeautifulSoup` 구문 분석기에 매개변수를 전달하여 HTML -> 텍스트 구문 분석을 사용자 지정할 수 있습니다 (자세한 내용은 [BeautifulSoup 문서](https://beautiful-soup-4.readthedocs.io/en/latest/#beautifulsoup)를 참조하세요). 이 경우 클래스가 "post-content", "post-title" 또는 "post-header"인 HTML 태그만 유지하고 다른 태그는 제거합니다.
+
+```python
+<!--IMPORTS:[{"imported": "WebBaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html", "title": "Quickstart"}]-->
+import bs4
+from langchain_community.document_loaders import WebBaseLoader
+
+# 전체 HTML에서 게시물 제목, 헤더 및 내용만 유지합니다.
+
+bs4_strainer = bs4.SoupStrainer(class_=("post-title", "post-header", "post-content"))
+loader = WebBaseLoader(
+    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    bs_kwargs={"parse_only": bs4_strainer},
+)
+docs = loader.load()
+```
+
+```python
+len(docs[0].page_content)
+```
+
+```text
+42824
+```
+
+```python
+print(docs[0].page_content[:500])
+```
+
+```text
+
+
+      LLM Powered Autonomous Agents
+
+Date: June 23, 2023  |  Estimated Reading Time: 31 min  |  Author: Lilian Weng
+
+
+Building agents with LLM (large language model) as its core controller is a cool concept. Several proof-of-concepts demos, such as AutoGPT, GPT-Engineer and BabyAGI, serve as inspiring examples. The potentiality of LLM extends beyond generating well-written copies, stories, essays and programs; it can be framed as a powerful general problem solver.
+Agent System Overview#
+In
+```
+
+### 더 깊이 알아보기
+
+`DocumentLoader`: 소스에서 데이터를 로드하여 `Documents` 목록으로 반환하는 객체입니다.
+
+- [문서](/docs/modules/data_connection/document_loaders/): `DocumentLoaders` 사용에 대한 자세한 문서입니다.
+- [통합](/docs/integrations/document_loaders/): 선택할 수 있는 160개 이상의 통합 목록입니다.
+- [인터페이스](https://api.python.langchain.com/en/latest/document_loaders/langchain_core.document_loaders.base.BaseLoader.html): 기본 인터페이스에 대한 API 참조입니다.
+
+## 2. 인덱싱: 분할 {#indexing-split}
+
+로드된 문서는 42,000자 이상입니다. 이는 많은 모델의 컨텍스트 창에 맞지 않을 정도로 길며, 전체 게시물을 컨텍스트 창에 맞출 수 있는 모델의 경우에도 매우 긴 입력에서 정보를 찾는 데 어려움을 겪을 수 있습니다.
+
+이를 처리하기 위해 `Document`를 청크로 분할하여 임베딩 및 벡터 저장소에 저장합니다. 이렇게 하면 실행 시간에 블로그 게시물의 가장 관련 있는 부분만 검색할 수 있습니다.
+
+이 경우 문서를 1,000자의 청크로 분할하고 청크 사이에 200자의 중복을 추가합니다. 중복은 중요한 문맥과 분리된 문장을 분할할 가능성을 줄이는 데 도움이 됩니다. [RecursiveCharacterTextSplitter](/docs/modules/data_connection/document_transformers/recursive_text_splitter)를 사용하여 공백 등 일반적인 구분자를 사용하여 문서를 재귀적으로 분할하여 각 청크가 적절한 크기가 되도록 합니다. 이는 일반 텍스트 사용 사례에 권장되는 텍스트 분할기입니다.
+
+`add_start_index=True`로 설정하여 각 분할 문서가 초기 문서 내에서 시작하는 문자 인덱스를 메타데이터 속성 "start_index"로 유지합니다.
+
+```python
+<!--IMPORTS:[{"imported": "RecursiveCharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html", "title": "Quickstart"}]-->
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000, chunk_overlap=200, add_start_index=True
+)
+all_splits = text_splitter.split_documents(docs)
+```
+
+```python
+len(all_splits)
+```
+
+```text
+66
+```
+
+```python
+len(all_splits[0].page_content)
+```
+
+```text
+969
+```
+
+```python
+all_splits[10].metadata
+```
+
+```text
+{'source': 'https://lilianweng.github.io/posts/2023-06-23-agent/', 'start_index': 7056}
+```
+
+### 더 깊이 알아보기
+
+`TextSplitter`: `Document` 목록을 더 작은 청크로 분할하는 객체입니다. `DocumentTransformer`의 하위 클래스입니다.
+
+- 각 분할의 원래 `Document` 내 위치(“문맥”)를 유지하는 `Context-aware splitters`를 살펴보세요:
+  - [Markdown 파일](/docs/modules/data_connection/document_transformers/markdown_header_metadata)
+  - [코드 (py 또는 js)](/docs/integrations/document_loaders/source_code)
+  - [과학 논문](/docs/integrations/document_loaders/grobid)
+- [인터페이스](https://api.python.langchain.com/en/latest/base/langchain_text_splitters.base.TextSplitter.html): 기본 인터페이스에 대한 API 참조입니다.
+
+`DocumentTransformer`: `Document` 목록에 변환을 수행하는 객체입니다.
+
+- [문서](/docs/modules/data_connection/document_transformers/): `DocumentTransformers` 사용에 대한 자세한 문서입니다.
+- [통합](/docs/integrations/document_transformers/)
+- [인터페이스](https://api.python.langchain.com/en/latest/documents/langchain_core.documents.transformers.BaseDocumentTransformer.html): 기본 인터페이스에 대한 API 참조입니다.
+
+## 3. 인덱싱: 저장 {#indexing-store}
+
+이제 66개의 텍스트 청크를 인덱싱하여 실행 시간에 검색할 수 있어야 합니다. 이를 수행하는 가장 일반적인 방법은 각 문서 청크의 내용을 임베딩하고 이러한 임베딩을 벡터 데이터베이스(또는 벡터 저장소)에 삽입하는 것입니다. 청크를 검색하려면 텍스트 검색 쿼리를 받아 임베딩하고, "유사도" 검색을 수행하여 쿼리 임베딩과 가장 유사한 임베딩을 가진 저장된 청크를 식별합니다. 가장 간단한 유사도 측정 방법은 코사인 유사도입니다. 각 임베딩 쌍 사이의 각도의 코사인을 측정합니다(고차원 벡터).
+
+[Chroma](/docs/integrations/vectorstores/chroma) 벡터 저장소와 [OpenAIEmbeddings](/docs/integrations/text_embedding/openai) 모델을 사용하여 단일 명령으로 모든 문서 청크를 임베딩하고 저장할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Quickstart"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings
+
+vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())
+```
+
+### 더 깊이 알아보기
+
+`Embeddings`: 텍스트를 임베딩으로 변환하는 데 사용되는 텍스트 임베딩 모델의 래퍼입니다.
+
+- [문서](/docs/modules/data_connection/text_embedding): 임베딩 사용에 대한 자세한 문서입니다.
+- [통합](/docs/integrations/text_embedding/): 선택할 수 있는 30개 이상의 통합 목록입니다.
+- [인터페이스](https://api.python.langchain.com/en/latest/embeddings/langchain_core.embeddings.Embeddings.html): 기본 인터페이스에 대한 API 참조입니다.
+
+`VectorStore`: 임베딩을 저장하고 쿼리하는 데 사용되는 벡터 데이터베이스의 래퍼입니다.
+
+- [문서](/docs/modules/data_connection/vectorstores/): 벡터 저장소 사용에 대한 자세한 문서입니다.
+- [통합](/docs/integrations/vectorstores/): 선택할 수 있는 40개 이상의 통합 목록입니다.
+- [인터페이스](https://api.python.langchain.com/en/latest/vectorstores/langchain_core.vectorstores.VectorStore.html): 기본 인터페이스에 대한 API 참조입니다.
+
+이로써 파이프라인의 **인덱싱** 부분이 완료되었습니다. 이제 청크된 블로그 게시물의 내용을 포함하는 쿼리 가능한 벡터 저장소가 있습니다. 사용자 질문을 받으면 이상적으로는 질문에 답하는 블로그 게시물의 스니펫을 반환할 수 있어야 합니다.
+
+## 4. 검색 및 생성: 검색 {#retrieval-and-generation-retrieve}
+
+이제 실제 애플리케이션 로직을 작성해 보겠습니다. 사용자 질문을 받아 해당 질문과 관련된 문서를 검색하고, 검색된 문서와 초기 질문을 모델에 전달하여 답변을 반환하는 간단한 애플리케이션을 만들고자 합니다.
+
+먼저 문서를 검색하는 로직을 정의해야 합니다. LangChain은 문자열 쿼리를 주어진 경우 관련 `Documents`를 반환할 수 있는 인덱스를 래핑하는 [Retriever](/docs/modules/data_connection/retrievers/) 인터페이스를 정의합니다.
+
+가장 일반적인 유형의 `Retriever`는 벡터 저장소의 유사도 검색 기능을 사용하여 검색을 용이하게 하는 [VectorStoreRetriever](/docs/modules/data_connection/retrievers/vectorstore)입니다. 모든 `VectorStore`는 `VectorStore.as_retriever()`를 사용하여 쉽게 `Retriever`로 변환할 수 있습니다:
+
+```python
+retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+```
+
+```python
+retrieved_docs = retriever.invoke("What are the approaches to Task Decomposition?")
+```
+
+```python
+len(retrieved_docs)
+```
+
+```text
+6
+```
+
+```python
+print(retrieved_docs[0].page_content)
+```
+
+```text
+Tree of Thoughts (Yao et al. 2023) extends CoT by exploring multiple reasoning possibilities at each step. It first decomposes the problem into multiple thought steps and generates multiple thoughts per step, creating a tree structure. The search process can be BFS (breadth-first search) or DFS (depth-first search) with each state evaluated by a classifier (via a prompt) or majority vote.
+Task decomposition can be done (1) by LLM with simple prompting like "Steps for XYZ.\n1.", "What are the subgoals for achieving XYZ?", (2) by using task-specific instructions; e.g. "Write a story outline." for writing a novel, or (3) with human inputs.
+```
+
+### 더 깊이 알아보기
+
+벡터 저장소는 검색에 자주 사용되지만, 검색을 수행하는 다른 방법도 있습니다.
+
+`Retriever`: 텍스트 쿼리를 주어진 경우 `Document`를 반환하는 객체입니다.
+
+- [문서](/docs/modules/data_connection/retrievers/): 인터페이스 및 내장 검색 기술에 대한 자세한 문서입니다. 일부는 다음을 포함합니다:
+  - `MultiQueryRetriever`는 검색 적중률을 향상시키기 위해 [입력 질문의 변형을 생성](/docs/modules/data_connection/retrievers/MultiQueryRetriever)합니다.
+  - `MultiVectorRetriever`는 검색 적중률을 향상시키기 위해 [임베딩의 변형을 생성](/docs/modules/data_connection/retrievers/multi_vector)합니다.
+  - `최대 여백 관련성`은 검색된 문서 중 [관련성 및 다양성](https://www.cs.cmu.edu/~jgc/publication/The_Use_MMR_Diversity_Based_LTMIR_1998.pdf)을 선택하여 중복된 문맥을 전달하지 않습니다.
+  - 문서는 벡터 저장소 검색 중에 메타데이터 필터를 사용하여 필터링될 수 있으며, 예를 들어 [Self Query Retriever](/docs/modules/data_connection/retrievers/self_query)를 사용할 수 있습니다.
+- [통합](/docs/integrations/retrievers/): 검색 서비스와의 통합 목록입니다.
+- [인터페이스](https://api.python.langchain.com/en/latest/retrievers/langchain_core.retrievers.BaseRetriever.html): 기본 인터페이스에 대한 API 참조입니다.
+
+## 5. 검색 및 생성: 생성 {#retrieval-and-generation-generate}
+
+질문을 받아 관련 문서를 검색하고 프롬프트를 구성하여 모델에 전달하고 출력을 파싱하는 체인을 모두 하나로 합쳐보겠습니다.
+
+우리는 gpt-3.5-turbo OpenAI 채팅 모델을 사용할 것이지만, LangChain `LLM` 또는 `ChatModel`을 사용할 수 있습니다.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<ChatModelTabs
+  customVarName='llm'
+  anthropicParams={`"model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024"`}
+/>
+
+RAG를 위한 프롬프트는 LangChain 프롬프트 허브에 체크인되어 있습니다 ([여기](https://smith.langchain.com/hub/rlm/rag-prompt) 참조).
+
+```python
+from langchain import hub
+
+prompt = hub.pull("rlm/rag-prompt")
+```
+
+```python
+example_messages = prompt.invoke(
+    {"context": "filler context", "question": "filler question"}
+).to_messages()
+example_messages
+```
+
+```text
+[HumanMessage(content="You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.\nQuestion: filler question \nContext: filler context \nAnswer:")]
+```
+
+```python
+print(example_messages[0].content)
+```
+
+```text
+You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+Question: filler question
+Context: filler context
+Answer:
+```
+
+우리는 [LCEL Runnable](/docs/expression_language/) 프로토콜을 사용하여 체인을 정의할 것입니다. 이를 통해 - 구성 요소와 함수를 투명하게 연결할 수 있으며 - LangSmith에서 자동으로 체인을 추적할 수 있습니다 - 스트리밍, 비동기 및 배치 호출을 기본으로 지원합니다.
+
+```python
+<!--IMPORTS:[{"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Quickstart"}, {"imported": "RunnablePassthrough", "source": "langchain_core.runnables", "docs": "https://api.python.langchain.com/en/latest/runnables/langchain_core.runnables.passthrough.RunnablePassthrough.html", "title": "Quickstart"}]-->
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+```
+
+```python
+for chunk in rag_chain.stream("What is Task Decomposition?"):
+    print(chunk, end="", flush=True)
+```
+
+```text
+Task decomposition is a technique used to break down complex tasks into smaller and simpler steps. It involves transforming big tasks into multiple manageable tasks, allowing for easier interpretation and execution by autonomous agents or models. Task decomposition can be done through various methods, such as using prompting techniques, task-specific instructions, or human inputs.
+```
+
+[LangSmith 트레이스](https://smith.langchain.com/public/1799e8db-8a6d-4eb2-84d5-46e8d7d5a99b/r)를 확인하세요.
+
+### 더 깊이 알아보기
+
+#### 모델 선택하기
+
+`ChatModel`: LLM을 기반으로 한 채팅 모델입니다. 메시지 시퀀스를 입력으로 받고 메시지를 반환합니다.
+
+- [문서](/docs/modules/model_io/chat/)
+- [통합](/docs/integrations/chat/): 선택할 수 있는 25개 이상의 통합 목록입니다.
+- [인터페이스](https://api.python.langchain.com/en/latest/language_models/langchain_core.language_models.chat_models.BaseChatModel.html): 기본 인터페이스에 대한 API 참조입니다.
+
+`LLM`: 텍스트 입력-텍스트 출력 LLM입니다. 문자열을 입력으로 받고 문자열을 반환합니다.
+
+- [문서](/docs/modules/model_io/llms)
+- [통합](/docs/integrations/llms): 선택할 수 있는 75개 이상의 통합 목록입니다.
+- [인터페이스](https://api.python.langchain.com/en/latest/language_models/langchain_core.language_models.llms.BaseLLM.html): 기본 인터페이스에 대한 API 참조입니다.
+
+로컬에서 실행되는 모델을 사용한 RAG에 대한 가이드는 [여기](/docs/use_cases/question_answering/local_retrieval_qa)에서 확인하세요.
+
+#### 프롬프트 사용자 지정
+
+위에서 설명한 것처럼 프롬프트 허브에서 프롬프트(예: [이 RAG 프롬프트](https://smith.langchain.com/hub/rlm/rag-prompt))를 로드할 수 있습니다. 프롬프트는 쉽게 사용자 지정할 수도 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts import PromptTemplate
+
+template = """Use the following pieces of context to answer the question at the end.
+If you don't know the answer, just say that you don't know, don't try to make up an answer.
+Use three sentences maximum and keep the answer as concise as possible.
+Always say "thanks for asking!" at the end of the answer.
+
+{context}
+
+Question: {question}
+
+Helpful Answer:"""
+custom_rag_prompt = PromptTemplate.from_template(template)
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | custom_rag_prompt
+    | llm
+    | StrOutputParser()
+)
+
+rag_chain.invoke("What is Task Decomposition?")
+```
+
+```text
+'Task decomposition is a technique used to break down complex tasks into smaller and simpler steps. It involves transforming big tasks into multiple manageable tasks, allowing for a more systematic and organized approach to problem-solving. Thanks for asking!'
+```
+
+[LangSmith 트레이스](https://smith.langchain.com/public/da23c4d8-3b33-47fd-84df-a3a582eedf84/r)를 확인하세요.
+
+## 다음 단계
+
+짧은 시간 안에 많은 내용을 다뤘습니다. 위의 각 섹션에서 탐색할 수 있는 많은 기능, 통합 및 확장이 있습니다. 위에서 언급한 **더 깊이 알아보기** 출처 외에도 좋은 다음 단계는 다음을 포함합니다:
+
+- [출처 반환하기](/docs/use_cases/question_answering/sources): 출처 문서를 반환하는 방법을 배우세요.
+- [스트리밍](/docs/use_cases/question_answering/streaming): 출력 및 중간 단계를 스트리밍하는 방법을 배우세요.
+- [채팅 기록 추가하기](/docs/use_cases/question_answering/chat_history): 앱에 채팅 기록을 추가하는 방법을 배우세요.

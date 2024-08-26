@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Yeager.ai
+
+Cette page explique comment utiliser [Yeager.ai](https://yeager.ai) pour générer des outils et des agents LangChain.
+
+## Qu'est-ce que Yeager.ai ?
+
+Yeager.ai est un écosystème conçu pour simplifier le processus de création d'agents et d'outils IA.
+
+Il comprend yAgents, un outil de construction d'agents LangChain sans code, qui permet aux utilisateurs de construire, de tester et de déployer des solutions IA avec facilité. En s'appuyant sur le cadre LangChain, yAgents permet une intégration transparente avec divers modèles de langage et ressources, ce qui le rend adapté aux développeurs, aux chercheurs et aux passionnés d'IA dans diverses applications.
+
+## yAgents
+
+Agent génératif à faible code conçu pour vous aider à construire, prototyper et déployer des outils Langchain avec facilité.
+
+### Comment l'utiliser ?
+
+```bash
+pip install yeagerai-agent
+yeagerai-agent
+```
+
+Allez sur http://127.0.0.1:7860
+
+Cela installera les dépendances nécessaires et configurera yAgents sur votre système. Après la première exécution, yAgents créera un fichier .env où vous pourrez saisir votre clé API OpenAI. Vous pouvez faire la même chose directement depuis l'interface Gradio sous l'onglet "Paramètres".
+
+`OPENAI_API_KEY=<your_openai_api_key_here>`
+
+Nous vous recommandons d'utiliser GPT-4. Cependant, l'outil peut également fonctionner avec GPT-3 si le problème est suffisamment décomposé.
+
+### Création et exécution d'outils avec yAgents
+
+yAgents facilite la création et l'exécution d'outils alimentés par l'IA. Voici un bref aperçu du processus :
+1. Créer un outil : Pour créer un outil, fournissez une invite en langage naturel à yAgents. L'invite doit décrire clairement l'objectif et les fonctionnalités de l'outil. Par exemple :
+`créer un outil qui renvoie le n-ième nombre premier`
+
+2. Charger l'outil dans la boîte à outils : Pour charger un outil dans yAgents, il suffit de fournir une commande à yAgents qui le dit. Par exemple :
+`charger l'outil que vous venez de créer dans votre boîte à outils`
+
+3. Exécuter l'outil : Pour exécuter un outil ou un agent, il suffit de fournir une commande à yAgents qui inclut le nom de l'outil et les paramètres requis. Par exemple :
+`générer le 50e nombre premier`
+
+Vous pouvez voir une vidéo de son fonctionnement [ici](https://www.youtube.com/watch?v=KA5hCM3RaWE).
+
+Au fur et à mesure que vous vous familiariserez avec yAgents, vous pourrez créer des outils et des agents plus avancés pour automatiser votre travail et améliorer votre productivité.
+
+Pour plus d'informations, consultez le [Github de yAgents](https://github.com/yeagerai/yeagerai-agent) ou notre [documentation](https://yeagerai.gitbook.io/docs/general/welcome-to-yeager.ai)

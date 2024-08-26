@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# Hologres
+
+>[Hologres](https://www.alibabacloud.com/help/en/hologres/latest/introduction) es un servicio de almacenamiento de datos en tiempo real unificado desarrollado por Alibaba Cloud. Puede usar Hologres para escribir, actualizar, procesar y analizar grandes cantidades de datos en tiempo real.
+>`Hologres` admite la sintaxis `SQL` estándar, es compatible con `PostgreSQL` y admite la mayoría de las funciones de PostgreSQL. Hologres admite el procesamiento analítico en línea (OLAP) y el análisis ad hoc de hasta petabytes de datos, y proporciona servicios de datos en línea de alta concurrencia y baja latencia.
+
+>`Hologres` proporciona funcionalidad de **base de datos vectorial** al adoptar [Proxima](https://www.alibabacloud.com/help/en/hologres/latest/vector-processing).
+>`Proxima` es una biblioteca de software de alto rendimiento desarrollada por `Alibaba DAMO Academy`. Le permite buscar los vecinos más cercanos de los vectores. Proxima proporciona una mayor estabilidad y rendimiento que el software de código abierto similar como Faiss. Proxima le permite buscar incrustaciones de texto o imagen similares con un alto rendimiento y baja latencia. Hologres está profundamente integrado con Proxima para proporcionar un servicio de búsqueda vectorial de alto rendimiento.
+
+## Instalación y configuración
+
+Haga clic [aquí](https://www.alibabacloud.com/zh/product/hologres) para implementar rápidamente una instancia de nube Hologres.
+
+```bash
+pip install hologres-vector
+```
+
+## Vector Store
+
+Consulte un [ejemplo de uso](/docs/integrations/vectorstores/hologres).
+
+```python
+<!--IMPORTS:[{"imported": "Hologres", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.hologres.Hologres.html", "title": "Hologres"}]-->
+from langchain_community.vectorstores import Hologres
+```

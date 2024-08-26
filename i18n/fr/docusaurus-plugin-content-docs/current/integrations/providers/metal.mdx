@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Métal
+
+Cette page couvre comment utiliser [Métal](https://getmetal.io) dans LangChain.
+
+## Qu'est-ce que Métal ?
+
+Métal est une plateforme de récupération et de mémoire gérée, construite pour la production. Indexez facilement vos données dans `Métal` et effectuez des recherches sémantiques et des récupérations.
+
+![Capture d'écran du tableau de bord Métal montrant la fonctionnalité Parcourir l'index avec des données d'exemple.](/img/MetalDash.png "Interface du tableau de bord Métal")
+
+## Démarrage rapide
+
+Commencez par [créer un compte Métal](https://app.getmetal.io/signup).
+
+Ensuite, vous pouvez facilement tirer parti de la classe `MetalRetriever` pour commencer à récupérer vos données pour la recherche sémantique, le contexte d'invite, etc. Cette classe prend une instance `Métal` et un dictionnaire de paramètres à transmettre à l'API Métal.
+
+```python
+<!--IMPORTS:[{"imported": "MetalRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.metal.MetalRetriever.html", "title": "Metal"}]-->
+from langchain.retrievers import MetalRetriever
+from metal_sdk.metal import Metal
+
+
+metal = Metal("API_KEY", "CLIENT_ID", "INDEX_ID");
+retriever = MetalRetriever(metal, params={"limit": 2})
+
+docs = retriever.invoke("search term")
+```

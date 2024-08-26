@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# Telegram
+
+>[Telegram Messenger](https://web.telegram.org/a/) est un service de messagerie instantanée gratuit, multiplateforme, chiffré, basé sur le cloud et centralisé. L'application fournit également des discussions chiffrées de bout en bout et des appels vidéo, VoIP, le partage de fichiers et plusieurs autres fonctionnalités.
+
+## Installation et configuration
+
+Voir les [instructions de configuration](/docs/integrations/document_loaders/telegram).
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/telegram).
+
+```python
+<!--IMPORTS:[{"imported": "TelegramChatFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.telegram.TelegramChatFileLoader.html", "title": "Telegram"}, {"imported": "TelegramChatApiLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.telegram.TelegramChatApiLoader.html", "title": "Telegram"}]-->
+from langchain_community.document_loaders import TelegramChatFileLoader
+from langchain_community.document_loaders import TelegramChatApiLoader
+```
+
+## Chargeur de discussion
+
+Voir un [exemple d'utilisation](/docs/integrations/chat_loaders/telegram).
+
+```python
+<!--IMPORTS:[{"imported": "TelegramChatLoader", "source": "langchain_community.chat_loaders.telegram", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.telegram.TelegramChatLoader.html", "title": "Telegram"}]-->
+from langchain_community.chat_loaders.telegram import TelegramChatLoader
+```

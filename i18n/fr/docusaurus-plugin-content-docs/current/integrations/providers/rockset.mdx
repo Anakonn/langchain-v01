@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# Rockset
+
+>[Rockset](https://rockset.com/product/) est un service de base de données d'analyse en temps réel pour servir des requêtes analytiques à faible latence et à forte concurrence à grande échelle. Il construit un Converged Index™ sur des données structurées et semi-structurées avec un magasin efficace pour les vecteurs d'intégration. Son support pour l'exécution de SQL sur des données sans schéma en fait un choix parfait pour l'exécution de la recherche vectorielle avec des filtres de métadonnées.
+
+## Installation et configuration
+
+Assurez-vous d'avoir un compte Rockset et allez sur la console web pour obtenir la clé API. Les détails peuvent être trouvés sur [le site web](https://rockset.com/docs/rest-api/).
+
+```bash
+pip install rockset
+```
+
+## Magasin vectoriel
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/rockset).
+
+```python
+<!--IMPORTS:[{"imported": "Rockset", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.rocksetdb.Rockset.html", "title": "Rockset"}]-->
+from langchain_community.vectorstores import Rockset
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/rockset).
+
+```python
+<!--IMPORTS:[{"imported": "RocksetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rocksetdb.RocksetLoader.html", "title": "Rockset"}]-->
+from langchain_community.document_loaders import RocksetLoader
+```
+
+## Historique des messages de discussion
+
+Voir un [exemple d'utilisation](/docs/integrations/memory/rockset_chat_message_history).
+
+```python
+<!--IMPORTS:[{"imported": "RocksetChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.rocksetdb.RocksetChatMessageHistory.html", "title": "Rockset"}]-->
+from langchain_community.chat_message_histories import RocksetChatMessageHistory
+```

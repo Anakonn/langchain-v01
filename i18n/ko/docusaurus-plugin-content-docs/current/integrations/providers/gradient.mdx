@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# 그라디언트
+
+>[그라디언트](https://gradient.ai/)는 간단한 웹 API를 사용하여 LLM을 미세 조정하고 완성할 수 있습니다.
+
+## 설치 및 설정
+
+- Python SDK 설치:
+
+```bash
+pip install gradientai
+```
+
+[그라디언트 액세스 토큰과 작업 영역](https://gradient.ai/)을 받고 이를 환경 변수(`Gradient_ACCESS_TOKEN`) 및 (`GRADIENT_WORKSPACE_ID`)로 설정하세요.
+
+## LLM
+
+그라디언트 LLM 래퍼가 있으며, 이를 다음과 같이 액세스할 수 있습니다.
+사용 예제는 [/docs/integrations/llms/gradient](/docs/integrations/llms/gradient)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "GradientLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gradient_ai.GradientLLM.html", "title": "Gradient"}]-->
+from langchain_community.llms import GradientLLM
+```
+
+## 텍스트 임베딩 모델
+
+그라디언트 임베딩 모델이 있으며, 이를 다음과 같이 액세스할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "GradientEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.gradient_ai.GradientEmbeddings.html", "title": "Gradient"}]-->
+from langchain_community.embeddings import GradientEmbeddings
+```
+
+이에 대한 자세한 내용은 [이 노트북](/docs/integrations/text_embedding/gradient)을 참조하세요.

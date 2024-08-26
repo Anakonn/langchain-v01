@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# पोस्टग्रेस एम्बेडिंग
+
+> [pg_embedding](https://github.com/neondatabase/pg_embedding) एक ओपन-सोर्स पैकेज है जो `पोस्टग्रेस` और `हायरार्किकल नेविगेबल स्मॉल वर्ल्ड्स` एल्गोरिदम का उपयोग करके वेक्टर समानता खोज के लिए है।
+
+## इंस्टॉलेशन और सेटअप
+
+हमें कई पायथन पैकेज इंस्टॉल करने की आवश्यकता है।
+
+```bash
+pip install psycopg2-binary
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/pgembedding) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "PGEmbedding", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.pgembedding.PGEmbedding.html", "title": "Postgres Embedding"}]-->
+from langchain_community.vectorstores import PGEmbedding
+```

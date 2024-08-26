@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Huawei
+
+>[Huawei Technologies Co., Ltd.](https://www.huawei.com/) es una corporación tecnológica de comunicaciones digitales multinacional china.
+>
+>[Huawei Cloud](https://www.huaweicloud.com/intl/en-us/product/) ofrece un conjunto integral de servicios globales de computación en la nube.
+
+## Instalación y configuración
+
+Para acceder a `Huawei Cloud`, necesitas un token de acceso.
+
+También tienes que instalar una biblioteca de Python:
+
+```bash
+pip install -U esdk-obs-python
+```
+
+## Cargador de documentos
+
+### Directorio Huawei OBS
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/huawei_obs_directory).
+
+```python
+<!--IMPORTS:[{"imported": "OBSDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.obs_directory.OBSDirectoryLoader.html", "title": "Huawei"}]-->
+from langchain_community.document_loaders import OBSDirectoryLoader
+```
+
+### Archivo Huawei OBS
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/huawei_obs_file).
+
+```python
+<!--IMPORTS:[{"imported": "OBSFileLoader", "source": "langchain_community.document_loaders.obs_file", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.obs_file.OBSFileLoader.html", "title": "Huawei"}]-->
+from langchain_community.document_loaders.obs_file import OBSFileLoader
+```

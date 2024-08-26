@@ -1,0 +1,74 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# Composants
+
+LangChain fournit des interfaces standard et extensibles ainsi que des intégrations externes pour les principaux composants suivants :
+
+## [Entrée/Sortie du modèle](/docs/modules/model_io/)
+
+Formatage et gestion de l'entrée et de la sortie des modèles de langage
+
+### [Invites](/docs/modules/model_io/prompts)
+
+Formatage pour les entrées de LLM qui guident la génération
+
+### [Modèles de chat](/docs/modules/model_io/chat)
+
+Interfaces pour les modèles de langage qui utilisent des messages de chat comme entrées et renvoient des messages de chat comme sorties (par opposition à l'utilisation d'un texte brut).
+
+### [LLM](/docs/modules/model_io/llms)
+
+Interfaces pour les modèles de langage qui utilisent un texte brut comme entrée et sortie
+
+## [Récupération](/docs/modules/data_connection/)
+
+Interaction avec les données spécifiques à l'application, par exemple pour RAG
+
+### [Chargeurs de documents](/docs/modules/data_connection/document_loaders/)
+
+Charger des données à partir d'une source sous forme de `Documents` pour un traitement ultérieur
+
+### [Diviseurs de texte](/docs/modules/data_connection/document_transformers/)
+
+Transformer les documents sources pour mieux correspondre à votre application
+
+### [Modèles d'intégration](/docs/modules/data_connection/text_embedding/)
+
+Créer des représentations vectorielles d'un morceau de texte, permettant une recherche en langage naturel
+
+### [Vectorstores](/docs/modules/data_connection/vectorstores/)
+
+Interfaces pour des bases de données spécialisées qui peuvent effectuer des recherches sur des données non structurées en langage naturel
+
+### [Récupérateurs](/docs/modules/data_connection/retrievers/)
+
+Interfaces plus génériques qui renvoient des documents en fonction d'une requête non structurée
+
+## [Composition](/docs/modules/composition/)
+
+Composants de haut niveau qui combinent d'autres systèmes arbitraires et/ou des primitives LangChain
+
+### [Outils](/docs/modules/tools/)
+
+Interfaces permettant à un LLM d'interagir avec des systèmes externes
+
+### [Agents](/docs/modules/agents/)
+
+Constructions qui choisissent les outils à utiliser en fonction de directives de haut niveau
+
+### [Chaînes](/docs/modules/chains/)
+
+Compositions de style bloc de construction d'autres éléments exécutables
+
+## Supplémentaire
+
+### [Mémoire](/docs/modules/memory/)
+
+Conserver l'état de l'application entre les exécutions d'une chaîne
+
+### [Rappels](/docs/modules/callbacks/)
+
+Journaliser et diffuser en continu les étapes intermédiaires de n'importe quelle chaîne

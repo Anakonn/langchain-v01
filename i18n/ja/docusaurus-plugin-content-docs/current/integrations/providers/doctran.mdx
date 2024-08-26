@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Doctran
+
+>[Doctran](https://github.com/psychic-api/doctran)は、Pythonパッケージです。LLMsとオープンソースのNLPライブラリを使用して、生のテキストを、ベクトル空間検索に最適化された、きれいで構造化された情報密度の高い文書に変換します。`Doctran`は、雑多な文字列が入力され、きれいで、ラベル付きの文字列が出力される、ブラックボックスのようなものだと考えることができます。
+
+## インストールとセットアップ
+
+```bash
+pip install doctran
+```
+
+## ドキュメントトランスフォーマー
+
+### ドキュメント interrogator
+
+[DoctranQATransformerの使用例](/docs/integrations/document_transformers/doctran_interrogate_document)を参照してください。
+
+```python
+from langchain_community.document_loaders import DoctranQATransformer
+```
+
+### プロパティ抽出器
+
+[DoctranPropertyExtractorの使用例](/docs/integrations/document_transformers/doctran_extract_properties)を参照してください。
+
+```python
+from langchain_community.document_loaders import DoctranPropertyExtractor
+```
+
+### ドキュメント翻訳機
+
+[DoctranTextTranslatorの使用例](/docs/integrations/document_transformers/doctran_translate_document)を参照してください。
+
+```python
+from langchain_community.document_loaders import DoctranTextTranslator
+```

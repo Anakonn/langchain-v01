@@ -1,0 +1,43 @@
+---
+translated: true
+---
+
+# स्टैक एक्सचेंज
+
+>[स्टैक एक्सचेंज](https://en.wikipedia.org/wiki/Stack_Exchange) एक प्रश्न-और-उत्तर (Q&A) वेबसाइटों का नेटवर्क है जो विविध क्षेत्रों में विषयों पर केंद्रित है, प्रत्येक साइट एक विशिष्ट विषय को कवर करती है, जहां प्रश्न, उत्तर और उपयोगकर्ता एक प्रतिष्ठा पुरस्कार प्रक्रिया के अधीन हैं।
+
+यह पृष्ठ LangChain में `स्टैक एक्सचेंज API` का उपयोग करने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+- आवश्यकताओं को इंस्टॉल करें
+
+```bash
+pip install stackapi
+```
+
+## रैपर्स
+
+### उपयोगिता
+
+एक StackExchangeAPIWrapper उपयोगिता मौजूद है जो इस API को रैप करता है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "StackExchangeAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.stackexchange.StackExchangeAPIWrapper.html", "title": "Stack Exchange"}]-->
+from langchain_community.utilities import StackExchangeAPIWrapper
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/tools/stackexchange) देखें।
+
+### टूल
+
+आप इस रैपर को आसानी से एक टूल (एजेंट के साथ उपयोग करने के लिए) के रूप में भी लोड कर सकते हैं।
+आप इसे निम्नानुसार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Stack Exchange"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["stackexchange"])
+```
+
+टूल्स के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

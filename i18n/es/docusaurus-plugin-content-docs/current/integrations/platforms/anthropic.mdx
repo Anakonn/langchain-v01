@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Anthropic
+
+Toda la funcionalidad relacionada con los modelos de Anthropic.
+
+[Anthropic](https://www.anthropic.com/) es una empresa de seguridad e investigación de IA, y es la creadora de Claude.
+Esta página cubre todas las integraciones entre los modelos de Anthropic y LangChain.
+
+## Instalación
+
+Para usar los modelos de Anthropic, deberá instalar el paquete `langchain-anthropic`.
+Puede hacerlo con el siguiente comando:
+
+```bash
+pip install langchain-anthropic
+```
+
+## Configuración del entorno
+
+Para usar los modelos de Anthropic, deberá establecer la variable de entorno `ANTHROPIC_API_KEY`.
+Puede obtener una clave de API de Anthropic [aquí](https://console.anthropic.com/settings/keys)
+
+## `ChatAnthropic`
+
+`ChatAnthropic` es una subclase de `ChatModel` de LangChain.
+Puede importar este wrapper con el siguiente código:
+
+```python
+from langchain_anthropic import ChatAnthropic
+model = ChatAnthropic(model='claude-3-opus-20240229')
+```
+
+Lea más en la [documentación de ChatAnthropic](/docs/integrations/chat/anthropic).
+
+## [Legacy] `AnthropicLLM`
+
+`AnthropicLLM` es una subclase de `LLM` de LangChain. Es un wrapper alrededor de los
+puntos finales de finalización de texto de Anthropic.
+
+```python
+<!--IMPORTS:[{"imported": "AnthropicLLM", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_anthropic.llms.AnthropicLLM.html", "title": "Anthropic"}]-->
+from langchain_anthropic import AnthropicLLM
+
+model = AnthropicLLM(model='claude-2.1')
+```

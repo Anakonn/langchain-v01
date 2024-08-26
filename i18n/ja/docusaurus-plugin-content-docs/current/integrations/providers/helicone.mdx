@@ -1,0 +1,59 @@
+---
+translated: true
+---
+
+# ヘリコン
+
+このページでは、LangChain 内で [Helicone](https://helicone.ai) エコシステムを使用する方法について説明します。
+
+## ヘリコンとは？
+
+ヘリコンは、あなたの OpenAI トラフィックをプロキシし、支出、遅延、使用状況に関する重要な洞察を提供する [オープンソース](https://github.com/Helicone/helicone) の観測プラットフォームです。
+
+![一日の平均リクエスト数、応答時間、応答ごとのトークン数、総コスト、および時間経過に伴うリクエストのグラフを示す Helicone ダッシュボードのスクリーンショット。](/img/HeliconeDashboard.png "Helicone ダッシュボード")
+
+## クイックスタート
+
+LangChain 環境では、次のパラメータを追加するだけです。
+
+```bash
+export OPENAI_API_BASE="https://oai.hconeai.com/v1"
+```
+
+次に [helicone.ai](https://www.helicone.ai/signup) にアクセスしてアカウントを作成し、ダッシュボード内に OpenAI API キーを追加してログを表示します。
+
+![Helicone ダッシュボードで OpenAI API キーを入力および管理するためのインターフェース。](/img/HeliconeKeys.png "Helicone API キー入力")
+
+## ヘリコンキャッシュを有効にする方法
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Helicone"}]-->
+from langchain_openai import OpenAI
+import openai
+openai.api_base = "https://oai.hconeai.com/v1"
+
+llm = OpenAI(temperature=0.9, headers={"Helicone-Cache-Enabled": "true"})
+text = "What is a helicone?"
+print(llm.invoke(text))
+```
+
+[Helicone キャッシュドキュメント](https://docs.helicone.ai/advanced-usage/caching)
+
+## Helicone カスタムプロパティを使用する方法
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Helicone"}]-->
+from langchain_openai import OpenAI
+import openai
+openai.api_base = "https://oai.hconeai.com/v1"
+
+llm = OpenAI(temperature=0.9, headers={
+        "Helicone-Property-Session": "24",
+        "Helicone-Property-Conversation": "support_issue_2",
+        "Helicone-Property-App": "mobile",
+      })
+text = "What is a helicone?"
+print(llm.invoke(text))
+```
+
+[Helicone プロパティドキュメント](https://docs.helicone.ai/advanced-usage/custom-properties)

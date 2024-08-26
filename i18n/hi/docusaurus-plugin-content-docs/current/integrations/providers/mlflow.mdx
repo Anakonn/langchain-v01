@@ -1,0 +1,124 @@
+---
+translated: true
+---
+
+# एलएलएम के लिए एमएलफ्लो तैनातियां
+
+>[एलएलएम के लिए एमएलफ्लो तैनातियां](https://www.mlflow.org/docs/latest/llms/deployments/index.html) एक शक्तिशाली उपकरण है जो संगठन में विभिन्न बड़े भाषा मॉडल (एलएलएम) प्रदाताओं, जैसे ओपनएआई और एंथ्रोपिक, के उपयोग और प्रबंधन को सरल बनाने के लिए डिज़ाइन किया गया है। यह एलएलएम से संबंधित विशिष्ट अनुरोधों को संभालने के लिए एक एकीकृत एंडपॉइंट प्रदान करके इन सेवाओं के साथ संवाद को सरल बनाता है।
+
+## स्थापना और सेटअप
+
+`mlflow` को एमएलफ्लो तैनातियों के निर्भरताओं के साथ स्थापित करें:
+
+```sh
+pip install 'mlflow[genai]'
+```
+
+ओपनएआई एपीआई कुंजी को एक पर्यावरण चर के रूप में सेट करें:
+
+```sh
+export OPENAI_API_KEY=...
+```
+
+एक कॉन्फ़िगरेशन फ़ाइल बनाएं:
+
+```yaml
+endpoints:
+  - name: completions
+    endpoint_type: llm/v1/completions
+    model:
+      provider: openai
+      name: text-davinci-003
+      config:
+        openai_api_key: $OPENAI_API_KEY
+
+  - name: embeddings
+    endpoint_type: llm/v1/embeddings
+    model:
+      provider: openai
+      name: text-embedding-ada-002
+      config:
+        openai_api_key: $OPENAI_API_KEY
+```
+
+तैनाती सर्वर शुरू करें:
+
+```sh
+mlflow deployments start-server --config-path /path/to/config.yaml
+```
+
+## `MLflow` द्वारा प्रदान किया गया उदाहरण
+
+>`mlflow.langchain` मॉड्यूल `LangChain` मॉडलों को लॉग करने और लोड करने के लिए एक एपीआई प्रदान करता है।
+> यह मॉड्यूल बहुचर LangChain मॉडलों को langchain स्वाद में और एकचर LangChain
+> मॉडलों को pyfunc स्वाद में निर्यात करता है।
+
+अधिक जानकारी के लिए [एपीआई दस्तावेज़ीकरण और उदाहरण](https://www.mlflow.org/docs/latest/llms/langchain/index.html) देखें।
+
+## पूर्णता उदाहरण
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "MLflow Deployments for LLMs"}, {"imported": "Mlflow", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.mlflow.Mlflow.html", "title": "MLflow Deployments for LLMs"}]-->
+import mlflow
+from langchain.chains import LLMChain, PromptTemplate
+from langchain_community.llms import Mlflow
+
+llm = Mlflow(
+    target_uri="http://127.0.0.1:5000",
+    endpoint="completions",
+)
+
+llm_chain = LLMChain(
+    llm=Mlflow,
+    prompt=PromptTemplate(
+        input_variables=["adjective"],
+        template="Tell me a {adjective} joke",
+    ),
+)
+result = llm_chain.run(adjective="funny")
+print(result)
+
+with mlflow.start_run():
+    model_info = mlflow.langchain.log_model(chain, "model")
+
+model = mlflow.pyfunc.load_model(model_info.model_uri)
+print(model.predict([{"adjective": "funny"}]))
+```
+
+## एम्बेडिंग उदाहरण
+
+```python
+<!--IMPORTS:[{"imported": "MlflowEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.mlflow.MlflowEmbeddings.html", "title": "MLflow Deployments for LLMs"}]-->
+from langchain_community.embeddings import MlflowEmbeddings
+
+embeddings = MlflowEmbeddings(
+    target_uri="http://127.0.0.1:5000",
+    endpoint="embeddings",
+)
+
+print(embeddings.embed_query("hello"))
+print(embeddings.embed_documents(["hello"]))
+```
+
+## चैट उदाहरण
+
+```python
+<!--IMPORTS:[{"imported": "ChatMlflow", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.mlflow.ChatMlflow.html", "title": "MLflow Deployments for LLMs"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "MLflow Deployments for LLMs"}, {"imported": "SystemMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html", "title": "MLflow Deployments for LLMs"}]-->
+from langchain_community.chat_models import ChatMlflow
+from langchain_core.messages import HumanMessage, SystemMessage
+
+chat = ChatMlflow(
+    target_uri="http://127.0.0.1:5000",
+    endpoint="chat",
+)
+
+messages = [
+    SystemMessage(
+        content="You are a helpful assistant that translates English to French."
+    ),
+    HumanMessage(
+        content="Translate this sentence from English to French: I love programming."
+    ),
+]
+print(chat(messages))
+```

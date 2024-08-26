@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Graphsignal
+
+Cette page explique comment utiliser [Graphsignal](https://app.graphsignal.com) pour tracer et surveiller LangChain. Graphsignal permet une visibilité complète de votre application. Il fournit des ventilations de latence par chaînes et outils, des exceptions avec un contexte complet, une surveillance des données, une utilisation du calcul/GPU, une analyse des coûts OpenAI et bien plus encore.
+
+## Installation et configuration
+
+- Installez la bibliothèque Python avec `pip install graphsignal`
+- Créez un compte Graphsignal gratuit [ici](https://graphsignal.com)
+- Obtenez une clé API et définissez-la comme une variable d'environnement (`GRAPHSIGNAL_API_KEY`)
+
+## Traçage et surveillance
+
+Graphsignal instrumente et commence automatiquement à tracer et surveiller les chaînes. Les traces et les métriques sont ensuite disponibles dans vos [tableaux de bord Graphsignal](https://app.graphsignal.com).
+
+Initialisez le traceur en fournissant un nom de déploiement :
+
+```python
+import graphsignal
+
+graphsignal.configure(deployment='my-langchain-app-prod')
+```
+
+Pour tracer également toute fonction ou code, vous pouvez utiliser un décorateur ou un gestionnaire de contexte :
+
+```python
+@graphsignal.trace_function
+def handle_request():
+    chain.run("some initial text")
+```
+
+```python
+with graphsignal.start_trace('my-chain'):
+    chain.run("some initial text")
+```
+
+Optionnellement, activez le profilage pour enregistrer les statistiques au niveau de la fonction pour chaque trace.
+
+```python
+with graphsignal.start_trace(
+        'my-chain', options=graphsignal.TraceOptions(enable_profiling=True)):
+    chain.run("some initial text")
+```
+
+Consultez le guide [Démarrage rapide](https://graphsignal.com/docs/guides/quick-start/) pour obtenir des instructions de configuration complètes.

@@ -1,0 +1,102 @@
+---
+translated: true
+---
+
+# Facebook - Meta
+
+>[Meta Platforms, Inc.](https://www.facebook.com/), que hace negocios como `Meta`, anteriormente
+> llamada `Facebook, Inc.`, y `TheFacebook, Inc.`, es una empresa tecnológica multinacional
+> conglomerada estadounidense. La empresa es propietaria y opera `Facebook`, `Instagram`, `Threads`,
+> y `WhatsApp`, entre otros productos y servicios.
+
+## Modelos de incrustación
+
+### LASER
+
+>[LASER](https://github.com/facebookresearch/LASER) es una biblioteca de Python desarrollada por
+> el equipo de `Meta AI Research` y se utiliza para
+> crear incrustaciones de oraciones multilingües para
+> [más de 147 idiomas a partir del 25/2/2024](https://github.com/facebookresearch/flores/blob/main/flores200/README.md#languages-in-flores-200)
+
+```bash
+pip install laser_encoders
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/laser).
+
+```python
+<!--IMPORTS:[{"imported": "LaserEmbeddings", "source": "langchain_community.embeddings.laser", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.laser.LaserEmbeddings.html", "title": "Facebook - Meta"}]-->
+from langchain_community.embeddings.laser import LaserEmbeddings
+```
+
+## Cargadores de documentos
+
+### Facebook Messenger
+
+>[Messenger](https://en.wikipedia.org/wiki/Messenger_(software)) es una aplicación y plataforma de mensajería instantánea
+> desarrollada por `Meta Platforms`. Originalmente desarrollado como `Facebook Chat` en 2008, la empresa renovó su
+> servicio de mensajería en 2010.
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/facebook_chat).
+
+```python
+<!--IMPORTS:[{"imported": "FacebookChatLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.facebook_chat.FacebookChatLoader.html", "title": "Facebook - Meta"}]-->
+from langchain_community.document_loaders import FacebookChatLoader
+```
+
+## Tiendas de vectores
+
+### Facebook Faiss
+
+>[Facebook AI Similarity Search (Faiss)](https://engineering.fb.com/2017/03/29/data-infrastructure/faiss-a-library-for-efficient-similarity-search/)
+> es una biblioteca para la búsqueda y agrupación eficiente de vectores densos similares. Contiene algoritmos que
+> buscan en conjuntos de vectores de cualquier tamaño, incluso en aquellos que posiblemente no entren en la RAM. También contiene código de apoyo
+> para la evaluación y el ajuste de parámetros.
+
+[Documentación de Faiss](https://faiss.ai/).
+
+Necesitamos instalar el paquete de Python `faiss`.
+
+```bash
+pip install faiss-gpu # For CUDA 7.5+ supported GPU's.
+```
+
+O
+
+```bash
+pip install faiss-cpu # For CPU Installation
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/faiss).
+
+```python
+<!--IMPORTS:[{"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Facebook - Meta"}]-->
+from langchain_community.vectorstores import FAISS
+```
+
+## Cargadores de chat
+
+### Facebook Messenger
+
+>[Messenger](https://en.wikipedia.org/wiki/Messenger_(software)) es una aplicación y plataforma de mensajería instantánea
+> desarrollada por `Meta Platforms`. Originalmente desarrollado como `Facebook Chat` en 2008, la empresa renovó su
+> servicio de mensajería en 2010.
+
+Consulta un [ejemplo de uso](/docs/integrations/chat_loaders/facebook).
+
+```python
+<!--IMPORTS:[{"imported": "FolderFacebookMessengerChatLoader", "source": "langchain_community.chat_loaders.facebook_messenger", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.facebook_messenger.FolderFacebookMessengerChatLoader.html", "title": "Facebook - Meta"}, {"imported": "SingleFileFacebookMessengerChatLoader", "source": "langchain_community.chat_loaders.facebook_messenger", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.facebook_messenger.SingleFileFacebookMessengerChatLoader.html", "title": "Facebook - Meta"}]-->
+from langchain_community.chat_loaders.facebook_messenger import (
+    FolderFacebookMessengerChatLoader,
+    SingleFileFacebookMessengerChatLoader,
+)
+```
+
+### Facebook WhatsApp
+
+Consulta un [ejemplo de uso](/docs/integrations/chat_loaders/whatsapp).
+
+```python
+<!--IMPORTS:[{"imported": "WhatsAppChatLoader", "source": "langchain_community.chat_loaders.whatsapp", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.whatsapp.WhatsAppChatLoader.html", "title": "Facebook - Meta"}]-->
+from langchain_community.chat_loaders.whatsapp import WhatsAppChatLoader
+```

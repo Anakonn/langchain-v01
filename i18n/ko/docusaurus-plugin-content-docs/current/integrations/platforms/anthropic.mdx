@@ -1,0 +1,47 @@
+---
+translated: true
+---
+
+# 앤트로픽
+
+앤트로픽 모델과 관련된 모든 기능.
+
+[앤트로픽](https://www.anthropic.com/)은 AI 안전 및 연구 회사이며, Claude의 창시자입니다.
+이 페이지에서는 앤트로픽 모델과 LangChain 간의 모든 통합을 다룹니다.
+
+## 설치
+
+앤트로픽 모델을 사용하려면 `langchain-anthropic` 패키지를 설치해야 합니다.
+다음 명령어로 설치할 수 있습니다:
+
+```bash
+pip install langchain-anthropic
+```
+
+## 환경 설정
+
+앤트로픽 모델을 사용하려면 `ANTHROPIC_API_KEY` 환경 변수를 설정해야 합니다.
+[여기](https://console.anthropic.com/settings/keys)에서 앤트로픽 API 키를 얻을 수 있습니다.
+
+## `ChatAnthropic`
+
+`ChatAnthropic`은 LangChain의 `ChatModel`의 하위 클래스입니다.
+다음 코드로 이 래퍼를 가져올 수 있습니다:
+
+```python
+from langchain_anthropic import ChatAnthropic
+model = ChatAnthropic(model='claude-3-opus-20240229')
+```
+
+[ChatAnthropic 문서](/docs/integrations/chat/anthropic)에서 자세히 알아보세요.
+
+## [Legacy] `AnthropicLLM`
+
+`AnthropicLLM`은 LangChain의 `LLM`의 하위 클래스입니다. 이는 앤트로픽의 텍스트 기반 완성 엔드포인트에 대한 래퍼입니다.
+
+```python
+<!--IMPORTS:[{"imported": "AnthropicLLM", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_anthropic.llms.AnthropicLLM.html", "title": "Anthropic"}]-->
+from langchain_anthropic import AnthropicLLM
+
+model = AnthropicLLM(model='claude-2.1')
+```

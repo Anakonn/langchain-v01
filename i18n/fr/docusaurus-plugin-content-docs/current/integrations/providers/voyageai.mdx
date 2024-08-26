@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# VoyageAI
+
+Toute la fonctionnalité liée à VoyageAI
+
+>[VoyageAI](https://www.voyageai.com/) Voyage AI construit des modèles d'intégration, personnalisés pour votre domaine et votre entreprise, pour une meilleure qualité de récupération.
+
+## Installation et configuration
+
+Installez le package d'intégration avec
+
+```bash
+pip install langchain-voyageai
+```
+
+Obtenez une clé d'API VoyageAI et définissez-la comme une variable d'environnement (`VOYAGE_API_KEY`)
+
+## Modèle d'intégration de texte
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/voyageai)
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIEmbeddings", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_voyageai.embeddings.VoyageAIEmbeddings.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIEmbeddings
+```
+
+## Reclassement
+
+Voir un [exemple d'utilisation](/docs/integrations/document_transformers/voyageai-reranker)
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIRerank", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/rerank/langchain_voyageai.rerank.VoyageAIRerank.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIRerank
+```

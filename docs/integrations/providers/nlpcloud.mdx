@@ -1,0 +1,36 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/nlpcloud
+translated: false
+---
+
+# NLPCloud
+
+>[NLP Cloud](https://docs.nlpcloud.com/#introduction) is an artificial intelligence platform that allows you to use the most advanced AI engines, and even train your own engines with your own data.
+
+## Installation and Setup
+
+- Install the `nlpcloud` package.
+
+```bash
+pip install nlpcloud
+```
+
+- Get an NLPCloud api key and set it as an environment variable (`NLPCLOUD_API_KEY`)
+
+## LLM
+
+See a [usage example](/docs/integrations/llms/nlpcloud).
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloud", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.nlpcloud.NLPCloud.html", "title": "NLPCloud"}]-->
+from langchain_community.llms import NLPCloud
+```
+
+## Text Embedding Models
+
+See a [usage example](/docs/integrations/text_embedding/nlp_cloud)
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloudEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.nlpcloud.NLPCloudEmbeddings.html", "title": "NLPCloud"}]-->
+from langchain_community.embeddings import NLPCloudEmbeddings
+```

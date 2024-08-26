@@ -1,0 +1,160 @@
+---
+translated: true
+---
+
+# Astra DB
+
+> [DataStax Astra DB](https://docs.datastax.com/en/astra/home/astra.html) es una base de datos sin servidor con capacidad vectorial construida sobre `Apache Cassandra®` y puesta a disposición de manera conveniente a través de una API JSON fácil de usar.
+
+Consulta un [tutorial proporcionado por DataStax](https://docs.datastax.com/en/astra/astra-db-vector/tutorials/chatbot.html).
+
+## Instalación y configuración
+
+Instala el siguiente paquete de Python:
+
+```bash
+pip install "langchain-astradb>=0.1.0"
+```
+
+Obtén los [secretos de conexión](https://docs.datastax.com/en/astra/astra-db-vector/get-started/quickstart.html).
+Configura las siguientes variables de entorno:
+
+```python
+ASTRA_DB_APPLICATION_TOKEN="TOKEN"
+ASTRA_DB_API_ENDPOINT="API_ENDPOINT"
+```
+
+## Vector Store
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBVectorStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_astradb.vectorstores.AstraDBVectorStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBVectorStore
+
+vector_store = AstraDBVectorStore(
+    embedding=my_embedding,
+    collection_name="my_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/vectorstores/astradb).
+
+Consulta el [ejemplo proporcionado por DataStax](https://docs.datastax.com/en/astra/astra-db-vector/integrations/langchain.html).
+
+## Historial de mensajes de chat
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBChatMessageHistory", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_astradb.chat_message_histories.AstraDBChatMessageHistory.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBChatMessageHistory
+
+message_history = AstraDBChatMessageHistory(
+    session_id="test-session",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+Consulta el [ejemplo de uso](/docs/integrations/memory/astradb_chat_message_history#example).
+
+## Caché de LLM
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Astra DB"}, {"imported": "AstraDBCache", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_astradb.cache.AstraDBCache.html", "title": "Astra DB"}]-->
+from langchain.globals import set_llm_cache
+from langchain_astradb import AstraDBCache
+
+set_llm_cache(AstraDBCache(
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+))
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/llms/llm_caching#astra-db-caches) (desplázate hasta la sección de Astra DB).
+
+## Caché semántica de LLM
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Astra DB"}, {"imported": "AstraDBSemanticCache", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_astradb.cache.AstraDBSemanticCache.html", "title": "Astra DB"}]-->
+from langchain.globals import set_llm_cache
+from langchain_astradb import AstraDBSemanticCache
+
+set_llm_cache(AstraDBSemanticCache(
+    embedding=my_embedding,
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+))
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/llms/llm_caching#astra-db-caches) (desplázate hasta la sección correspondiente).
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/memory/astradb_chat_message_history).
+
+## Cargador de documentos
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBLoader", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_astradb.document_loaders.AstraDBLoader.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBLoader
+
+loader = AstraDBLoader(
+    collection_name="my_collection",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/document_loaders/astradb).
+
+## Recuperador de autoconsuita
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBVectorStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_astradb.vectorstores.AstraDBVectorStore.html", "title": "Astra DB"}, {"imported": "SelfQueryRetriever", "source": "langchain.retrievers.self_query.base", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain.retrievers.self_query.base.SelfQueryRetriever.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBVectorStore
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+
+vector_store = AstraDBVectorStore(
+    embedding=my_embedding,
+    collection_name="my_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+
+retriever = SelfQueryRetriever.from_llm(
+    my_llm,
+    vector_store,
+    document_content_description,
+    metadata_field_info
+)
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/retrievers/self_query/astradb).
+
+## Almacén
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/storage/langchain_astradb.storage.AstraDBStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBStore
+
+store = AstraDBStore(
+    collection_name="my_kv_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/stores/astradb#astradbstore).
+
+## Almacén de bytes
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBByteStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/storage/langchain_astradb.storage.AstraDBByteStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBByteStore
+
+store = AstraDBByteStore(
+    collection_name="my_kv_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+Obtén más información en el [cuaderno de ejemplo](/docs/integrations/stores/astradb#astradbbytestore).

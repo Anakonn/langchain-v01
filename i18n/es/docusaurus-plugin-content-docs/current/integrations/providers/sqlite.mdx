@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# SQLite
+
+>[SQLite](https://en.wikipedia.org/wiki/SQLite) es un motor de base de datos escrito en el
+> lenguaje de programación C. No es una aplicación independiente; más bien, es una biblioteca que
+> los desarrolladores de software integran en sus aplicaciones. Como tal, pertenece a la familia de
+> bases de datos integradas. Es el motor de base de datos más ampliamente desplegado, ya que es
+> utilizado por varios de los principales navegadores web, sistemas operativos, teléfonos móviles y otros sistemas integrados.
+
+## Instalación y configuración
+
+Necesitamos instalar el paquete de Python `SQLAlchemy`.
+
+```bash
+pip install SQLAlchemy
+```
+
+## Vector Store
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/sqlitevss).
+
+```python
+<!--IMPORTS:[{"imported": "SQLiteVSS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sqlitevss.SQLiteVSS.html", "title": "SQLite"}]-->
+from langchain_community.vectorstores import SQLiteVSS
+```
+
+## Memoria
+
+Consulta un [ejemplo de uso](/docs/integrations/memory/sqlite).
+
+```python
+<!--IMPORTS:[{"imported": "SQLChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.sql.SQLChatMessageHistory.html", "title": "SQLite"}]-->
+from langchain_community.chat_message_histories import SQLChatMessageHistory
+```

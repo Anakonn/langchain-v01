@@ -1,0 +1,96 @@
+---
+translated: true
+---
+
+# Passerelle Javelin AI
+
+Le service [Passerelle Javelin AI](https://www.getjavelin.io) est une passerelle API de haute performance et de niveau entreprise pour les applications d'IA.
+Il est conçu pour simplifier l'utilisation et l'accès à divers fournisseurs de modèles de langage de grande taille (LLM), tels que OpenAI, Cohere, Anthropic et les modèles de langage de grande taille personnalisés au sein d'une organisation, en intégrant une sécurité d'accès robuste pour toutes les interactions avec les LLM.
+
+Javelin offre une interface de haut niveau qui simplifie l'interaction avec les LLM en fournissant un point de terminaison unifié pour gérer les requêtes spécifiques aux LLM.
+
+Consultez la [documentation](https://docs.getjavelin.io) de la passerelle Javelin AI pour plus de détails.
+Le [SDK Python Javelin](https://www.github.com/getjavelin/javelin-python) est une bibliothèque client facile à utiliser destinée à être intégrée dans les applications d'IA.
+
+## Installation et configuration
+
+Installez `javelin_sdk` pour interagir avec la passerelle Javelin AI :
+
+```sh
+pip install 'javelin_sdk'
+```
+
+Définissez la clé d'API Javelin en tant que variable d'environnement :
+
+```sh
+export JAVELIN_API_KEY=...
+```
+
+## Exemple de complétion
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Javelin AI Gateway"}, {"imported": "JavelinAIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.javelin_ai_gateway.JavelinAIGateway.html", "title": "Javelin AI Gateway"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Javelin AI Gateway"}]-->
+
+from langchain.chains import LLMChain
+from langchain_community.llms import JavelinAIGateway
+from langchain_core.prompts import PromptTemplate
+
+route_completions = "eng_dept03"
+
+gateway = JavelinAIGateway(
+    gateway_uri="http://localhost:8000",
+    route=route_completions,
+    model_name="text-davinci-003",
+)
+
+llmchain = LLMChain(llm=gateway, prompt=prompt)
+result = llmchain.run("podcast player")
+
+print(result)
+
+```
+
+## Exemple d'embeddings
+
+```python
+<!--IMPORTS:[{"imported": "JavelinAIGatewayEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.javelin_ai_gateway.JavelinAIGatewayEmbeddings.html", "title": "Javelin AI Gateway"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Javelin AI Gateway"}]-->
+from langchain_community.embeddings import JavelinAIGatewayEmbeddings
+from langchain_openai import OpenAIEmbeddings
+
+embeddings = JavelinAIGatewayEmbeddings(
+    gateway_uri="http://localhost:8000",
+    route="embeddings",
+)
+
+print(embeddings.embed_query("hello"))
+print(embeddings.embed_documents(["hello"]))
+```
+
+## Exemple de chat
+
+```python
+<!--IMPORTS:[{"imported": "ChatJavelinAIGateway", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.javelin_ai_gateway.ChatJavelinAIGateway.html", "title": "Javelin AI Gateway"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Javelin AI Gateway"}, {"imported": "SystemMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html", "title": "Javelin AI Gateway"}]-->
+from langchain_community.chat_models import ChatJavelinAIGateway
+from langchain_core.messages import HumanMessage, SystemMessage
+
+messages = [
+    SystemMessage(
+        content="You are a helpful assistant that translates English to French."
+    ),
+    HumanMessage(
+        content="Artificial Intelligence has the power to transform humanity and make the world a better place"
+    ),
+]
+
+chat = ChatJavelinAIGateway(
+    gateway_uri="http://localhost:8000",
+    route="mychatbot_route",
+    model_name="gpt-3.5-turbo"
+    params={
+        "temperature": 0.1
+    }
+)
+
+print(chat(messages))
+
+```

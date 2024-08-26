@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# OpenSearch
+
+このページでは、LangChainでOpenSearchエコシステムを使用する方法について説明します。
+2つの部分に分かれています: インストールと設定、そして特定のOpenSearchラッパーへの参照。
+
+## インストールと設定
+
+- `pip install opensearch-py`でPythonパッケージをインストールします
+
+## ラッパー
+
+### VectorStore
+
+OpenSearchベクトルデータベースのラッパーが存在し、それを使ってベクトルストアとして使用できます。
+lucene、nmslib、faissエンジンによる近似ベクトル検索や、painless scripting and script scoringを使ったブルートフォースベクトル検索が可能です。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "OpenSearchVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.opensearch_vector_search.OpenSearchVectorSearch.html", "title": "OpenSearch"}]-->
+from langchain_community.vectorstores import OpenSearchVectorSearch
+```
+
+OpenSearchラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/opensearch)を参照してください

@@ -1,0 +1,57 @@
+---
+translated: true
+---
+
+# Baidu
+
+>[Baidu Cloud](https://cloud.baidu.com/) est un service cloud fourni par `Baidu, Inc.`,
+> dont le siège est à Pékin. Il offre un service de stockage cloud, un logiciel client,
+> la gestion de fichiers, le partage de ressources et l'intégration tierce.
+
+## Installation et configuration
+
+Inscrivez-vous et obtenez les clés `Qianfan` `AK` et `SK` [ici](https://cloud.baidu.com/product/wenxinworkshop).
+
+## LLMs
+
+### Baidu Qianfan
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/baidu_qianfan_endpoint).
+
+```python
+<!--IMPORTS:[{"imported": "QianfanLLMEndpoint", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.baidu_qianfan_endpoint.QianfanLLMEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.llms import QianfanLLMEndpoint
+```
+
+## Modèles de chat
+
+### Qianfan Chat Endpoint
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/baidu_qianfan_endpoint).
+
+```python
+<!--IMPORTS:[{"imported": "QianfanChatEndpoint", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.baidu_qianfan_endpoint.QianfanChatEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.chat_models import QianfanChatEndpoint
+```
+
+## Modèles d'intégration
+
+### Baidu Qianfan
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/baidu_qianfan_endpoint).
+
+```python
+<!--IMPORTS:[{"imported": "QianfanEmbeddingsEndpoint", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.baidu_qianfan_endpoint.QianfanEmbeddingsEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.embeddings import QianfanEmbeddingsEndpoint
+```
+
+## Magasins vectoriels
+
+### Baidu Cloud ElasticSearch VectorSearch
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/baiducloud_vector_search).
+
+```python
+<!--IMPORTS:[{"imported": "BESVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.baiducloud_vector_search.BESVectorStore.html", "title": "Baidu"}]-->
+from langchain_community.vectorstores import BESVectorStore
+```

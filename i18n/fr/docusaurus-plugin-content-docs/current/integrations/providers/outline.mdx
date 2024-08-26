@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Aperçu
+
+> [Aperçu](https://www.getoutline.com/) est une plateforme de base de connaissances collaborative open-source conçue pour le partage d'informations d'équipe.
+
+## Configuration
+
+Vous devez d'abord [créer une clé d'API](https://www.getoutline.com/developers#section/Authentication) pour votre instance Outline. Ensuite, vous devez définir les variables d'environnement suivantes :
+
+```python
+import os
+
+os.environ["OUTLINE_API_KEY"] = "xxx"
+os.environ["OUTLINE_INSTANCE_URL"] = "https://app.getoutline.com"
+```
+
+## Retrieveur
+
+Voir un [exemple d'utilisation](/docs/integrations/retrievers/outline).
+
+```python
+<!--IMPORTS:[{"imported": "OutlineRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.outline.OutlineRetriever.html", "title": "Outline"}]-->
+from langchain.retrievers import OutlineRetriever
+```

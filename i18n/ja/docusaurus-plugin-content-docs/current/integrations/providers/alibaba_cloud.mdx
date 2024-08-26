@@ -1,0 +1,102 @@
+---
+translated: true
+---
+
+# Alibaba Cloud
+
+>[Alibaba Group Holding Limited (Wikipedia)](https://en.wikipedia.org/wiki/Alibaba_Group)、または `Alibaba`
+> (中国語: 阿里巴巴)は、eコマース、小売、
+> インターネット、テクノロジーを専門とする中国の多国籍テクノロジー企業です。
+>
+> [Alibaba Cloud (Wikipedia)](https://en.wikipedia.org/wiki/Alibaba_Cloud)、また `Aliyun`
+> (中国語: 阿里云; ピンイン: Ālǐyún; 直訳すると 'Ali Cloud')は、クラウドコンピューティング企業で、
+> `Alibaba Group`の子会社です。 `Alibaba Cloud`はオンラインビジネスとAlibaba自身のeコマースエコシステムにクラウドコンピューティングサービスを提供しています。
+
+## LLMs
+
+### Alibaba Cloud PAI EAS
+
+[インストール手順とユースケースの例](/docs/integrations/llms/alibabacloud_pai_eas_endpoint)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "PaiEasEndpoint", "source": "langchain_community.llms.pai_eas_endpoint", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.pai_eas_endpoint.PaiEasEndpoint.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.llms.pai_eas_endpoint import PaiEasEndpoint
+```
+
+### Tongyi Qwen
+
+[インストール手順とユースケースの例](/docs/integrations/llms/tongyi)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "Tongyi", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.tongyi.Tongyi.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.llms import Tongyi
+```
+
+## チャットモデル
+
+### Alibaba Cloud PAI EAS
+
+[インストール手順とユースケースの例](/docs/integrations/chat/alibaba_cloud_pai_eas)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "PaiEasChatEndpoint", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.pai_eas_endpoint.PaiEasChatEndpoint.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.chat_models import PaiEasChatEndpoint
+```
+
+### Tongyi Qwen Chat
+
+[インストール手順とユースケースの例](/docs/integrations/chat/tongyi)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatTongyi", "source": "langchain_community.chat_models.tongyi", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.tongyi.ChatTongyi.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.chat_models.tongyi import ChatTongyi
+```
+
+## ドキュメントローダー
+
+### Alibaba Cloud MaxCompute
+
+[インストール手順とユースケースの例](/docs/integrations/document_loaders/alibaba_cloud_maxcompute)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "MaxComputeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.max_compute.MaxComputeLoader.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.document_loaders import MaxComputeLoader
+```
+
+## ベクトルストア
+
+### Alibaba Cloud OpenSearch
+
+[インストール手順とユースケースの例](/docs/integrations/vectorstores/alibabacloud_opensearch)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "AlibabaCloudOpenSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.alibabacloud_opensearch.AlibabaCloudOpenSearch.html", "title": "Alibaba Cloud"}, {"imported": "AlibabaCloudOpenSearchSettings", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.alibabacloud_opensearch.AlibabaCloudOpenSearchSettings.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.vectorstores import AlibabaCloudOpenSearch, AlibabaCloudOpenSearchSettings
+```
+
+### Alibaba Cloud Tair
+
+[インストール手順とユースケースの例](/docs/integrations/vectorstores/tair)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "Tair", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tair.Tair.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.vectorstores import Tair
+```
+
+### AnalyticDB
+
+[インストール手順とユースケースの例](/docs/integrations/vectorstores/analyticdb)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "AnalyticDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.analyticdb.AnalyticDB.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.vectorstores import AnalyticDB
+```
+
+### Hologres
+
+[インストール手順とユースケースの例](/docs/integrations/vectorstores/hologres)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "Hologres", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.hologres.Hologres.html", "title": "Alibaba Cloud"}]-->
+from langchain_community.vectorstores import Hologres
+```

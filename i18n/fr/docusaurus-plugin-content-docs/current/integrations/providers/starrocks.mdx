@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# StarRocks
+
+>[StarRocks](https://www.starrocks.io/) est une base de données analytique haute performance.
+`StarRocks` est une base de données MPP de nouvelle génération pour des scénarios d'analyse complets, y compris l'analyse multidimensionnelle, l'analyse en temps réel et les requêtes ad hoc.
+
+>Généralement, `StarRocks` est classé dans la catégorie OLAP, et il a montré des performances excellentes dans [ClickBench — un benchmark pour les SGBD analytiques](https://benchmark.clickhouse.com/). Comme il dispose d'un moteur d'exécution vectorisé ultra-rapide, il peut également être utilisé comme une base de données vectorielle rapide.
+
+## Installation et configuration
+
+```bash
+pip install pymysql
+```
+
+## Magasin vectoriel
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/starrocks).
+
+```python
+<!--IMPORTS:[{"imported": "StarRocks", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.starrocks.StarRocks.html", "title": "StarRocks"}]-->
+from langchain_community.vectorstores import StarRocks
+```

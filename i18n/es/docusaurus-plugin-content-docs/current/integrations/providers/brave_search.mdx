@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Brave Search
+
+>[Brave Search](https://en.wikipedia.org/wiki/Brave_Search) es un motor de búsqueda desarrollado por Brave Software.
+> - `Brave Search` utiliza su propio índice web. A partir de mayo de 2022, cubría más de 10 mil millones de páginas y se utilizaba para servir el 92% de los resultados de búsqueda sin depender de terceros, y el resto se recuperaba del servidor a través de la API de Bing o (de forma opcional) del cliente a través de Google. Según Brave, el índice se mantuvo "intencionalmente más pequeño que el de Google o Bing" para ayudar a evitar el spam y otro contenido de baja calidad, con la desventaja de que "Brave Search aún no es tan bueno como Google en la recuperación de consultas de cola larga".
+>- `Brave Search Premium`: A partir de abril de 2023, Brave Search es un sitio web sin anuncios, pero eventualmente cambiará a un nuevo modelo que incluirá anuncios y los usuarios premium obtendrán una experiencia sin anuncios. Los datos de los usuarios, incluidas las direcciones IP, no se recopilarán de forma predeterminada. Se requerirá una cuenta premium para la recopilación de datos opcional.
+
+## Instalación y configuración
+
+Para obtener acceso a la API de Brave Search, necesitas [crear una cuenta y obtener una clave API](https://api.search.brave.com/app/dashboard).
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/brave_search).
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearchLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.brave_search.BraveSearchLoader.html", "title": "Brave Search"}]-->
+from langchain_community.document_loaders import BraveSearchLoader
+```
+
+## Herramienta
+
+Consulta un [ejemplo de uso](/docs/integrations/tools/brave_search).
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearch", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.brave_search.tool.BraveSearch.html", "title": "Brave Search"}]-->
+from langchain.tools import BraveSearch
+```

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# scikit-learn
+
+>[scikit-learn](https://scikit-learn.org/stable/)은 [k nearest neighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html)와 같은 기계 학습 알고리즘의 오픈 소스 컬렉션입니다. `SKLearnVectorStore`는 이 구현을 래핑하고 JSON, BSON(바이너리 JSON) 또는 Apache Parquet 형식으로 벡터 저장소를 영구화할 수 있는 기능을 추가합니다.
+
+## 설치 및 설정
+
+- `pip install scikit-learn`을 사용하여 Python 패키지를 설치하세요.
+
+## 벡터 저장소
+
+`SKLearnVectorStore`는 scikit-learn 패키지의 최근접 이웃 구현에 대한 간단한 래퍼를 제공하여 벡터 저장소로 사용할 수 있습니다.
+
+이 벡터 저장소를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "SKLearnVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sklearn.SKLearnVectorStore.html", "title": "scikit-learn"}]-->
+from langchain_community.vectorstores import SKLearnVectorStore
+```
+
+SKLearnVectorStore 래퍼에 대한 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/sklearn)을 참조하세요.

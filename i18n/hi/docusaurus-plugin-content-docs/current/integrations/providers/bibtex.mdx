@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# बिबटेक्स
+
+>[बिबटेक्स](https://www.ctan.org/pkg/bibtex) एक फ़ाइल प्रारूप और संदर्भ प्रबंधन प्रणाली है जो आमतौर पर `LaTeX` टाइपसेटिंग के साथ उपयोग किया जाता है। यह शैक्षिक और अनुसंधान दस्तावेजों के लिए बिबलियोग्राफिक जानकारी को संगठित और संग्रहीत करने का एक तरीका है।
+
+## स्थापना और सेटअप
+
+हमें `bibtexparser` और `pymupdf` पैकेज स्थापित करना होगा।
+
+```bash
+pip install bibtexparser pymupdf
+```
+
+## दस्तावेज लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/bibtex) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "BibtexLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.bibtex.BibtexLoader.html", "title": "BibTeX"}]-->
+from langchain_community.document_loaders import BibtexLoader
+```

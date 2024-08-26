@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+# Yeager.ai
+
+このページでは、[Yeager.ai](https://yeager.ai)を使ってLangChainツールとエージェントを生成する方法について説明します。
+
+## Yeager.aiとは?
+
+Yeager.aiは、AIエージェントとツールの作成プロセスを簡素化するためのエコシステムです。
+
+yAgents、No-code LangChain Agent Builderを特徴としており、ユーザーがAIソリューションを簡単に構築、テスト、デプロイできるようにします。LangChainフレームワークを活用し、さまざまな言語モデルやリソースとの統合が可能で、開発者、研究者、さまざまなアプリケーションのAIエンスージアストに適しています。
+
+## yAgents
+
+低コードの生成エージェントで、LangChainツールの構築、プロトタイピング、デプロイを簡単に行えます。
+
+### 使い方
+
+```bash
+pip install yeagerai-agent
+yeagerai-agent
+```
+
+http://127.0.0.1:7860にアクセスします。
+これにより、必要な依存関係がインストールされ、yAgentsがシステムにセットアップされます。最初の実行後、yAgentsは.envファイルを作成します。ここにOpenAI APIキーを入力できます。Gradioインターフェイスの「Settings」タブからも同様の操作ができます。
+
+`OPENAI_API_KEY=<your_openai_api_key_here>`
+
+GPT-4の使用をお勧めしますが、問題が十分に細分化されていれば、GPT-3でも動作します。
+
+### yAgentsでツールの作成と実行
+
+yAgentsを使えば、AIツールの作成と実行が簡単です。プロセスの概要は以下の通りです:
+1. ツールの作成: yAgentsに自然言語のプロンプトを提供してツールを作成します。プロンプトには、ツールの目的と機能を明確に記述する必要があります。例: 
+`n番目の素数を返すツールを作成する`
+
+2. ツールキットへの読み込み: yAgentsにコマンドを入力して、作成したツールをツールキットに読み込みます。例:
+`作成したツールをツールキットに読み込む`
+
+3. ツールの実行: ツール名と必要なパラメータを含むコマンドをyAgentsに入力して、ツールやエージェントを実行します。例:
+`50番目の素数を生成する`
+
+動作の様子は[こちらのビデオ](https://www.youtube.com/watch?v=KA5hCM3RaWE)でご覧いただけます。
+
+yAgentsに慣れてくると、より高度なツールやエージェントを作成し、業務の自動化や生産性の向上に活用できます。
+
+詳細は[yAgentsのGitHub](https://github.com/yeagerai/yeagerai-agent)や[ドキュメント](https://yeagerai.gitbook.io/docs/general/welcome-to-yeager.ai)をご覧ください。

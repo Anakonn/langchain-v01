@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# ModelScope
+
+>[ModelScope](https://www.modelscope.cn/home)は、モデルとデータセットの大きなリポジトリです。
+
+このページでは、LangChainでModelScopeエコシステムを使う方法について説明します。
+インストールとセットアップ、そして特定のModelScopeラッパーについての参照に分かれています。
+
+## インストールとセットアップ
+
+`modelscope`パッケージをインストールします。
+
+```bash
+pip install modelscope
+```
+
+## テキストエンベディングモデル
+
+```python
+<!--IMPORTS:[{"imported": "ModelScopeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.modelscope_hub.ModelScopeEmbeddings.html", "title": "ModelScope"}]-->
+from langchain_community.embeddings import ModelScopeEmbeddings
+```
+
+詳細については、[このノートブック](/docs/integrations/text_embedding/modelscope_hub)を参照してください。

@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Kinetica
+
+[Kinetica](https://www.kinetica.com/) est une base de données en temps réel conçue pour permettre
+l'analyse et l'IA générative sur les données de séries temporelles et spatiales.
+
+## Modèle de discussion
+
+L'enveloppe LLM Kinetica utilise le [Kinetica SqlAssist
+LLM](https://docs.kinetica.com/7.2/sql-gpt/concepts/) pour transformer le langage naturel en
+SQL afin de simplifier le processus de récupération des données.
+
+Voir [Kinetica SqlAssist LLM Demo](/docs/integrations/chat/kinetica) pour l'utilisation.
+
+```python
+<!--IMPORTS:[{"imported": "ChatKinetica", "source": "langchain_community.chat_models.kinetica", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.kinetica.ChatKinetica.html", "title": "Kinetica"}]-->
+from langchain_community.chat_models.kinetica import ChatKinetica
+```
+
+## Magasin de vecteurs
+
+L'enveloppe de magasin de vecteurs Kinetca tire parti du support natif de Kinetica pour la [recherche de similarité de vecteurs](https://docs.kinetica.com/7.2/vector_search/).
+
+Voir [Kinetica Vectorsore API](/docs/integrations/vectorstores/kinetica) pour l'utilisation.
+
+```python
+<!--IMPORTS:[{"imported": "Kinetica", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.kinetica.Kinetica.html", "title": "Kinetica"}]-->
+from langchain_community.vectorstores import Kinetica
+```
+
+## Chargeur de documents
+
+Le chargeur de documents Kinetica peut être utilisé pour charger des documents LangChain à partir de la
+base de données Kinetica.
+
+Voir [Kinetica Document Loader](/docs/integrations/document_loaders/kinetica) pour l'utilisation
+
+```python
+<!--IMPORTS:[{"imported": "KineticaLoader", "source": "langchain_community.document_loaders.kinetica_loader", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.kinetica_loader.KineticaLoader.html", "title": "Kinetica"}]-->
+from langchain_community.document_loaders.kinetica_loader import KineticaLoader
+```
+
+## Récupérateur
+
+Le récupérateur Kinetica peut renvoyer des documents en fonction d'une requête non structurée.
+
+Voir [Kinetica VectorStore based Retriever](/docs/integrations/retrievers/kinetica) pour l'utilisation

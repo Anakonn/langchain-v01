@@ -1,0 +1,132 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# テスト
+
+すべてのパッケージにはユニットテストと統合テストがあり、ユニットテストを統合テストよりも好んで使用しています。
+
+ユニットテストはプルリクエストごとに実行されるため、高速で信頼性が高い必要があります。
+
+統合テストは1日に1回実行されますが、セットアップが複雑なため、外部サービスとのインターフェースを確認する場合にのみ使用されます。
+
+## ユニットテスト
+
+ユニットテストは、外部APIへの呼び出しを必要としないモジュールロジックをカバーします。
+新しいロジックを追加する場合は、ユニットテストを追加してください。
+
+ユニットテストの依存関係をインストールするには:
+
+```bash
+poetry install --with test
+```
+
+ユニットテストを実行するには:
+
+```bash
+make test
+```
+
+Dockerでユニットテストを実行するには:
+
+```bash
+make docker_tests
+```
+
+特定のテストを実行するには:
+
+```bash
+TEST_FILE=tests/unit_tests/test_imports.py make test
+```
+
+## 統合テスト
+
+統合テストは、外部APIへの呼び出しを必要とするロジックをカバーします(多くの場合、他のサービスとの統合)。
+新しい外部APIのサポートを追加する場合は、新しい統合テストを追加してください。
+
+**警告:** ほとんどのテストは統合テストではありません。
+
+  ネットワーク接続を必要とするテストは、他の開発者がコードをテストするのを困難にします。
+
+  代わりに、`responses`ライブラリや`mock.patch`を使ってリクエストを小さなフィクスチャでモックすることをお勧めします。
+
+統合テストの依存関係をインストールするには:
+
+```bash
+poetry install --with test,test_integration
+```
+
+統合テストを実行するには:
+
+```bash
+make integration_tests
+```
+
+### 準備
+
+統合テストでは、いくつかの検索エンジンとデータベースを使用しています。これらのテストは、仕様と要件に従って、エンジンとデータベースの正しい動作を検証することを目的としています。
+
+`tests/integration_tests/vectorstores/`にあるテストなどの一部の統合テストを実行するには、以下のソフトウェアをインストールする必要があります:
+
+- Docker
+- Python 3.8.1以降
+
+新しい依存関係は、以下を実行して追加する必要があります:
+
+```bash
+# add package and install it after adding:
+poetry add tiktoken@latest --group "test_integration" && poetry install --with test_integration
+```
+
+テストを実行する前に、必要なすべての依存関係がインストールされたDockerコンテナを起動する必要があります。例えば、`test_elasticsearch.py`には`elasticsearch.yml`コンテナを使用しています:
+
+```bash
+cd tests/integration_tests/vectorstores/docker-compose
+docker-compose -f elasticsearch.yml up
+```
+
+より複雑な準備が必要な環境の場合は、`*.sh`ファイルを確認してください。例えば、`opensearch.sh`はDockerイメージをビルドし、OpenSearchを起動します。
+
+### ローカルテストのための環境変数の準備:
+
+- `tests/integration_tests/.env.example`を`tests/integration_tests/.env`にコピーする
+- `tests/integration_tests/.env`ファイルの変数を設定する(例: `OPENAI_API_KEY`)
+
+さらに、一部の統合テストでは、`OPENAI_API_KEY`のような特定の環境変数の設定が必要です。テストが正しく実行されるよう、必要な環境変数を設定してください。
+
+### pytest-vcrを使ったHTTPインタラクションの記録
+
+このリポジトリの一部の統合テストでは、外部サービスへのHTTPリクエストが行われます。テストを実行するたびにこれらのリクエストが行われるのを防ぐため、pytest-vcrを使ってHTTPインタラクションを記録および再生しています。
+
+CI/CDパイプラインでテストを実行する場合は、既存のキャッシュを変更したくない可能性があります。`--vcr-record=none`コマンドラインオプションを使用してキャッシュの記録を無効にできます。例:
+
+```bash
+pytest --log-cli-level=10 tests/integration_tests/vectorstores/test_pinecone.py --vcr-record=none
+pytest tests/integration_tests/vectorstores/test_elasticsearch.py --vcr-record=none
+
+```
+
+### カバレッジを含めてテストを実行する:
+
+```bash
+pytest tests/integration_tests/vectorstores/test_elasticsearch.py --cov=langchain --cov-report=html
+start "" htmlcov/index.html || open htmlcov/index.html
+
+```
+
+## カバレッジ
+
+コードカバレッジ(つまり、ユニットテストによってカバーされているコードの量)は、コードの脆弱性の高い領域を特定するのに役立ちます。
+
+カバレッジには統合テストの依存関係が必要です:
+
+```bash
+poetry install --with test_integration
+```
+
+現在のカバレッジレポートを取得するには、以下を実行します:
+
+```bash
+make coverage
+```

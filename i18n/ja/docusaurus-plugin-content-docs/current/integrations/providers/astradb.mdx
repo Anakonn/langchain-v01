@@ -1,0 +1,160 @@
+---
+translated: true
+---
+
+# Astra DB
+
+> [DataStax Astra DB](https://docs.datastax.com/en/astra/home/astra.html)は、`Apache Cassandra®`に基づいて構築された、ベクトル対応のサーバーレスデータベースで、使いやすいJSONAPIを通して提供されています。
+
+[DataStaxが提供するチュートリアル](https://docs.datastax.com/en/astra/astra-db-vector/tutorials/chatbot.html)をご覧ください。
+
+## インストールとセットアップ
+
+以下のPythonパッケージをインストールしてください:
+
+```bash
+pip install "langchain-astradb>=0.1.0"
+```
+
+[接続シークレット](https://docs.datastax.com/en/astra/astra-db-vector/get-started/quickstart.html)を取得してください。
+以下の環境変数を設定してください:
+
+```python
+ASTRA_DB_APPLICATION_TOKEN="TOKEN"
+ASTRA_DB_API_ENDPOINT="API_ENDPOINT"
+```
+
+## ベクトルストア
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBVectorStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_astradb.vectorstores.AstraDBVectorStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBVectorStore
+
+vector_store = AstraDBVectorStore(
+    embedding=my_embedding,
+    collection_name="my_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+[サンプルノートブック](/docs/integrations/vectorstores/astradb)で詳細を確認してください。
+
+[DataStaxが提供するサンプル](https://docs.datastax.com/en/astra/astra-db-vector/integrations/langchain.html)をご覧ください。
+
+## チャットメッセージ履歴
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBChatMessageHistory", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_astradb.chat_message_histories.AstraDBChatMessageHistory.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBChatMessageHistory
+
+message_history = AstraDBChatMessageHistory(
+    session_id="test-session",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+[使用例](/docs/integrations/memory/astradb_chat_message_history#example)をご覧ください。
+
+## LLMキャッシュ
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Astra DB"}, {"imported": "AstraDBCache", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_astradb.cache.AstraDBCache.html", "title": "Astra DB"}]-->
+from langchain.globals import set_llm_cache
+from langchain_astradb import AstraDBCache
+
+set_llm_cache(AstraDBCache(
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+))
+```
+
+[サンプルノートブック](/docs/integrations/llms/llm_caching#astra-db-caches)のAstra DBセクションで詳細を確認してください。
+
+## セマンティックLLMキャッシュ
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Astra DB"}, {"imported": "AstraDBSemanticCache", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_astradb.cache.AstraDBSemanticCache.html", "title": "Astra DB"}]-->
+from langchain.globals import set_llm_cache
+from langchain_astradb import AstraDBSemanticCache
+
+set_llm_cache(AstraDBSemanticCache(
+    embedding=my_embedding,
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+))
+```
+
+[サンプルノートブック](/docs/integrations/llms/llm_caching#astra-db-caches)の該当セクションで詳細を確認してください。
+
+[サンプルノートブック](/docs/integrations/memory/astradb_chat_message_history)で詳細を確認してください。
+
+## ドキュメントローダー
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBLoader", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_astradb.document_loaders.AstraDBLoader.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBLoader
+
+loader = AstraDBLoader(
+    collection_name="my_collection",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+[サンプルノートブック](/docs/integrations/document_loaders/astradb)で詳細を確認してください。
+
+## セルフクエリリトリーバー
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBVectorStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_astradb.vectorstores.AstraDBVectorStore.html", "title": "Astra DB"}, {"imported": "SelfQueryRetriever", "source": "langchain.retrievers.self_query.base", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain.retrievers.self_query.base.SelfQueryRetriever.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBVectorStore
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+
+vector_store = AstraDBVectorStore(
+    embedding=my_embedding,
+    collection_name="my_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+
+retriever = SelfQueryRetriever.from_llm(
+    my_llm,
+    vector_store,
+    document_content_description,
+    metadata_field_info
+)
+```
+
+[サンプルノートブック](/docs/integrations/retrievers/self_query/astradb)で詳細を確認してください。
+
+## ストア
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/storage/langchain_astradb.storage.AstraDBStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBStore
+
+store = AstraDBStore(
+    collection_name="my_kv_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+[サンプルノートブック](/docs/integrations/stores/astradb#astradbstore)で詳細を確認してください。
+
+## バイトストア
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBByteStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/storage/langchain_astradb.storage.AstraDBByteStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBByteStore
+
+store = AstraDBByteStore(
+    collection_name="my_kv_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+[サンプルノートブック](/docs/integrations/stores/astradb#astradbbytestore)で詳細を確認してください。

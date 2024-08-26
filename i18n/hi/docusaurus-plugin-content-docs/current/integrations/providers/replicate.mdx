@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+यह पृष्ठ Replicate में LangChain पर मॉडल चलाने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+- एक [Replicate](https://replicate.com) खाता बनाएं। अपना API कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`REPLICATE_API_TOKEN`) के रूप में सेट करें
+- `pip install replicate` के साथ [Replicate पायथन क्लाइंट](https://github.com/replicate/replicate-python) स्थापित करें
+
+## मॉडल को कॉल करना
+
+[Replicate एक्सप्लोर पृष्ठ](https://replicate.com/explore) पर एक मॉडल ढूंढें, और फिर मॉडल नाम और संस्करण को इस प्रारूप में पेस्ट करें: `owner-name/model-name:version`
+
+उदाहरण के लिए, इस [dolly मॉडल](https://replicate.com/replicate/dolly-v2-12b) के लिए, API टैब पर क्लिक करें। मॉडल नाम/संस्करण होगा: `"replicate/dolly-v2-12b:ef0e1aefc61f8e096ebe4db6b2bacc297daf2ef6899f0f7e001ec445893500e5"`
+
+केवल `model` पैरामीटर आवश्यक है, लेकिन किसी भी अन्य मॉडल पैरामीटर को भी `input={model_param: value, ...}` प्रारूप में पास किया जा सकता है
+
+उदाहरण के लिए, यदि हम स्थिर प्रसार चला रहे थे और छवि आयाम बदलना चाहते थे:
+
+```python
+Replicate(model="stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf", input={'image_dimensions': '512x512'})
+```
+
+*ध्यान दें कि केवल मॉडल का पहला आउटपुट लौटाया जाएगा।*
+यहां से, हम अपने मॉडल को प्रारंभ कर सकते हैं:
+
+```python
+llm = Replicate(model="replicate/dolly-v2-12b:ef0e1aefc61f8e096ebe4db6b2bacc297daf2ef6899f0f7e001ec445893500e5")
+```
+
+और इसे चलाएं:
+
+```python
+prompt = """
+Answer the following yes/no question by reasoning step by step.
+Can a dog drive a car?
+"""
+llm(prompt)
+```
+
+हम इस वाक्यविन्यास का उपयोग करके किसी भी Replicate मॉडल (केवल LLM नहीं) को कॉल कर सकते हैं। उदाहरण के लिए, हम [स्थिर प्रसार](https://replicate.com/stability-ai/stable-diffusion) को कॉल कर सकते हैं:
+
+```python
+text2image = Replicate(model="stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf", input={'image_dimensions':'512x512'})
+
+image_output = text2image("A cat riding a motorcycle by Picasso")
+```

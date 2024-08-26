@@ -1,0 +1,60 @@
+---
+translated: true
+---
+
+# Ollama
+
+>[Ollama](https://ollama.ai/) es una biblioteca de Python. Le permite ejecutar modelos de lenguaje de código abierto a gran escala,
+> como LLaMA2, de forma local.
+>
+>`Ollama` agrupa los pesos del modelo, la configuración y los datos en un solo paquete, definido por un archivo Modelfile.
+>Optimiza los detalles de configuración y configuración, incluido el uso de GPU.
+>Para obtener una lista completa de los modelos y variantes de modelos compatibles, consulte la [biblioteca de modelos Ollama](https://ollama.ai/library).
+
+Consulte [esta guía](/docs/guides/development/local_llms#quickstart) para obtener más detalles
+sobre cómo usar `Ollama` con LangChain.
+
+## Instalación y configuración
+
+Siga [estas instrucciones](https://github.com/jmorganca/ollama?tab=readme-ov-file#ollama)
+para configurar y ejecutar una instancia local de Ollama.
+Para usar, debe configurar las variables de entorno `ANYSCALE_API_BASE` y
+`ANYSCALE_API_KEY`.
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Ollama"}]-->
+from langchain_community.llms import Ollama
+```
+
+Consulte el ejemplo de cuaderno [aquí](/docs/integrations/llms/ollama).
+
+## Modelos de chat
+
+### Chat Ollama
+
+```python
+<!--IMPORTS:[{"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Ollama"}]-->
+from langchain_community.chat_models import ChatOllama
+```
+
+Consulte el ejemplo de cuaderno [aquí](/docs/integrations/chat/ollama).
+
+### Funciones de Ollama
+
+```python
+<!--IMPORTS:[{"imported": "OllamaFunctions", "source": "langchain_experimental.llms.ollama_functions", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_experimental.llms.ollama_functions.OllamaFunctions.html", "title": "Ollama"}]-->
+from langchain_experimental.llms.ollama_functions import OllamaFunctions
+```
+
+Consulte el ejemplo de cuaderno [aquí](/docs/integrations/chat/ollama_functions).
+
+## Modelos de incrustación
+
+```python
+<!--IMPORTS:[{"imported": "OllamaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.ollama.OllamaEmbeddings.html", "title": "Ollama"}]-->
+from langchain_community.embeddings import OllamaEmbeddings
+```
+
+Consulte el ejemplo de cuaderno [aquí](/docs/integrations/text_embedding/ollama).

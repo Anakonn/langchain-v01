@@ -1,0 +1,163 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# コールバック
+
+:::info
+組み込みのコールバック統合機能については、[Integrations](/docs/integrations/callbacks/)のドキュメントをご覧ください。
+:::
+
+LangChainには、LLMアプリケーションの様々な段階でフックできるコールバックシステムが用意されています。これは、ログ記録、監視、ストリーミング、その他のタスクに役立ちます。
+
+これらのイベントにサブスクライブするには、APIの様々な場所で利用可能な `callbacks` 引数を使用します。この引数は、以下で詳しく説明するメソッドを実装しているハンドラオブジェクトのリストです。
+
+## コールバックハンドラ
+
+`CallbackHandlers` は、`CallbackHandler` インターフェイスを実装したオブジェクトです。このインターフェイスには、サブスクライブできるイベントごとのメソッドが定義されています。`CallbackManager` は、イベントがトリガーされたときに、各ハンドラの適切なメソッドを呼び出します。
+
+```python
+class BaseCallbackHandler:
+    """Base callback handler that can be used to handle callbacks from langchain."""
+
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> Any:
+        """Run when LLM starts running."""
+
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
+    ) -> Any:
+        """Run when Chat Model starts running."""
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
+        """Run on new LLM token. Only available when streaming is enabled."""
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
+        """Run when LLM ends running."""
+
+    def on_llm_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when LLM errors."""
+
+    def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> Any:
+        """Run when chain starts running."""
+
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
+        """Run when chain ends running."""
+
+    def on_chain_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when chain errors."""
+
+    def on_tool_start(
+        self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
+    ) -> Any:
+        """Run when tool starts running."""
+
+    def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
+        """Run when tool ends running."""
+
+    def on_tool_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when tool errors."""
+
+    def on_text(self, text: str, **kwargs: Any) -> Any:
+        """Run on arbitrary text."""
+
+    def on_agent_action(self, action: AgentAction, **kwargs: Any) -> Any:
+        """Run on agent action."""
+
+    def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
+        """Run on agent end."""
+```
+
+## 始めましょう
+
+LangChainには、開始時に使用できるいくつかの組み込みハンドラが用意されています。これらは `langchain_core/callbacks` モジュールで利用可能です。最も基本的なハンドラは `StdOutCallbackHandler` で、すべてのイベントを `stdout` にログ出力します。
+
+**注意**: オブジェクトの `verbose` フラグが true に設定されている場合、 `StdOutCallbackHandler` は明示的に渡されなくても呼び出されます。
+
+```python
+<!--IMPORTS:[{"imported": "StdOutCallbackHandler", "source": "langchain_core.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_core.callbacks.stdout.StdOutCallbackHandler.html", "title": "Callbacks"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Callbacks"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Callbacks"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Callbacks"}]-->
+from langchain_core.callbacks import StdOutCallbackHandler
+from langchain.chains import LLMChain
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+# Constructor callback: First, let's explicitly set the StdOutCallbackHandler when initializing our chain
+chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler])
+chain.invoke({"number":2})
+
+# Use verbose flag: Then, let's use the `verbose` flag to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
+chain.invoke({"number":2})
+
+# Request callbacks: Finally, let's use the request `callbacks` to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt)
+chain.invoke({"number":2}, {"callbacks":[handler]})
+
+```
+
+```output
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+```
+
+## コールバックを渡す場所
+
+`callbacks` は、API全体のほとんどのオブジェクト(Chains、Models、Tools、Agentsなど)で利用可能で、2つの異なる場所で定義できます:
+
+- **コンストラクタコールバック**: コンストラクタで定義されます。例: `LLMChain(callbacks=[handler], tags=['a-tag'])`。この場合、定義したコールバックはそのオブジェクトのすべての呼び出しに使用され、そのオブジェクトのみのスコープになります。例えば、`LLMChain` コンストラクタにハンドラを渡した場合、そのチェーンに接続されたModelでは使用されません。
+- **リクエストコールバック**: `invoke` メソッドで定義されます。この場合、定義したコールバックはその特定のリクエストにのみ使用され、そのリクエストに含まれるすべての下位リクエストにも使用されます(例: `LLMChain` の呼び出しが `Model` の呼び出しをトリガーし、同じハンドラが使用される)。 `invoke()` メソッドでコールバックはconfigパラメータを通して渡されます。
+`invoke()` メソッドでの例:
+
+```python
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+config = {
+    'callbacks' : [handler]
+}
+
+chain = prompt | chain
+chain.invoke({"number":2}, config=config)
+```
+
+**注意:** `chain = prompt | chain` は `chain = LLMChain(llm=llm, prompt=prompt)` と同等です(詳細は[LangChain Expression Language (LCEL) documentation](/docs/expression_language/)を参照してください)
+
+`verbose` 引数は、ほとんどのオブジェクト(Chains、Models、Tools、Agentsなど)のコンストラクタ引数として利用可能で、例えば `LLMChain(verbose=True)` のように使用できます。これは `callbacks` 引数に `ConsoleCallbackHandler` を渡すのと同等で、デバッグ時に便利です。コンソールにすべてのイベントがログ出力されます。
+
+### それぞれをいつ使うべきですか?
+
+- コンストラクタコールバックは、ログ記録、監視など、_単一のリクエストに固有ではなく_、全体のチェーンに関連するユースケースに最適です。例えば、`LLMChain` への全リクエストをログ記録したい場合は、コンストラクタにハンドラを渡します。
+- リクエストコールバックは、ストリーミングなど、特定のリクエストの出力をWebSocketなどに出力したいユースケースに最適です。例えば、単一のリクエストの出力をWebSocketにストリーミングしたい場合は、`invoke()` メソッドにハンドラを渡します。

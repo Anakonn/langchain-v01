@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# आत्मविश्वासी एआई
+
+>[आत्मविश्वासी एआई](https://confident-ai.com) `DeepEval` का निर्माता है।
+>
+>[DeepEval](https://github.com/confident-ai/deepeval) एलएलएम के यूनिट परीक्षण के लिए एक पैकेज है।
+> `DeepEval` का उपयोग करके, प्रत्येक व्यक्ति यूनिट परीक्षण और एकीकरण परीक्षण दोनों का उपयोग करके
+> रोबस्ट भाषा मॉडल बना सकता है। `DeepEval` प्रत्येक चरण में समर्थन प्रदान करता है
+> संश्लेषित डेटा सृजन से परीक्षण तक।
+
+## स्थापना और सेटअप
+
+आपको [DeepEval API credentials](https://app.confident-ai.com) प्राप्त करने की आवश्यकता है।
+
+आपको `DeepEval` Python पैकेज स्थापित करना होगा:
+
+```bash
+pip install deepeval
+```
+
+## कॉलबैक
+
+एक [उदाहरण](/docs/integrations/callbacks/confident) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DeepEvalCallbackHandler", "source": "langchain.callbacks.confident_callback", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.confident_callback.DeepEvalCallbackHandler.html", "title": "Confident AI"}]-->
+from langchain.callbacks.confident_callback import DeepEvalCallbackHandler
+```

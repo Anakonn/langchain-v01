@@ -1,0 +1,247 @@
+---
+translated: true
+---
+
+# Contribuir con código
+
+Para contribuir a este proyecto, sigue el flujo de trabajo ["fork y pull request"](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
+Por favor, no intentes empujar directamente a este repositorio a menos que seas un mantenedor.
+
+Por favor, sigue la plantilla de solicitud de extracción registrada al abrir solicitudes de extracción. Anota los problemas relacionados y etiqueta a los mantenedores relevantes.
+
+Las solicitudes de extracción no pueden aterrizar sin pasar primero los controles de formato, linting y pruebas. Consulta [Pruebas](#pruebas) y [Formato y Linting](#formato-y-linting) para saber cómo ejecutar estas comprobaciones localmente.
+
+Es esencial que mantengamos una gran documentación y pruebas. Si:
+- Corriges un error
+  - Agrega una prueba de unidad o integración relevante cuando sea posible. Estas se encuentran en `tests/unit_tests` y `tests/integration_tests`.
+- Haces una mejora
+  - Actualiza los cuadernos de ejemplo y la documentación afectados. Estos se encuentran en `docs`.
+  - Actualiza las pruebas de unidad e integración cuando sea relevante.
+- Agregas una función
+  - Agrega un cuaderno de demostración en `docs/docs/`.
+  - Agrega pruebas de unidad e integración.
+
+Somos un equipo pequeño y orientado al progreso. Si hay algo que te gustaría agregar o cambiar, abrir una solicitud de extracción es la mejor manera de llamar nuestra atención.
+
+## 🚀 Inicio rápido
+
+Esta guía de inicio rápido explica cómo ejecutar el repositorio localmente.
+Para un [contenedor de desarrollo](https://containers.dev/), consulta la [carpeta .devcontainer](https://github.com/langchain-ai/langchain/tree/master/.devcontainer).
+
+### Gestión de dependencias: Poetry y otros administradores de entornos/dependencias
+
+Este proyecto utiliza [Poetry](https://python-poetry.org/) v1.7.1+ como gestor de dependencias.
+
+❗Nota: *Antes de instalar Poetry*, si usas `Conda`, crea y activa un nuevo entorno Conda (por ejemplo, `conda create -n langchain python=3.9`)
+
+Instala Poetry: **[documentación sobre cómo instalarlo](https://python-poetry.org/docs/#installation)**.
+
+❗Nota: Si usas `Conda` o `Pyenv` como tu gestor de entornos/paquetes, después de instalar Poetry,
+dile a Poetry que use el entorno virtual de Python (`poetry config virtualenvs.prefer-active-python true`)
+
+### Diferentes paquetes
+
+Este repositorio contiene varios paquetes:
+- `langchain-core`: Interfaces base para las principales abstracciones, así como lógica para combinarlas en cadenas (Lenguaje de Expresión LangChain).
+- `langchain-community`: Integraciones de terceros de varios componentes.
+- `langchain`: Cadenas, agentes y lógica de recuperación que conforman la arquitectura cognitiva de tus aplicaciones.
+- `langchain-experimental`: Componentes y cadenas que son experimentales, ya sea en el sentido de que las técnicas son novedosas y aún se están probando, o requieren dar al LLM más acceso del que sería posible en la mayoría de los sistemas de producción.
+- Integraciones de socios: Paquetes de socios en `libs/partners` que se controlan de forma independiente.
+
+Cada uno de estos tiene su propio entorno de desarrollo. La documentación se ejecuta desde el archivo makefile de nivel superior, pero el desarrollo se divide en flujos de prueba y lanzamiento separados.
+
+Para este inicio rápido, comienza con langchain-community:
+
+```bash
+cd libs/community
+```
+
+### Dependencias de desarrollo local
+
+Instala los requisitos de desarrollo de langchain-community (para ejecutar langchain, ejecutar ejemplos, linting, formato, pruebas y cobertura):
+
+```bash
+poetry install --with lint,typing,test,test_integration
+```
+
+Luego verifica la instalación de las dependencias:
+
+```bash
+make test
+```
+
+Si durante la instalación recibes un `WheelFileValidationError` para `debugpy`, asegúrate de estar ejecutando
+Poetry v1.6.1+. Este error estaba presente en versiones anteriores de Poetry (por ejemplo, 1.4.1) y se ha resuelto en versiones más recientes.
+Si aún ves este error en v1.6.1+, también puedes intentar deshabilitar la "instalación moderna"
+(`poetry config installer.modern-installation false`) y volver a instalar los requisitos.
+Consulta [este problema de `debugpy`](https://github.com/microsoft/debugpy/issues/1246) para más detalles.
+
+### Pruebas
+
+_En `langchain`, `langchain-community` y `langchain-experimental`, algunas dependencias de prueba son opcionales; consulta la sección sobre dependencias opcionales_.
+
+Las pruebas unitarias cubren la lógica modular que no requiere llamadas a APIs externas.
+Si agregas nueva lógica, agrega una prueba unitaria.
+
+Para ejecutar las pruebas unitarias:
+
+```bash
+make test
+```
+
+Para ejecutar las pruebas unitarias en Docker:
+
+```bash
+make docker_tests
+```
+
+También hay [pruebas de integración y cobertura de código](/docs/contributing/testing/) disponibles.
+
+### Solo desarrollar langchain_core o langchain_experimental
+
+Si solo estás desarrollando `langchain_core` o `langchain_experimental`, puedes simplemente instalar las dependencias de los proyectos respectivos y ejecutar las pruebas:
+
+```bash
+cd libs/core
+poetry install --with test
+make test
+```
+
+O:
+
+```bash
+cd libs/experimental
+poetry install --with test
+make test
+```
+
+### Formato y Linting
+
+Ejecuta estos localmente antes de enviar un PR; el sistema de CI también los revisará.
+
+#### Formato de código
+
+El formato de este proyecto se realiza a través de [ruff](https://docs.astral.sh/ruff/rules/).
+
+Para ejecutar el formato para la documentación, el libro de cocina y las plantillas:
+
+```bash
+make format
+```
+
+Para ejecutar el formato de una biblioteca, ejecuta el mismo comando desde el directorio de la biblioteca correspondiente:
+
+```bash
+cd libs/{LIBRARY}
+make format
+```
+
+Además, puedes ejecutar el formateador solo en los archivos que se han modificado en tu rama actual en comparación con la rama maestra usando el comando format_diff:
+
+```bash
+make format_diff
+```
+
+Esto es especialmente útil cuando has realizado cambios en un subconjunto del proyecto y quieres asegurarte de que tus cambios estén correctamente formateados sin afectar el resto del código base.
+
+#### Linting
+
+El linting para este proyecto se realiza mediante una combinación de [ruff](https://docs.astral.sh/ruff/rules/) y [mypy](http://mypy-lang.org/).
+
+Para ejecutar el linting para la documentación, el libro de recetas y las plantillas:
+
+```bash
+make lint
+```
+
+Para ejecutar el linting para una biblioteca, ejecute el mismo comando desde el directorio de la biblioteca correspondiente:
+
+```bash
+cd libs/{LIBRARY}
+make lint
+```
+
+Además, puede ejecutar el linter solo en los archivos que se han modificado en su rama actual en comparación con la rama principal utilizando el comando lint_diff:
+
+```bash
+make lint_diff
+```
+
+Esto puede ser muy útil cuando has realizado cambios solo en ciertas partes del proyecto y quieres asegurarte de que tus cambios cumplan con los estándares de linting sin tener que revisar todo el código base.
+
+Reconocemos que el linting puede ser molesto; si no quieres hacerlo, comunícate con un mantenedor del proyecto y ellos podrán ayudarte. No queremos que esto sea un obstáculo para que se contribuya con buen código.
+
+#### Revisión ortográfica
+
+La revisión ortográfica para este proyecto se realiza a través de [codespell](https://github.com/codespell-project/codespell).
+Tenga en cuenta que `codespell` encuentra errores ortográficos comunes, por lo que podría tener falsos positivos (palabras correctamente escritas pero poco utilizadas) y falsos negativos (no encontrar palabras mal escritas).
+
+Para revisar la ortografía de este proyecto:
+
+```bash
+make spell_check
+```
+
+Para corregir la ortografía en su lugar:
+
+```bash
+make spell_fix
+```
+
+Si codespell está marcando incorrectamente una palabra, puede omitir la revisión ortográfica para esa palabra agregándola a la configuración de codespell en el archivo `pyproject.toml`.
+
+```python
+[tool.codespell]
+...
+# Add here:
+ignore-words-list = 'momento,collison,ned,foor,reworkd,parth,whats,aapply,mysogyny,unsecure'
+```
+
+## Trabajar con dependencias opcionales
+
+`langchain`, `langchain-community` y `langchain-experimental` dependen de dependencias opcionales para mantener estos paquetes ligeros.
+
+`langchain-core` y los paquetes asociados **no utilizan** dependencias opcionales de esta manera.
+
+Solo necesitas agregar una nueva dependencia si una **prueba unitaria** depende del paquete.
+Si tu paquete solo se requiere para **pruebas de integración**, entonces puedes omitir estos
+pasos y dejar todos los archivos pyproject.toml y poetry.lock tal como están.
+
+Si estás agregando una nueva dependencia a Langchain, asume que será una dependencia opcional, y
+que la mayoría de los usuarios no la tendrán instalada.
+
+Los usuarios que no tengan la dependencia instalada deberían poder **importar** tu código sin
+ningún efecto secundario (sin advertencias, sin errores, sin excepciones).
+
+Para introducir la dependencia al archivo pyproject.toml correctamente, por favor haz lo siguiente:
+
+1. Agrega la dependencia al grupo principal como una dependencia opcional
+  ```bash
+  poetry add --optional [nombre_del_paquete]
+  ```
+2. Abre el archivo pyproject.toml y agrega la dependencia al extra `extended_testing`
+3. Vuelve a bloquear el archivo poetry para actualizar el extra.
+  ```bash
+  poetry lock --no-update
+  ```
+4. Agrega una prueba unitaria que al menos intente importar el nuevo código. Idealmente, la prueba
+unitaria utiliza fixtures ligeros para probar la lógica del código.
+5. Por favor, usa el decorador `@pytest.mark.requires(nombre_del_paquete)` para cualquier prueba que requiera la dependencia.
+
+## Agregar un cuaderno de Jupyter
+
+Si estás agregando un ejemplo de cuaderno de Jupyter, querrás instalar las dependencias opcionales `dev`.
+
+Para instalar las dependencias de desarrollo:
+
+```bash
+poetry install --with dev
+```
+
+Inicia un cuaderno:
+
+```bash
+poetry run jupyter notebook
+```
+
+Cuando ejecutas `poetry install`, el paquete `langchain` se instala como editable en el entorno virtual, por lo que tu nueva lógica se puede importar en el cuaderno.

@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Snowflake
+
+> [Snowflake](https://www.snowflake.com/) es una plataforma de almacenamiento de datos en la nube
+> que le permite almacenar y consultar grandes cantidades de datos.
+
+Esta página cubre cómo usar el ecosistema `Snowflake` dentro de `LangChain`.
+
+## Modelos de incrustación
+
+Snowflake ofrece sus modelos de incrustación de peso abierto `arctic` de forma gratuita
+en [Hugging Face](https://huggingface.co/Snowflake/snowflake-arctic-embed-l).
+Puede usar estos modelos a través del
+[HuggingFaceEmbeddings](/docs/integrations/text_embedding/huggingfacehub) conector:
+
+```shell
+pip install langchain-community sentence-transformers
+```
+
+```python
+from langchain_community.text_embeddings import HuggingFaceEmbeddings
+
+model = HuggingFaceEmbeddings(model_name="snowflake/arctic-embed-l")
+```
+
+## Cargador de documentos
+
+Puede usar el [`SnowflakeLoader`](/docs/integrations/document_loaders/snowflake)
+para cargar datos de Snowflake:
+
+```python
+<!--IMPORTS:[{"imported": "SnowflakeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.snowflake_loader.SnowflakeLoader.html", "title": "Snowflake"}]-->
+from langchain_community.document_loaders import SnowflakeLoader
+```

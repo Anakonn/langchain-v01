@@ -1,0 +1,75 @@
+---
+keywords:
+- संगतता
+- बाइंड_टूल्स
+- टूल कॉलिंग
+- फ़ंक्शन कॉलिंग
+- संरचित आउटपुट
+- with_structured_output
+sidebar_class_name: hidden
+sidebar_position: 0
+translated: true
+---
+
+# चैट मॉडल्स
+
+## विशेषताएं (मूल रूप से समर्थित)
+
+सभी ChatModels रनएबल इंटरफ़ेस को लागू करते हैं, जिसमें सभी विधियों के डिफ़ॉल्ट कार्यान्वयन हैं, यानी `ainvoke`, `batch`, `abatch`, `stream`, `astream`। यह सभी ChatModels को असिंक्रोनस, स्ट्रीमिंग और बैच के लिए मूल समर्थन देता है, जो डिफ़ॉल्ट रूप से निम्नानुसार कार्यान्वित होता है:
+- *असिंक्रोनस* समर्थन डिफ़ॉल्ट रूप से asyncio के डिफ़ॉल्ट थ्रेड पूल एक्जीक्यूटर में संबंधित सिंक विधि को कॉल करता है। यह आपके एप्लिकेशन में अन्य असिंक्रोनस फ़ंक्शन को प्रगति करने देता है, जबकि ChatModel को निष्पादित किया जा रहा है, क्योंकि यह कॉल को एक पृष्ठभूमि थ्रेड में ले जाता है।
+- *स्ट्रीमिंग* समर्थन डिफ़ॉल्ट रूप से एक `Iterator` (या असिंक्रोनस स्ट्रीमिंग के मामले में `AsyncIterator`) एक मूल्य का लौटाता है, जो अंतिम परिणाम है जो अंतर्निहित ChatModel प्रदाता द्वारा लौटाया गया है। यह स्पष्ट रूप से टोकन-दर-टोकन स्ट्रीमिंग नहीं देता है, जिसके लिए ChatModel प्रदाता से मूल समर्थन की आवश्यकता होती है, लेकिन यह सुनिश्चित करता है कि टोकन का एक इटरेटर की उम्मीद करने वाला आपका कोड हमारे सभी ChatModel एकीकरणों के लिए काम करेगा।
+- *बैच* समर्थन डिफ़ॉल्ट रूप से एक थ्रेड पूल एक्जीक्यूटर (सिंक बैच मामले में) या `asyncio.gather` (असिंक्रोनस बैच मामले में) का उपयोग करके प्रत्येक इनपुट के लिए अंतर्निहित ChatModel को समानांतर रूप से कॉल करता है। `RunnableConfig` में `max_concurrency` कुंजी के साथ संचयन को नियंत्रित किया जा सकता है।
+
+प्रत्येक ChatModel एकीकरण वास्तव में असिंक्रोनस या स्ट्रीमिंग को सक्षम करने के लिए वैकल्पिक कार्यान्वयन प्रदान कर सकता है।
+तालिका में प्रत्येक एकीकरण के लिए बताया गया है कि कौन-कौन सी विशेषताएं मूल समर्थन के साथ कार्यान्वित की गई हैं।
+
+मॉडल|आमंत्रण|असिंक्रोनस आमंत्रण|स्ट्रीम|असिंक्रोनस स्ट्रीम|[टूल कॉलिंग](/docs/modules/model_io/chat/function_calling/)|[संरचित आउटपुट](/docs/modules/model_io/chat/structured_output/)|Python पैकेज
+:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:
+AzureChatOpenAI|✅|❌|❌|❌|✅|✅|langchain-openai
+BedrockChat|✅|❌|✅|❌|❌|❌|langchain-community
+ChatAnthropic|✅|❌|❌|❌|✅|✅|langchain-anthropic
+ChatAnyscale|✅|✅|✅|✅|❌|❌|langchain-community
+ChatBaichuan|✅|❌|✅|❌|❌|❌|langchain-community
+ChatCohere|✅|❌|❌|❌|✅|✅|langchain-cohere
+ChatCoze|✅|❌|✅|❌|❌|❌|langchain-community
+ChatDatabricks|✅|❌|✅|❌|❌|❌|langchain-community
+ChatDeepInfra|✅|✅|✅|✅|❌|❌|langchain-community
+ChatEverlyAI|✅|✅|✅|✅|❌|❌|langchain-community
+ChatFireworks|✅|❌|❌|❌|✅|✅|langchain-fireworks
+ChatFriendli|✅|✅|✅|✅|❌|❌|langchain-community
+ChatGooglePalm|✅|✅|❌|❌|❌|❌|langchain-community
+ChatGroq|✅|❌|❌|❌|✅|✅|langchain-groq
+ChatHuggingFace|✅|✅|✅|✅|❌|❌|langchain-community
+ChatHunyuan|✅|❌|✅|❌|❌|❌|langchain-community
+ChatJavelinAIGateway|✅|✅|❌|❌|❌|❌|langchain-community
+ChatKinetica|✅|❌|❌|❌|❌|❌|langchain-community
+ChatKonko|✅|❌|❌|❌|❌|❌|langchain-community
+ChatLiteLLM|✅|✅|✅|✅|❌|❌|langchain-community
+ChatLiteLLMRouter|✅|✅|✅|✅|❌|❌|langchain-community
+ChatMLX|✅|✅|✅|❌|❌|❌|langchain-community
+ChatMLflowAIGateway|✅|❌|❌|❌|❌|❌|langchain-community
+ChatMaritalk|✅|✅|✅|✅|❌|❌|langchain-community
+ChatMistralAI|✅|❌|❌|❌|✅|✅|langchain-mistralai
+ChatMlflow|✅|❌|✅|❌|❌|❌|langchain-community
+ChatOctoAI|✅|✅|✅|✅|❌|❌|langchain-community
+ChatOllama|✅|✅|✅|✅|❌|❌|langchain-community
+ChatOpenAI|✅|❌|❌|❌|✅|✅|langchain-openai
+ChatPerplexity|✅|❌|✅|❌|❌|❌|langchain-community
+ChatPremAI|✅|❌|✅|❌|❌|❌|langchain-community
+ChatSparkLLM|✅|❌|✅|❌|❌|❌|langchain-community
+ChatTongyi|✅|✅|✅|✅|❌|❌|langchain-community
+ChatVertexAI|✅|❌|❌|❌|✅|✅|langchain-google-vertexai
+ChatYandexGPT|✅|✅|❌|❌|❌|❌|langchain-community
+ChatYuan2|✅|✅|✅|✅|❌|❌|langchain-community
+ChatZhipuAI|✅|✅|✅|✅|❌|❌|langchain-community
+ErnieBotChat|✅|❌|❌|❌|❌|❌|langchain-community
+GPTRouter|✅|✅|✅|✅|❌|❌|langchain-community
+GigaChat|✅|✅|✅|✅|❌|❌|langchain-community
+JinaChat|✅|✅|✅|✅|❌|❌|langchain-community
+LlamaEdgeChatService|✅|❌|✅|❌|❌|❌|langchain-community
+MiniMaxChat|✅|✅|❌|❌|❌|❌|langchain-community
+PaiEasChatEndpoint|✅|❌|❌|✅|❌|❌|langchain-community
+PromptLayerChatOpenAI|✅|❌|❌|❌|❌|❌|langchain-community
+QianfanChatEndpoint|✅|✅|✅|✅|❌|❌|langchain-community
+SolarChat|✅|✅|✅|✅|❌|❌|langchain-community
+VolcEngineMaasChat|✅|❌|✅|❌|❌|❌|langchain-community

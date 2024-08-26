@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# Microsoft Office
+
+>[La suite de logiciels de productivité Microsoft Office](https://www.office.com/) comprend Microsoft Word, Microsoft Excel, Microsoft PowerPoint, Microsoft Outlook et Microsoft OneNote. Elle est disponible pour les systèmes d'exploitation Microsoft Windows et macOS. Elle est également disponible sur Android et iOS.
+
+Cela couvre comment charger les formats de fichiers les plus couramment utilisés, notamment les documents `DOCX`, `XLSX` et `PPTX`, dans un format de document que nous pouvons utiliser en aval.
+
+## Chargement de DOCX, XLSX, PPTX avec AzureAIDocumentIntelligenceLoader
+
+[Azure AI Document Intelligence](https://aka.ms/doc-intelligence) (anciennement connu sous le nom de `Azure Form Recognizer`) est un service basé sur l'apprentissage automatique qui extrait les textes (y compris l'écriture manuscrite), les tableaux, les structures de documents (par exemple, les titres, les en-têtes de section, etc.) et les paires clé-valeur à partir de fichiers PDF, d'images, de fichiers Office et HTML numériques ou numérisés. Document Intelligence prend en charge les formats `PDF`, `JPEG/JPG`, `PNG`, `BMP`, `TIFF`, `HEIF`, `DOCX`, `XLSX`, `PPTX` et `HTML`.
+
+Cette [implémentation actuelle](https://aka.ms/di-langchain) d'un chargeur utilisant `Document Intelligence` peut incorporer le contenu page par page et le transformer en documents LangChain. Le format de sortie par défaut est le markdown, qui peut être facilement enchaîné avec `MarkdownHeaderTextSplitter` pour le découpage sémantique des documents. Vous pouvez également utiliser `mode="single"` ou `mode="page"` pour renvoyer des textes purs sur une seule page ou un document divisé par page.
+
+### Prérequis
+
+Une ressource Azure AI Document Intelligence dans l'une des 3 régions d'aperçu : **East US**, **West US2**, **West Europe** - suivez [ce document](https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource?view=doc-intel-4.0.0) pour en créer une si vous n'en avez pas. Vous transmettrez `<endpoint>` et `<key>` en tant que paramètres au chargeur.
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDocumentIntelligenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.doc_intelligence.AzureAIDocumentIntelligenceLoader.html", "title": "Microsoft Office"}]-->
+%pip install --upgrade --quiet  langchain langchain-community azure-ai-documentintelligence
+
+from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
+
+file_path = "<filepath>"
+endpoint = "<endpoint>"
+key = "<key>"
+loader = AzureAIDocumentIntelligenceLoader(
+    api_endpoint=endpoint, api_key=key, file_path=file_path, api_model="prebuilt-layout"
+)
+
+documents = loader.load()
+```

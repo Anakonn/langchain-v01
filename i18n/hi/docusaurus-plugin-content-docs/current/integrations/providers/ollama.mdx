@@ -1,0 +1,58 @@
+---
+translated: true
+---
+
+# ओलामा
+
+>[ओलामा](https://ollama.ai/) एक पायथन लाइब्रेरी है। यह आपको स्थानीय रूप से ओपन-सोर्स बड़े भाषा मॉडल, जैसे LLaMA2, चलाने की अनुमति देता है।
+
+>`ओलामा` मॉडल वजन, कॉन्फ़िगरेशन और डेटा को एक एकल पैकेज में बंडल करता है, जिसे एक Modelfile द्वारा परिभाषित किया जाता है।
+>यह सेटअप और कॉन्फ़िगरेशन विवरणों को, जिसमें GPU उपयोग शामिल है, अनुकूलित करता है।
+>समर्थित मॉडल और मॉडल वेरिएंट की पूर्ण सूची के लिए, [ओलामा मॉडल लाइब्रेरी](https://ollama.ai/library) देखें।
+
+[इस गाइड](/docs/guides/development/local_llms#quickstart) में `ओलामा` को LangChain के साथ कैसे उपयोग करें, इस बारे में अधिक जानकारी देखें।
+
+## इंस्टॉलेशन और सेटअप
+
+[इन निर्देशों](https://github.com/jmorganca/ollama?tab=readme-ov-file#ollama) का पालन करें
+स्थानीय ओलामा इंस्टेंस को सेट अप और चलाने के लिए।
+उपयोग करने के लिए, आपको `ANYSCALE_API_BASE` और
+`ANYSCALE_API_KEY` पर्यावरण चर सेट करना चाहिए।
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Ollama"}]-->
+from langchain_community.llms import Ollama
+```
+
+[यहां](/docs/integrations/llms/ollama) नोटबुक उदाहरण देखें।
+
+## चैट मॉडल
+
+### चैट ओलामा
+
+```python
+<!--IMPORTS:[{"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Ollama"}]-->
+from langchain_community.chat_models import ChatOllama
+```
+
+[यहां](/docs/integrations/chat/ollama) नोटबुक उदाहरण देखें।
+
+### ओलामा फ़ंक्शन
+
+```python
+<!--IMPORTS:[{"imported": "OllamaFunctions", "source": "langchain_experimental.llms.ollama_functions", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_experimental.llms.ollama_functions.OllamaFunctions.html", "title": "Ollama"}]-->
+from langchain_experimental.llms.ollama_functions import OllamaFunctions
+```
+
+[यहां](/docs/integrations/chat/ollama_functions) नोटबुक उदाहरण देखें।
+
+## एम्बेडिंग मॉडल
+
+```python
+<!--IMPORTS:[{"imported": "OllamaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.ollama.OllamaEmbeddings.html", "title": "Ollama"}]-->
+from langchain_community.embeddings import OllamaEmbeddings
+```
+
+[यहां](/docs/integrations/text_embedding/ollama) नोटबुक उदाहरण देखें।

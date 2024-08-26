@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# Browserbase
+
+>[Browserbase](https://browserbase.com) es una plataforma sin servidor para ejecutar navegadores sin cabeza, ofrece depuración avanzada, grabaciones de sesiones, modo furtivo, proxies integrados y resolución de captchas.
+
+## Instalación y configuración
+
+- Obtén una clave API de [browserbase.com](https://browserbase.com) y configúrala en las variables de entorno (`BROWSERBASE_API_KEY`).
+- Instala el [SDK de Browserbase](http://github.com/browserbase/python-sdk):
+
+```python
+pip install browserbase
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/browserbase).
+
+```python
+<!--IMPORTS:[{"imported": "BrowserbaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.browserbase.BrowserbaseLoader.html", "title": "Browserbase"}]-->
+from langchain_community.document_loaders import BrowserbaseLoader
+```
+
+## Multimodal
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/browserbase).
+
+```python
+from browserbase.helpers.gpt4 import GPT4VImage, GPT4VImageDetail
+```

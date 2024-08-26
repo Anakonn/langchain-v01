@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# वुल्फ्राम अल्फा
+
+>[वुल्फ्राम अल्फा](https://en.wikipedia.org/wiki/WolframAlpha) `वुल्फ्राम रिसर्च` द्वारा विकसित एक उत्तर इंजन है।
+> यह बाहरी स्रोतों से डेटा की गणना करके तथ्यात्मक प्रश्नों का उत्तर देता है।
+
+यह पृष्ठ `वुल्फ्राम अल्फा एपीआई` का LangChain में उपयोग करने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+- आवश्यकताओं को इंस्टॉल करें
+
+```bash
+pip install wolframalpha
+```
+
+- वुल्फ्राम अल्फा पर जाएं और एक डेवलपर खाता बनाएं [यहाँ](https://developer.wolframalpha.com/)
+- एक ऐप बनाएं और अपना `ऐप आईडी` प्राप्त करें
+- अपना ऐप आईडी को एक पर्यावरण चर `WOLFRAM_ALPHA_APPID` के रूप में सेट करें
+
+## रैपर्स
+
+### उपयोगिता
+
+एक WolframAlphaAPIWrapper उपयोगिता मौजूद है जो इस एपीआई को रैप करती है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "WolframAlphaAPIWrapper", "source": "langchain_community.utilities.wolfram_alpha", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.wolfram_alpha.WolframAlphaAPIWrapper.html", "title": "Wolfram Alpha"}]-->
+from langchain_community.utilities.wolfram_alpha import WolframAlphaAPIWrapper
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/tools/wolfram_alpha) देखें।
+
+### उपकरण
+
+आप इस रैपर को एक उपकरण के रूप में भी आसानी से लोड कर सकते हैं (एजेंट के साथ उपयोग करने के लिए)।
+आप इसे निम्नानुसार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Wolfram Alpha"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["wolfram-alpha"])
+```
+
+उपकरणों के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

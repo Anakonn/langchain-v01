@@ -1,0 +1,89 @@
+---
+translated: true
+---
+
+# Johnsnowlabs
+
+Acceda al ecosistema de bibliotecas de NLP empresariales de [johnsnowlabs](https://www.johnsnowlabs.com/) con más de 21.000 modelos de NLP empresariales en más de 200 idiomas con la biblioteca de código abierto `johnsnowlabs`. Para ver los más de 24.000 modelos, consulte el [John Snow Labs Model Models Hub](https://nlp.johnsnowlabs.com/models)
+
+## Instalación y configuración
+
+```bash
+pip install johnsnowlabs
+```
+
+Para [instalar funciones empresariales](https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick, ejecute:
+
+```python
+# for more details see https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick
+nlp.install()
+```
+
+Puede incrustar sus consultas y documentos con binarios optimizados basados en `gpu`, `cpu`, `apple_silicon` o `aarch`. De forma predeterminada, se utilizan los binarios de cpu.
+Una vez que se inicia una sesión, debe reiniciar su cuaderno para cambiar entre GPU o CPU, o los cambios no tendrán efecto.
+
+## Incrustar consulta con CPU:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert')
+output = embedding.embed_query(document)
+```
+
+## Incrustar consulta con GPU:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_query(document)
+```
+
+## Incrustar consulta con Apple Silicon (M1, M2, etc.):
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_query(document)
+```
+
+## Incrustar consulta con AARCH:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_query(document)
+```
+
+## Incrustar documento con CPU:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## Incrustar documento con GPU:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## Incrustar documento con Apple Silicon (M1, M2, etc.):
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_documents(documents)
+```
+
+## Incrustar documento con AARCH:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_documents(documents)
+```
+
+Los modelos se cargan con [nlp.load](https://nlp.johnsnowlabs.com/docs/en/jsl/load_api) y la sesión de Spark se inicia con [nlp.start()](https://nlp.johnsnowlabs.com/docs/en/jsl/start-a-sparksession) por debajo.

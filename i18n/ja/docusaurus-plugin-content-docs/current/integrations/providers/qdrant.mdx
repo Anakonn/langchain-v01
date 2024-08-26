@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# Qdrant
+
+>[Qdrant](https://qdrant.tech/documentation/) (クアドラントと読む) はベクトル類似検索エンジンです。
+> ポイント - ベクトルと追加のペイロードを保存、検索、管理するための便利な API を備えた本番用のサービスを提供しています。 `Qdrant` は拡張フィルタリングをサポートするように設計されています。
+
+## インストールとセットアップ
+
+Python SDK をインストールします:
+
+```bash
+pip install qdrant-client
+```
+
+## ベクトルストア
+
+`Qdrant` インデックスを使用するためのラッパーが存在し、セマンティック検索や例の選択に使用できます。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Qdrant"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+Qdrant ラッパーの詳細なチュートリアルについては、[このノートブック](/docs/integrations/vectorstores/qdrant)を参照してください。

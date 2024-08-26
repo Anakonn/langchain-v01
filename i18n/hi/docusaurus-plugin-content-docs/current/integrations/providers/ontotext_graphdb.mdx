@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# ऑन्टोटेक्स्ट ग्राफ़डीबी
+
+>[ऑन्टोटेक्स्ट ग्राफ़डीबी](https://graphdb.ontotext.com/) एक ग्राफ़ डेटाबेस और आरडीएफ और एसपीएआरक्यूएल के अनुरूप ज्ञान खोज उपकरण है।
+
+## निर्भरताएं
+
+[rdflib](https://github.com/RDFLib/rdflib) पैकेज को इंस्टॉल करें
+
+```bash
+pip install rdflib==7.0.0
+```
+
+## ग्राफ़ क्यूए श्रृंखला
+
+अपने ग्राफ़डीबी डेटाबेस को एक चैट मॉडल से जोड़कर अपने डेटा पर अंतर्दृष्टि प्राप्त करें।
+
+नोटबुक उदाहरण [यहां](/docs/integrations/graphs/ontotext) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OntotextGraphDBGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph.html", "title": "Ontotext GraphDB"}, {"imported": "OntotextGraphDBQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.ontotext_graphdb.OntotextGraphDBQAChain.html", "title": "Ontotext GraphDB"}]-->
+from langchain_community.graphs import OntotextGraphDBGraph
+from langchain.chains import OntotextGraphDBQAChain
+```

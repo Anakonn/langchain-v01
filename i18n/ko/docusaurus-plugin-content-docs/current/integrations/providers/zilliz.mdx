@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Zilliz
+
+>[Zilliz Cloud](https://zilliz.com/doc/quick_start)는 `LF AI Milvus®`에 대한 완전히 관리되는 클라우드 서비스입니다.
+
+## 설치 및 설정
+
+Python SDK를 설치하세요:
+
+```bash
+pip install pymilvus
+```
+
+## 벡터 저장소
+
+Zilliz 인덱스에 대한 래퍼는 의미 검색 또는 예제 선택을 위해 벡터 저장소로 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Zilliz"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+Milvus 래퍼에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/zilliz)을 참조하세요.

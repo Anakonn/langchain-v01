@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# LLMonitor
+
+>[LLMonitor](https://llmonitor.com?utm_source=langchain&utm_medium=py&utm_campaign=docs)은 비용 및 사용 분석, 사용자 추적, 추적 및 평가 도구를 제공하는 오픈 소스 관찰 플랫폼입니다.
+
+## 설치 및 설정
+
+[llmonitor.com](https://llmonitor.com?utm_source=langchain&utm_medium=py&utm_campaign=docs)에서 계정을 만든 다음 새 앱의 `tracking id`를 복사하세요.
+
+이를 얻으면 다음을 실행하여 환경 변수로 설정하세요:
+
+```bash
+export LLMONITOR_APP_ID="..."
+```
+
+## 콜백
+
+[사용 예제](/docs/integrations/callbacks/llmonitor)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "LLMonitorCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.llmonitor_callback.LLMonitorCallbackHandler.html", "title": "LLMonitor"}]-->
+from langchain.callbacks import LLMonitorCallbackHandler
+```

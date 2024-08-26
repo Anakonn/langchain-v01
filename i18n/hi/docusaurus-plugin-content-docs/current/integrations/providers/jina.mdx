@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# जिना
+
+यह पृष्ठ जिना एम्बेडिंग्स का LangChain में उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट जिना रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- [यहाँ](https://jina.ai/embeddings/) से एक जिना AI API टोकन प्राप्त करें और इसे एक पर्यावरण चर (`JINA_API_TOKEN`) के रूप में सेट करें
+
+एक जिना एम्बेडिंग्स रैपर मौजूद है, जिसका उपयोग आप इससे कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "JinaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.jina.JinaEmbeddings.html", "title": "Jina"}]-->
+from langchain_community.embeddings import JinaEmbeddings
+
+# you can pas jina_api_key, if none is passed it will be taken from `JINA_API_TOKEN` environment variable
+embeddings = JinaEmbeddings(jina_api_key='jina_**', model_name='jina-embeddings-v2-base-en')
+```
+
+आप [यहाँ](https://jina.ai/embeddings/) से उपलब्ध मॉडलों की सूची देख सकते हैं
+
+इसके लिए एक अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/text_embedding/jina) देखें

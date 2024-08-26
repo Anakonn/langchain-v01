@@ -1,0 +1,32 @@
+---
+translated: true
+---
+
+# ElevenLabs
+
+>[ElevenLabs](https://elevenlabs.io/about) es una empresa de investigación y despliegue de IA de voz
+> con la misión de hacer que el contenido sea universalmente accesible en cualquier idioma y voz.
+>
+>`ElevenLabs` crea el audio de IA más realista, versátil y contextualmente consciente,
+> proporcionando la capacidad de generar discurso en cientos de
+> nuevas y existentes voces en 29 idiomas.
+
+## Instalación y configuración
+
+Primero, debe configurar una cuenta de ElevenLabs. Puede seguir las
+[instrucciones aquí](https://docs.elevenlabs.io/welcome/introduction).
+
+Instalar el paquete de Python:
+
+```bash
+pip install elevenlabs
+```
+
+## Herramientas
+
+Ver un [ejemplo de uso](/docs/integrations/tools/eleven_labs_tts).
+
+```python
+<!--IMPORTS:[{"imported": "ElevenLabsText2SpeechTool", "source": "langchain_community.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.eleven_labs.text2speech.ElevenLabsText2SpeechTool.html", "title": "ElevenLabs"}]-->
+from langchain_community.tools import ElevenLabsText2SpeechTool
+```

@@ -1,0 +1,74 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# Componentes
+
+LangChain proporciona interfaces estándar y extensibles, así como integraciones externas para los siguientes componentes principales:
+
+## [Entrada/Salida de Modelos](/docs/modules/model_io/)
+
+Formateo y gestión de la entrada y salida de modelos de lenguaje
+
+### [Indicaciones](/docs/modules/model_io/prompts)
+
+Formato para las entradas de LLM que guían la generación
+
+### [Modelos de chat](/docs/modules/model_io/chat)
+
+Interfaces para modelos de lenguaje que utilizan mensajes de chat como entradas y devuelven mensajes de chat como salidas (a diferencia de utilizar texto plano).
+
+### [LLMs](/docs/modules/model_io/llms)
+
+Interfaces para modelos de lenguaje que utilizan texto plano como entrada y salida
+
+## [Recuperación](/docs/modules/data_connection/)
+
+Interfaz con datos específicos de la aplicación para, por ejemplo, RAG
+
+### [Cargadores de documentos](/docs/modules/data_connection/document_loaders/)
+
+Cargar datos de una fuente como `Documentos` para su posterior procesamiento
+
+### [Divisores de texto](/docs/modules/data_connection/document_transformers/)
+
+Transformar los documentos fuente para que se adapten mejor a tu aplicación
+
+### [Modelos de incrustación](/docs/modules/data_connection/text_embedding/)
+
+Crear representaciones vectoriales de un fragmento de texto, lo que permite la búsqueda en lenguaje natural
+
+### [Almacenes de vectores](/docs/modules/data_connection/vectorstores/)
+
+Interfaces para bases de datos especializadas que pueden buscar en datos no estructurados con lenguaje natural
+
+### [Recuperadores](/docs/modules/data_connection/retrievers/)
+
+Interfaces más genéricas que devuelven documentos dados una consulta no estructurada
+
+## [Composición](/docs/modules/composition/)
+
+Componentes de alto nivel que combinan otros sistemas arbitrarios y/o primitivos de LangChain
+
+### [Herramientas](/docs/modules/tools/)
+
+Interfaces que permiten a un LLM interactuar con sistemas externos
+
+### [Agentes](/docs/modules/agents/)
+
+Construcciones que eligen qué herramientas utilizar dadas directivas de alto nivel
+
+### [Cadenas](/docs/modules/chains/)
+
+Composiciones de tipo bloque de construcción de otros ejecutables
+
+## Adicional
+
+### [Memoria](/docs/modules/memory/)
+
+Persistir el estado de la aplicación entre ejecuciones de una cadena
+
+### [Devoluciones de llamada](/docs/modules/callbacks/)
+
+Registrar y transmitir los pasos intermedios de cualquier cadena

@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# ClickHouse
+
+> [ClickHouse](https://clickhouse.com/) es la base de datos de código abierto rápida y eficiente en recursos para aplicaciones y análisis en tiempo real con soporte SQL completo y una amplia gama de funciones para ayudar a los usuarios a escribir consultas analíticas.
+> Tiene estructuras de datos y funciones de búsqueda de distancia (como `L2Distance`) así como
+> [índices de búsqueda aproximada de vecinos más cercanos](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes)
+> Eso permite que ClickHouse se utilice como una base de datos de vectores de alto rendimiento y escalable para almacenar y buscar vectores con SQL.
+
+## Instalación y configuración
+
+Necesitamos instalar el paquete de python `clickhouse-connect`.
+
+```bash
+pip install clickhouse-connect
+```
+
+## Almacén de vectores
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/clickhouse).
+
+```python
+<!--IMPORTS:[{"imported": "Clickhouse", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clickhouse.Clickhouse.html", "title": "ClickHouse"}, {"imported": "ClickhouseSettings", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clickhouse.ClickhouseSettings.html", "title": "ClickHouse"}]-->
+from langchain_community.vectorstores import Clickhouse, ClickhouseSettings
+```

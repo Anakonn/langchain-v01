@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# Infinispan VS
+
+> [Infinispan](https://infinispan.org) Infinispan est une grille de données en mémoire open source qui fournit
+> un magasin de données clé/valeur capable de contenir tous les types de données, des objets Java à un texte brut.
+> Depuis la version 15, Infinispan prend en charge la recherche vectorielle sur les caches.
+
+## Installation et configuration
+
+Voir [Démarrer](https://infinispan.org/get-started/) pour exécuter un serveur Infinispan, vous voudrez peut-être désactiver l'authentification
+(non pris en charge pour le moment)
+
+## Magasin vectoriel
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/infinispanvs).
+
+```python
+<!--IMPORTS:[{"imported": "InfinispanVS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html", "title": "Infinispan VS"}]-->
+from langchain_community.vectorstores import InfinispanVS
+```

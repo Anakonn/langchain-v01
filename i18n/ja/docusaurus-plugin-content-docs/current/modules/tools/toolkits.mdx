@@ -1,0 +1,23 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# ツールキット
+
+ツールキットは、特定のタスクのために一緒に使用するように設計されたツールのコレクションです。便利な読み込み方法があります。
+利用可能な既製ツールキットの完全なリストについては、[Integrations](/docs/integrations/toolkits/)をご覧ください。
+
+すべてのツールキットは `get_tools` メソッドを公開し、ツールのリストを返します。
+したがって、以下のようなことができます:
+
+```python
+# Initialize a toolkit
+toolkit = ExampleTookit(...)
+
+# Get list of tools
+tools = toolkit.get_tools()
+
+# Create agent
+agent = create_agent_method(llm, tools, prompt)
+```

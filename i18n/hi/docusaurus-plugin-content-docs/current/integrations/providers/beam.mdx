@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# बीम
+
+>[बीम](https://www.beam.cloud/) एक क्लाउड कंप्यूटिंग प्लेटफॉर्म है जो आपको अपना कोड जीपीयू वाले रिमोट सर्वरों पर चलाने की अनुमति देता है।
+
+## इंस्टॉलेशन और सेटअप
+
+- [एक खाता बनाएं](https://www.beam.cloud/)
+- `curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh` के साथ बीम CLI इंस्टॉल करें
+- `beam configure` के साथ API कुंजियों को रजिस्टर करें
+- पर्यावरण चर (`BEAM_CLIENT_ID`) और (`BEAM_CLIENT_SECRET`) सेट करें
+- बीम एसडीके इंस्टॉल करें:
+
+```bash
+pip install beam-sdk
+```
+
+## एलएलएम
+
+[उपयोग उदाहरण](/docs/integrations/llms/beam) देखें।
+
+[बीम दस्तावेज़](https://docs.beam.cloud/examples/langchain) में एक और उदाहरण देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Beam", "source": "langchain_community.llms.beam", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.beam.Beam.html", "title": "Beam"}]-->
+from langchain_community.llms.beam import Beam
+```

@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Anyscale
+
+>[Anyscale](https://www.anyscale.com) は、本番環境対応のAPIを介してLLMを実行、微調整、およびスケーリングするためのプラットフォームです。
+> [Anyscale Endpoints](https://docs.anyscale.com/endpoints/overview) は、多くのオープンソースモデルを費用対効果の高い方法で提供します。
+
+`Anyscale` は、`LangChain` を使った高度なチャットエージェントのセットアップ方法の[例](https://docs.anyscale.com/endpoints/model-serving/examples/langchain-integration)も提供しています。
+
+## インストールとセットアップ
+
+- AnyscaleサービスのURL、ルート、およびAPIキーを取得し、それらを環境変数 (`ANYSCALE_SERVICE_URL`,`ANYSCALE_SERVICE_ROUTE`, `ANYSCALE_SERVICE_TOKEN`) として設定します。
+- 詳細については、[Anyscaleのドキュメント](https://www.anyscale.com/get-started) を参照してください。
+
+`openai` パッケージをインストールする必要があります:
+
+```bash
+pip install openai
+```
+
+## LLM
+
+[使用例](/docs/integrations/llms/anyscale) を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "Anyscale", "source": "langchain_community.llms.anyscale", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.anyscale.Anyscale.html", "title": "Anyscale"}]-->
+from langchain_community.llms.anyscale import Anyscale
+```
+
+## チャットモデル
+
+[使用例](/docs/integrations/chat/anyscale) を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnyscale", "source": "langchain_community.chat_models.anyscale", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.anyscale.ChatAnyscale.html", "title": "Anyscale"}]-->
+from langchain_community.chat_models.anyscale import ChatAnyscale
+```
+
+## 埋め込み
+
+[使用例](/docs/integrations/text_embedding/anyscale) を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "AnyscaleEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.anyscale.AnyscaleEmbeddings.html", "title": "Anyscale"}]-->
+from langchain_community.embeddings import AnyscaleEmbeddings
+```

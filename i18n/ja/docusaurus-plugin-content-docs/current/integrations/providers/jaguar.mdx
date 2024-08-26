@@ -1,0 +1,64 @@
+---
+translated: true
+---
+
+# ジャガー
+
+このページでは、LangChainでのジャガーベクトルデータベースの使用方法について説明します。
+3つのセクション(概要、インストールとセットアップ、ジャガーAPI)で構成されています。
+
+## 概要
+
+ジャガーベクトルデータベースには以下のような特徴があります:
+
+1. 分散型ベクトルデータベースである
+2. JaguarDBの"ZeroMove"機能により、即座の水平スケーラビリティが可能
+3. マルチモーダル: 埋め込み、テキスト、画像、動画、PDF、音声、時系列、地理空間
+4. All-masters: 並列読み書きが可能
+5. 異常検知機能
+6. RAGサポート: LLMと独自のリアルタイムデータを組み合わせる
+7. 共有メタデータ: 複数のベクトルインデックス間でのメタデータ共有
+8. 距離メトリック: ユークリッド距離、コサイン距離、内積、マンハッタン距離、チェビシェフ距離、ハミング距離、ジャッカード距離、ミンコフスキー距離
+
+[スケーラブルなベクトルデータベースJaguarの概要](http://www.jaguardb.com)
+
+JaguarDBはDockerコンテナ上で実行したり、ソフトウェアをダウンロードしてクラウド/オフクラウドで実行することができます。
+
+## インストールとセットアップ
+
+- 1台のホストまたは複数のホストにJaguarDBをインストールする
+- 1台のホストにJaguar HTTPゲートウェイサーバーをインストールする
+- JaguarDB HTTPクライアントパッケージをインストールする
+
+手順は[Jaguar Documents](http://www.jaguardb.com/support.html)に記載されています。
+
+クライアントプログラムの環境変数:
+
+    export OPENAI_API_KEY="......"
+    export JAGUAR_API_KEY="......"
+
+## Jaguar API
+
+LangChainと共に、Pythonでインポートすることで、Jaguarクライアントクラスが提供されます。
+
+```python
+<!--IMPORTS:[{"imported": "Jaguar", "source": "langchain_community.vectorstores.jaguar", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.jaguar.Jaguar.html", "title": "Jaguar"}]-->
+from langchain_community.vectorstores.jaguar import Jaguar
+```
+
+JaguarクラスでサポートされているAPIメソッドは以下の通りです:
+
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `is_anomalous`
+- `create`
+- `delete`
+- `clear`
+- `drop`
+- `login`
+- `logout`
+
+JaguarのAPIの詳細については、[このノートブック](/docs/integrations/vectorstores/jaguar)を参照してください。

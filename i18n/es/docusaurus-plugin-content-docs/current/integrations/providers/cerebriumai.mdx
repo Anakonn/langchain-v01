@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# CerebriumAI
+
+>[Cerebrium](https://docs.cerebrium.ai/cerebrium/getting-started/introduction) es un proveedor de infraestructura GPU sin servidor.
+> Proporciona acceso a la API a varios modelos LLM.
+
+Consulta los ejemplos en la [documentación de CerebriumAI](https://docs.cerebrium.ai/examples/langchain).
+
+## Instalación y configuración
+
+- Instala un paquete de python:
+
+```bash
+pip install cerebrium
+```
+
+- [Obtén una clave de API de CerebriumAI](https://docs.cerebrium.ai/cerebrium/getting-started/installation) y configúrala
+  como una variable de entorno (`CEREBRIUMAI_API_KEY`)
+
+## LLMs
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/cerebriumai).
+
+```python
+<!--IMPORTS:[{"imported": "CerebriumAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.cerebriumai.CerebriumAI.html", "title": "CerebriumAI"}]-->
+from langchain_community.llms import CerebriumAI
+```

@@ -1,0 +1,141 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/modules/memory/types/buffer
+translated: false
+---
+
+# Conversation Buffer
+
+This notebook shows how to use `ConversationBufferMemory`. This memory allows for storing messages and then extracts the messages in a variable.
+
+We can first extract it as a string.
+
+```python
+<!--IMPORTS:[{"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "Conversation Buffer"}]-->
+from langchain.memory import ConversationBufferMemory
+```
+
+```python
+memory = ConversationBufferMemory()
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': 'Human: hi\nAI: whats up'}
+```
+
+We can also get the history as a list of messages (this is useful if you are using this with a chat model).
+
+```python
+memory = ConversationBufferMemory(return_messages=True)
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': [HumanMessage(content='hi', additional_kwargs={}),
+      AIMessage(content='whats up', additional_kwargs={})]}
+```
+
+## Using in a chain
+
+Finally, let's take a look at using this in a chain (setting `verbose=True` so we can see the prompt).
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Conversation Buffer"}, {"imported": "ConversationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.conversation.base.ConversationChain.html", "title": "Conversation Buffer"}]-->
+from langchain_openai import OpenAI
+from langchain.chains import ConversationChain
+
+
+llm = OpenAI(temperature=0)
+conversation = ConversationChain(
+    llm=llm,
+    verbose=True,
+    memory=ConversationBufferMemory()
+)
+```
+
+```python
+conversation.predict(input="Hi there!")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    Human: Hi there!
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Hi there! It's nice to meet you. How can I help you today?"
+```
+
+```python
+conversation.predict(input="I'm doing well! Just having a conversation with an AI.")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+    Human: Hi there!
+    AI:  Hi there! It's nice to meet you. How can I help you today?
+    Human: I'm doing well! Just having a conversation with an AI.
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " That's great! It's always nice to have a conversation with someone new. What would you like to talk about?"
+```
+
+```python
+conversation.predict(input="Tell me about yourself.")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+    Human: Hi there!
+    AI:  Hi there! It's nice to meet you. How can I help you today?
+    Human: I'm doing well! Just having a conversation with an AI.
+    AI:  That's great! It's always nice to have a conversation with someone new. What would you like to talk about?
+    Human: Tell me about yourself.
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Sure! I'm an AI created to help people with their everyday tasks. I'm programmed to understand natural language and provide helpful information. I'm also constantly learning and updating my knowledge base so I can provide more accurate and helpful answers."
+```

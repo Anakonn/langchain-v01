@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Figma
+
+>[Figma](https://www.figma.com/) es una aplicación web colaborativa para el diseño de interfaces.
+
+## Instalación y configuración
+
+La API de Figma requiere un `token de acceso`, `node_ids` y una `clave de archivo`.
+
+La `clave de archivo` se puede extraer de la URL. https://www.figma.com/file/{filekey}/sampleFilename
+
+Los `Node IDs` también están disponibles en la URL. Haga clic en cualquier cosa y busque el parámetro '?node-id=\{node_id}'.
+
+`Token de acceso` [instrucciones](https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens).
+
+## Cargador de documentos
+
+Consulte un [ejemplo de uso](/docs/integrations/document_loaders/figma).
+
+```python
+<!--IMPORTS:[{"imported": "FigmaFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.figma.FigmaFileLoader.html", "title": "Figma"}]-->
+from langchain_community.document_loaders import FigmaFileLoader
+```

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# SemaDB
+
+>[SemaDB](https://semafind.com/) est un moteur de recherche de similarité vectorielle sans tracas. Il fournit une version hébergée dans le cloud à faible coût pour vous aider à construire des applications d'IA avec facilité.
+
+Avec SemaDB Cloud, notre version hébergée, sans tracas signifie pas de calculs de taille de pod, pas de définitions de schéma, pas de paramètres de partition, pas de réglage de paramètres, pas de réglage d'algorithme de recherche, pas d'installation complexe, pas d'API complexe. Il est intégré à [RapidAPI](https://rapidapi.com/semafind-semadb/api/semadb) offrant une facturation transparente, un partitionnement automatique et un playground d'API interactif.
+
+## Installation
+
+Aucune installation requise, commencez directement avec SemaDB Cloud sur [RapidAPI](https://rapidapi.com/semafind-semadb/api/semadb).
+
+## Magasin de vecteurs
+
+Il existe un wrapper de base autour des collections `SemaDB` vous permettant de l'utiliser comme un magasin de vecteurs.
+
+```python
+<!--IMPORTS:[{"imported": "SemaDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.semadb.SemaDB.html", "title": "SemaDB"}]-->
+from langchain_community.vectorstores import SemaDB
+```
+
+Vous pouvez suivre un tutoriel sur la façon d'utiliser le wrapper dans [ce notebook](/docs/integrations/vectorstores/semadb).

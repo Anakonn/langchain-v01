@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Figma
+
+>[Figma](https://www.figma.com/)は、インターフェースデザインのためのコラボレーティブなWebアプリケーションです。
+
+## インストールとセットアップ
+
+Figma APIには、`アクセストークン`、`node_ids`、`ファイルキー`が必要です。
+
+`ファイルキー`は、URLから取得できます。 https://www.figma.com/file/{filekey}/sampleFilename
+
+`Node ID`もURLから取得できます。何かをクリックすると、'?node-id=\{node_id}'パラメーターが表示されます。
+
+`アクセストークン`の[手順](https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens)。
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/figma)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "FigmaFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.figma.FigmaFileLoader.html", "title": "Figma"}]-->
+from langchain_community.document_loaders import FigmaFileLoader
+```

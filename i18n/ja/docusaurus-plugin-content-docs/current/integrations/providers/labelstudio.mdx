@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# ラベルスタジオ
+
+>[ラベルスタジオ](https://labelstud.io/guide/get_started)は、大規模言語モデル(LLM)のファインチューニングのためのデータラベリングに柔軟性を提供するオープンソースのデータラベリングプラットフォームです。また、カスタムトレーニングデータの準備や、人間のフィードバックを通じた応答の収集と評価も可能にします。
+
+## インストールとセットアップ
+
+インストールオプションについては、[ラベルスタジオのインストールガイド](https://labelstud.io/guide/install)を参照してください。
+
+`label-studio`と`label-studio-sdk-python`のPythonパッケージをインストールする必要があります:
+
+```bash
+pip install label-studio label-studio-sdk
+```
+
+## コールバック
+
+[使用例](/docs/integrations/callbacks/labelstudio)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "LabelStudioCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.labelstudio_callback.LabelStudioCallbackHandler.html", "title": "Label Studio"}]-->
+from langchain.callbacks import LabelStudioCallbackHandler
+```

@@ -1,0 +1,188 @@
+---
+sidebar_position: 5
+translated: true
+---
+
+# 통합 기여
+
+시작하려면, [코드 기여](/docs/contributing/code/) 가이드에 나와 있는 모든 종속성을 확인하세요.
+
+LangChain에 통합을 기여할 수 있는 몇 가지 다른 위치가 있습니다:
+
+- **Community**: 주로 LangChain 및 오픈 소스 커뮤니티에서 유지 관리하는 경량 통합.
+- **Partner Packages**: LangChain과 파트너가 공동 유지 관리하는 독립 패키지.
+
+대부분의 경우, 새로운 통합은 Community 패키지에 추가해야 합니다. 파트너 패키지는 별도의 패키지로 더 많은 유지 관리가 필요하므로, 새로운 파트너 패키지를 만들기 전에 LangChain 팀과 확인하세요.
+
+다음 섹션에서는 가상의 회사 `Parrot Link AI`에서 각 패키지에 기여하는 방법을 설명합니다.
+
+## Community 패키지
+
+`langchain-community` 패키지는 `libs/community`에 있으며 대부분의 통합을 포함합니다.
+
+이 패키지는 `pip install langchain-community`로 설치할 수 있으며, 내보낸 멤버는 다음과 같이 코드에서 임포트할 수 있습니다:
+
+```python
+from langchain_community.chat_models import ChatParrotLink
+from langchain_community.llms import ParrotLinkLLM
+from langchain_community.vectorstores import ParrotLinkVectorStore
+```
+
+`community` 패키지는 수동으로 설치된 종속 패키지에 의존하므로 설치되지 않은 패키지를 임포트하려고 하면 오류가 발생합니다. 가상의 예에서 `ParrotLinkLLM`을 설치하지 않고 임포트하려고 하면 사용 시 `ImportError`가 발생하며 설치하라는 메시지가 표시됩니다.
+
+Parrot Link AI를 위한 채팅 모델을 구현한다고 가정해 보겠습니다. 다음 코드와 함께 `libs/community/langchain_community/chat_models/parrot_link.py`에 새 파일을 생성합니다:
+
+```python
+from langchain_core.language_models.chat_models import BaseChatModel
+
+class ChatParrotLink(BaseChatModel):
+    """ChatParrotLink chat model.
+
+    Example:
+        .. code-block:: python
+
+            from langchain_community.chat_models import ChatParrotLink
+
+            model = ChatParrotLink()
+    """
+
+    ...
+```
+
+그리고 다음 위치에 테스트를 작성합니다:
+
+- 유닛 테스트: `libs/community/tests/unit_tests/chat_models/test_parrot_link.py`
+- 통합 테스트: `libs/community/tests/integration_tests/chat_models/test_parrot_link.py`
+
+다음 위치에 문서를 추가합니다:
+
+- `docs/docs/integrations/chat/parrot_link.ipynb`
+
+## LangChain 저장소의 파트너 패키지
+
+파트너 패키지는 `LangChain` 모노레포 또는 외부 저장소에 호스팅될 수 있습니다.
+
+LangChain 저장소의 파트너 패키지는 `libs/partners/{partner}`에 배치되며, 패키지 소스 코드는 `libs/partners/{partner}/langchain_{partner}`에 있습니다.
+
+패키지는 `pip install langchain-{partner}`로 사용자가 설치할 수 있으며, 패키지 멤버는 다음과 같이 임포트할 수 있습니다:
+
+```python
+from langchain_{partner} import X
+```
+
+### 새 패키지 설정
+
+새 파트너 패키지를 설정하려면 최신 버전의 LangChain CLI를 사용하세요. 설치 또는 업데이트하려면 다음 명령을 사용하세요:
+
+```bash
+pip install -U langchain-cli
+```
+
+예를 들어 Parrot Link AI라는 회사에서 새 파트너 패키지를 만들고 싶다고 가정해 보겠습니다.
+
+다음 명령을 실행하여 새 파트너 패키지를 만듭니다:
+
+```bash
+cd libs/partners
+langchain-cli integration new
+> Name: parrot-link
+> Name of integration in PascalCase [ParrotLink]: ParrotLink
+```
+
+이 명령은 다음 구조로 새 패키지를 `libs/partners/parrot-link`에 생성합니다:
+
+```
+libs/partners/parrot-link/
+  langchain_parrot_link/ # 패키지를 포함하는 폴더
+    ...
+  tests/
+    ...
+  docs/ # 부트스트랩된 문서 노트북, 모노레포 루트의 /docs로 이동해야 함
+    ...
+  scripts/ # CI를 위한 스크립트
+    ...
+  LICENSE
+  README.md # 패키지에 대한 정보를 작성하세요
+  Makefile # CI를 위한 기본 명령
+  pyproject.toml # 패키지 메타데이터, 주로 Poetry에서 관리
+  poetry.lock # 패키지 잠금 파일, Poetry에서 관리
+  .gitignore
+```
+
+### 패키지 구현
+
+먼저, 패키지에 필요한 종속성을 추가하세요. 예를 들어 회사의 SDK를 추가합니다:
+
+```bash
+poetry add parrot-link-sdk
+```
+
+타입 체크를 위한 별도의 종속성이 필요한 경우, `typing` 그룹에 추가할 수 있습니다:
+
+```bash
+poetry add --group typing types-parrot-link-sdk
+```
+
+그런 다음 `libs/partners/parrot-link/langchain_parrot_link`에 패키지를 구현합니다.
+
+기본적으로 이는 채팅 모델, LLM 및/또는 벡터 저장소에 대한 스텁을 포함합니다. 사용하지 않을 파일은 삭제하고 `__init__.py`에서 제거하세요.
+
+### 유닛 및 통합 테스트 작성
+
+기본적인 테스트는 `tests/` 디렉터리에 있습니다. 패키지의 기능을 커버하는 더 많은 테스트를 추가해야 합니다.
+
+테스트 실행 및 구현에 대한 정보는 [테스트 가이드](/docs/contributing/testing/)를 참조하세요.
+
+### 문서 작성
+
+문서는 `docs/` 디렉터리의 Jupyter 노트북에서 생성됩니다. 예제가 포함된 노트북을 모노레포 루트의 관련 `docs/docs/integrations` 디렉터리에 배치해야 합니다.
+
+### (필요한 경우) 커뮤니티 통합 사용 중단
+
+참고: 이는 기존 커뮤니티 통합을 파트너 패키지로 마이그레이션하는 경우에만 필요합니다. 통합하는 구성 요소가 LangChain에 새로 추가된 경우 (즉, `community` 패키지에 아직 없는 경우), 이 단계를 건너뛸 수 있습니다.
+
+`ChatParrotLink` 채팅 모델을 커뮤니티 패키지에서 파트너 패키지로 마이그레이션했다고 가정해 보겠습니다. 우리는 커뮤니티 패키지에서 오래된 모델을 사용 중단해야 합니다.
+
+이는 다음과 같이 `libs/community/langchain_community/chat_models/parrot_link.py`에서 이전 모델에 `@deprecated` 데코레이터를 추가하여 수행할 수 있습니다.
+
+변경 전 채팅 모델은 다음과 같을 수 있습니다:
+
+```python
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+변경 후에는 다음과 같을 것입니다:
+
+```python
+from langchain_core._api.deprecation import deprecated
+
+@deprecated(
+    since="0.0.<next community version>",
+    removal="0.2.0",
+    alternative_import="langchain_parrot_link.ChatParrotLink"
+)
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+파트너 패키지로 마이그레이션하는 각 구성 요소에 대해 이 작업을 수행해야 합니다.
+
+### 추가 단계
+
+기여자 단계:
+
+- [ ] `.github/workflows/_integration_test.yml`의 수동 통합 워크플로에 비밀 이름 추가
+- [ ] `.github/workflows/_release.yml`의 릴리스 워크플로에 비밀 추가 (사전 릴리스 테스트용)
+
+메인테이너 단계 (기여자는 **하지 않아야 함**):
+
+- [ ] pypi 및 test pypi 프로젝트 설정
+- [ ] Github Actions에 자격 증명 비밀 추가
+- [ ] 패키지를 conda-forge에 추가
+
+## 외부 저장소의 파트너 패키지
+
+외부 저장소의 파트너 패키지는 LangChain 팀과 파트너 조직 간의 협조가 필요하며, 유지 관리 및 업데이트가 이루어져야 합니다.
+
+외부 저장소에 파트너 패키지를 생성하는 데 관심이 있는 경우, LangChain 저장소에서 시작하고 외부 저장소로 이동하는 방법을 논의하기 위해 LangChain 팀에 연락하세요.

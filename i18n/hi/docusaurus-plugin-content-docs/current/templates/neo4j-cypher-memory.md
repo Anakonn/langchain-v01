@@ -1,0 +1,93 @@
+---
+translated: true
+---
+
+यह टेम्पलेट आपको OpenAI LLM का उपयोग करके प्राकृतिक भाषा में Neo4j ग्राफ डेटाबेस के साथ वार्तालाप करने की अनुमति देता है।
+यह प्राकृतिक भाषा प्रश्न को Cypher क्वेरी (Neo4j डेटाबेस से डेटा प्राप्त करने के लिए उपयोग किया जाता है) में रूपांतरित करता है, क्वेरी को निष्पादित करता है, और क्वेरी परिणामों के आधार पर प्राकृतिक भाषा प्रतिक्रिया प्रदान करता है।
+इसके अलावा, यह एक वार्तालाप स्मृति मॉड्यूल सुविधा है जो वार्तालाप इतिहास को Neo4j ग्राफ डेटाबेस में संग्रहीत करता है।
+वार्तालाप स्मृति को प्रत्येक उपयोगकर्ता सत्र के लिए अद्वितीय रूप से बनाए रखा जाता है, जिससे व्यक्तिगत संवाद सुनिश्चित होता है।
+इसे सुविधाजनक बनाने के लिए, कृपया वार्तालाप श्रृंखला का उपयोग करते समय `user_id` और `session_id` दोनों प्रदान करें।
+
+## वातावरण सेटअप
+
+निम्नलिखित पर्यावरण चर परिभाषित करें:
+
+```shell
+OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+NEO4J_URI=<YOUR_NEO4J_URI>
+NEO4J_USERNAME=<YOUR_NEO4J_USERNAME>
+NEO4J_PASSWORD=<YOUR_NEO4J_PASSWORD>
+```
+
+## Neo4j डेटाबेस सेटअप
+
+Neo4j डेटाबेस सेट करने के कई तरीके हैं।
+
+### Neo4j Aura
+
+Neo4j AuraDB एक पूरी तरह से प्रबंधित क्लाउड ग्राफ डेटाबेस सेवा है।
+[Neo4j Aura](https://neo4j.com/cloud/platform/aura-graph-database?utm_source=langchain&utm_content=langserve) पर एक मुफ्त उदाहरण बनाएं।
+जब आप एक मुफ्त डेटाबेस उदाहरण प्रारंभ करते हैं, तो आप डेटाबेस तक पहुंचने के लिए क्रेडेंशियल प्राप्त करेंगे।
+
+## डेटा से भरना
+
+यदि आप डेटाबेस को कुछ उदाहरण डेटा से भरना चाहते हैं, तो आप `python ingest.py` चला सकते हैं।
+यह स्क्रिप्ट डेटाबेस में नमूना फिल्म डेटा भर देगी।
+
+## उपयोग
+
+इस पैकेज का उपयोग करने के लिए, आपके पास पहले LangChain CLI स्थापित होना चाहिए:
+
+```shell
+pip install -U langchain-cli
+```
+
+एक नया LangChain परियोजना बनाने और इसे एकमात्र पैकेज के रूप में स्थापित करने के लिए, आप ऐसा कर सकते हैं:
+
+```shell
+langchain app new my-app --package neo4j-cypher-memory
+```
+
+यदि आप इसे किसी मौजूदा परियोजना में जोड़ना चाहते हैं, तो आप केवल यह चला सकते हैं:
+
+```shell
+langchain app add neo4j-cypher-memory
+```
+
+और अपने `server.py` फ़ाइल में निम्नलिखित कोड जोड़ें:
+
+```python
+from neo4j_cypher_memory import chain as neo4j_cypher_memory_chain
+
+add_routes(app, neo4j_cypher_memory_chain, path="/neo4j-cypher-memory")
+```
+
+(वैकल्पिक) अब आइए LangSmith को कॉन्फ़िगर करें।
+LangSmith हमें LangChain अनुप्रयोगों को ट्रेस, मॉनिटर और डीबग करने में मदद करेगा।
+आप [यहां](https://smith.langchain.com/) LangSmith के लिए साइन अप कर सकते हैं।
+यदि आपके पास पहुंच नहीं है, तो आप इस खंड को छोड़ सकते हैं।
+
+```shell
+export LANGCHAIN_TRACING_V2=true
+export LANGCHAIN_API_KEY=<your-api-key>
+export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "default"
+```
+
+यदि आप इस निर्देशिका के भीतर हैं, तो आप सीधे एक LangServe उदाहरण चला सकते हैं:
+
+```shell
+langchain serve
+```
+
+यह FastAPI ऐप को चालू करेगा और सर्वर स्थानीय रूप से [http://localhost:8000](http://localhost:8000) पर चल रहा होगा।
+
+हम [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) पर सभी टेम्पलेट देख सकते हैं।
+हम [http://127.0.0.1:8000/neo4j_cypher_memory/playground](http://127.0.0.1:8000/neo4j_cypher/playground) पर खेल सकते हैं।
+
+हम कोड से टेम्पलेट का उपयोग कर सकते हैं:
+
+```python
+from langserve.client import RemoteRunnable
+
+runnable = RemoteRunnable("http://localhost:8000/neo4j-cypher-memory")
+```

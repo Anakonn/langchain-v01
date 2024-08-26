@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# 눈송이
+
+> [Snowflake](https://www.snowflake.com/)는 대량의 데이터를 저장하고 쿼리할 수 있는 클라우드 기반 데이터 웨어하우징 플랫폼입니다.
+
+이 페이지에서는 `LangChain`에서 `Snowflake` 생태계를 사용하는 방법을 다룹니다.
+
+## 임베딩 모델
+
+Snowflake는 [Hugging Face](https://huggingface.co/Snowflake/snowflake-arctic-embed-l)에서 무료로 제공하는 오픈 웨이트 `arctic` 라인의 임베딩 모델을 제공합니다.
+[HuggingFaceEmbeddings](/docs/integrations/text_embedding/huggingfacehub) 커넥터를 통해 이러한 모델을 사용할 수 있습니다:
+
+```shell
+pip install langchain-community sentence-transformers
+```
+
+```python
+from langchain_community.text_embeddings import HuggingFaceEmbeddings
+
+model = HuggingFaceEmbeddings(model_name="snowflake/arctic-embed-l")
+```
+
+## 문서 로더
+
+[`SnowflakeLoader`](/docs/integrations/document_loaders/snowflake)를 사용하여 Snowflake에서 데이터를 로드할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "SnowflakeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.snowflake_loader.SnowflakeLoader.html", "title": "Snowflake"}]-->
+from langchain_community.document_loaders import SnowflakeLoader
+```

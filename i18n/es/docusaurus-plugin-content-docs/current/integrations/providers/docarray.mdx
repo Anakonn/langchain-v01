@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# DocArray
+
+> [DocArray](https://docarray.jina.ai/) es una biblioteca para datos anidados, no estructurados y multimodales en tránsito,
+> incluyendo texto, imagen, audio, video, malla 3D, etc. Permite a los ingenieros de deep learning procesar,
+> incrustar, buscar, recomendar, almacenar y transferir datos multimodales de manera eficiente con una API de Python.
+
+## Instalación y configuración
+
+Necesitamos instalar el paquete de Python `docarray`.
+
+```bash
+pip install docarray
+```
+
+## Almacén de vectores
+
+LangChain proporciona acceso a los almacenes de vectores `In-memory` y `HNSW` de la biblioteca `DocArray`.
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/docarray_hnsw).
+
+```python
+from langchain_community.vectorstores DocArrayHnswSearch
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/docarray_in_memory).
+
+```python
+from langchain_community.vectorstores DocArrayInMemorySearch
+```

@@ -1,0 +1,45 @@
+---
+translated: true
+---
+
+import DocCardList from "@theme/DocCardList";
+
+# 평가
+
+언어 모델로 애플리케이션을 구축하는 과정에서는 여러 가지 요소가 움직입니다. 가장 중요한 구성 요소 중 하나는 모델이 다양한 입력에 대해 신뢰할 수 있고 유용한 결과를 제공하며 애플리케이션의 다른 소프트웨어 구성 요소와 잘 작동하도록 하는 것입니다. 신뢰성을 보장하는 것은 일반적으로 애플리케이션 설계, 테스트 및 평가, 그리고 런타임 검사 조합으로 요약됩니다.
+
+이 섹션의 가이드는 LangChain이 애플리케이션을 더 잘 평가할 수 있도록 제공하는 API와 기능을 검토합니다. LLM 애플리케이션을 배포할 때, 평가와 테스트는 모두 반복 가능하고 유용한 결과가 필요하기 때문에 매우 중요합니다.
+
+LangChain은 다양한 데이터를 대상으로 성능과 무결성을 측정하는 다양한 평가 도구를 제공합니다. 또한 커뮤니티가 다른 유용한 평가 도구를 생성하고 공유하여 모두가 개선할 수 있도록 장려하고자 합니다. 이 문서들은 평가 도구의 종류, 사용 방법, 실제 시나리오에서의 사용 예시를 소개합니다. 이러한 내장 평가 도구는 모두 [LangSmith](/docs/langsmith)와 원활하게 통합되며, 애플리케이션을 시간이 지남에 따라 개선하고 회귀를 방지하는 피드백 루프를 생성할 수 있게 해줍니다.
+
+LangChain의 각 평가 도구는 바로 사용할 수 있는 구현과 고유한 요구 사항에 따라 맞춤화할 수 있는 확장 가능한 API를 제공합니다. 여기 LangChain에서 제공하는 평가 도구의 종류는 다음과 같습니다:
+
+- [문자열 평가 도구](/docs/guides/productionization/evaluation/string/): 이러한 평가 도구는 주어진 입력에 대한 예측된 문자열을 참조 문자열과 비교하여 평가합니다.
+- [경로 평가 도구](/docs/guides/productionization/evaluation/trajectory/): 에이전트의 전체 경로를 평가하는 데 사용됩니다.
+- [비교 평가 도구](/docs/guides/productionization/evaluation/comparison/): 공통 입력에 대한 두 실행의 예측을 비교하도록 설계되었습니다.
+
+이 평가 도구들은 다양한 시나리오에서 사용될 수 있으며 LangChain 라이브러리의 다양한 체인 및 LLM 구현에 적용될 수 있습니다.
+
+우리는 또한 실제 시나리오에서 이러한 평가 도구를 사용하는 방법을 보여주는 가이드와 요리책을 공유하고 있습니다:
+
+- [체인 비교](/docs/guides/productionization/evaluation/examples/comparisons): 이 예제에서는 비교 평가 도구를 사용하여 선호하는 출력을 예측합니다. 이는 모델 또는 프롬프트 간의 집계 선호도 점수에서 통계적으로 유의미한 차이를 선택하기 위한 신뢰 구간을 측정하는 방법을 검토합니다.
+
+## LangSmith 평가
+
+LangSmith는 회귀를 확인하고, 시스템을 비교하며, 오류 및 성능 문제의 원인을 쉽게 식별하고 수정할 수 있는 통합 평가 및 추적 프레임워크를 제공합니다. [LangSmith 평가](https://docs.smith.langchain.com/evaluation) 문서와 추가 [요리책](https://docs.smith.langchain.com/cookbook)을 참조하여 애플리케이션을 평가하는 방법에 대한 자세한 정보를 확인하세요.
+
+## LangChain 벤치마크
+
+애플리케이션 품질은 선택한 LLM과 모델 컨텍스트를 제공하기 위해 사용하는 프롬프트 및 데이터 검색 전략의 함수입니다. 우리는 다양한 LLM 시스템을 다음과 같은 작업에서 평가하기 위한 여러 벤치마크 과제를 [LangChain 벤치마크](https://langchain-ai.github.io/langchain-benchmarks/) 패키지 내에 게시했습니다:
+
+- 에이전트 도구 사용
+- 검색 보강 질문-응답
+- 구조적 추출
+
+예제 및 리더보드 정보는 문서를 참조하세요.
+
+## 참고 문서
+
+사용 가능한 평가 도구에 대한 자세한 정보, 인스턴스화, 구성 및 맞춤화 방법은 [참고 문서](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.evaluation)를 직접 확인하세요.
+
+<DocCardList />

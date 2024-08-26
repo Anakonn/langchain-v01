@@ -1,0 +1,74 @@
+---
+translated: true
+---
+
+# Oracle AI 벡터 검색
+
+Oracle AI 벡터 검색은 키워드가 아닌 의미에 기반하여 데이터를 쿼리할 수 있는 인공 지능(AI) 워크로드를 위해 설계되었습니다. Oracle AI 벡터 검색의 가장 큰 장점 중 하나는 비정형 데이터에 대한 의미 검색을 기업 데이터에 대한 관계형 검색과 단일 시스템에서 결합할 수 있다는 것입니다.
+
+이는 강력할 뿐만 아니라 여러 시스템 간의 데이터 분절화 문제를 해결하여 훨씬 더 효과적입니다.
+
+또한 Oracle은 데이터베이스 기술을 오랫동안 구축해 왔기 때문에 다음과 같은 Oracle Database의 가장 강력한 기능을 벡터에서 활용할 수 있습니다:
+
+* 파티셔닝 지원
+* Real Application Clusters 확장성
+* Exadata 스마트 스캔
+* 지리적으로 분산된 데이터베이스 간 샤드 처리
+* 트랜잭션
+* 병렬 SQL
+* 재해 복구
+* 보안
+* Oracle Machine Learning
+* Oracle Graph Database
+* Oracle Spatial and Graph
+* Oracle Blockchain
+* JSON
+
+## 문서 로더
+
+사용 예시는 [여기](/docs/integrations/document_loaders/oracleai)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OracleDocLoader", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleDocLoader.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleDocLoader
+```
+
+## 텍스트 분할기
+
+사용 예시는 [여기](/docs/integrations/document_loaders/oracleai)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OracleTextSplitter", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleTextSplitter.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleTextSplitter
+```
+
+## 임베딩
+
+사용 예시는 [여기](/docs/integrations/text_embedding/oracleai)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OracleEmbeddings", "source": "langchain_community.embeddings.oracleai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oracleai.OracleEmbeddings.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+```
+
+## 요약
+
+사용 예시는 [여기](/docs/integrations/tools/oracleai)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OracleSummary", "source": "langchain_community.utilities.oracleai", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.oracleai.OracleSummary.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.utilities.oracleai import OracleSummary
+```
+
+## 벡터 스토어
+
+사용 예시는 [여기](/docs/integrations/vectorstores/oracle)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OracleVS", "source": "langchain_community.vectorstores.oraclevs", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.oraclevs.OracleVS.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.vectorstores.oraclevs import OracleVS
+```
+
+## 엔드 투 엔드 데모
+
+[Oracle AI 벡터 검색 엔드 투 엔드 데모 가이드](https://github.com/langchain-ai/langchain/blob/master/cookbook/oracleai_demo)를 확인하세요.

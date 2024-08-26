@@ -1,0 +1,161 @@
+---
+translated: true
+---
+
+# Callbacks
+
+:::info
+Dirígete a [Integraciones](/docs/integrations/callbacks/) para la documentación sobre las integraciones de callbacks incorporadas con herramientas de terceros.
+:::
+
+LangChain proporciona un sistema de callbacks que permite conectarse a las diferentes etapas de tu aplicación de LLM. Esto es útil para registrar, monitorear, transmitir y otras tareas.
+
+Puedes suscribirte a estos eventos utilizando el argumento `callbacks` disponible a lo largo de la API. Este argumento es una lista de objetos controladores, que se espera que implementen uno o más de los métodos descritos a continuación con más detalle.
+
+## Controladores de callbacks
+
+Los `CallbackHandlers` son objetos que implementan la interfaz `CallbackHandler`, que tiene un método para cada evento al que se puede suscribir. El `CallbackManager` llamará al método apropiado en cada controlador cuando se active el evento.
+
+```python
+class BaseCallbackHandler:
+    """Base callback handler that can be used to handle callbacks from langchain."""
+
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> Any:
+        """Run when LLM starts running."""
+
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
+    ) -> Any:
+        """Run when Chat Model starts running."""
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
+        """Run on new LLM token. Only available when streaming is enabled."""
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
+        """Run when LLM ends running."""
+
+    def on_llm_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when LLM errors."""
+
+    def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> Any:
+        """Run when chain starts running."""
+
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
+        """Run when chain ends running."""
+
+    def on_chain_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when chain errors."""
+
+    def on_tool_start(
+        self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
+    ) -> Any:
+        """Run when tool starts running."""
+
+    def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
+        """Run when tool ends running."""
+
+    def on_tool_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when tool errors."""
+
+    def on_text(self, text: str, **kwargs: Any) -> Any:
+        """Run on arbitrary text."""
+
+    def on_agent_action(self, action: AgentAction, **kwargs: Any) -> Any:
+        """Run on agent action."""
+
+    def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
+        """Run on agent end."""
+```
+
+## Empezar
+
+LangChain proporciona algunos controladores incorporados que puedes usar para empezar. Estos están disponibles en el módulo `langchain_core/callbacks`. El controlador más básico es el `StdOutCallbackHandler`, que simplemente registra todos los eventos en `stdout`.
+
+**Nota**: cuando el indicador `verbose` en el objeto se establece en verdadero, se invocará el `StdOutCallbackHandler` incluso sin ser pasado explícitamente.
+
+```python
+<!--IMPORTS:[{"imported": "StdOutCallbackHandler", "source": "langchain_core.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_core.callbacks.stdout.StdOutCallbackHandler.html", "title": "Callbacks"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Callbacks"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Callbacks"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Callbacks"}]-->
+from langchain_core.callbacks import StdOutCallbackHandler
+from langchain.chains import LLMChain
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+# Constructor callback: First, let's explicitly set the StdOutCallbackHandler when initializing our chain
+chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler])
+chain.invoke({"number":2})
+
+# Use verbose flag: Then, let's use the `verbose` flag to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
+chain.invoke({"number":2})
+
+# Request callbacks: Finally, let's use the request `callbacks` to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt)
+chain.invoke({"number":2}, {"callbacks":[handler]})
+
+```
+
+```output
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+```
+
+## Dónde pasar los callbacks
+
+Los `callbacks` están disponibles en la mayoría de los objetos a lo largo de la API (Chains, Models, Tools, Agents, etc.) en dos lugares diferentes:
+
+- **Callbacks del constructor**: definidos en el constructor, p. ej. `LLMChain(callbacks=[handler], tags=['a-tag'])`. En este caso, los callbacks se utilizarán para todas las llamadas realizadas en ese objeto y estarán limitados a ese objeto, p. ej. si pasas un controlador a la construcción de `LLMChain`, no se utilizará por el Model adjunto a esa cadena.
+- **Callbacks de solicitud**: definidos en el método 'invoke' utilizado para emitir una solicitud. En este caso, los callbacks se utilizarán solo para esa solicitud específica y todas las sub-solicitudes que contenga (p. ej. una llamada a un LLMChain desencadena una llamada a un Model, que utiliza el mismo controlador pasado en el método `invoke()`). En el método `invoke()`, los callbacks se pasan a través del parámetro de configuración.
+Ejemplo con el método 'invoke' (**Nota**: el mismo enfoque se puede utilizar para los métodos `batch`, `ainvoke` y `abatch`):
+
+```python
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+config = {
+    'callbacks' : [handler]
+}
+
+chain = prompt | chain
+chain.invoke({"number":2}, config=config)
+```
+
+**Nota:** `chain = prompt | chain` es equivalente a `chain = LLMChain(llm=llm, prompt=prompt)` (consulta la [documentación de LangChain Expression Language (LCEL)](/docs/expression_language/) para más detalles)
+
+El argumento `verbose` está disponible en la mayoría de los objetos a lo largo de la API (Chains, Models, Tools, Agents, etc.) como un argumento de constructor, p. ej. `LLMChain(verbose=True)`, y es equivalente a pasar un `ConsoleCallbackHandler` al argumento `callbacks` de ese objeto y todos los objetos secundarios. Esto es útil para depurar, ya que registrará todos los eventos en la consola.
+
+### ¿Cuándo quieres usar cada uno de estos?
+
+- Los callbacks del constructor son más útiles para casos de uso como registro, monitoreo, etc., que _no son específicos de una sola solicitud_, sino más bien de toda la cadena. Por ejemplo, si quieres registrar todas las solicitudes realizadas a un `LLMChain`, pasarías un controlador al constructor.
+- Los callbacks de solicitud son más útiles para casos de uso como transmisión, donde quieres transmitir la salida de una sola solicitud a una conexión de websocket específica u otros casos de uso similares. Por ejemplo, si quieres transmitir la salida de una sola solicitud a un websocket, pasarías un controlador al método `invoke()`.

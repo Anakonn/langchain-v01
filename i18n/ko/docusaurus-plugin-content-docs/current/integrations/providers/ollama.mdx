@@ -1,0 +1,56 @@
+---
+translated: true
+---
+
+# 올라마
+
+>[Ollama](https://ollama.ai/)는 파이썬 라이브러리입니다. LLaMA2와 같은 오픈 소스 대규모 언어 모델을 로컬에서 실행할 수 있게 해줍니다.
+
+>`Ollama`는 모델 가중치, 구성 및 데이터를 Modelfile로 정의된 단일 패키지로 번들링합니다.
+>GPU 사용을 포함한 설정 및 구성 세부 사항을 최적화합니다.
+>지원되는 모델 및 모델 변형의 전체 목록은 [Ollama 모델 라이브러리](https://ollama.ai/library)를 참조하세요.
+
+`Ollama`를 LangChain과 함께 사용하는 방법에 대한 자세한 내용은 [이 가이드](/docs/guides/development/local_llms#quickstart)를 참조하세요.
+
+## 설치 및 설정
+
+[이 지침](https://github.com/jmorganca/ollama?tab=readme-ov-file#ollama)에 따라 로컬 Ollama 인스턴스를 설정하고 실행하세요.
+사용하려면 `ANYSCALE_API_BASE` 및 `ANYSCALE_API_KEY` 환경 변수를 설정해야 합니다.
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Ollama"}]-->
+from langchain_community.llms import Ollama
+```
+
+[여기](/docs/integrations/llms/ollama)의 노트북 예제를 참조하세요.
+
+## 채팅 모델
+
+### Chat Ollama
+
+```python
+<!--IMPORTS:[{"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Ollama"}]-->
+from langchain_community.chat_models import ChatOllama
+```
+
+[여기](/docs/integrations/chat/ollama)의 노트북 예제를 참조하세요.
+
+### Ollama 함수
+
+```python
+<!--IMPORTS:[{"imported": "OllamaFunctions", "source": "langchain_experimental.llms.ollama_functions", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_experimental.llms.ollama_functions.OllamaFunctions.html", "title": "Ollama"}]-->
+from langchain_experimental.llms.ollama_functions import OllamaFunctions
+```
+
+[여기](/docs/integrations/chat/ollama_functions)의 노트북 예제를 참조하세요.
+
+## 임베딩 모델
+
+```python
+<!--IMPORTS:[{"imported": "OllamaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.ollama.OllamaEmbeddings.html", "title": "Ollama"}]-->
+from langchain_community.embeddings import OllamaEmbeddings
+```
+
+[여기](/docs/integrations/text_embedding/ollama)의 노트북 예제를 참조하세요.

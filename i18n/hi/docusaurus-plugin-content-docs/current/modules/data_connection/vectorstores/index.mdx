@@ -1,0 +1,265 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 3
+translated: true
+---
+
+# वेक्टर स्टोर
+
+:::info
+[एकीकरण](/docs/integrations/vectorstores/) पर दस्तावेज़ के लिए 3rd-पार्टी वेक्टर स्टोर के साथ बनाए गए एकीकरणों पर जाएं।
+:::
+
+अनरूपित डेटा को संग्रहीत और खोजने का सबसे आम तरीका यह है कि इसे एम्बेड किया जाए और प्राप्त एम्बेडिंग वेक्टर को संग्रहीत किया जाए, और फिर क्वेरी समय पर अनरूपित क्वेरी को एम्बेड किया जाए और उन एम्बेडिंग वेक्टर को पुनः प्राप्त किया जाए जो एम्बेड क्वेरी के 'सबसे समान' हैं। एक वेक्टर स्टोर आपके लिए एम्बेड किए गए डेटा को संग्रहीत करने और वेक्टर खोज करने का काम करता है।
+
+![वेक्टर स्टोर की प्रक्रिया को दर्शाने वाला आरेख: 1. स्रोत डेटा लोड करें, 2. वेक्टर स्टोर क्वेरी करें, 3. 'सबसे समान' परिणाम पुनः प्राप्त करें।](/img/vector_stores.jpg "वेक्टर स्टोर प्रक्रिया आरेख")
+
+## शुरू करें
+
+यह वॉकथ्रू वेक्टर स्टोर से संबंधित मूलभूत कार्यक्षमता को प्रदर्शित करता है। वेक्टर स्टोर के साथ काम करने का एक महत्वपूर्ण हिस्सा वेक्टर बनाना है, जिसे आमतौर पर एम्बेडिंग के माध्यम से बनाया जाता है। इसलिए, इसमें गहराई से जाने से पहले [पाठ एम्बेडिंग मॉडल](/docs/modules/data_connection/text_embedding/) इंटरफ़ेस से परिचित होना अनुशंसित है।
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+कई शानदार वेक्टर स्टोर विकल्प हैं, यहां कुछ ऐसे हैं जो मुफ्त, ओपन-सोर्स हैं और पूरी तरह से आपके स्थानीय मशीन पर चलते हैं। कई शानदार होस्टेड ऑफरिंग के लिए सभी एकीकरण की समीक्षा करें।
+
+<Tabs>
+  <TabItem value="chroma" label="Chroma" default>
+
+यह वॉकथ्रू `chroma` वेक्टर डेटाबेस का उपयोग करता है, जो आपके स्थानीय मशीन पर एक लाइब्रेरी के रूप में चलता है।
+
+```bash
+pip install langchain-chroma
+```
+
+हम OpenAIEmbeddings का उपयोग करना चाहते हैं, इसलिए हमें OpenAI API Key प्राप्त करना होगा।
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_chroma import Chroma
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = Chroma.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+  <TabItem value="faiss" label="FAISS">
+
+यह वॉकथ्रू `FAISS` वेक्टर डेटाबेस का उपयोग करता है, जो Facebook AI Similarity Search (FAISS) लाइब्रेरी का उपयोग करता है।
+
+```bash
+pip install faiss-cpu
+```
+
+हम OpenAIEmbeddings का उपयोग करना चाहते हैं, इसलिए हमें OpenAI API Key प्राप्त करना होगा।
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = FAISS.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+  <TabItem value="lance" label="Lance">
+
+यह नोटबुक LanceDB वेक्टर डेटाबेस से संबंधित कार्यक्षमता का उपयोग करने का तरीका दिखाता है, जो Lance डेटा प्रारूप पर आधारित है।
+
+```bash
+pip install lancedb
+```
+
+हम OpenAIEmbeddings का उपयोग करना चाहते हैं, इसलिए हमें OpenAI API Key प्राप्त करना होगा।
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "LanceDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lancedb.LanceDB.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.vectorstores import LanceDB
+
+import lancedb
+
+db = lancedb.connect("/tmp/lancedb")
+table = db.create_table(
+    "my_table",
+    data=[
+        {
+            "vector": embeddings.embed_query("Hello World"),
+            "text": "Hello World",
+            "id": "1",
+        }
+    ],
+    mode="overwrite",
+)
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = LanceDB.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+</Tabs>
+
+### समानता खोज
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+docs = db.similarity_search(query)
+print(docs[0].page_content)
+```
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+### वेक्टर द्वारा समानता खोज
+
+वेक्टर के एक पैरामीटर के रूप में एक एम्बेडिंग वेक्टर का उपयोग करके दस्तावेजों की समानता खोज करना भी संभव है `similarity_search_by_vector`।
+
+```python
+embedding_vector = OpenAIEmbeddings().embed_query(query)
+docs = db.similarity_search_by_vector(embedding_vector)
+print(docs[0].page_content)
+```
+
+क्वेरी समान है, और इसलिए परिणाम भी समान है।
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+## असिंक्रोनस ऑपरेशन
+
+वेक्टर स्टोर आमतौर पर एक अलग सेवा के रूप में चलते हैं जिसमें कुछ आईओ ऑपरेशन की आवश्यकता होती है, और इसलिए उन्हें असिंक्रोनस रूप से कहा जा सकता है। इससे प्रदर्शन लाभ होता है क्योंकि आप बाहरी सेवाओं से प्रतिक्रिया प्राप्त करने का समय नहीं गंवाते। यह तब भी महत्वपूर्ण हो सकता है यदि आप एक असिंक्रोनस फ्रेमवर्क, जैसे [FastAPI](https://fastapi.tiangolo.com/) के साथ काम करते हैं।
+
+LangChain वेक्टर स्टोर पर असिंक्रोनस ऑपरेशन का समर्थन करता है। सभी विधियों को उनके असिंक्रोनस समकक्षों का उपयोग करके कहा जा सकता है, `a` उपसर्ग के साथ, जिसका अर्थ है `async`।
+
+`Qdrant` एक वेक्टर स्टोर है, जो सभी असिंक्रोनस ऑपरेशन का समर्थन करता है, इसलिए इसका उपयोग इस वॉकथ्रू में किया जाएगा।
+
+```bash
+pip install qdrant-client
+```
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Vector stores"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+### असिंक्रोनस रूप से एक वेक्टर स्टोर बनाएं
+
+```python
+db = await Qdrant.afrom_documents(documents, embeddings, "http://localhost:6333")
+```
+
+### समानता खोज
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+docs = await db.asimilarity_search(query)
+print(docs[0].page_content)
+```
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+### वेक्टर द्वारा समानता खोज
+
+```python
+embedding_vector = embeddings.embed_query(query)
+docs = await db.asimilarity_search_by_vector(embedding_vector)
+```
+
+## अधिकतम सीमांत प्रासंगिकता खोज (MMR)
+
+अधिकतम सीमांत प्रासंगिकता क्वेरी के प्रति समानता **और** चयनित दस्तावेजों में विविधता के लिए अनुकूलित होती है। यह भी असिंक्रोनस एपीआई में समर्थित है।
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+found_docs = await qdrant.amax_marginal_relevance_search(query, k=2, fetch_k=10)
+for i, doc in enumerate(found_docs):
+    print(f"{i + 1}.", doc.page_content, "\n")
+```
+
+```output
+1. Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+
+2. We can’t change how divided we’ve been. But we can change how we move forward—on COVID-19 and other issues we must face together.
+
+I recently visited the New York City Police Department days after the funerals of Officer Wilbert Mora and his partner, Officer Jason Rivera.
+
+They were responding to a 9-1-1 call when a man shot and killed them with a stolen gun.
+
+Officer Mora was 27 years old.
+
+Officer Rivera was 22.
+
+Both Dominican Americans who’d grown up on the same streets they later chose to patrol as police officers.
+
+I spoke with their families and told them that we are forever in debt for their sacrifice, and we will carry on their mission to restore the trust and safety every community deserves.
+
+I’ve worked on these issues a long time.
+
+I know what works: Investing in crime prevention and community police officers who’ll walk the beat, who’ll know the neighborhood, and who can restore trust and safety.
+```

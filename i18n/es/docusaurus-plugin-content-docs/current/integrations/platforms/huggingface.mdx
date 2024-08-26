@@ -1,0 +1,169 @@
+---
+translated: true
+---
+
+# Hugging Face
+
+Toda la funcionalidad relacionada con la [Plataforma Hugging Face](https://huggingface.co/).
+
+## Modelos de chat
+
+### Modelos de Hugging Face
+
+Podemos usar las clases LLM de `Hugging Face` o usar directamente la clase `ChatHuggingFace`.
+
+Necesitamos instalar varios paquetes de Python.
+
+```bash
+pip install huggingface_hub
+pip install transformers
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/chat/huggingface).
+
+```python
+<!--IMPORTS:[{"imported": "ChatHuggingFace", "source": "langchain_community.chat_models.huggingface", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.huggingface.ChatHuggingFace.html", "title": "Hugging Face"}]-->
+from langchain_community.chat_models.huggingface import ChatHuggingFace
+```
+
+## LLMs
+
+### Tuberías locales de Hugging Face
+
+Los modelos de Hugging Face se pueden ejecutar localmente a través de la clase `HuggingFacePipeline`.
+
+Necesitamos instalar el paquete de Python `transformers`.
+
+```bash
+pip install transformers
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/huggingface_pipelines).
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFacePipeline", "source": "langchain_community.llms.huggingface_pipeline", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.huggingface_pipeline.HuggingFacePipeline.html", "title": "Hugging Face"}]-->
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+```
+
+Para usar el backend OpenVINO en el wrapper de la tubería local, instala la biblioteca optimum y establece el backend de HuggingFacePipeline como `openvino`:
+
+```bash
+pip install --upgrade-strategy eager "optimum[openvino,nncf]"
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/huggingface_pipelines).
+
+Para exportar tu modelo al formato IR de OpenVINO con la CLI:
+
+```bash
+optimum-cli export openvino --model gpt2 ov_model
+```
+
+Para aplicar la [cuantificación solo de pesos](https://github.com/huggingface/optimum-intel?tab=readme-ov-file#export) al exportar tu modelo.
+
+## Modelos de incrustación
+
+### Hugging Face Hub
+
+>El [Hugging Face Hub](https://huggingface.co/docs/hub/index) es una plataforma
+> con más de 350,000 modelos, 75,000 conjuntos de datos y 150,000 aplicaciones de demostración (Spaces), todo ello de código abierto
+> y de acceso público, en una plataforma en línea donde las personas pueden colaborar y construir ML juntas. El Hub funciona como un lugar central donde cualquiera
+> puede explorar, experimentar, colaborar y construir tecnología con Machine Learning.
+
+Necesitamos instalar el paquete de Python `sentence_transformers`.
+
+```bash
+pip install sentence_transformers
+```
+
+#### HuggingFaceEmbeddings
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/huggingfacehub).
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceEmbeddings
+```
+
+#### HuggingFaceInstructEmbeddings
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/instruct_embeddings).
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceInstructEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceInstructEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+```
+
+#### HuggingFaceBgeEmbeddings
+
+>[Modelos BGE en Hugging Face](https://huggingface.co/BAAI/bge-large-en) son [los mejores modelos de incrustación de código abierto](https://huggingface.co/spaces/mteb/leaderboard).
+>El modelo BGE es creado por el [Beijing Academy of Artificial Intelligence (BAAI)](https://en.wikipedia.org/wiki/Beijing_Academy_of_Artificial_Intelligence). `BAAI` es una organización privada sin fines de lucro dedicada a la investigación y el desarrollo de IA.
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/bge_huggingface).
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceBgeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceBgeEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+```
+
+### Hugging Face Text Embeddings Inference (TEI)
+
+>[Hugging Face Text Embeddings Inference (TEI)](https://huggingface.co/docs/text-generation-inference/index) es un kit de herramientas para implementar y servir incrustaciones de texto de código abierto
+> y modelos de clasificación de secuencias. `TEI` permite la extracción de alto rendimiento para los modelos más populares,
+>incluyendo `FlagEmbedding`, `Ember`, `GTE` y `E5`.
+
+Necesitamos instalar el paquete de Python `huggingface-hub`.
+
+```bash
+pip install huggingface-hub
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/text_embeddings_inference).
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceHubEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface_hub.HuggingFaceHubEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceHubEmbeddings
+```
+
+## Cargadores de documentos
+
+### Conjunto de datos de Hugging Face
+
+>[Hugging Face Hub](https://huggingface.co/docs/hub/index) es el hogar de más de 75,000
+> [conjuntos de datos](https://huggingface.co/docs/hub/index#datasets) en más de 100 idiomas
+> que se pueden utilizar para una amplia gama de tareas en NLP, Visión por Computador y Audio.
+> Se utilizan para una diversa gama de tareas como traducción, reconocimiento automático del habla
+> y clasificación de imágenes.
+
+Necesitamos instalar el paquete de Python `datasets`.
+
+```bash
+pip install datasets
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/hugging_face_dataset).
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceDatasetLoader", "source": "langchain_community.document_loaders.hugging_face_dataset", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.hugging_face_dataset.HuggingFaceDatasetLoader.html", "title": "Hugging Face"}]-->
+from langchain_community.document_loaders.hugging_face_dataset import HuggingFaceDatasetLoader
+```
+
+## Herramientas
+
+### Herramientas de Hugging Face Hub
+
+>[Herramientas de Hugging Face](https://huggingface.co/docs/transformers/v4.29.0/en/custom_tools)
+> admiten entrada/salida de texto y se cargan usando la función `load_huggingface_tool`.
+
+Necesitamos instalar varios paquetes de Python.
+
+```bash
+pip install transformers huggingface_hub
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/tools/huggingface_tools).
+
+```python
+<!--IMPORTS:[{"imported": "load_huggingface_tool", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_huggingface_tool.html", "title": "Hugging Face"}]-->
+from langchain.agents import load_huggingface_tool
+```

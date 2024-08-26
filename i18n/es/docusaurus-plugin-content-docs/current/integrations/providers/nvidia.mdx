@@ -1,0 +1,69 @@
+---
+translated: true
+---
+
+# NVIDIA
+
+>NVIDIA proporciona un paquete de integración para LangChain: `langchain-nvidia-ai-endpoints`.
+
+## Puntos finales de NVIDIA AI Foundation
+
+> Los [Puntos finales de NVIDIA AI Foundation](https://www.nvidia.com/en-us/ai-data-science/foundation-models/) brindan a los usuarios un acceso fácil a los puntos finales de API alojados por NVIDIA para
+> Modelos de NVIDIA AI Foundation como `Mixtral 8x7B`, `Llama 2`, `Stable Diffusion`, etc. Estos modelos,
+> alojados en el [catálogo de API de NVIDIA](https://build.nvidia.com/), están optimizados, probados y alojados en
+> la plataforma de IA de NVIDIA, lo que los hace rápidos y fáciles de evaluar, personalizar aún más,
+> y ejecutar sin problemas al máximo rendimiento en cualquier pila acelerada.
+>
+> Con los [Puntos finales de NVIDIA AI Foundation](https://www.nvidia.com/en-us/ai-data-science/foundation-models/), puede obtener resultados rápidos de una pila
+> totalmente acelerada que se ejecuta en [NVIDIA DGX Cloud](https://www.nvidia.com/en-us/data-center/dgx-cloud/). Una vez personalizado, estos
+> modelos se pueden implementar en cualquier lugar con seguridad, estabilidad y
+> soporte de nivel empresarial utilizando [NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise/).
+
+Una selección de modelos de NVIDIA AI Foundation se admite directamente en LangChain con API familiares.
+
+Los modelos compatibles se pueden encontrar [en build.nvidia.com](https://build.nvidia.com/).
+
+Estos modelos se pueden acceder a través del paquete [`langchain-nvidia-ai-endpoints`](https://pypi.org/project/langchain-nvidia-ai-endpoints/),
+como se muestra a continuación.
+
+### Configuración
+
+1. Crea una cuenta gratuita con [NVIDIA](https://build.nvidia.com/), que aloja los modelos de NVIDIA AI Foundation
+
+2. Haz clic en el modelo de tu elección
+
+3. En `Entrada`, selecciona la pestaña `Python` y haz clic en `Obtener clave de API`. Luego haz clic en `Generar clave`.
+
+4. Copia y guarda la clave generada como `NVIDIA_API_KEY`. A partir de ahí, deberías tener acceso a los puntos finales.
+
+```bash
+export NVIDIA_API_KEY=nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+- Instalar un paquete:
+
+```bash
+pip install -U langchain-nvidia-ai-endpoints
+```
+
+### Modelos de chat
+
+Consulta un [ejemplo de uso](/docs/integrations/chat/nvidia_ai_endpoints).
+
+```python
+<!--IMPORTS:[{"imported": "ChatNVIDIA", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_nvidia_ai_endpoints.chat_models.ChatNVIDIA.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
+
+llm = ChatNVIDIA(model="mixtral_8x7b")
+result = llm.invoke("Write a ballad about LangChain.")
+print(result.content)
+```
+
+### Modelos de incrustación
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/nvidia_ai_endpoints).
+
+```python
+<!--IMPORTS:[{"imported": "NVIDIAEmbeddings", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_nvidia_ai_endpoints.embeddings.NVIDIAEmbeddings.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+```

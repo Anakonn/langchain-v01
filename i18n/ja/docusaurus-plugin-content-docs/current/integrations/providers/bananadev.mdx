@@ -1,0 +1,69 @@
+---
+translated: true
+---
+
+# バナナ
+
+>[バナナ](https://www.banana.dev/)は、AIモデルのサーバーレスGPUインファレンス、CI/CDビルドパイプライン、そして簡単なPythonフレームワーク(`Potassium`)を提供しています。
+
+このページでは、[バナナ](https://www.banana.dev)エコシステムをLangChain内で使用する方法について説明します。
+
+## インストールとセットアップ
+
+- `banana-dev`Pythonパッケージをインストールします:
+
+```bash
+pip install banana-dev
+```
+
+- [Banana.devダッシュボード](https://app.banana.dev)からバナナAPIキーを取得し、環境変数(`BANANA_API_KEY`)に設定します
+- モデルの詳細ページからモデルのキーとURLスラグを取得します。
+
+## バナナテンプレートを定義する
+
+バナナアプリ用のGitHubリポジトリを設定する必要があります。[このガイド](https://docs.banana.dev/banana-docs/)を使って5分以内に始められます。
+
+また、準備ができたLLMの例として、バナナの[CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq)GitHubリポジトリをチェックできます。フォークして、バナナ内にデプロイするだけです。
+
+その他のスターターリポジトリは[こちら](https://github.com/orgs/bananaml/repositories?q=demo-&type=all&language=&sort=)にあります。
+
+## バナナアプリを構築する
+
+LangChain内でバナナアプリを使用するには、返されるJSONに`outputs`キーを含める必要があり、その値は文字列でなければなりません。
+
+```python
+# Return the results as a dictionary
+result = {'outputs': result}
+```
+
+推論関数の例は次のようになります:
+
+```python
+@app.handler("/")
+def handler(context: dict, request: Request) -> Response:
+    """Handle a request to generate code from a prompt."""
+    model = context.get("model")
+    tokenizer = context.get("tokenizer")
+    max_new_tokens = request.json.get("max_new_tokens", 512)
+    temperature = request.json.get("temperature", 0.7)
+    prompt = request.json.get("prompt")
+    prompt_template=f'''[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```:
+    {prompt}
+    [/INST]
+    '''
+    input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
+    output = model.generate(inputs=input_ids, temperature=temperature, max_new_tokens=max_new_tokens)
+    result = tokenizer.decode(output[0])
+    return Response(json={"outputs": result}, status=200)
+```
+
+この例は、[CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq)の`app.py`ファイルからのものです。
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Banana", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.bananadev.Banana.html", "title": "Banana"}]-->
+from langchain_community.llms import Banana
+```
+
+使用例は[こちら](/docs/integrations/llms/banana)をご覧ください。

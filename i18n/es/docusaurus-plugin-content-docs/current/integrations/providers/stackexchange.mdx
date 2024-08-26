@@ -1,0 +1,45 @@
+---
+translated: true
+---
+
+# Stack Exchange
+
+>[Stack Exchange](https://en.wikipedia.org/wiki/Stack_Exchange) es una red de
+sitios web de preguntas y respuestas (P+R) sobre temas en diversos campos, cada sitio cubriendo
+un tema específico, donde las preguntas, respuestas y usuarios están sujetos a un proceso de otorgamiento de reputación.
+
+Esta página cubre cómo usar la `API de Stack Exchange` dentro de LangChain.
+
+## Instalación y configuración
+
+- Instalar los requisitos con
+
+```bash
+pip install stackapi
+```
+
+## Envolturas
+
+### Utilidad
+
+Existe una utilidad StackExchangeAPIWrapper que envuelve esta API. Para importar esta utilidad:
+
+```python
+<!--IMPORTS:[{"imported": "StackExchangeAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.stackexchange.StackExchangeAPIWrapper.html", "title": "Stack Exchange"}]-->
+from langchain_community.utilities import StackExchangeAPIWrapper
+```
+
+Para un recorrido más detallado de este envoltorio, consulte [este cuaderno](/docs/integrations/tools/stackexchange).
+
+### Herramienta
+
+También puede cargar fácilmente este envoltorio como una Herramienta (para usar con un Agente).
+Puede hacer esto con:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Stack Exchange"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["stackexchange"])
+```
+
+Para obtener más información sobre las herramientas, consulte [esta página](/docs/modules/tools/).

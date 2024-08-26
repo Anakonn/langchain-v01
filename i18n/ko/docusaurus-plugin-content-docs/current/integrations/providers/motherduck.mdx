@@ -1,0 +1,54 @@
+---
+translated: true
+---
+
+# 모더덕
+
+>[모더덕](https://motherduck.com/)은 클라우드에서 관리되는 DuckDB 서비스입니다.
+
+## 설치 및 설정
+
+먼저 `duckdb` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install duckdb
+```
+
+또한 [모더덕](https://motherduck.com/)에서 계정을 등록해야 합니다.
+
+그 다음에는 연결 문자열을 설정해야 합니다. 우리는 주로 SQLAlchemy를 통해 모더덕과 통합합니다.
+연결 문자열은 다음과 같은 형식일 것입니다:
+
+```python
+token="..."
+
+conn_str = f"duckdb:///md:{token}@my_db"
+```
+
+## SQLChain
+
+SQLChain을 사용하여 모더덕 인스턴스의 데이터를 자연어로 쿼리할 수 있습니다.
+
+```python
+from langchain_openai import OpenAI
+from langchain_community.utilities import SQLDatabase
+from langchain_experimental.sql import SQLDatabaseChain
+db = SQLDatabase.from_uri(conn_str)
+db_chain = SQLDatabaseChain.from_llm(OpenAI(temperature=0), db, verbose=True)
+```
+
+여기에서 [SQL Chain](/docs/use_cases/sql/) 문서를 참조하여 사용 방법을 확인하세요.
+
+## LLMCache
+
+또한 모더덕을 사용하여 LLM 요청을 쉽게 캐시할 수 있습니다.
+이것도 SQLAlchemy 래퍼를 통해 수행됩니다.
+
+```python
+import sqlalchemy
+from langchain.globals import set_llm_cache
+eng = sqlalchemy.create_engine(conn_str)
+set_llm_cache(SQLAlchemyCache(engine=eng))
+```
+
+여기에서 [LLM 캐싱](/docs/integrations/llms/llm_caching) 문서를 참조하여 사용 방법을 확인하세요.

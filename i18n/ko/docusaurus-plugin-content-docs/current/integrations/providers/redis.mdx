@@ -1,0 +1,142 @@
+---
+translated: true
+---
+
+# Redis
+
+>[Redis (Remote Dictionary Server)](https://en.wikipedia.org/wiki/Redis)는 오픈 소스 인-메모리 스토리지로, 분산 인-메모리 키-값 데이터베이스, 캐시 및 메시지 브로커로 사용되며 선택적 내구성을 제공합니다.
+> 모든 데이터를 메모리에 보유하고 설계상 특성으로 인해 `Redis`는 낮은 지연 시간의 읽기 및 쓰기를 제공하여 캐시가 필요한 사용 사례에 특히 적합합니다. Redis는 가장 인기 있는 NoSQL 데이터베이스이자 전체 데이터베이스 중 가장 인기 있는 데이터베이스 중 하나입니다.
+
+이 페이지에서는 LangChain 내에서 [Redis](https://redis.com) 생태계를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 특정 Redis 래퍼에 대한 참조로 구성됩니다.
+
+## 설치 및 설정
+
+Python SDK를 설치합니다:
+
+```bash
+pip install redis
+```
+
+로컬에서 Redis를 실행하려면 Docker를 사용할 수 있습니다:
+
+```bash
+docker run --name langchain-redis -d -p 6379:6379 redis redis-server --save 60 1 --loglevel warning
+```
+
+컨테이너를 중지하려면:
+
+```bash
+docker stop langchain-redis
+```
+
+그리고 다시 시작하려면:
+
+```bash
+docker start langchain-redis
+```
+
+### 연결
+
+데이터베이스에 연결하려면 Redis URL 연결 문자열이 필요합니다. 독립형 Redis 서버 또는 복제와 Redis Sentinel이 있는 고가용성 설정을 지원합니다.
+
+#### Redis 독립형 연결 URL
+
+독립형 `Redis` 서버의 경우 공식 Redis 연결 URL 형식을 Python redis 모듈의 "from_url()" 메서드 [Redis.from_url](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)에 설명된 대로 사용할 수 있습니다.
+
+예: `redis_url = "redis://:secret-pass@localhost:6379/0"`
+
+#### Redis Sentinel 연결 URL
+
+[Redis Sentinel 설정](https://redis.io/docs/management/sentinel/)의 경우 연결 체계는 "redis+sentinel"입니다.
+이는 공식 IANA 등록 프로토콜 체계에 대한 비공식 확장이며, Sentinel에 대한 연결 URL이 아직 없기 때문입니다.
+
+예: `redis_url = "redis+sentinel://:secret-pass@sentinel-host:26379/mymaster/0"`
+
+형식은 `redis+sentinel://[[username]:[password]]@[host-or-ip]:[port]/[service-name]/[db-number]`이며, "service-name = mymaster" 및 "db-number = 0"의 기본값이 명시적으로 설정되지 않은 경우 사용됩니다.
+service-name은 Sentinel 내에 구성된 Redis 서버 모니터링 그룹 이름입니다.
+
+현재 URL 형식은 하나의 Sentinel 호스트만 연결 문자열에 포함할 수 있으며(목록 제공 불가), Redis 서버와 Sentinel이 동일한 비밀번호를 가져야 합니다(사용되는 경우).
+
+#### Redis Cluster 연결 URL
+
+Redis 클러스터는 현재 "redis_url" 매개변수가 필요한 모든 메서드에서 지원되지 않습니다.
+Redis 클러스터를 사용하는 유일한 방법은 사전 구성된 Redis 클라이언트(예: `RedisCache`)를 허용하는 LangChain 클래스를 사용하는 것입니다(아래 예제 참조).
+
+## 캐시
+
+Cache 래퍼를 사용하면 [Redis](https://redis.io)를 LLM 프롬프트 및 응답을 위한 원격, 저지연, 인-메모리 캐시로 사용할 수 있습니다.
+
+### 표준 캐시
+
+표준 캐시는 전 세계 [오픈 소스](https://redis.io) 및 [엔터프라이즈](https://redis.com) 사용자에게 가장 일반적인 Redis 사용 사례입니다.
+
+```python
+<!--IMPORTS:[{"imported": "RedisCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisCache
+```
+
+LLM에서 이 캐시를 사용하려면:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+redis_client = redis.Redis.from_url(...)
+set_llm_cache(RedisCache(redis_client))
+```
+
+### 시맨틱 캐시
+
+시맨틱 캐싱을 통해 사용자는 사용자 입력과 이전에 캐시된 결과 간의 의미론적 유사성을 기반으로 캐시된 프롬프트를 검색할 수 있습니다. 내부적으로는 Redis를 캐시와 벡터 스토어로 모두 사용합니다.
+
+```python
+<!--IMPORTS:[{"imported": "RedisSemanticCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisSemanticCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisSemanticCache
+```
+
+LLM에서 이 캐시를 사용하려면:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+redis_url = "redis://localhost:6379"
+
+set_llm_cache(RedisSemanticCache(
+    embedding=FakeEmbeddings(),
+    redis_url=redis_url
+))
+```
+
+## VectorStore
+
+벡터 스토어 래퍼는 Redis를 시맨틱 검색 또는 LLM 콘텐츠 검색을 위한 저지연 [벡터 데이터베이스](https://redis.com/solutions/use-cases/vector-database/)로 전환합니다.
+
+```python
+<!--IMPORTS:[{"imported": "Redis", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.redis.base.Redis.html", "title": "Redis"}]-->
+from langchain_community.vectorstores import Redis
+```
+
+Redis 벡터 스토어 래퍼에 대한 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/redis)을 참조하세요.
+
+## Retriever
+
+Redis 벡터 스토어 검색기 래퍼는 벡터 스토어 클래스를 일반화하여 저지연 문서 검색을 수행합니다. 검색기를 만들려면 기본 벡터 스토어 클래스에서 `.as_retriever()`를 호출하면 됩니다.
+
+## Memory
+
+Redis를 사용하여 LLM 대화를 지속할 수 있습니다.
+
+### 벡터 스토어 검색기 메모리
+
+`VectorStoreRetrieverMemory` 래퍼에 대한 자세한 연습은 [이 노트북](/docs/modules/memory/types/vectorstore_retriever_memory)을 참조하세요.
+
+### 채팅 메시지 기록 메모리
+
+Redis를 사용하여 대화 메시지 기록을 캐시하는 자세한 예는 [이 노트북](/docs/integrations/memory/redis_chat_message_history)을 참조하세요.

@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# Streamlit
+
+>[Streamlit](https://streamlit.io/) est un moyen plus rapide de construire et de partager des applications de données.
+>`Streamlit` transforme les scripts de données en applications Web partageables en quelques minutes. Le tout en Python pur. Aucune expérience en développement front-end requise.
+>Voir plus d'exemples sur [streamlit.io/generative-ai](https://streamlit.io/generative-ai).
+
+## Installation et configuration
+
+Nous devons installer le package Python `streamlit` :
+
+```bash
+pip install streamlit
+```
+
+## Mémoire
+
+Voir un [exemple d'utilisation](/docs/integrations/memory/streamlit_chat_message_history).
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.streamlit.StreamlitChatMessageHistory.html", "title": "Streamlit"}]-->
+from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+```
+
+## Callbacks
+
+Voir un [exemple d'utilisation](/docs/integrations/callbacks/streamlit).
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitCallbackHandler", "source": "langchain_community.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.streamlit.StreamlitCallbackHandler.html", "title": "Streamlit"}]-->
+from langchain_community.callbacks import StreamlitCallbackHandler
+```

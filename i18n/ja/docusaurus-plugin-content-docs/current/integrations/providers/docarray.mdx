@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# DocArray
+
+> [DocArray](https://docarray.jina.ai/)は、テキスト、画像、オーディオ、ビデオ、3Dメッシュなどの入れ子構造の非構造化マルチモーダルデータを扱うためのライブラリです。深層学習エンジニアがPythonic APIを使って、マルチモーダルデータを効率的に処理、埋め込み、検索、推奨、保存、転送できるようにします。
+
+## インストールとセットアップ
+
+`docarray`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install docarray
+```
+
+## ベクトルストア
+
+LangChainは、`DocArray`ライブラリの`In-memory`および`HNSW`ベクトルストアにアクセスできます。
+
+[使用例](/docs/integrations/vectorstores/docarray_hnsw)を参照してください。
+
+```python
+from langchain_community.vectorstores DocArrayHnswSearch
+```
+
+[使用例](/docs/integrations/vectorstores/docarray_in_memory)を参照してください。
+
+```python
+from langchain_community.vectorstores DocArrayInMemorySearch
+```

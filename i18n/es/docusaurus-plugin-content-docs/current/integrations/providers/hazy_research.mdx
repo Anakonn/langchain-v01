@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Investigación Borrosa
+
+Esta página cubre cómo usar el ecosistema de Investigación Borrosa dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envolturas específicas de Investigación Borrosa.
+
+## Instalación y Configuración
+
+- Para usar el `manifest`, instálalo con `pip install manifest-ml`
+
+## Envolturas
+
+### LLM
+
+Existe una envoltura LLM alrededor de la biblioteca `manifest` de Investigación Borrosa.
+`manifest` es una biblioteca de python que a su vez es una envoltura alrededor de muchos proveedores de modelos, y agrega almacenamiento en caché, historial y más.
+
+Para usar esta envoltura:
+
+```python
+<!--IMPORTS:[{"imported": "ManifestWrapper", "source": "langchain_community.llms.manifest", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.manifest.ManifestWrapper.html", "title": "Hazy Research"}]-->
+from langchain_community.llms.manifest import ManifestWrapper
+```

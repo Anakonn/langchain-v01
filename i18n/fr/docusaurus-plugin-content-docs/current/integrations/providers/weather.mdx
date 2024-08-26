@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Météo
+
+>[OpenWeatherMap](https://openweathermap.org/) est un fournisseur de services météorologiques open source.
+
+## Installation et configuration
+
+```bash
+pip install pyowm
+```
+
+Nous devons configurer le `jeton API OpenWeatherMap`.
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/weather).
+
+```python
+<!--IMPORTS:[{"imported": "WeatherDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.weather.WeatherDataLoader.html", "title": "Weather"}]-->
+from langchain_community.document_loaders import WeatherDataLoader
+```

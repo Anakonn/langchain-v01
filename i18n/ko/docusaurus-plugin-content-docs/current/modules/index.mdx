@@ -1,0 +1,74 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# 구성 요소
+
+LangChain은 다음과 같은 주요 구성 요소에 대한 표준, 확장 가능한 인터페이스와 외부 통합을 제공합니다:
+
+## [모델 I/O](/docs/modules/model_io/)
+
+언어 모델 입력 및 출력 형식화 및 관리
+
+### [프롬프트](/docs/modules/model_io/prompts)
+
+생성을 안내하는 LLM 입력에 대한 형식화
+
+### [채팅 모델](/docs/modules/model_io/chat)
+
+채팅 메시지를 입력 및 출력으로 사용하는 언어 모델에 대한 인터페이스(일반 텍스트와 대조됨).
+
+### [LLM](/docs/modules/model_io/llms)
+
+일반 텍스트를 입력 및 출력으로 사용하는 언어 모델에 대한 인터페이스
+
+## [검색](/docs/modules/data_connection/)
+
+예를 들어 RAG에 대한 애플리케이션별 데이터와의 인터페이스
+
+### [문서 로더](/docs/modules/data_connection/document_loaders/)
+
+나중에 처리할 `Documents`로 데이터 소스에서 데이터를 로드
+
+### [텍스트 분할기](/docs/modules/data_connection/document_transformers/)
+
+애플리케이션에 더 잘 맞도록 소스 문서를 변환
+
+### [임베딩 모델](/docs/modules/data_connection/text_embedding/)
+
+텍스트의 벡터 표현을 만들어 자연어 검색을 가능하게 함
+
+### [벡터 저장소](/docs/modules/data_connection/vectorstores/)
+
+구조화되지 않은 데이터에 대한 자연어 검색을 지원하는 전문 데이터베이스에 대한 인터페이스
+
+### [검색기](/docs/modules/data_connection/retrievers/)
+
+구조화되지 않은 쿼리에 대해 문서를 반환하는 더 일반적인 인터페이스
+
+## [구성](/docs/modules/composition/)
+
+다른 임의의 시스템 및/또는 LangChain 기본 요소를 결합하는 상위 수준 구성 요소
+
+### [도구](/docs/modules/tools/)
+
+LLM이 외부 시스템과 상호 작용할 수 있게 하는 인터페이스
+
+### [에이전트](/docs/modules/agents/)
+
+상위 수준 지침에 따라 사용할 도구를 선택하는 구조
+
+### [체인](/docs/modules/chains/)
+
+다른 실행 가능한 요소의 블록 스타일 구성
+
+## 추가
+
+### [메모리](/docs/modules/memory/)
+
+체인 실행 간에 애플리케이션 상태 유지
+
+### [콜백](/docs/modules/callbacks/)
+
+체인의 중간 단계 로깅 및 스트리밍

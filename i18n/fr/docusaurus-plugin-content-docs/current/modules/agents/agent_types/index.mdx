@@ -1,0 +1,44 @@
+---
+sidebar_position: 2
+title: Types
+translated: true
+---
+
+# Types d'agents
+
+Cela catégorise tous les agents disponibles selon quelques dimensions.
+
+**Type de modèle prévu**
+
+Si cet agent est prévu pour les modèles de chat (prend des messages en entrée, produit un message en sortie) ou les LLM (prend une chaîne de caractères en entrée, produit une chaîne de caractères en sortie). La principale chose que cela affecte est la stratégie de prompt utilisée. Vous pouvez utiliser un agent avec un type de modèle différent de celui pour lequel il est prévu, mais il est peu probable que les résultats soient de la même qualité.
+
+**Prend en charge l'historique de la conversation**
+
+Si ces types d'agents prennent en charge l'historique de la conversation ou non. S'ils le font, cela signifie qu'ils peuvent être utilisés comme chatbots. S'ils ne le font pas, alors cela signifie qu'ils sont plus adaptés aux tâches uniques. Prendre en charge l'historique de la conversation nécessite généralement de meilleurs modèles, donc les premiers types d'agents destinés à des modèles plus faibles peuvent ne pas le prendre en charge.
+
+**Prend en charge les outils à entrées multiples**
+
+Si ces types d'agents prennent en charge ou non les outils avec plusieurs entrées. Si un outil ne nécessite qu'une seule entrée, il est généralement plus facile pour un LLM de savoir comment l'invoquer. Par conséquent, plusieurs types d'agents plus anciens destinés à des modèles plus faibles peuvent ne pas les prendre en charge.
+
+**Prend en charge l'appel de fonctions en parallèle**
+
+Le fait qu'un LLM puisse appeler plusieurs outils en même temps peut grandement accélérer les agents, que ce soit pour des tâches qui bénéficient de cette fonctionnalité. Cependant, c'est beaucoup plus difficile pour les LLM de le faire, donc certains types d'agents ne le prennent pas en charge.
+
+**Paramètres de modèle requis**
+
+Si cet agent nécessite que le modèle prenne en charge des paramètres supplémentaires. Certains types d'agents tirent parti de choses comme l'appel de fonction OpenAI, qui nécessitent d'autres paramètres de modèle. S'il n'y en a pas de requis, cela signifie que tout se fait via le prompt.
+
+**Quand l'utiliser**
+
+Notre commentaire sur les moments où vous devriez envisager d'utiliser ce type d'agent.
+
+| Type d'agent | Type de modèle prévu | Prend en charge l'historique de la conversation | Prend en charge les outils à entrées multiples | Prend en charge l'appel de fonctions en parallèle | Paramètres de modèle requis | Quand l'utiliser | API |
+|--------------------------------------------|---------------------|-----------------------|----------------------------|-------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| [Appel d'outils](/docs/modules/agents/agent_types/tool_calling)             | Chat                | ✅                    | ✅                         | ✅                                   | `tools`              | Si vous utilisez un modèle d'appel d'outils | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.tool_calling_agent.base.create_tool_calling_agent.html) |
+| [Outils OpenAI](./openai_tools)             | Chat                | ✅                    | ✅                         | ✅                                   | `tools`              | [Hérité] Si vous utilisez un modèle OpenAI récent (`1106` et suivants). L'agent générique d'appel d'outils est recommandé à la place. | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_tools.base.create_openai_tools_agent.html) |
+| [Fonctions OpenAI](./openai_functions_agent)| Chat                | ✅                    | ✅                         |                                     | `functions`          | [Hérité] Si vous utilisez un modèle OpenAI, ou un modèle open-source qui a été affiné pour l'appel de fonctions et expose les mêmes paramètres `functions` qu'OpenAI. L'agent générique d'appel d'outils est recommandé à la place | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html) |
+| [XML](./xml_agent)                         | LLM                 | ✅                    |                            |                                     |                      | Si vous utilisez des modèles Anthropic, ou d'autres modèles bons en XML | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.xml.base.create_xml_agent.html)                                                                                               |
+| [Chat structuré](./structured_chat)       | Chat                | ✅                    | ✅                         |                                     |                      | Si vous avez besoin de prendre en charge des outils avec plusieurs entrées | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.structured_chat.base.create_structured_chat_agent.html) |
+| [Chat JSON](./json_agent)                  | Chat                | ✅                    |                            |                                     |                      | Si vous utilisez un modèle bon en JSON | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.json_chat.base.create_json_chat_agent.html) |
+| [ReAct](./react)                           | LLM                 | ✅                    |                            |                                     |                      | Si vous utilisez un modèle simple | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html) |
+| [Self Ask With Search](./self_ask_with_search)| LLM              |                       |                            |                                     |                      | Si vous utilisez un modèle simple et n'avez qu'un seul outil de recherche | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.self_ask_with_search.base.create_self_ask_with_search_agent.html) |

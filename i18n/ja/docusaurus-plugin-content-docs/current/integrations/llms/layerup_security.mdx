@@ -1,0 +1,93 @@
+---
+translated: true
+---
+
+# Layerup Security
+
+[Layerup Security](https://uselayerup.com)統合により、LangChain LLM、LLMチェーン、またはLLMエージェントへの呼び出しを保護することができます。LLMオブジェクトは既存のLLMオブジェクトをラップし、ユーザーとLLMの間に安全な層を提供します。
+
+Layerup Securityオブジェクトは、LLMとして設計されていますが、実際にはLLM自体ではなく、LLMをラップすることで、基礎となるLLMと同じ機能を適応させることができます。
+
+## セットアップ
+
+まず、Layerup [website](https://uselayerup.com)からLayerup Securityアカウントを取得する必要があります。
+
+次に、[dashboard](https://dashboard.uselayerup.com)でプロジェクトを作成し、APIキーをコピーします。APIキーはプロジェクトの環境に保存することをお勧めします。
+
+Layerup Security SDKをインストールします:
+
+```bash
+pip install LayerupSecurity
+```
+
+LangChain Communityもインストールします:
+
+```bash
+pip install langchain-community
+```
+
+これで、Layerup Securityを使ってLLMの呼び出しを保護する準備ができました!
+
+```python
+<!--IMPORTS:[{"imported": "LayerupSecurity", "source": "langchain_community.llms.layerup_security", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.layerup_security.LayerupSecurity.html", "title": "Layerup Security"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Layerup Security"}]-->
+from langchain_community.llms.layerup_security import LayerupSecurity
+from langchain_openai import OpenAI
+
+# Create an instance of your favorite LLM
+openai = OpenAI(
+    model_name="gpt-3.5-turbo",
+    openai_api_key="OPENAI_API_KEY",
+)
+
+# Configure Layerup Security
+layerup_security = LayerupSecurity(
+    # Specify a LLM that Layerup Security will wrap around
+    llm=openai,
+
+    # Layerup API key, from the Layerup dashboard
+    layerup_api_key="LAYERUP_API_KEY",
+
+    # Custom base URL, if self hosting
+    layerup_api_base_url="https://api.uselayerup.com/v1",
+
+    # List of guardrails to run on prompts before the LLM is invoked
+    prompt_guardrails=[],
+
+    # List of guardrails to run on responses from the LLM
+    response_guardrails=["layerup.hallucination"],
+
+    # Whether or not to mask the prompt for PII & sensitive data before it is sent to the LLM
+    mask=False,
+
+    # Metadata for abuse tracking, customer tracking, and scope tracking.
+    metadata={"customer": "example@uselayerup.com"},
+
+    # Handler for guardrail violations on the prompt guardrails
+    handle_prompt_guardrail_violation=(
+        lambda violation: {
+            "role": "assistant",
+            "content": (
+                "There was sensitive data! I cannot respond. "
+                "Here's a dynamic canned response. Current date: {}"
+            ).format(datetime.now())
+        }
+        if violation["offending_guardrail"] == "layerup.sensitive_data"
+        else None
+    ),
+
+    # Handler for guardrail violations on the response guardrails
+    handle_response_guardrail_violation=(
+        lambda violation: {
+            "role": "assistant",
+            "content": (
+                "Custom canned response with dynamic data! "
+                "The violation rule was {}."
+            ).format(violation["offending_guardrail"])
+        }
+    ),
+)
+
+response = layerup_security.invoke(
+    "Summarize this message: my name is Bob Dylan. My SSN is 123-45-6789."
+)
+```

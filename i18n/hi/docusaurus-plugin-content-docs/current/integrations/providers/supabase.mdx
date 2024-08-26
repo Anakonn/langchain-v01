@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# सुपाबेस (पोस्टग्रेस)
+
+>[सुपाबेस](https://supabase.com/docs) एक ओपन-सोर्स `Firebase` वैकल्पिक है।
+> `सुपाबेस` `PostgreSQL` पर बनाया गया है, जो मजबूत `SQL`
+> क्वेरी क्षमताओं की पेशकश करता है और पहले से मौजूद उपकरणों और फ्रेमवर्क के साथ एक सरल इंटरफ़ेस को सक्षम करता है।
+
+>[PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) को `Postgres` के रूप में भी जाना जाता है,
+> एक मुक्त और ओपन-सोर्स रिलेशनल डेटाबेस मैनेजमेंट सिस्टम (RDBMS) है
+> जो विस्तारणीयता और `SQL` अनुपालन पर जोर देता है।
+
+## इंस्टॉलेशन और सेटअप
+
+हमें `supabase` पायथन पैकेज को इंस्टॉल करना होगा।
+
+```bash
+pip install supabase
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/supabase) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SupabaseVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.supabase.SupabaseVectorStore.html", "title": "Supabase (Postgres)"}]-->
+from langchain_community.vectorstores import SupabaseVectorStore
+```

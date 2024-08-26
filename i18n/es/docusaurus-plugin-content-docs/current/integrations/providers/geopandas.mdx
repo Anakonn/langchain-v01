@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Geopandas
+
+>[GeoPandas](https://geopandas.org/) es un proyecto de código abierto para facilitar el trabajo
+> con datos geoespaciales en python. `GeoPandas` extiende los tipos de datos utilizados por
+> `pandas` para permitir operaciones espaciales en tipos geométricos.
+> Las operaciones geométricas se realizan mediante `shapely`.
+
+## Instalación y configuración
+
+Tenemos que instalar varios paquetes de python.
+
+```bash
+pip install -U sodapy pandas geopandas
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/geopandas).
+
+```python
+<!--IMPORTS:[{"imported": "OpenCityDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.open_city_data.OpenCityDataLoader.html", "title": "Geopandas"}]-->
+from langchain_community.document_loaders import OpenCityDataLoader
+```

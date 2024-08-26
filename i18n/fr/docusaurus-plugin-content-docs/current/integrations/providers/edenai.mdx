@@ -1,0 +1,69 @@
+---
+translated: true
+---
+
+# Eden AI
+
+>[Interface utilisateur (UI) d'Eden AI](https://docs.edenai.co/docs/getting-started-with-eden-ai)
+> est conçue pour gérer les projets d'IA. Avec `Eden AI Portal`,
+> vous pouvez effectuer de l'IA sans code en utilisant les meilleurs moteurs du marché.
+
+## Installation et configuration
+
+L'accès à l'API Eden AI nécessite une clé API, que vous pouvez obtenir en
+[créant un compte](https://app.edenai.run/user/register) et
+en vous rendant [ici](https://app.edenai.run/admin/account/settings).
+
+## LLMs
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/edenai).
+
+```python
+<!--IMPORTS:[{"imported": "EdenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.edenai.EdenAI.html", "title": "Eden AI"}]-->
+from langchain_community.llms import EdenAI
+
+```
+
+## Modèles de chat
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/edenai).
+
+```python
+<!--IMPORTS:[{"imported": "ChatEdenAI", "source": "langchain_community.chat_models.edenai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.edenai.ChatEdenAI.html", "title": "Eden AI"}]-->
+from langchain_community.chat_models.edenai import ChatEdenAI
+```
+
+## Modèles d'intégration
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/edenai).
+
+```python
+<!--IMPORTS:[{"imported": "EdenAiEmbeddings", "source": "langchain_community.embeddings.edenai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.edenai.EdenAiEmbeddings.html", "title": "Eden AI"}]-->
+from langchain_community.embeddings.edenai import EdenAiEmbeddings
+```
+
+## Outils
+
+Eden AI fournit une liste d'outils qui donnent à votre agent la capacité d'effectuer de multiples tâches, telles que :
+* reconnaissance vocale
+* synthèse vocale
+* détection de contenu explicite dans le texte
+* détection de contenu explicite dans les images
+* détection d'objets
+* extraction de données de factures par OCR
+* extraction de données de pièces d'identité par OCR
+
+Voir un [exemple d'utilisation](/docs/integrations/tools/edenai_tools).
+
+```python
+<!--IMPORTS:[{"imported": "EdenAiExplicitImageTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.image_explicitcontent.EdenAiExplicitImageTool.html", "title": "Eden AI"}, {"imported": "EdenAiObjectDetectionTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.image_objectdetection.EdenAiObjectDetectionTool.html", "title": "Eden AI"}, {"imported": "EdenAiParsingIDTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.ocr_identityparser.EdenAiParsingIDTool.html", "title": "Eden AI"}, {"imported": "EdenAiParsingInvoiceTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.ocr_invoiceparser.EdenAiParsingInvoiceTool.html", "title": "Eden AI"}, {"imported": "EdenAiSpeechToTextTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.audio_speech_to_text.EdenAiSpeechToTextTool.html", "title": "Eden AI"}, {"imported": "EdenAiTextModerationTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.text_moderation.EdenAiTextModerationTool.html", "title": "Eden AI"}, {"imported": "EdenAiTextToSpeechTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.audio_text_to_speech.EdenAiTextToSpeechTool.html", "title": "Eden AI"}]-->
+from langchain_community.tools.edenai import (
+    EdenAiExplicitImageTool,
+    EdenAiObjectDetectionTool,
+    EdenAiParsingIDTool,
+    EdenAiParsingInvoiceTool,
+    EdenAiSpeechToTextTool,
+    EdenAiTextModerationTool,
+    EdenAiTextToSpeechTool,
+)
+```

@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# स्टारराक्स
+
+>[स्टारराक्स](https://www.starrocks.io/) एक उच्च-प्रदर्शन विश्लेषणात्मक डेटाबेस है।
+`स्टारराक्स` एक अगली पीढ़ी का उप-सेकंड एमपीपी डेटाबेस है जो पूर्ण विश्लेषण परिदृश्यों के लिए है, जिसमें बहु-आयामी विश्लेषण, रियल-टाइम विश्लेषण और एड-हॉक क्वेरी शामिल हैं।
+
+>आमतौर पर `स्टारराक्स` को ओएलएपी में वर्गीकृत किया जाता है, और इसने [क्लिकबेंच - एक विश्लेषणात्मक डीबीएमएस के लिए बेंचमार्क](https://benchmark.clickhouse.com/) में उत्कृष्ट प्रदर्शन दिखाया है। चूंकि इसमें एक सुपर-तेज वेक्टरीकृत कार्यान्वयन इंजन है, इसका उपयोग एक तेज वेक्टरडीबी के रूप में भी किया जा सकता है।
+
+## स्थापना और सेटअप
+
+```bash
+pip install pymysql
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/starrocks) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "StarRocks", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.starrocks.StarRocks.html", "title": "StarRocks"}]-->
+from langchain_community.vectorstores import StarRocks
+```

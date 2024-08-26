@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# vlite
+
+यह पृष्ठ [vlite](https://github.com/sdan/vlite) का LangChain में उपयोग करने के बारे में कवर करता है। vlite एम्बेडिंग्स को संग्रहित और पुनः प्राप्त करने के लिए एक सरल और तेज़ वेक्टर डेटाबेस है।
+
+## स्थापना और सेटअप
+
+vlite को स्थापित करने के लिए, निम्नलिखित कमांड चलाएं:
+
+```bash
+pip install vlite
+```
+
+PDF OCR समर्थन के लिए, `vlite[ocr]` अतिरिक्त स्थापित करें:
+
+```bash
+pip install vlite[ocr]
+```
+
+## VectorStore
+
+vlite अपने वेक्टर डेटाबेस के इर्द-गिर्द एक रैपर प्रदान करता है, जिससे आप इसका उपयोग सेमेंटिक खोज और उदाहरण चयन के लिए एक वेक्टरस्टोर के रूप में कर सकते हैं।
+
+vlite वेक्टरस्टोर आयात करने के लिए:
+
+```python
+from langchain_community.vectorstores import vlite
+```
+
+### उपयोग
+
+vlite रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/vlite) देखें।

@@ -1,0 +1,80 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 4
+title: Recuperadores
+translated: true
+---
+
+# Recuperadores
+
+Un recuperador es una interfaz que devuelve documentos dados una consulta no estructurada. Es más general que un almacén de vectores.
+Un recuperador no necesita poder almacenar documentos, solo devolverlos (o recuperarlos). Los almacenes de vectores se pueden usar
+como la columna vertebral de un recuperador, pero también hay otros tipos de recuperadores.
+
+Los recuperadores aceptan una cadena `query` como entrada y devuelven una lista de `Document`'s como salida.
+
+## Tipos avanzados de recuperación
+
+Columnas de la tabla:
+
+- **Nombre**: Nombre del algoritmo de recuperación.
+- **Tipo de índice**: En qué tipo de índice (si lo hay) se basa.
+- **Usa un LLM**: Si este método de recuperación usa un LLM.
+- **Cuándo usar**: Nuestros comentarios sobre cuándo deberías considerar usar este método de recuperación.
+- **Descripción**: Descripción de lo que hace este algoritmo de recuperación.
+
+| Nombre                      | Tipo de índice                   | Usa un LLM               | Cuándo usar                                                                                                                                   | Descripción                                                                                                                                                                                                                                                                                       |
+|---------------------------|------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Almacén de vectores](./vectorstore)               | Almacén de vectores                  | No                        | Si recién estás empezando y buscas algo rápido y fácil.                                                                     | Este es el método más sencillo y el más fácil de comenzar. Crea incrustaciones para cada fragmento de texto.                                                                                                                                                                        |
+| [Documento principal](./parent_document_retriever)            | Almacén de vectores + Almacén de documentos | No                        | Si tus páginas tienen muchos fragmentos más pequeños de información distinta que es mejor indexar por separado, pero mejor recuperar todos juntos.       | Esto indexa múltiples fragmentos para cada documento. Luego encuentra los fragmentos más similares en el espacio de incrustación, pero recupera todo el documento principal y lo devuelve (en lugar de fragmentos individuales).                                                                                    |
+| [Multi Vector](multi_vector)              | Almacén de vectores + Almacén de documentos | A veces durante la indexación | Si puedes extraer información de los documentos que crees que es más relevante para indexar que el texto en sí.                          | Esto crea múltiples vectores para cada documento. Cada vector podría crearse de diversas maneras, por ejemplo, resúmenes del texto e hipotéticas preguntas.                                                                                                                            |
+| [Autoconsula](./self_query)               | Almacén de vectores                  | Sí                       | Si los usuarios hacen preguntas que se responden mejor buscando documentos en función de los metadatos en lugar de la similitud con el texto.          | Esto usa un LLM para transformar la entrada del usuario en dos cosas: (1) una cadena para buscar semánticamente, (2) un filtro de metadatos para acompañarla. Esto es útil porque a menudo las preguntas son sobre los METADATOS de los documentos (no el contenido en sí).                                               |
+| [Compresión contextual](./contextual_compression)    | Cualquiera                          | A veces                 | Si encuentras que tus documentos recuperados contienen demasiada información irrelevante y distraen al LLM.                         | Esto pone un paso de post-procesamiento sobre otro recuperador y extrae solo la información más relevante de los documentos recuperados. Esto se puede hacer con incrustaciones o un LLM.                                                                                                                |
+| [Almacén de vectores con ponderación temporal](./time_weighted_vectorstore) | Almacén de vectores                  | No                        | Si tienes marcas de tiempo asociadas con tus documentos y quieres recuperar los más recientes                                          | Esto recupera documentos en función de una combinación de similitud semántica (como en la recuperación normal de vectores) y actualidad (mirando las marcas de tiempo de los documentos indexados)                                                                                                                                     |
+| [Recuperador de consultas múltiples](./MultiQueryRetriever)     | Cualquiera                          | Sí                       | Si los usuarios hacen preguntas complejas que requieren múltiples piezas de información distinta para responder                                 | Esto usa un LLM para generar múltiples consultas a partir de la original. Esto es útil cuando la consulta original necesita piezas de información sobre varios temas para responderse adecuadamente. Al generar múltiples consultas, podemos luego buscar documentos para cada una de ellas.                              |
+| [Conjunto](./ensemble)                  | Cualquiera                          | No                        | Si tienes múltiples métodos de recuperación y quieres intentar combinarlos.                                                                        | Esto recupera documentos de varios recuperadores y luego los combina.                                                                                                                                                                                                                    |
+| [Reordenación de contexto largo](./long_context_reorder)      | Cualquiera                          | No                        | Si trabajas con un modelo de contexto largo y notas que no presta atención a la información en el medio de los documentos recuperados. | Esto recupera documentos de un recuperador subyacente y luego los reordena para que los más similares estén cerca del principio y el final. Esto es útil porque se ha demostrado que para los modelos de contexto más largos, a veces no prestan atención a la información en el medio de la ventana de contexto. |
+
+## [Integraciones de terceros](/docs/integrations/retrievers/)
+
+LangChain también se integra con muchos servicios de recuperación de terceros. Para obtener una lista completa de estas, consulta [esta lista](/docs/integrations/retrievers/) de todas las integraciones.
+
+## Uso de recuperadores en LCEL
+
+Dado que los recuperadores son `Runnable`'s, podemos componerlos fácilmente con otros objetos `Runnable`:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Retrievers"}, {"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Retrievers"}, {"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Retrievers"}, {"imported": "RunnablePassthrough", "source": "langchain_core.runnables", "docs": "https://api.python.langchain.com/en/latest/runnables/langchain_core.runnables.passthrough.RunnablePassthrough.html", "title": "Retrievers"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+template = """Answer the question based only on the following context:
+
+{context}
+
+Question: {question}
+"""
+prompt = ChatPromptTemplate.from_template(template)
+model = ChatOpenAI()
+
+
+def format_docs(docs):
+    return "\n\n".join([d.page_content for d in docs])
+
+
+chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | model
+    | StrOutputParser()
+)
+
+chain.invoke("What did the president say about technology?")
+
+```
+
+## Recuperador personalizado
+
+Consulta la [documentación aquí](/docs/modules/data_connection/retrievers/custom_retriever) para implementar un recuperador personalizado.

@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# इन्फ़िनो
+
+>[इन्फ़िनो](https://github.com/infinohq/infino) एक ओपन-सोर्स ऑब्जर्वेबिलिटी प्लेटफॉर्म है जो मेट्रिक्स और एप्लिकेशन लॉग्स दोनों को एक साथ संग्रहीत करता है।
+
+`इन्फ़िनो` की प्रमुख विशेषताएं हैं:
+- **मेट्रिक्स ट्रैकिंग**: एलएलएम मॉडल द्वारा अनुरोध को संभालने में लगने वाले समय, त्रुटियों, टोकन की संख्या और विशिष्ट एलएलएम के लिए लागत संकेत को कैप्चर करें।
+- **डेटा ट्रैकिंग**: प्रत्येक लैंगचेन इंटरैक्शन के लिए प्रॉम्प्ट, अनुरोध और प्रतिक्रिया डेटा को लॉग और संग्रहीत करें।
+- **ग्राफ विज़ुअलाइज़ेशन**: समय के साथ बेसिक ग्राफ बनाएं, जो अनुरोध अवधि, त्रुटि घटनाओं, टोकन काउंट और लागत जैसी मेट्रिक्स को दर्शाते हैं।
+
+## इंस्टॉलेशन और सेटअप
+
+पहले, आपको `infinopy` पायथन पैकेज को निम्नानुसार इंस्टॉल करना होगा:
+
+```bash
+pip install infinopy
+```
+
+यदि आपके पास पहले से ही एक `इन्फ़िनो सर्वर` चल रहा है, तो आप ठीक हैं; लेकिन यदि नहीं, तो इसे शुरू करने के लिए अगले चरणों का पालन करें:
+
+- सुनिश्चित करें कि आपके पास डॉकर इंस्टॉल किया हुआ है
+- अपने टर्मिनल में निम्नलिखित चलाएं:
+    ```
+    docker run --rm --detach --name infino-example -p 3000:3000 infinohq/infino:latest
+    ```
+
+## इन्फ़िनो का उपयोग करना
+
+[`InfinoCallbackHandler` का उपयोग करने का एक उदाहरण देखें](/docs/integrations/callbacks/infino)।
+
+```python
+<!--IMPORTS:[{"imported": "InfinoCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.infino_callback.InfinoCallbackHandler.html", "title": "Infino"}]-->
+from langchain.callbacks import InfinoCallbackHandler
+```

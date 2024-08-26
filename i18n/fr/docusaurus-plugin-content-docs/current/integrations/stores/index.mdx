@@ -1,0 +1,30 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# Magasins
+
+Dans de nombreuses applications différentes, avoir un certain type de stockage de clé-valeur est utile.
+Dans cette section, nous examinerons quelques moyens différents de stocker des paires clé-valeur
+en utilisant des implémentations de l'interface `ByteStore`.
+
+## Fonctionnalités (prises en charge nativement)
+
+Tous les `ByteStore` prennent en charge les fonctions suivantes, qui sont utilisées pour modifier
+**m**ultiples paires clé-valeur à la fois :
+
+- `mget(key: Sequence[str]) -> List[Optional[bytes]]` : obtenir le contenu de plusieurs clés, en renvoyant `None` si la clé n'existe pas
+- `mset(key_value_pairs: Sequence[Tuple[str, bytes]]) -> None` : définir le contenu de plusieurs clés
+- `mdelete(key: Sequence[str]) -> None` : supprimer plusieurs clés
+- `yield_keys(prefix: Optional[str] = None) -> Iterator[str]` : renvoyer toutes les clés du magasin, en les filtrant éventuellement par un préfixe
+
+## Comment en choisir un
+
+Les `ByteStore` sont conçus pour être interchangeables. Par défaut, la plupart des intégrations dépendantes
+utilisent le `InMemoryByteStore`, qui est un simple magasin de clé-valeur en mémoire.
+
+Cependant, si vous commencez à avoir d'autres exigences, comme une évolutivité massive ou la persistance,
+vous pouvez remplacer l'implémentation `ByteStore` par l'une des autres documentées
+dans cette section.

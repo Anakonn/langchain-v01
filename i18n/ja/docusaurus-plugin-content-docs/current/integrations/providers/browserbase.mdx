@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# Browserbase
+
+>[Browserbase](https://browserbase.com)は、ヘッドレスブラウザを実行するためのサーバーレスプラットフォームで、高度なデバッグ、セッション録画、ステルスモード、統合プロキシ、キャプチャ解決を提供しています。
+
+## インストールとセットアップ
+
+- [browserbase.com](https://browserbase.com)からAPIキーを取得し、環境変数(`BROWSERBASE_API_KEY`)に設定します。
+- [Browserbase SDK](http://github.com/browserbase/python-sdk)をインストールします:
+
+```python
+pip install browserbase
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/browserbase)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "BrowserbaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.browserbase.BrowserbaseLoader.html", "title": "Browserbase"}]-->
+from langchain_community.document_loaders import BrowserbaseLoader
+```
+
+## マルチモーダル
+
+[使用例](/docs/integrations/document_loaders/browserbase)を参照してください。
+
+```python
+from browserbase.helpers.gpt4 import GPT4VImage, GPT4VImageDetail
+```

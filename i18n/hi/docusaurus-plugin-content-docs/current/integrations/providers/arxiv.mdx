@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Arxiv
+
+>[arXiv](https://arxiv.org/) एक खुले पहुंच वाला संग्रह है जिसमें भौतिकी, गणित, कंप्यूटर विज्ञान, मात्रात्मक जीवविज्ञान, मात्रात्मक वित्त, सांख्यिकी, विद्युत अभियांत्रिकी और प्रणाली विज्ञान, और अर्थशास्त्र के क्षेत्रों में 2 मिलियन से अधिक विद्वत्तापूर्ण लेख हैं।
+
+## स्थापना और सेटअप
+
+पहले, आपको `arxiv` पायथन पैकेज को स्थापित करना होगा।
+
+```bash
+pip install arxiv
+```
+
+दूसरा, आपको `PyMuPDF` पायथन पैकेज को स्थापित करना होगा जो `arxiv.org` साइट से डाउनलोड किए गए PDF फ़ाइलों को पाठ प्रारूप में बदलता है।
+
+```bash
+pip install pymupdf
+```
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/arxiv) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ArxivLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arxiv.ArxivLoader.html", "title": "Arxiv"}]-->
+from langchain_community.document_loaders import ArxivLoader
+```
+
+## रिट्रीवर
+
+एक [उपयोग उदाहरण](/docs/integrations/retrievers/arxiv) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ArxivRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.arxiv.ArxivRetriever.html", "title": "Arxiv"}]-->
+from langchain.retrievers import ArxivRetriever
+```

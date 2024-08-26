@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# OpenSearch
+
+यह पृष्ठ LangChain में OpenSearch पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट OpenSearch रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `pip install opensearch-py` के साथ पायथन पैकेज स्थापित करें
+
+## रैपर्स
+
+### VectorStore
+
+OpenSearch वेक्टर डेटाबेस के इर्द-गिर्द एक रैपर मौजूद है, जो आपको लूसेन, एनएमएसलिब और फैस इंजनों द्वारा संचालित लगभग वेक्टर खोज का उपयोग करके语义खोज के लिए इसका उपयोग करने की अनुमति देता है या पीड़नशील लिखने और स्क्रिप्ट स्कोरिंग कार्यों का उपयोग करके ब्रूटफोर्स वेक्टर खोज का उपयोग करता है।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "OpenSearchVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.opensearch_vector_search.OpenSearchVectorSearch.html", "title": "OpenSearch"}]-->
+from langchain_community.vectorstores import OpenSearchVectorSearch
+```
+
+OpenSearch रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/opensearch) देखें

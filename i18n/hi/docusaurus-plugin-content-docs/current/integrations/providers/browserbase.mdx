@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# ब्राउज़रबेस
+
+>[ब्राउज़रबेस](https://browserbase.com) एक सर्वरलेस प्लेटफॉर्म है जो हेडलेस ब्राउज़रों को चलाने के लिए है, यह उन्नत डिबगिंग, सत्र रिकॉर्डिंग, स्टील्थ मोड, एकीकृत प्रॉक्सी और कैप्चा हल करने की सुविधा प्रदान करता है।
+
+## इंस्टॉलेशन और सेटअप
+
+- [browserbase.com](https://browserbase.com) से एक API कुंजी प्राप्त करें और इसे पर्यावरण चर (`BROWSERBASE_API_KEY`) में सेट करें।
+- [Browserbase SDK](http://github.com/browserbase/python-sdk) स्थापित करें:
+
+```python
+pip install browserbase
+```
+
+## दस्तावेज़ लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/browserbase) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "BrowserbaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.browserbase.BrowserbaseLoader.html", "title": "Browserbase"}]-->
+from langchain_community.document_loaders import BrowserbaseLoader
+```
+
+## मल्टी-मोडल
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/browserbase) देखें।
+
+```python
+from browserbase.helpers.gpt4 import GPT4VImage, GPT4VImageDetail
+```

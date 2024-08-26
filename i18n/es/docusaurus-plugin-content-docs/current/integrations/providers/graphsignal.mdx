@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Graphsignal
+
+Esta página cubre cómo usar [Graphsignal](https://app.graphsignal.com) para rastrear y monitorear LangChain. Graphsignal permite una visibilidad completa de tu aplicación. Proporciona desglostes de latencia por cadenas y herramientas, excepciones con contexto completo, monitoreo de datos, utilización de computación/GPU, análisis de costos de OpenAI y más.
+
+## Instalación y configuración
+
+- Instala la biblioteca de Python con `pip install graphsignal`
+- Crea una cuenta gratuita de Graphsignal [aquí](https://graphsignal.com)
+- Obtén una clave API y configúrala como una variable de entorno (`GRAPHSIGNAL_API_KEY`)
+
+## Rastreo y monitoreo
+
+Graphsignal instrumenta y comienza a rastrear y monitorear las cadenas automáticamente. Los rastros y las métricas están disponibles en tus [paneles de Graphsignal](https://app.graphsignal.com).
+
+Inicializa el rastreador proporcionando un nombre de implementación:
+
+```python
+import graphsignal
+
+graphsignal.configure(deployment='my-langchain-app-prod')
+```
+
+Para rastrear adicionalmente cualquier función o código, puedes usar un decorador o un administrador de contexto:
+
+```python
+@graphsignal.trace_function
+def handle_request():
+    chain.run("some initial text")
+```
+
+```python
+with graphsignal.start_trace('my-chain'):
+    chain.run("some initial text")
+```
+
+Opcionalmente, habilita el perfilado para registrar estadísticas a nivel de función para cada rastro.
+
+```python
+with graphsignal.start_trace(
+        'my-chain', options=graphsignal.TraceOptions(enable_profiling=True)):
+    chain.run("some initial text")
+```
+
+Consulta la guía de [Inicio rápido](https://graphsignal.com/docs/guides/quick-start/) para obtener instrucciones de configuración completas.

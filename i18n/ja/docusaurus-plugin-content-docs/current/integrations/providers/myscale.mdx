@@ -1,0 +1,72 @@
+---
+translated: true
+---
+
+# MyScale
+
+このページでは、LangChainでMyScaleベクトルデータベースを使用する方法について説明します。
+インストールとセットアップ、そしてMyScaleラッパーに関する参照に分かれています。
+
+MyScaleを使うと、構造化データと非構造化データ(ベクトル化)の両方を管理し、SQLを使って両方のデータに対して共同クエリと分析を実行できます。さらに、ClickHouseの上に構築されたMyScaleのクラウドネイティブOLAPアーキテクチャにより、大規模なデータセットでも高速なデータ処理が可能です。
+
+## 概要
+
+[MyScaleとハイパフォーマンスベクトル検索の概要](https://docs.myscale.com/en/overview/)
+
+今すぐSaaSに登録して[クラスターを開始できます!](https://docs.myscale.com/en/quickstart/)
+
+SQLとベクトルの統合方法についても興味がある場合は、[このドキュメント](https://docs.myscale.com/en/vector-reference/)の構文リファレンスをご覧ください。
+
+Hugging Faceでライブデモも提供しています! [Hugging Faceスペース](https://huggingface.co/myscale)をチェックしてください! 瞬時にミリオンものベクトルを検索できます!
+
+## インストールとセットアップ
+
+- `pip install clickhouse-connect`でPythonSDKをインストールします
+
+### 環境の設定
+
+MyScaleインデックスのパラメーターを設定する方法は2つあります。
+
+1. 環境変数
+
+    アプリを実行する前に、`export`コマンドで環境変数を設定してください:
+    `export MYSCALE_HOST='<your-endpoints-url>' MYSCALE_PORT=<your-endpoints-port> MYSCALE_USERNAME=<your-username> MYSCALE_PASSWORD=<your-password> ...`
+
+    アカウント、パスワード、その他の情報は、SaaSで確認できます。詳細は[このドキュメント](https://docs.myscale.com/en/cluster-management/)を参照してください。
+    `MyScaleSettings`の下にある属性は、`MYSCALE_`のプレフィックスを付けて、大文字小文字を区別せずに設定できます。
+
+2. `MyScaleSettings`オブジェクトを作成してパラメーターを設定する
+
+    ```python
+    from langchain_community.vectorstores import MyScale, MyScaleSettings
+    config = MyScaleSetting(host="<your-backend-url>", port=8443, ...)
+    index = MyScale(embedding_function, config)
+    index.add_documents(...)
+    ```
+
+## ラッパー
+
+サポートされる機能:
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `asimilarity_search`
+- `similarity_search_by_vector`
+- `asimilarity_search_by_vector`
+- `similarity_search_with_relevance_scores`
+- `delete`
+
+### VectorStore
+
+MyScaleデータベースをラップするラッパーが用意されており、セマンティック検索や類似例の取得に使用できます。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "MyScale", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.myscale.MyScale.html", "title": "MyScale"}]-->
+from langchain_community.vectorstores import MyScale
+```
+
+MyScaleラッパーの詳細なウォークスルーは、[このノートブック](/docs/integrations/vectorstores/myscale)を参照してください

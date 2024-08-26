@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Base de datos de Notion
+
+>[Notion](https://www.notion.so/) es una plataforma de colaboración con soporte de Markdown modificado que integra tableros kanban,
+> tareas, wikis y bases de datos. Es un espacio de trabajo todo en uno para la toma de notas, la gestión del conocimiento y los datos,
+> y la gestión de proyectos y tareas.
+
+## Instalación y configuración
+
+Todas las instrucciones se encuentran en los ejemplos a continuación.
+
+## Cargador de documentos
+
+Tenemos dos cargadores diferentes: `NotionDirectoryLoader` y `NotionDBLoader`.
+
+Consulta un [ejemplo de uso para el NotionDirectoryLoader](/docs/integrations/document_loaders/notion).
+
+```python
+<!--IMPORTS:[{"imported": "NotionDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notion.NotionDirectoryLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDirectoryLoader
+```
+
+Consulta un [ejemplo de uso para el NotionDBLoader](/docs/integrations/document_loaders/notiondb).
+
+```python
+<!--IMPORTS:[{"imported": "NotionDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notiondb.NotionDBLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDBLoader
+```

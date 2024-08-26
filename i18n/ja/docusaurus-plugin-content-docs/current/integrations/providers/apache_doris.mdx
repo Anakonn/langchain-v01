@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Apache Doris
+
+>[Apache Doris](https://doris.apache.org/)は、リアルタイムアナリティクスのための最新のデータウェアハウスです。
+リアルタイムデータを大規模に処理し、高速なアナリティクスを提供します。
+
+>通常、`Apache Doris`はOLAPに分類されており、[ClickBench — a Benchmark For Analytical DBMS](https://benchmark.clickhouse.com/)で優れたパフォーマンスを示しています。
+>高速なベクトル化実行エンジンを持っているため、高速なベクトルデータベースとしても使用できます。
+
+## インストールとセットアップ
+
+```bash
+pip install pymysql
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/apache_doris)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ApacheDoris", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.apache_doris.ApacheDoris.html", "title": "Apache Doris"}]-->
+from langchain_community.vectorstores import ApacheDoris
+```

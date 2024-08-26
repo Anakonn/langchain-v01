@@ -1,0 +1,15 @@
+---
+translated: true
+---
+
+# Confidentialité et sécurité
+
+L'une des principales préoccupations concernant l'utilisation des LLM est qu'ils peuvent mal utiliser les données privées ou générer des textes nuisibles ou non éthiques. C'est un domaine de recherche actif dans ce domaine. Ici, nous présentons quelques chaînes intégrées inspirées de cette recherche, qui visent à rendre les sorties des LLM plus sûres.
+
+- [Chaîne de modération Amazon Comprehend](/docs/guides/productionization/safety/amazon_comprehend_chain) : Utilisez [Amazon Comprehend](https://aws.amazon.com/comprehend/) pour détecter et gérer les informations d'identification personnelle (PII) et la toxicité.
+- [Chaîne constitutionnelle](/docs/guides/productionization/safety/constitutional_chain) : Incitez le modèle avec un ensemble de principes qui devraient guider le comportement du modèle.
+- [Identification de l'injection d'invite Hugging Face](/docs/guides/productionization/safety/hugging_face_prompt_injection) : Détecter et gérer les attaques par injection d'invite.
+- [Layerup Security](/docs/guides/productionization/safety/layerup_security) : Masquez facilement les PII et les données sensibles, détectez et atténuez plus de 10 vecteurs de menaces basés sur les LLM, y compris les PII et les données sensibles, l'injection d'invite, les hallucinations, les abus et plus encore.
+- [Chaîne des failles logiques](/docs/guides/productionization/safety/logical_fallacy_chain) : Vérifie la sortie du modèle par rapport aux failles logiques pour corriger tout écart.
+- [Chaîne de modération](/docs/guides/productionization/safety/moderation) : Vérifier si un texte de sortie est nuisible et le signaler.
+- [Anonymisation des données Presidio](/docs/guides/productionization/safety/presidio_data_anonymization) : Aide à s'assurer que les données sensibles sont correctement gérées et gouvernées.

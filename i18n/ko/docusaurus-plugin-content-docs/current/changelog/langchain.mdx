@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# langchain
+
+## 0.1.0 (2024년 1월 5일)
+
+#### 삭제됨
+
+삭제된 항목 없음.
+
+#### 사용 중단 예정
+
+사용 중단된 클래스와 메서드는 0.2.0에서 제거될 예정입니다.
+
+| 사용 중단 예정                    | 대체 항목                            | 이유                                            |
+|---------------------------------|-----------------------------------|------------------------------------------------|
+| ChatVectorDBChain               | ConversationalRetrievalChain      | 모든 검색기에 더 일반적임                         |
+| create_ernie_fn_chain           | create_ernie_fn_runnable          | LCEL 사용                                      |
+| created_structured_output_chain | create_structured_output_runnable | LCEL 사용                                      |
+| NatBotChain                     |                                   | 사용되지 않음                                   |
+| create_openai_fn_chain          | create_openai_fn_runnable         | LCEL 사용                                      |
+| create_structured_output_chain  | create_structured_output_runnable | LCEL 사용                                      |
+| load_query_constructor_chain    | load_query_constructor_runnable   | LCEL 사용                                      |
+| VectorDBQA                      | RetrievalQA                       | 모든 검색기에 더 일반적임                         |
+| Sequential Chain                | LCEL                              | LCEL로 대체됨                                   |
+| SimpleSequentialChain           | LCEL                              | LCEL로 대체됨                                   |
+| TransformChain                  | LCEL/RunnableLambda               | LCEL로 대체됨                                   |
+| create_tagging_chain            | create_structured_output_runnable | LCEL 사용                                      |
+| ChatAgent                       | create_react_agent                | 클래스 대신 LCEL 빌더 사용                        |
+| ConversationalAgent             | create_react_agent                | 클래스 대신 LCEL 빌더 사용                        |
+| ConversationalChatAgent         | create_json_chat_agent            | 클래스 대신 LCEL 빌더 사용                        |
+| initialize_agent                | 개별 에이전트 생성 메서드         | 개별 에이전트 생성 메서드가 더 명확함              |
+| ZeroShotAgent                   | create_react_agent                | 클래스 대신 LCEL 빌더 사용                        |
+| OpenAIFunctionsAgent            | create_openai_functions_agent     | 클래스 대신 LCEL 빌더 사용                        |
+| OpenAIMultiFunctionsAgent       | create_openai_tools_agent         | 클래스 대신 LCEL 빌더 사용                        |
+| SelfAskWithSearchAgent          | create_self_ask_with_search       | 클래스 대신 LCEL 빌더 사용                        |
+| StructuredChatAgent             | create_structured_chat_agent      | 클래스 대신 LCEL 빌더 사용                        |
+| XMLAgent                        | create_xml_agent                  | 클래스 대신 LCEL 빌더 사용                        |
+

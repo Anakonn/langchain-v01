@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# VoyageAI
+
+VoyageAIに関連するすべての機能
+
+>[VoyageAI](https://www.voyageai.com/) Voyage AIは、ドメインや企業に合わせてカスタマイズされた埋め込みモデルを構築し、より良い検索品質を実現します。
+
+## インストールとセットアップ
+
+統合パッケージをインストールします
+
+```bash
+pip install langchain-voyageai
+```
+
+VoyageAI APIキーを取得し、環境変数(`VOYAGE_API_KEY`)に設定します
+
+## テキスト埋め込みモデル
+
+[使用例](/docs/integrations/text_embedding/voyageai)を参照してください
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIEmbeddings", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_voyageai.embeddings.VoyageAIEmbeddings.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIEmbeddings
+```
+
+## 再ランキング
+
+[使用例](/docs/integrations/document_transformers/voyageai-reranker)を参照してください
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIRerank", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/rerank/langchain_voyageai.rerank.VoyageAIRerank.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIRerank
+```

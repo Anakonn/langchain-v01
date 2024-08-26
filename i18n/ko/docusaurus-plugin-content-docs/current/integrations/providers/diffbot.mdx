@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# 디프봇 (Diffbot)
+
+>[디프봇](https://docs.diffbot.com/docs)은 웹 페이지를 읽는 서비스입니다. 전통적인 웹 스크래핑 도구와 달리,
+>`디프봇`은 페이지의 콘텐츠를 읽기 위한 규칙이 필요하지 않습니다.
+>컴퓨터 비전으로 시작하여 페이지를 20가지 가능한 유형 중 하나로 분류합니다. 그런 다음 페이지 유형에 따라 주요 속성을 식별하도록 훈련된 기계 학습 모델에 의해 콘텐츠가 해석됩니다.
+>결과는 JSON 또는 CSV와 같은 깨끗한 구조화된 데이터로 변환된 웹사이트입니다.
+
+## 설치 및 설정
+
+디프봇 API 토큰을 얻는 방법에 대한 [지침](https://docs.diffbot.com/reference/authentication)을 읽으십시오.
+
+## 문서 로더
+
+[사용 예제](/docs/integrations/document_loaders/diffbot)를 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "DiffbotLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.diffbot.DiffbotLoader.html", "title": "Diffbot"}]-->
+from langchain_community.document_loaders import DiffbotLoader
+```

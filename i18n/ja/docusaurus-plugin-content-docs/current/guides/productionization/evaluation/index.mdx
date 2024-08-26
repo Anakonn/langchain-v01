@@ -1,0 +1,47 @@
+---
+translated: true
+---
+
+import DocCardList from "@theme/DocCardList";
+
+# 評価
+
+言語モデルを使ってアプリケーションを構築するには、多くの要素が関係します。最も重要なコンポーネントの1つは、モデルが生成する結果が幅広い入力に対して信頼性があり、有用であり、アプリケーションの他のソフトウェアコンポーネントと適切に連携することを確認することです。信頼性を確保するには、通常、アプリケーションの設計、テストと評価、ランタイムチェックの組み合わせが必要になります。
+
+このセクションのガイドでは、アプリケーションの評価をより良く行うためにLangChainが提供するAPIと機能を確認します。評価とテストは、LLMアプリケーションを展開する際に非常に重要です。なぜなら、本番環境では、再現可能で有用な結果が必要だからです。
+
+LangChainは、さまざまなタイプの評価器を提供し、多様なデータに対するパフォーマンスと整合性を測定するのに役立ちます。また、コミュニティが他の有用な評価器を作成・共有することを奨励しています。これらのドキュメントでは、評価器のタイプ、使用方法、実際のシナリオでの使用例を紹介します。
+
+これらの組み込み評価器は、[LangSmith](/docs/langsmith)と滑らかに統合され、時間の経過とともにアプリケーションを改善し、回帰を防ぐフィードバックループを作成できます。
+
+LangChainの各評価器タイプには、使用準備ができた実装と、ニーズに合わせてカスタマイズできる拡張可能なAPIが用意されています。提供している評価器のタイプは以下の通りです:
+
+- [String Evaluators](/docs/guides/productionization/evaluation/string/): これらの評価器は、入力に対する予測文字列を参照文字列と比較して評価します。
+- [Trajectory Evaluators](/docs/guides/productionization/evaluation/trajectory/): これらは、エージェントのアクション全体の軌跡を評価するために使用されます。
+- [Comparison Evaluators](/docs/guides/productionization/evaluation/comparison/): これらの評価器は、共通の入力に対する2つの実行結果を比較するように設計されています。
+
+これらの評価器は、さまざまなシナリオで使用でき、LangChainライブラリ内の様々なチェーンやLLM実装に適用できます。
+
+また、これらの評価器を実際のシナリオで使用する方法を示すガイドとクックブックの共有にも取り組んでいます。例えば:
+
+- [Chain Comparisons](/docs/guides/productionization/evaluation/examples/comparisons): この例では、比較評価器を使用して好ましい出力を予測します。異なるモデルやプロンプト間の集計好みスコアの統計的に有意な差異を測定する方法について確認できます。
+
+## LangSmith Evaluation
+
+LangSmithには、回帰のチェック、システムの比較、エラーや性能の問題の特定と修正を容易にする統合された評価とトレースのフレームワークが用意されています。[LangSmith Evaluation](https://docs.smith.langchain.com/evaluation)のドキュメントと追加の[クックブック](https://docs.smith.langchain.com/cookbook)を確認して、アプリケーションの評価に関する詳細情報を確認してください。
+
+## LangChain ベンチマーク
+
+アプリケーションの品質は、選択したLLMと、モデルのコンテキストを提供するためのプロンプティングおよびデータ取得戦略の両方によって決まります。[LangChain Benchmarks](https://langchain-ai.github.io/langchain-benchmarks/)パッケージ内で、以下のようなタスクに対するさまざまなLLMシステムの評価を公開しています:
+
+- エージェントツールの使用
+- 検索支援型質問応答
+- 構造化抽出
+
+ドキュメントの例とリーダーボード情報を確認してください。
+
+## リファレンスドキュメント
+
+利用可能な評価器の詳細情報、インスタンス化、設定、カスタマイズ方法については、[リファレンスドキュメント](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.evaluation)を確認してください。
+
+<DocCardList />

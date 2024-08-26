@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# SemaDB
+
+>[SemaDB](https://semafind.com/)は手間のかからないベクトル類似検索エンジンです。手軽にAIアプリケーションを構築できるよう、クラウドホスティングされたバージョンを提供しています。
+
+SemaDB Cloudのホスティングバージョンでは、ポッドサイズの計算、スキーマ定義、パーティション設定、パラメータチューニング、検索アルゴリズムのチューニング、複雑なインストール、複雑なAPIなどの手間がかかりません。[RapidAPI](https://rapidapi.com/semafind-semadb/api/semadb)と統合されており、透明な課金、自動シャーディング、対話型のAPIプレイグラウンドが提供されています。
+
+## インストール
+
+不要です。[RapidAPI](https://rapidapi.com/semafind-semadb/api/semadb)でSemaDB Cloudを直接使い始められます。
+
+## ベクトルストア
+
+`SemaDB`コレクションを使用できるラッパーが用意されています。
+
+```python
+<!--IMPORTS:[{"imported": "SemaDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.semadb.SemaDB.html", "title": "SemaDB"}]-->
+from langchain_community.vectorstores import SemaDB
+```
+
+ラッパーの使用方法については、[このノートブック](/docs/integrations/vectorstores/semadb)のチュートリアルに従ってください。

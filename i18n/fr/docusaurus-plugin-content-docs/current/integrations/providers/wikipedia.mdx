@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Wikipédia
+
+>[Wikipédia](https://wikipedia.org/) est une encyclopédie en ligne multilingue gratuite, écrite et maintenue par une communauté de bénévoles, connus sous le nom de Wikipédiens, par le biais d'une collaboration ouverte et en utilisant un système d'édition wiki appelé MediaWiki. `Wikipédia` est l'ouvrage de référence le plus vaste et le plus lu de l'histoire.
+
+## Installation et configuration
+
+```bash
+pip install wikipedia
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/wikipedia).
+
+```python
+<!--IMPORTS:[{"imported": "WikipediaLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.wikipedia.WikipediaLoader.html", "title": "Wikipedia"}]-->
+from langchain_community.document_loaders import WikipediaLoader
+```
+
+## Récupérateur
+
+Voir un [exemple d'utilisation](/docs/integrations/retrievers/wikipedia).
+
+```python
+<!--IMPORTS:[{"imported": "WikipediaRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.wikipedia.WikipediaRetriever.html", "title": "Wikipedia"}]-->
+from langchain.retrievers import WikipediaRetriever
+```

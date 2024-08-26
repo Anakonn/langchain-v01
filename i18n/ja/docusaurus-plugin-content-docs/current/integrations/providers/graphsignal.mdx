@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Graphsignal
+
+このページでは、LangChainのトレースとモニタリングに [Graphsignal](https://app.graphsignal.com) を使う方法について説明します。Graphsignalを使うと、アプリケーションの完全な可視化が可能になります。チェーンやツールごとのレイテンシの内訳、完全なコンテキストを持つ例外、データモニタリング、compute/GPU の利用状況、OpenAI コストの分析などが提供されます。
+
+## インストールとセットアップ
+
+- `pip install graphsignal` でPythonライブラリをインストールします
+- [ここ](https://graphsignal.com)でGraphsignalの無料アカウントを作成します
+- APIキーを取得し、環境変数 (`GRAPHSIGNAL_API_KEY`) に設定します
+
+## トレースとモニタリング
+
+Graphsignalは自動的にチェーンをインストルメント化し、トレースとモニタリングを開始します。トレースとメトリクスは [Graphsignalのダッシュボード](https://app.graphsignal.com) で確認できます。
+
+トレーサーを初期化する際は、デプロイメント名を指定します:
+
+```python
+import graphsignal
+
+graphsignal.configure(deployment='my-langchain-app-prod')
+```
+
+さらに、任意の関数やコードをトレースするには、デコレーターやコンテキストマネージャーを使用できます:
+
+```python
+@graphsignal.trace_function
+def handle_request():
+    chain.run("some initial text")
+```
+
+```python
+with graphsignal.start_trace('my-chain'):
+    chain.run("some initial text")
+```
+
+オプションで、プロファイリングを有効にして、各トレースの関数レベルの統計情報を記録できます。
+
+```python
+with graphsignal.start_trace(
+        'my-chain', options=graphsignal.TraceOptions(enable_profiling=True)):
+    chain.run("some initial text")
+```
+
+完全なセットアップ手順については、[クイックスタート](https://graphsignal.com/docs/guides/quick-start/)ガイドを参照してください。

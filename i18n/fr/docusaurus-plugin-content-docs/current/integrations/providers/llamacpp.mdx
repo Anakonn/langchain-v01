@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Llama.cpp
+
+Cette page couvre comment utiliser [llama.cpp](https://github.com/ggerganov/llama.cpp) dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers spécifiques à Llama-cpp.
+
+## Installation et configuration
+
+- Installez le package Python avec `pip install llama-cpp-python`
+- Téléchargez l'un des [modèles pris en charge](https://github.com/ggerganov/llama.cpp#description) et convertissez-les au format llama.cpp selon les [instructions](https://github.com/ggerganov/llama.cpp)
+
+## Wrappers
+
+### LLM
+
+Il existe un wrapper LLM LlamaCpp, que vous pouvez accéder avec
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCpp", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.llamacpp.LlamaCpp.html", "title": "Llama.cpp"}]-->
+from langchain_community.llms import LlamaCpp
+```
+
+Pour un parcours détaillé de cela, voir [ce notebook](/docs/integrations/llms/llamacpp)
+
+### Embeddings
+
+Il existe un wrapper d'embeddings LlamaCpp, que vous pouvez accéder avec
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCppEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.llamacpp.LlamaCppEmbeddings.html", "title": "Llama.cpp"}]-->
+from langchain_community.embeddings import LlamaCppEmbeddings
+```
+
+Pour un parcours détaillé de cela, voir [ce notebook](/docs/integrations/text_embedding/llamacpp)

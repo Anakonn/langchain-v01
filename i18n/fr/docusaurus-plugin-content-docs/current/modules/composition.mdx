@@ -1,0 +1,26 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# Composition
+
+Cette section contient des composants de niveau supérieur qui combinent d'autres systèmes arbitraires (par exemple, des API et des services externes) et/ou des primitives LangChain.
+
+Un bon point de départ pour cette section serait de lire les sections sur le [langage d'expression LangChain](/docs/expression_language/get_started) et de se familiariser avec la construction de séquences via le chaînage et les différentes primitives offertes.
+
+Les composants couverts dans cette section sont :
+
+## [Outils](/docs/modules/tools/)
+
+Les outils fournissent une interface permettant aux LLM et à d'autres composants d'interagir avec d'autres systèmes. Les exemples incluent Wikipédia, une calculatrice et un interpréteur Python.
+
+## [Agents](/docs/modules/agents)
+
+Les agents utilisent un modèle de langage pour décider des actions à entreprendre, souvent définies par un outil. Ils nécessitent un `executor`, qui est le runtime de l'agent.
+L'exécuteur est ce qui appelle réellement l'agent, exécute les outils qu'il choisit, renvoie les sorties d'action à l'agent et répète le processus.
+L'agent est responsable de l'analyse des résultats précédents et du choix des prochaines étapes.
+
+## [Chaînes](/docs/modules/chains)
+
+Compositions de style bloc de construction d'autres primitives et composants.

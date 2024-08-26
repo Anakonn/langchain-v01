@@ -1,0 +1,129 @@
+---
+translated: true
+---
+
+# Intel
+
+>[Optimum Intel](https://github.com/huggingface/optimum-intel?tab=readme-ov-file#optimum-intel)は、🤗 Transformers ライブラリと Diffusers ライブラリと、Intel 製アーキテクチャ上でエンドツーエンドのパイプラインを高速化するためのさまざまなツールやライブラリを接続するインターフェースです。
+
+>[Intel® Extension for Transformers](https://github.com/intel/intel-extension-for-transformers?tab=readme-ov-file#intel-extension-for-transformers) (ITREX)は、Intel Gaudi2、Intel CPU、Intel GPUなどのさまざまなIntelプラットフォーム上でTransformer ベースのモデルの最適なパフォーマンスを実現するために設計された革新的なツールキットです。
+
+このページでは、LangChainでoptimum-intelとITREXを使う方法を説明します。
+
+## Optimum-intel
+
+[optimum-intel](https://github.com/huggingface/optimum-intel.git)と[IPEX](https://github.com/intel/intel-extension-for-pytorch)に関連するすべての機能。
+
+### インストール
+
+optimum-intelとipexをインストールするには:
+
+```bash
+pip install optimum[neural-compressor]
+pip install intel_extension_for_pytorch
+```
+
+以下のインストール手順に従ってください:
+
+* [ここ](https://github.com/huggingface/optimum-intel)に示されているようにoptimum-intelをインストールします。
+* [ここ](https://intel.github.io/intel-extension-for-pytorch/index.html#installation?platform=cpu&version=v2.2.0%2Bcpu)に示されているようにIPEXをインストールします。
+
+### 埋め込みモデル
+
+[使用例](/docs/integrations/text_embedding/optimum_intel)を参照してください。
+RAGパイプラインでエンベダーを使う完全なチュートリアルノートブック "rag_with_quantized_embeddings.ipynb"もcookbookディレクトリで提供しています。
+
+```python
+<!--IMPORTS:[{"imported": "QuantizedBiEncoderEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.optimum_intel.QuantizedBiEncoderEmbeddings.html", "title": "Intel"}]-->
+from langchain_community.embeddings import QuantizedBiEncoderEmbeddings
+```
+
+## Intel® Extension for Transformers (ITREX)
+
+(ITREX)は、特に第4世代Intel Xeon Scalable プロセッサSapphire Rapids(コードネームSapphire Rapids)で効果的な、Intel プラットフォーム上のTransformer ベースのモデルを高速化するための革新的なツールキットです。
+
+量子化は、これらの重みを少ビット数で表現することで、これらの重みの精度を低減するプロセスです。重み量子化は、特に、ニューラルネットワークの重みを量子化することに焦点を当てています。一方で、活性化関数などの他のコンポーネントは、元の精度のままに保たれます。
+
+大規模言語モデル(LLM)がますます一般的になるにつれ、これらの現代のアーキテクチャの計算需要を満たしつつ精度を維持できる新しい改良された量子化手法が必要とされています。[通常の量子化](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/quantization.md)であるW8A8と比べて、重み量子化は、LLMの展開におけるボトルネックがメモリ帯域幅であり、通常、重み量子化の方が精度とのトレードオフがよりよいため、おそらくより良い選択肢です。
+
+ここでは、ITREXを使ったTransformer 大規模言語モデルの埋め込みモデルと重み量子化について説明します。重み量子化は、ニューラルネットワークのメモリ使用量と計算リソースを削減するために使用される深層学習の手法です。深層ニューラルネットワークの文脈では、モデルパラメータ、つまり重みは通常、浮動小数点数で表現されるため、大量のメモリを消費し、集中的な計算リソースを必要とします。
+
+[intel-extension-for-transformers](https://github.com/intel/intel-extension-for-transformers)に関連するすべての機能。
+
+### インストール
+
+intel-extension-for-transformersをインストールします。システム要件やその他のインストールのヒントについては、[インストールガイド](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/installation.md)を参照してください。
+
+```bash
+pip install intel-extension-for-transformers
+```
+
+その他の必要なパッケージをインストールします。
+
+```bash
+pip install -U torch onnx accelerate datasets
+```
+
+### 埋め込みモデル
+
+[使用例](/docs/integrations/text_embedding/itrex)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "QuantizedBgeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.itrex.QuantizedBgeEmbeddings.html", "title": "Intel"}]-->
+from langchain_community.embeddings import QuantizedBgeEmbeddings
+```
+
+### ITREXによる重み量子化
+
+[使用例](/docs/integrations/llms/weight_only_quantization)を参照してください。
+
+## 設定パラメータの詳細
+
+`WeightOnlyQuantConfig`クラスの詳細は以下の通りです。
+
+#### weight_dtype (string): 重みのデータ型、デフォルトは "nf4"。
+
+重みを以下のデータ型で量子化することをサポートしています(WeightOnlyQuantConfigのweight_dtype):
+* **int8**: 8ビットデータ型を使用。
+* **int4_fullrange**: int4の範囲を-8から7まで拡張したもの。
+* **int4_clip**: int4の範囲にクリップし、それ以外を0に設定。
+* **nf4**: 正規化された4ビット浮動小数点データ型。
+* **fp4_e2m1**: 通常の4ビット浮動小数点データ型。"e2"は2ビットを指数に、"m1"は1ビットを仮数部に使用。
+
+#### compute_dtype (string): 演算データ型、デフォルトは "fp32"。
+
+これらの手法では重みを4ビットや8ビットで保存しますが、計算は浮動小数点32ビット、bfloat16、または8ビント整数(WeightOnlyQuantConfigのcompute_dtype)で行います:
+* **fp32**: 浮動小数点32ビットデータ型で計算。
+* **bf16**: bfloat16データ型で計算。
+* **int8**: 8ビットデータ型で計算。
+
+#### llm_int8_skip_modules (list of module's name): 量子化をスキップするモジュールのリスト、デフォルトはNone。
+
+量子化をスキップするモジュールのリストです。
+
+#### scale_dtype (string): スケールのデータ型、デフォルトは "fp32"。
+
+現在のところ "fp32"(浮動小数点32ビット)のみサポートしています。
+
+#### mse_range (boolean): 範囲[0.805, 1.0, 0.005]から最適なクリップ範囲を検索するかどうか、デフォルトはFalse。
+
+#### use_double_quant (boolean): スケールも量子化するかどうか、デフォルトはFalse。
+
+まだサポートされていません。
+
+#### double_quant_dtype (string): ダブル量子化用の予約。
+
+#### double_quant_scale_dtype (string): ダブル量子化用の予約。
+
+#### group_size (int): 量子化時のグループサイズ。
+
+#### scheme (string): 重みをどの形式で量子化するか。デフォルトは "sym"。
+
+* **sym**: 対称。
+* **asym**: 非対称。
+
+#### algorithm (string): 精度を向上させるアルゴリズム。デフォルトは "RTN" です。
+
+* **RTN**: Round-to-nearest (RTN) は、非常に直感的に考えることができる量子化手法です。
+* **AWQ**: 重要な重みの1%のみを保護することで、量子化誤差を大幅に減らすことができます。重要な重みチャンネルは、チャンネルごとのアクティベーションと重みの分布を観察することで選択されます。重要な重みは、量子化前に大きなスケール係数を乗算することで保持されます。
+* **TEQ**: 重み量子化のみで FP32 精度を維持する学習可能な等価変換です。

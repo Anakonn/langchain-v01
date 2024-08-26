@@ -1,0 +1,84 @@
+---
+translated: true
+---
+
+# Cadena de falacias lógicas
+
+Este ejemplo muestra cómo eliminar las falacias lógicas de la salida del modelo.
+
+## Falacias lógicas
+
+Las `falacias lógicas` son razonamientos defectuosos o argumentos falsos que pueden socavar la validez de las salidas de un modelo.
+
+Los ejemplos incluyen el razonamiento circular, las falsas dicotomías, los ataques ad hominem, etc. Los modelos de aprendizaje automático se optimizan para tener un buen desempeño en métricas específicas como precisión, perplejidad o pérdida. Sin embargo, optimizar solo por métricas no garantiza un razonamiento lógicamente sólido.
+
+Los modelos de lenguaje pueden aprender a explotar los defectos en el razonamiento para generar argumentos que suenen plausibles pero que sean lógicamente inválidos. Cuando los modelos se basan en falacias, sus salidas se vuelven poco confiables e indignas de confianza, incluso si logran altas puntuaciones en las métricas. Los usuarios no pueden confiar en tales salidas. Propagar falacias lógicas puede difundir desinformación, confundir a los usuarios y generar consecuencias perjudiciales en el mundo real cuando los modelos se implementan en productos o servicios.
+
+Monitorear y probar específicamente las fallas lógicas es un desafío a diferencia de otros problemas de calidad. Requiere razonar sobre los argumentos en lugar de hacer coincidir patrones.
+
+Por lo tanto, es crucial que los desarrolladores de modelos aborden proactivamente las falacias lógicas después de optimizar las métricas. Técnicas especializadas como el modelado causal, las pruebas de robustez y la mitigación de sesgos pueden ayudar a evitar el razonamiento defectuoso. En general, permitir que persistan las fallas lógicas hace que los modelos sean menos seguros y éticos. Eliminar las falacias garantiza que las salidas de los modelos sigan siendo lógicamente válidas y alineadas con el razonamiento humano. Esto mantiene la confianza de los usuarios y mitiga los riesgos.
+
+## Ejemplo
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Logical Fallacy chain"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Logical Fallacy chain"}, {"imported": "LLMChain", "source": "langchain.chains.llm", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Logical Fallacy chain"}, {"imported": "FallacyChain", "source": "langchain_experimental.fallacy_removal.base", "docs": "https://api.python.langchain.com/en/latest/fallacy_removal/langchain_experimental.fallacy_removal.base.FallacyChain.html", "title": "Logical Fallacy chain"}]-->
+# Imports
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains.llm import LLMChain
+from langchain_experimental.fallacy_removal.base import FallacyChain
+```
+
+```python
+# Example of a model output being returned with a logical fallacy
+misleading_prompt = PromptTemplate(
+    template="""You have to respond by using only logical fallacies inherent in your answer explanations.
+
+Question: {question}
+
+Bad answer:""",
+    input_variables=["question"],
+)
+
+llm = OpenAI(temperature=0)
+misleading_chain = LLMChain(llm=llm, prompt=misleading_prompt)
+misleading_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+    'The earth is round because my professor said it is, and everyone believes my professor'
+```
+
+```python
+fallacies = FallacyChain.get_fallacies(["correction"])
+fallacy_chain = FallacyChain.from_llm(
+    chain=misleading_chain,
+    logical_fallacies=fallacies,
+    llm=llm,
+    verbose=True,
+)
+
+fallacy_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+
+
+    > Entering new FallacyChain chain...
+    Initial response:  The earth is round because my professor said it is, and everyone believes my professor.
+
+    Applying correction...
+
+    Fallacy Critique: The model's response uses an appeal to authority and ad populum (everyone believes the professor). Fallacy Critique Needed.
+
+    Updated response: You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.
+
+
+    > Finished chain.
+
+
+
+
+
+    'You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.'
+```

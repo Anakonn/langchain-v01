@@ -1,0 +1,94 @@
+---
+translated: true
+---
+
+# MongoDB Atlas
+
+>[MongoDB Atlas](https://www.mongodb.com/docs/atlas/) は、AWS、Azure、GCP で利用可能な完全に管理されたクラウド データベースです。 MongoDB ドキュメント データに対する ネイティブ ベクトル検索のサポートが追加されました。
+
+## インストールとセットアップ
+
+[詳細な設定手順](/docs/integrations/vectorstores/mongodb_atlas)を参照してください。
+
+`langchain-mongodb` Python パッケージをインストールする必要があります。
+
+```bash
+pip install langchain-mongodb
+```
+
+## ベクトル ストア
+
+[使用例](/docs/integrations/vectorstores/mongodb_atlas)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBAtlasVectorSearch", "source": "langchain_mongodb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb import MongoDBAtlasVectorSearch
+```
+
+## LLM キャッシュ
+
+### MongoDBCache
+
+MongoDB に単純なキャッシュを保存するための抽象化です。セマンティック キャッシュは使用せず、コレクションにインデックスを作成する必要もありません。
+
+このキャッシュをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBCache", "source": "langchain_mongodb.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_mongodb.cache.MongoDBCache.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb.cache import MongoDBCache
+```
+
+LLM で このキャッシュを使用するには:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain_core.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain_core.globals.set_llm_cache.html", "title": "MongoDB Atlas"}]-->
+from langchain_core.globals import set_llm_cache
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+mongodb_atlas_uri = "<YOUR_CONNECTION_STRING>"
+COLLECTION_NAME="<YOUR_CACHE_COLLECTION_NAME>"
+DATABASE_NAME="<YOUR_DATABASE_NAME>"
+
+set_llm_cache(MongoDBCache(
+    connection_string=mongodb_atlas_uri,
+    collection_name=COLLECTION_NAME,
+    database_name=DATABASE_NAME,
+))
+```
+
+### MongoDBAtlasSemanticCache
+
+セマンティック キャッシュにより、ユーザー入力と以前にキャッシュされた結果の間のセマンティックな類似性に基づいて、キャッシュされたプロンプトを取得できます。内部的には、MongoDBAtlas をキャッシュとベクトルストアの両方として使用しています。
+MongoDBAtlasSemanticCache は `MongoDBAtlasVectorSearch` を継承しており、動作するには Atlas ベクトル検索インデックスが定義されている必要があります。インデックスの設定方法については、[使用例](/docs/integrations/vectorstores/mongodb_atlas)を参照してください。
+
+このキャッシュをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBAtlasSemanticCache", "source": "langchain_mongodb.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_mongodb.cache.MongoDBAtlasSemanticCache.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb.cache import MongoDBAtlasSemanticCache
+```
+
+LLM で このキャッシュを使用するには:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain_core.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain_core.globals.set_llm_cache.html", "title": "MongoDB Atlas"}]-->
+from langchain_core.globals import set_llm_cache
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+mongodb_atlas_uri = "<YOUR_CONNECTION_STRING>"
+COLLECTION_NAME="<YOUR_CACHE_COLLECTION_NAME>"
+DATABASE_NAME="<YOUR_DATABASE_NAME>"
+
+set_llm_cache(MongoDBAtlasSemanticCache(
+    embedding=FakeEmbeddings(),
+    connection_string=mongodb_atlas_uri,
+    collection_name=COLLECTION_NAME,
+    database_name=DATABASE_NAME,
+))
+```
+
+``

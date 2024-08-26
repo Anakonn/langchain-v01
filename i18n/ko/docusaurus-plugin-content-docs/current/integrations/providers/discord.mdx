@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# Discord
+
+>[Discord](https://discord.com/)은 VoIP 및 인스턴트 메시징 소셜 플랫폼입니다. 사용자는 개인 채팅 또는 "서버"라고 하는 커뮤니티의 일부로 음성 통화, 비디오 통화, 문자 메시징, 미디어 및 파일을 통해 통신할 수 있습니다. 서버는 초대 링크를 통해 액세스할 수 있는 지속적인 채팅 룸과 음성 채널의 집합입니다.
+
+## 설치 및 설정
+
+```bash
+pip install pandas
+```
+
+다음 단계에 따라 `Discord` 데이터를 다운로드하세요:
+
+1. **사용자 설정**으로 이동합니다.
+2. **개인정보 보호 및 안전**으로 이동합니다.
+3. **내 데이터 전체 요청**으로 이동하여 **데이터 요청** 버튼을 클릭합니다.
+
+데이터를 받는 데 최대 30일이 걸릴 수 있습니다. Discord에 등록된 이메일 주소로 이메일이 발송되며, 해당 이메일에는 개인 Discord 데이터를 다운로드할 수 있는 다운로드 버튼이 포함되어 있습니다.
+
+## 문서 로더
+
+[사용 예시](/docs/integrations/document_loaders/discord)를 참조하세요.
+
+**참고:** `DiscordChatLoader`는 `ChatLoader`가 아니라 `DocumentLoader`입니다.
+이는 `Discord` 데이터 덤프에서 데이터를 로드하는 데 사용됩니다.
+`ChatLoader`는 아래 채팅 로더 섹션을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "DiscordChatLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.discord.DiscordChatLoader.html", "title": "Discord"}]-->
+from langchain_community.document_loaders import DiscordChatLoader
+```
+
+## 채팅 로더
+
+[사용 예시](/docs/integrations/chat_loaders/discord)를 참조하세요.

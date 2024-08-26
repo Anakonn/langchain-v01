@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# 花びら
+
+このページでは、LangChainの中でPetalsエコシステムの使い方について説明します。
+2つの部分に分かれています: インストールとセットアップ、そして特定のPetalsラッパーへの参照。
+
+## インストールとセットアップ
+
+- `pip install petals`でインストールする
+- Hugging FaceのAPIキーを取得し、環境変数(`HUGGINGFACE_API_KEY`)に設定する
+
+## ラッパー
+
+### LLM
+
+Petals LLMラッパーが存在し、これにアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "Petals", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.petals.Petals.html", "title": "Petals"}]-->
+from langchain_community.llms import Petals
+```

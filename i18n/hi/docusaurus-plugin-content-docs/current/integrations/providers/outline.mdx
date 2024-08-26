@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# रूपरेखा
+
+> [रूपरेखा](https://www.getoutline.com/) एक ओपन-सोर्स सहयोगात्मक ज्ञान आधार प्लेटफॉर्म है जो टीम सूचना साझाकरण के लिए डिज़ाइन किया गया है।
+
+## सेटअप
+
+आपको पहले अपने Outline इंस्टेंस के लिए एक [api कुंजी बनाना](https://www.getoutline.com/developers#section/Authentication) होगा। फिर आपको निम्नलिखित पर्यावरण चर सेट करने की आवश्यकता है:
+
+```python
+import os
+
+os.environ["OUTLINE_API_KEY"] = "xxx"
+os.environ["OUTLINE_INSTANCE_URL"] = "https://app.getoutline.com"
+```
+
+## रिट्रीवर
+
+एक [उपयोग उदाहरण](/docs/integrations/retrievers/outline) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OutlineRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.outline.OutlineRetriever.html", "title": "Outline"}]-->
+from langchain.retrievers import OutlineRetriever
+```

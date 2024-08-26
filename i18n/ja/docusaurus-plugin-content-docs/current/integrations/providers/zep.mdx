@@ -1,0 +1,98 @@
+---
+translated: true
+---
+
+# Zep
+
+> チャット履歴を思い出し、理解し、抽出する。パーソナライズされたAI体験を実現する。
+
+>[Zep](https://www.getzep.com)は、AIアシスタントアプリ用の長期メモリサービスです。
+> Zepを使うと、どんなに遠い過去の会話でも思い出すことができ、
+> 幻覚、遅延、コストを削減することができます。
+
+## Zepの仕組み
+
+Zepはチャット履歴を保持・呼び出し、これらのチャット履歴から自動的に要約やその他のアーティファクトを生成します。
+また、メッセージと要約を埋め込むことで、過去の会話から関連するコンテキストを検索することができます。
+Zepはこれらの操作を非同期的に行うため、ユーザーのチャット体験に影響を与えません。
+データはデータベースに保存されるため、成長に応じてスケールアウトできます。
+
+Zepはドキュメントベクトル検索用の簡単で使いやすい抽象化である「ドキュメントコレクション」も提供しています。
+これはZepのコアメモリ機能を補完するように設計されていますが、汎用的なベクトルデータベースとしての設計ではありません。
+
+Zepを使うと、プロンプトの構築をより意図的に行うことができます:
+- 最近のメッセージをいくつか自動的に追加する。アプリに合わせて数を調整できる;
+- 上記のメッセージより前の会話の要約;
+- 全体のチャットセッションから関連する要約やメッセージを表示する;
+- Zepドキュメントコレクションからの関連ビジネスデータ。
+
+## Zep Cloudとは?
+
+[Zep Cloud](https://www.getzep.com)は、Zep Open Sourceをコアとしたマネージドサービスです。
+Zep Open Sourceのメモリ管理機能に加えて、Zep Cloudでは以下のようなサービスも提供しています:
+- **Fact Extraction**: データスキーマを事前に定義することなく、会話から自動的に事実テーブルを構築。
+- **Dialog Classification**: 瞬時かつ正確にチャットダイアログを分類。ユーザーの意図や感情を理解し、ユーザーをセグメント化し、より多くのことができる。セマンティックコンテキストに基づいてチェーンをルーティングし、イベントをトリガーする。
+- **Structured Data Extraction**: 定義したスキーマを使って、チャット会話から迅速にビジネスデータを抽出。AIアシスタントが次に何を尋ねるべきかを理解する。
+
+> Zep Cloudに興味がありますか? [Zep Cloud Installation Guide](https://help.getzep.com/sdks)、[Zep Cloud Message History Example](https://help.getzep.com/langchain/examples/messagehistory-example)、[Zep Cloud Vector Store Example](https://help.getzep.com/langchain/examples/vectorstore-example)をご覧ください。
+
+## オープンソースのインストールとセットアップ
+
+> Zep Open Sourceプロジェクト: [https://github.com/getzep/zep](https://github.com/getzep/zep)
+>
+> Zep Open Sourceドキュメント: [https://docs.getzep.com/](https://docs.getzep.com/)
+
+1. Zepサービスをインストールします。[Zep Quick Start Guide](https://docs.getzep.com/deployment/quickstart/)を参照してください。
+
+2. Zep Python SDKをインストールします:
+
+```bash
+pip install zep_python
+```
+
+## メモリ
+
+Zepの[Memory API](https://docs.getzep.com/sdk/chat_history/)は、アプリのチャット履歴とメタデータをセッションに保存し、メモリを豊かにし、自動的に要約を生成し、過去のチャットメッセージと要約に対するベクトル類似検索を可能にします。
+
+プロンプトにチャット履歴を組み込む方法には2つのアプローチがあります:
+
+1. セッションから最近のN件のメッセージ(および潜在的な要約)を取得し、それらを使ってプロンプトを構築する。
+2. セッションのチャット履歴を検索し、関連するメッセージを取得し、それらを使ってプロンプトを構築する。
+
+これらの2つのアプローチは両方とも有用で、1つ目のアプローチではLLMに最近のやり取りに関するコンテキストを提供し、2つ目のアプローチではチャット履歴をさかのぼって検索し、現在の会話に関連するメッセージを効率的にトークン数を抑えて取得できます。
+
+```python
+<!--IMPORTS:[{"imported": "ZepMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain_community.memory.zep_memory.ZepMemory.html", "title": "Zep"}]-->
+from langchain.memory import ZepMemory
+```
+
+[RAGアプリの例はこちら](/docs/integrations/memory/zep_memory)。
+
+## リトリーバー
+
+Zepのメモリリトリーバーは、LangChainリトリーバーで、Zepセッションからメッセージを取得し、それらを使ってプロンプトを構築できます。
+
+リトリーバーは、個々のメッセージと会話の要約の両方を検索できます。後者は、LLMに関連する過去の会話に関する豊かでありながらも簡潔なコンテキストを提供するのに役立ちます。
+
+Zepのメモリリトリーバーは、類似性検索と[Maximum Marginal Relevance (MMR) 再ランキング](https://docs.getzep.com/sdk/search_query/)をサポートしています。MMR検索は、取得したメッセージが多様で、お互いに似すぎないことを保証するのに役立ちます。
+
+[使用例はこちら](/docs/integrations/retrievers/zep_memorystore)。
+
+```python
+<!--IMPORTS:[{"imported": "ZepRetriever", "source": "langchain_community.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.zep.ZepRetriever.html", "title": "Zep"}]-->
+from langchain_community.retrievers import ZepRetriever
+```
+
+## ベクトルストア
+
+Zepの[Document VectorStore API](https://docs.getzep.com/sdk/documents/)を使うと、ベクトル類似検索を使ってドキュメントを保存および取得できます。Zepでは、距離関数、埋め込みの種類、インデックス作成のベストプラクティスを理解する必要はありません。chunked documentを渡すだけで、Zepが残りの処理を行います。
+
+Zepは、類似性検索と[Maximum Marginal Relevance (MMR) 再ランキング](https://docs.getzep.com/sdk/search_query/)の両方をサポートしています。
+MMR検索は、取得したドキュメントが多様で、お互いに似すぎないことを保証するのに役立ちます。
+
+```python
+<!--IMPORTS:[{"imported": "ZepVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.zep.ZepVectorStore.html", "title": "Zep"}]-->
+from langchain_community.vectorstores import ZepVectorStore
+```
+
+[使用例はこちら](/docs/integrations/vectorstores/zep)。

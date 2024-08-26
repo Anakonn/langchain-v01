@@ -1,0 +1,31 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/arangodb
+translated: false
+---
+
+# ArangoDB
+
+>[ArangoDB](https://github.com/arangodb/arangodb) is a scalable graph database system to
+> drive value from connected data, faster. Native graphs, an integrated search engine, and JSON support, via a single query language. ArangoDB runs on-prem, in the cloud – anywhere.
+
+## Installation and Setup
+
+Install the [ArangoDB Python Driver](https://github.com/ArangoDB-Community/python-arango) package with
+
+```bash
+pip install python-arango
+```
+
+## Graph QA Chain
+
+Connect your `ArangoDB` Database with a chat model to get insights on your data.
+
+See the notebook example [here](/docs/integrations/graphs/arangodb).
+
+```python
+<!--IMPORTS:[{"imported": "ArangoGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.arangodb_graph.ArangoGraph.html", "title": "ArangoDB"}, {"imported": "ArangoGraphQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.arangodb.ArangoGraphQAChain.html", "title": "ArangoDB"}]-->
+from arango import ArangoClient
+
+from langchain_community.graphs import ArangoGraph
+from langchain.chains import ArangoGraphQAChain
+```

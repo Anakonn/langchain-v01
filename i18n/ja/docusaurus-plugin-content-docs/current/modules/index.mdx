@@ -1,0 +1,74 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# コンポーネント
+
+LangChainは、以下の主要コンポーネントに対して標準的で拡張可能なインターフェースと外部統合を提供しています:
+
+## [モデルI/O](/docs/modules/model_io/)
+
+言語モデルの入出力のフォーマットと管理
+
+### [プロンプト](/docs/modules/model_io/prompts)
+
+生成をガイドするLLMの入力のフォーマット
+
+### [チャットモデル](/docs/modules/model_io/chat)
+
+チャットメッセージを入力と出力として使用する言語モデルのインターフェース(プレーンテキストとは対照的)
+
+### [LLM](/docs/modules/model_io/llms)
+
+プレーンテキストを入出力として使用する言語モデルのインターフェース
+
+## [リトリーバル](/docs/modules/data_connection/)
+
+RAGなどのアプリケーション固有のデータとのインターフェース
+
+### [ドキュメントローダー](/docs/modules/data_connection/document_loaders/)
+
+後の処理のために、ソースからデータを`Documents`としてロードする
+
+### [テキストスプリッター](/docs/modules/data_connection/document_transformers/)
+
+アプリケーションに合わせてソースドキュメントを変換する
+
+### [埋め込みモデル](/docs/modules/data_connection/text_embedding/)
+
+テキストの一部のベクトル表現を作成し、自然言語検索を可能にする
+
+### [ベクトルストア](/docs/modules/data_connection/vectorstores/)
+
+構造化されていないデータを自然言語で検索できる専用データベースのインターフェース
+
+### [リトリーバー](/docs/modules/data_connection/retrievers/)
+
+構造化されていないクエリに対してドキュメントを返す、より一般的なインターフェース
+
+## [コンポジション](/docs/modules/composition/)
+
+他の任意のシステムやLangChainプリミティブを組み合わせた高レベルのコンポーネント
+
+### [ツール](/docs/modules/tools/)
+
+LLMが外部システムと対話できるようにするインターフェース
+
+### [エージェント](/docs/modules/agents/)
+
+高レベルの指示に基づいて使用するツールを選択する構造
+
+### [チェーン](/docs/modules/chains/)
+
+他のrunnable要素を組み合わせたビルディングブロック
+
+## その他
+
+### [メモリ](/docs/modules/memory/)
+
+チェーンの実行間でアプリケーションの状態を保持する
+
+### [コールバック](/docs/modules/callbacks/)
+
+チェーンの中間ステップをログ出力およびストリーミングする

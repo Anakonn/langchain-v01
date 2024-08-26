@@ -1,0 +1,64 @@
+---
+translated: true
+---
+
+# 재규어
+
+이 페이지는 LangChain 내에서 재규어 벡터 데이터베이스를 사용하는 방법을 설명합니다.
+소개, 설치 및 설정, 재규어 API의 세 가지 섹션으로 구성되어 있습니다.
+
+## 소개
+
+재규어 벡터 데이터베이스의 특징은 다음과 같습니다:
+
+1. 분산 벡터 데이터베이스입니다.
+2. JaguarDB의 "ZeroMove" 기능을 통해 즉각적인 수평 확장이 가능합니다.
+3. 멀티모달: 임베딩, 텍스트, 이미지, 비디오, PDF, 오디오, 시계열, 지리공간 데이터를 지원합니다.
+4. 모두 마스터: 병렬 읽기와 쓰기가 모두 가능합니다.
+5. 이상 탐지 기능이 있습니다.
+6. RAG 지원: LLM과 독점 및 실시간 데이터를 결합합니다.
+7. 공유 메타데이터: 여러 벡터 인덱스 간 메타데이터 공유가 가능합니다.
+8. 거리 메트릭: 유클리드, 코사인, 내적, 맨하탄, 체비셰프, 해밍, 자카드, 민코프스키 등을 지원합니다.
+
+[확장 가능한 벡터 데이터베이스 재규어 개요](http://www.jaguardb.com)
+
+JaguarDB는 Docker 컨테이너에서 실행할 수 있으며, 소프트웨어를 다운로드하여 클라우드 또는 온-프레미스에서 실행할 수도 있습니다.
+
+## 설치 및 설정
+
+- 한 대의 호스트 또는 여러 대의 호스트에 JaguarDB를 설치합니다.
+- 한 대의 호스트에 Jaguar HTTP Gateway 서버를 설치합니다.
+- JaguarDB HTTP 클라이언트 패키지를 설치합니다.
+
+자세한 내용은 [Jaguar 문서](http://www.jaguardb.com/support.html)를 참조하세요.
+
+클라이언트 프로그램의 환경 변수:
+
+    export OPENAI_API_KEY="......"
+    export JAGUAR_API_KEY="......"
+
+## Jaguar API
+
+LangChain과 함께 Python에서 Jaguar 클라이언트 클래스를 가져와 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Jaguar", "source": "langchain_community.vectorstores.jaguar", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.jaguar.Jaguar.html", "title": "Jaguar"}]-->
+from langchain_community.vectorstores.jaguar import Jaguar
+```
+
+Jaguar 클래스의 지원되는 API 함수는 다음과 같습니다:
+
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `is_anomalous`
+- `create`
+- `delete`
+- `clear`
+- `drop`
+- `login`
+- `logout`
+
+Jaguar API에 대한 자세한 내용은 [이 노트북](/docs/integrations/vectorstores/jaguar)을 참조하세요.

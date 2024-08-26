@@ -1,0 +1,163 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# कॉलबैक
+
+:::info
+3rd-पार्टी टूल्स के साथ बिल्ट-इन कॉलबैक एकीकरण पर दस्तावेज के लिए [एकीकरण](/docs/integrations/callbacks/) पर जाएं।
+:::
+
+LangChain एक कॉलबैक सिस्टम प्रदान करता है जो आपको अपने LLM एप्लिकेशन के विभिन्न चरणों में हुक करने की अनुमति देता है। यह लॉगिंग, मॉनिटरिंग, स्ट्रीमिंग और अन्य कार्यों के लिए उपयोगी है।
+
+आप इन इवेंटों के लिए सदस्यता लेने के लिए API में उपलब्ध `callbacks` आर्गुमेंट का उपयोग कर सकते हैं। यह आर्गुमेंट हैंडलर ऑब्जेक्ट्स की एक सूची है, जिनसे अपेक्षा की जाती है कि वे नीचे विस्तार से वर्णित विधियों में से एक या अधिक को लागू करें।
+
+## कॉलबैक हैंडलर
+
+`CallbackHandlers` ऐसे ऑब्जेक्ट हैं जो `CallbackHandler` इंटरफ़ेस को लागू करते हैं, जिसमें प्रत्येक घटना के लिए एक विधि होती है जिसके लिए सदस्यता ली जा सकती है। जब घटना ट्रिगर होती है, तो `CallbackManager` प्रत्येक हैंडलर पर उचित विधि को कॉल करेगा।
+
+```python
+class BaseCallbackHandler:
+    """Base callback handler that can be used to handle callbacks from langchain."""
+
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> Any:
+        """Run when LLM starts running."""
+
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
+    ) -> Any:
+        """Run when Chat Model starts running."""
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
+        """Run on new LLM token. Only available when streaming is enabled."""
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
+        """Run when LLM ends running."""
+
+    def on_llm_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when LLM errors."""
+
+    def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> Any:
+        """Run when chain starts running."""
+
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
+        """Run when chain ends running."""
+
+    def on_chain_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when chain errors."""
+
+    def on_tool_start(
+        self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
+    ) -> Any:
+        """Run when tool starts running."""
+
+    def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
+        """Run when tool ends running."""
+
+    def on_tool_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when tool errors."""
+
+    def on_text(self, text: str, **kwargs: Any) -> Any:
+        """Run on arbitrary text."""
+
+    def on_agent_action(self, action: AgentAction, **kwargs: Any) -> Any:
+        """Run on agent action."""
+
+    def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
+        """Run on agent end."""
+```
+
+## शुरू करना
+
+LangChain कुछ बिल्ट-इन हैंडलर प्रदान करता है जिनका उपयोग आप शुरू करने के लिए कर सकते हैं। ये `langchain_core/callbacks` मॉड्यूल में उपलब्ध हैं। सबसे बुनियादी हैंडलर `StdOutCallbackHandler` है, जो सभी घटनाओं को `stdout` पर लॉग करता है।
+
+**नोट**: जब ऑब्जेक्ट पर `verbose` फ्लैग सेट किया जाता है, तो `StdOutCallbackHandler` तब भी कॉल किया जाएगा जब उसे स्पष्ट रूप से पास नहीं किया गया है।
+
+```python
+<!--IMPORTS:[{"imported": "StdOutCallbackHandler", "source": "langchain_core.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_core.callbacks.stdout.StdOutCallbackHandler.html", "title": "Callbacks"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Callbacks"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Callbacks"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Callbacks"}]-->
+from langchain_core.callbacks import StdOutCallbackHandler
+from langchain.chains import LLMChain
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+# Constructor callback: First, let's explicitly set the StdOutCallbackHandler when initializing our chain
+chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler])
+chain.invoke({"number":2})
+
+# Use verbose flag: Then, let's use the `verbose` flag to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
+chain.invoke({"number":2})
+
+# Request callbacks: Finally, let's use the request `callbacks` to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt)
+chain.invoke({"number":2}, {"callbacks":[handler]})
+
+```
+
+```output
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+```
+
+## कॉलबैक कहाँ पास किए जाते हैं
+
+`callbacks` API में अधिकांश ऑब्जेक्ट्स (Chains, Models, Tools, Agents आदि) में दो अलग-अलग स्थानों पर उपलब्ध हैं:
+
+- **कंस्ट्रक्टर कॉलबैक**: कंस्ट्रक्टर में परिभाषित, उदाहरण के लिए `LLMChain(callbacks=[handler], tags=['a-tag'])`। इस मामले में, कॉलबैक उस ऑब्जेक्ट पर किए गए सभी कॉल के लिए उपयोग किए जाएंगे, और केवल उस ऑब्जेक्ट के लिए स्कोप होंगे, उदाहरण के लिए यदि आप एक `LLMChain` कंस्ट्रक्टर में एक हैंडलर पास करते हैं, तो वह उस चेन से जुड़े मॉडल द्वारा उपयोग नहीं किया जाएगा।
+- **अनुरोध कॉलबैक**: 'invoke' विधि में परिभाषित, जो अनुरोध जारी करने के लिए उपयोग की जाती है। इस मामले में, कॉलबैक केवल उस विशिष्ट अनुरोध के लिए उपयोग किए जाएंगे, और उसमें शामिल सभी उप-अनुरोध (उदाहरण के लिए, एक `LLMChain` को कॉल करने से एक मॉडल को कॉल होता है, जो `invoke()` विधि में पास किए गए समान हैंडलर का उपयोग करता है)। `invoke()` विधि में कॉलबैक कॉन्फ़िगरेशन पैरामीटर के माध्यम से पास किए जाते हैं।
+'invoke' विधि के साथ उदाहरण (**नोट**: यही दृष्टिकोण `batch`, `ainvoke` और `abatch` विधियों के लिए भी उपयोग किया जा सकता है):
+
+```python
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+config = {
+    'callbacks' : [handler]
+}
+
+chain = prompt | chain
+chain.invoke({"number":2}, config=config)
+```
+
+**नोट:** `chain = prompt | chain` `LLMChain(llm=llm, prompt=prompt)` के समतुल्य है (और अधिक विवरण के लिए [LangChain Expression Language (LCEL) दस्तावेज](/docs/expression_language/) देखें)
+
+`verbose` आर्गुमेंट API में अधिकांश ऑब्जेक्ट्स (Chains, Models, Tools, Agents आदि) पर एक कंस्ट्रक्टर आर्गुमेंट के रूप में उपलब्ध है, उदाहरण के लिए `LLMChain(verbose=True)`, और यह उस ऑब्जेक्ट और सभी चाइल्ड ऑब्जेक्ट्स के `callbacks` आर्गुमेंट में एक `ConsoleCallbackHandler` पास करने के समतुल्य है। यह डीबगिंग के लिए उपयोगी है, क्योंकि यह सभी घटनाओं को कंसोल पर लॉग करेगा।
+
+### आप इनमें से प्रत्येक का कब उपयोग करना चाहते हैं?
+
+- कंस्ट्रक्टर कॉलबैक वे मामले हैं जहां लॉगिंग, मॉनिटरिंग आदि जैसे उपयोग मामले _एक अनुरोध से संबंधित नहीं हैं_, बल्कि पूरे चेन से संबंधित हैं। उदाहरण के लिए, यदि आप एक `LLMChain` को किए गए सभी अनुरोधों को लॉग करना चाहते हैं, तो आप कंस्ट्रक्टर में एक हैंडलर पास करेंगे।
+- अनुरोध कॉलबैक वे मामले हैं जहां स्ट्रीमिंग जैसे उपयोग मामले हैं, जहां आप किसी विशिष्ट वेबसॉकेट कनेक्शन पर एक अनुरोध के आउटपुट को स्ट्रीम करना चाहते हैं या अन्य समान उपयोग मामले। उदाहरण के लिए, यदि आप किसी एक अनुरोध के आउटपुट को वेबसॉकेट पर स्ट्रीम करना चाहते हैं, तो आप `invoke()` विधि में एक हैंडलर पास करेंगे।

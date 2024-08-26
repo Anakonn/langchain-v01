@@ -1,0 +1,61 @@
+---
+translated: true
+---
+
+# GPT4All
+
+Esta página cubre cómo usar el wrapper `GPT4All` dentro de LangChain. El tutorial se divide en dos partes: instalación y configuración, seguido de un ejemplo de uso.
+
+## Instalación y configuración
+
+- Instala el paquete de Python con `pip install gpt4all`
+- Descarga un [modelo GPT4All](https://gpt4all.io/index.html) y colócalo en el directorio deseado
+
+En este ejemplo, estamos usando `mistral-7b-openorca.Q4_0.gguf` (Mejor modelo general de chat rápido):
+
+```bash
+mkdir models
+wget https://gpt4all.io/models/gguf/mistral-7b-openorca.Q4_0.gguf -O models/mistral-7b-openorca.Q4_0.gguf
+```
+
+## Uso
+
+### GPT4All
+
+Para usar el wrapper de GPT4All, debes proporcionar la ruta al archivo del modelo pre-entrenado y la configuración del modelo.
+
+```python
+<!--IMPORTS:[{"imported": "GPT4All", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gpt4all.GPT4All.html", "title": "GPT4All"}]-->
+from langchain_community.llms import GPT4All
+
+# Instantiate the model. Callbacks support token-wise streaming
+model = GPT4All(model="./models/mistral-7b-openorca.Q4_0.gguf", n_threads=8)
+
+# Generate text
+response = model.invoke("Once upon a time, ")
+```
+
+También puedes personalizar los parámetros de generación, como n_predict, temp, top_p, top_k y otros.
+
+Para transmitir las predicciones del modelo, agrega un CallbackManager.
+
+```python
+<!--IMPORTS:[{"imported": "GPT4All", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gpt4all.GPT4All.html", "title": "GPT4All"}, {"imported": "StreamingStdOutCallbackHandler", "source": "langchain.callbacks.streaming_stdout", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_core.callbacks.streaming_stdout.StreamingStdOutCallbackHandler.html", "title": "GPT4All"}, {"imported": "StreamlitCallbackHandler", "source": "langchain.callbacks.streamlit", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain.callbacks.streamlit.StreamlitCallbackHandler.html", "title": "GPT4All"}]-->
+from langchain_community.llms import GPT4All
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+
+# There are many CallbackHandlers supported, such as
+# from langchain.callbacks.streamlit import StreamlitCallbackHandler
+
+callbacks = [StreamingStdOutCallbackHandler()]
+model = GPT4All(model="./models/mistral-7b-openorca.Q4_0.gguf", n_threads=8)
+
+# Generate text. Tokens are streamed through the callback manager.
+model("Once upon a time, ", callbacks=callbacks)
+```
+
+## Archivo del modelo
+
+Puedes encontrar enlaces para descargar archivos de modelos en [https://gpt4all.io/](https://gpt4all.io/index.html).
+
+Para una guía más detallada de esto, consulta [este cuaderno](/docs/integrations/llms/gpt4all)

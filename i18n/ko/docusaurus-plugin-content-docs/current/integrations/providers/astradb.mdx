@@ -1,0 +1,160 @@
+---
+translated: true
+---
+
+# Astra DB
+
+> [DataStax Astra DB](https://docs.datastax.com/en/astra/home/astra.html)는 `Apache Cassandra®`를 기반으로 구축된 서버리스 벡터 지원 데이터베이스이며, 사용하기 쉬운 JSON API를 통해 편리하게 제공됩니다.
+
+[DataStax가 제공하는 튜토리얼](https://docs.datastax.com/en/astra/astra-db-vector/tutorials/chatbot.html)을 참고하세요.
+
+## 설치 및 설정
+
+다음 Python 패키지를 설치하세요:
+
+```bash
+pip install "langchain-astradb>=0.1.0"
+```
+
+[연결 비밀](https://docs.datastax.com/en/astra/astra-db-vector/get-started/quickstart.html)을 가져오세요.
+다음 환경 변수를 설정하세요:
+
+```python
+ASTRA_DB_APPLICATION_TOKEN="TOKEN"
+ASTRA_DB_API_ENDPOINT="API_ENDPOINT"
+```
+
+## 벡터 스토어
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBVectorStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_astradb.vectorstores.AstraDBVectorStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBVectorStore
+
+vector_store = AstraDBVectorStore(
+    embedding=my_embedding,
+    collection_name="my_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/vectorstores/astradb)을 참고하세요.
+
+[DataStax가 제공하는 예제](https://docs.datastax.com/en/astra/astra-db-vector/integrations/langchain.html)를 참고하세요.
+
+## 채팅 메시지 기록
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBChatMessageHistory", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_astradb.chat_message_histories.AstraDBChatMessageHistory.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBChatMessageHistory
+
+message_history = AstraDBChatMessageHistory(
+    session_id="test-session",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+[사용 예제](/docs/integrations/memory/astradb_chat_message_history#example)를 참고하세요.
+
+## LLM 캐시
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Astra DB"}, {"imported": "AstraDBCache", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_astradb.cache.AstraDBCache.html", "title": "Astra DB"}]-->
+from langchain.globals import set_llm_cache
+from langchain_astradb import AstraDBCache
+
+set_llm_cache(AstraDBCache(
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+))
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/llms/llm_caching#astra-db-caches)(Astra DB 섹션)을 참고하세요.
+
+## 의미론적 LLM 캐시
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Astra DB"}, {"imported": "AstraDBSemanticCache", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_astradb.cache.AstraDBSemanticCache.html", "title": "Astra DB"}]-->
+from langchain.globals import set_llm_cache
+from langchain_astradb import AstraDBSemanticCache
+
+set_llm_cache(AstraDBSemanticCache(
+    embedding=my_embedding,
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+))
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/llms/llm_caching#astra-db-caches)(해당 섹션)을 참고하세요.
+
+자세한 내용은 [예제 노트북](/docs/integrations/memory/astradb_chat_message_history)을 참고하세요.
+
+## 문서 로더
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBLoader", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_astradb.document_loaders.AstraDBLoader.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBLoader
+
+loader = AstraDBLoader(
+    collection_name="my_collection",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/document_loaders/astradb)을 참고하세요.
+
+## 자체 쿼리 리트리버
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBVectorStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_astradb.vectorstores.AstraDBVectorStore.html", "title": "Astra DB"}, {"imported": "SelfQueryRetriever", "source": "langchain.retrievers.self_query.base", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain.retrievers.self_query.base.SelfQueryRetriever.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBVectorStore
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+
+vector_store = AstraDBVectorStore(
+    embedding=my_embedding,
+    collection_name="my_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+
+retriever = SelfQueryRetriever.from_llm(
+    my_llm,
+    vector_store,
+    document_content_description,
+    metadata_field_info
+)
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/retrievers/self_query/astradb)을 참고하세요.
+
+## 스토어
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/storage/langchain_astradb.storage.AstraDBStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBStore
+
+store = AstraDBStore(
+    collection_name="my_kv_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/stores/astradb#astradbstore)을 참고하세요.
+
+## 바이트 스토어
+
+```python
+<!--IMPORTS:[{"imported": "AstraDBByteStore", "source": "langchain_astradb", "docs": "https://api.python.langchain.com/en/latest/storage/langchain_astradb.storage.AstraDBByteStore.html", "title": "Astra DB"}]-->
+from langchain_astradb import AstraDBByteStore
+
+store = AstraDBByteStore(
+    collection_name="my_kv_store",
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    token=ASTRA_DB_APPLICATION_TOKEN,
+)
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/stores/astradb#astradbbytestore)을 참고하세요.

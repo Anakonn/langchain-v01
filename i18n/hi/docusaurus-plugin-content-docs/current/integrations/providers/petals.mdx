@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# पत्ते
+
+यह पृष्ठ LangChain में Petals पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाक्त है: स्थापना और सेटअप, और फिर विशिष्ट Petals रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `pip install petals` के साथ स्थापित करें
+- एक Hugging Face api कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`HUGGINGFACE_API_KEY`) के रूप में सेट करें
+
+## रैपर्स
+
+### LLM
+
+Petals LLM रैपर का अस्तित्व है, जिसका उपयोग आप इस प्रकार कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "Petals", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.petals.Petals.html", "title": "Petals"}]-->
+from langchain_community.llms import Petals
+```

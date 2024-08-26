@@ -1,0 +1,95 @@
+---
+translated: true
+---
+
+# SearxNG 検索 API
+
+このページでは、LangChain 内で SearxNG 検索 API を使用する方法について説明します。
+インストールとセットアップ、そして特定の SearxNG API ラッパーへの参照の2つの部分に分かれています。
+
+## インストールとセットアップ
+
+[public searx instances](https://searx.space/) と一緒にラッパーを利用することも可能ですが、これらのインスタンスは頻繁にAPIアクセスを許可していない（以下の出力形式に関する注意を参照）ため、リクエストの頻度に制限があります。代わりにセルフホストインスタンスを選択することをお勧めします。
+
+### セルフホストインスタンス:
+
+インストール手順については[このページ](https://searxng.github.io/searxng/admin/installation.html)を参照してください。
+
+SearxNG をインストールすると、デフォルトでアクティブな出力形式は HTML 形式のみです。
+API を使用するには `json` 形式を有効にする必要があります。これは、`settings.yml` ファイルに次の行を追加することで行えます：
+
+```yaml
+search:
+    formats:
+        - html
+        - json
+```
+
+API が動作していることを確認するために、API エンドポイントに curl リクエストを発行できます：
+
+`curl -kLX GET --data-urlencode q='langchain' -d format=json http://localhost:8888`
+
+これにより、結果を含む JSON オブジェクトが返されるはずです。
+
+## ラッパー
+
+### ユーティリティ
+
+ラッパーを使用するには、SearxNG インスタンスのホストをラッパーに渡す必要があります：
+    1. インスタンスを作成する際に named parameter `searx_host` を使用。
+    2. 環境変数 `SEARXNG_HOST` をエクスポート。
+
+ラッパーを使用して SearxNG インスタンスから結果を取得できます。
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searx_search.SearxSearchWrapper.html", "title": "SearxNG Search API"}]-->
+from langchain_community.utilities import SearxSearchWrapper
+s = SearxSearchWrapper(searx_host="http://localhost:8888")
+s.run("what is a large language model?")
+```
+
+### ツール
+
+このラッパーをツール（Agentと一緒に使用）として読み込むこともできます。
+
+これを行うには：
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "SearxNG Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["searx-search"],
+                    searx_host="http://localhost:8888",
+                    engines=["github"])
+```
+
+カスタムエンジンを使用することも_オプションで_可能です。
+
+メタデータとして *json* を含む結果を取得するには：
+
+```python
+tools = load_tools(["searx-search-results-json"],
+                    searx_host="http://localhost:8888",
+                    num_results=5)
+```
+
+#### ツールの迅速な作成
+
+この例は、同じラッパーから複数のツールを迅速に作成する方法を示しています。
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchResults", "source": "langchain_community.tools.searx_search.tool", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.searx_search.tool.SearxSearchResults.html", "title": "SearxNG Search API"}]-->
+from langchain_community.tools.searx_search.tool import SearxSearchResults
+
+wrapper = SearxSearchWrapper(searx_host="**")
+github_tool = SearxSearchResults(name="Github", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["github"],
+                                })
+
+arxiv_tool = SearxSearchResults(name="Arxiv", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["arxiv"]
+                                })
+```
+
+ツールに関する詳細は[このページ](/docs/modules/tools/)を参照してください。

@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# Epsilla
+
+Esta página cubre cómo usar [Epsilla](https://github.com/epsilla-cloud/vectordb) dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envolturas Epsilla específicas.
+
+## Instalación y configuración
+
+- Instala el SDK de Python con `pip/pip3 install pyepsilla`
+
+## Envolturas
+
+### VectorStore
+
+Existe una envoltura alrededor de las bases de datos de vectores Epsilla, lo que le permite usarla como un almacén de vectores,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+Para importar este almacén de vectores:
+
+```python
+<!--IMPORTS:[{"imported": "Epsilla", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.epsilla.Epsilla.html", "title": "Epsilla"}]-->
+from langchain_community.vectorstores import Epsilla
+```
+
+Para una guía más detallada de la envoltura Epsilla, consulta [este cuaderno](/docs/integrations/vectorstores/epsilla)

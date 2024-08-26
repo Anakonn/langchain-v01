@@ -1,0 +1,23 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# Herramientas
+
+Los toolkits son colecciones de herramientas diseñadas para ser utilizadas juntas para tareas específicas. Tienen métodos de carga convenientes.
+Para obtener una lista completa de los toolkits listos para usar disponibles, visite [Integraciones](/docs/integrations/toolkits/).
+
+Todos los toolkits exponen un método `get_tools` que devuelve una lista de herramientas.
+Por lo tanto, puedes hacer:
+
+```python
+# Initialize a toolkit
+toolkit = ExampleTookit(...)
+
+# Get list of tools
+tools = toolkit.get_tools()
+
+# Create agent
+agent = create_agent_method(llm, tools, prompt)
+```

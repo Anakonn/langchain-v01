@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Llama.cpp
+
+Esta página cubre cómo usar [llama.cpp](https://github.com/ggerganov/llama.cpp) dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envoltorios específicos de Llama-cpp.
+
+## Instalación y configuración
+
+- Instala el paquete de Python con `pip install llama-cpp-python`
+- Descarga uno de los [modelos compatibles](https://github.com/ggerganov/llama.cpp#description) y conviértelos al formato llama.cpp según las [instrucciones](https://github.com/ggerganov/llama.cpp)
+
+## Envoltorios
+
+### LLM
+
+Existe un envoltorio LlamaCpp LLM, al que puedes acceder con
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCpp", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.llamacpp.LlamaCpp.html", "title": "Llama.cpp"}]-->
+from langchain_community.llms import LlamaCpp
+```
+
+Para una guía más detallada de esto, consulta [este cuaderno](/docs/integrations/llms/llamacpp)
+
+### Incrustaciones
+
+Existe un envoltorio LlamaCpp Embeddings, al que puedes acceder con
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCppEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.llamacpp.LlamaCppEmbeddings.html", "title": "Llama.cpp"}]-->
+from langchain_community.embeddings import LlamaCppEmbeddings
+```
+
+Para una guía más detallada de esto, consulta [este cuaderno](/docs/integrations/text_embedding/llamacpp)

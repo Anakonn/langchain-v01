@@ -1,0 +1,15 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 제품화
+
+언어 모델 애플리케이션의 프로토타입을 개발한 후, 다음 단계는 이를 제품화하는 것입니다.
+이 섹션에서는 애플리케이션을 실제 사용 환경에 적합하게 준비하고 유지하는 데 필요한 모범 사례에 대한 가이드를 제공합니다.
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/productionization/")} />

@@ -1,0 +1,14 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# Développement
+
+Cette section contient des guides avec des informations générales sur la construction d'applications avec LangChain.
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/development/")} />

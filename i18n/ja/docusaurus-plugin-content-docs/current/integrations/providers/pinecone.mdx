@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+# Pinecone
+
+>[Pinecone](https://docs.pinecone.io/docs/overview)はさまざまな機能を持つベクトルデータベースです。
+
+## インストールとセットアップ
+
+PythonのSDKをインストールします:
+
+```bash
+pip install langchain-pinecone
+```
+
+## ベクトルストア
+
+Pineocneインデックスをラップしたものがあり、セマンティック検索や例の選択などに使用できます。
+
+```python
+<!--IMPORTS:[{"imported": "PineconeVectorStore", "source": "langchain_pinecone", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_pinecone.vectorstores.PineconeVectorStore.html", "title": "Pinecone"}]-->
+from langchain_pinecone import PineconeVectorStore
+```
+
+Pineocneベクトルストアの詳細については、[このノートブック](/docs/integrations/vectorstores/pinecone)を参照してください。
+
+## リトリーバー
+
+### Pinecone ハイブリッド検索
+
+```bash
+pip install pinecone-client pinecone-text
+```
+
+```python
+<!--IMPORTS:[{"imported": "PineconeHybridSearchRetriever", "source": "langchain_community.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.pinecone_hybrid_search.PineconeHybridSearchRetriever.html", "title": "Pinecone"}]-->
+from langchain_community.retrievers import (
+    PineconeHybridSearchRetriever,
+)
+```
+
+詳細については、[このノートブック](/docs/integrations/retrievers/pinecone_hybrid_search)を参照してください。
+
+### Self Query リトリーバー
+
+Pineocneベクトルストアをself-queryingのリトリーバーとして使用できます。
+
+詳細については、[このノートブック](/docs/integrations/retrievers/self_query/pinecone)を参照してください。

@@ -1,0 +1,32 @@
+---
+translated: true
+---
+
+# DashVector
+
+> [DashVector](https://help.aliyun.com/document_detail/2510225.html)は、高次元の密な/疎なベクトル、リアルタイムの挿入、フィルタリング検索をサポートする完全管理型のベクトルDBサービスです。自動的にスケーリングでき、さまざまなアプリケーション要件に適応できるように構築されています。
+
+このドキュメントでは、LangChainエコシステムでDashVectorを活用する方法を示します。特に、DashVectorのインストール方法と、LangChainのVectorStoreプラグインとしての使用方法を説明します。
+2つの部分で構成されています: インストールと設定、そして特定のDashVectorラッパーへの参照。
+
+## インストールと設定
+
+PythonのSDKをインストールします:
+
+```bash
+pip install dashvector
+```
+
+## VectorStore
+
+DashVectorコレクションは、LangChainでネイティブに使用できる一般的なVectorStoreとしてラップされています。
+これにより、セマンティック検索や例の選択など、さまざまなシナリオで使用できます。
+
+VectorStoreをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "DashVector", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.dashvector.DashVector.html", "title": "DashVector"}]-->
+from langchain_community.vectorstores import DashVector
+```
+
+DashVectorラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/dashvector)を参照してください。

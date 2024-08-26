@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# OpenLLM
+
+Cette page montre comment utiliser [OpenLLM](https://github.com/bentoml/OpenLLM) avec LangChain.
+
+`OpenLLM` est une plateforme ouverte pour exploiter des modèles de langage à grande échelle (LLM) en production. Elle permet aux développeurs d'exécuter facilement l'inférence avec n'importe quel LLM open source, de les déployer sur le cloud ou sur site, et de construire des applications IA puissantes.
+
+## Installation et configuration
+
+Installez le package OpenLLM via PyPI :
+
+```bash
+pip install openllm
+```
+
+## LLM
+
+OpenLLM prend en charge une large gamme de LLM open source ainsi que les LLM affinés par les utilisateurs. Utilisez la commande `openllm model` pour voir tous les modèles disponibles qui sont pré-optimisés pour OpenLLM.
+
+## Wrappers
+
+Il existe un wrapper OpenLLM qui prend en charge le chargement de LLM dans le processus ou l'accès à un serveur OpenLLM distant :
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+```
+
+### Wrapper pour le serveur OpenLLM
+
+Ce wrapper prend en charge la connexion à un serveur OpenLLM via HTTP ou gRPC. Le serveur OpenLLM peut s'exécuter localement ou sur le cloud.
+
+Pour l'essayer localement, démarrez un serveur OpenLLM :
+
+```bash
+openllm start flan-t5
+```
+
+Utilisation du wrapper :
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(server_url='http://localhost:3000')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### Wrapper pour l'inférence locale
+
+Vous pouvez également utiliser le wrapper OpenLLM pour charger le LLM dans le processus Python actuel pour exécuter l'inférence.
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(model_name="dolly-v2", model_id='databricks/dolly-v2-7b')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### Utilisation
+
+Pour un didacticiel plus détaillé sur le wrapper OpenLLM, consultez le [exemple de notebook](/docs/integrations/llms/openllm)

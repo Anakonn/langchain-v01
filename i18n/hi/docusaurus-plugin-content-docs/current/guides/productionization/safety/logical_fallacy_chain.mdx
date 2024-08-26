@@ -1,0 +1,84 @@
+---
+translated: true
+---
+
+# तार्किक त्रुटि श्रृंखला
+
+यह उदाहरण दिखाता है कि मॉडल आउटपुट से तार्किक त्रुटियों को कैसे हटाया जा सकता है।
+
+## तार्किक त्रुटियां
+
+`तार्किक त्रुटियां` तर्क में खराबी या गलत तर्क हैं जो मॉडल के आउटपुट की वैधता को कमजोर कर सकते हैं।
+
+उदाहरणों में वृत्तीय तर्क, झूठी द्वंद्व, व्यक्तिगत हमले आदि शामिल हैं। मशीन लर्निंग मॉडल को सटीकता, परप्लेक्सिटी या नुकसान जैसे विशिष्ट मीट्रिक्स पर अच्छा प्रदर्शन करने के लिए अनुकूलित किया जाता है। हालांकि, मीट्रिक्स के लिए अनुकूलन करना अकेले तार्किक रूप से सही तर्क की गारंटी नहीं देता है।
+
+भाषा मॉडल तर्क की खामियों का लाभ उठाकर यथार्थवादी लगने वाले लेकिन तार्किक रूप से अमान्य तर्क पैदा कर सकते हैं। जब मॉडल तार्किक त्रुटियों पर निर्भर होते हैं, तो उनके आउटपुट अविश्वसनीय और अविश्वसनीय हो जाते हैं, भले ही वे मीट्रिक्स पर उच्च स्कोर प्राप्त करते हों। उपयोगकर्ता इस तरह के आउटपुट पर निर्भर नहीं हो सकते। तार्किक त्रुटियों को फैलाना गलत जानकारी फैला सकता है, उपयोगकर्ताओं को भ्रमित कर सकता है और जब मॉडल को उत्पादों या सेवाओं में तैनात किया जाता है, तो हानिकारक वास्तविक दुनिया के परिणाम हो सकते हैं।
+
+तार्किक दोषों के लिए निगरानी और परीक्षण करना अन्य गुणवत्ता मुद्दों की तुलना में चुनौतीपूर्ण है। इसमें तर्क पैटर्न मैचिंग के बजाय तर्क करने की आवश्यकता होती है।
+
+इसलिए, मीट्रिक्स को अनुकूलित करने के बाद मॉडल डेवलपर्स को तार्किक त्रुटियों को प्रतिक्रिया देना महत्वपूर्ण है। कारण मॉडलिंग, रोबस्टनेस परीक्षण और पूर्वाग्रह शमन जैसी विशेष तकनीकों से तार्किक दोषों से बचा जा सकता है। कुल मिलाकर, तार्किक दोषों को बरकरार रखना मॉडल को कम सुरक्षित और नैतिक बना देता है। त्रुटियों को समाप्त करना सुनिश्चित करता है कि मॉडल के आउटपुट तार्किक रूप से वैध और मानव तर्क के अनुरूप रहें। इससे उपयोगकर्ता का विश्वास बना रहता है और जोखिमों को कम किया जा सकता है।
+
+## उदाहरण
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Logical Fallacy chain"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Logical Fallacy chain"}, {"imported": "LLMChain", "source": "langchain.chains.llm", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Logical Fallacy chain"}, {"imported": "FallacyChain", "source": "langchain_experimental.fallacy_removal.base", "docs": "https://api.python.langchain.com/en/latest/fallacy_removal/langchain_experimental.fallacy_removal.base.FallacyChain.html", "title": "Logical Fallacy chain"}]-->
+# Imports
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains.llm import LLMChain
+from langchain_experimental.fallacy_removal.base import FallacyChain
+```
+
+```python
+# Example of a model output being returned with a logical fallacy
+misleading_prompt = PromptTemplate(
+    template="""You have to respond by using only logical fallacies inherent in your answer explanations.
+
+Question: {question}
+
+Bad answer:""",
+    input_variables=["question"],
+)
+
+llm = OpenAI(temperature=0)
+misleading_chain = LLMChain(llm=llm, prompt=misleading_prompt)
+misleading_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+    'The earth is round because my professor said it is, and everyone believes my professor'
+```
+
+```python
+fallacies = FallacyChain.get_fallacies(["correction"])
+fallacy_chain = FallacyChain.from_llm(
+    chain=misleading_chain,
+    logical_fallacies=fallacies,
+    llm=llm,
+    verbose=True,
+)
+
+fallacy_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+
+
+    > Entering new FallacyChain chain...
+    Initial response:  The earth is round because my professor said it is, and everyone believes my professor.
+
+    Applying correction...
+
+    Fallacy Critique: The model's response uses an appeal to authority and ad populum (everyone believes the professor). Fallacy Critique Needed.
+
+    Updated response: You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.
+
+
+    > Finished chain.
+
+
+
+
+
+    'You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.'
+```

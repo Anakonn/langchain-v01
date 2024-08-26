@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# OpenLLM
+
+यह पृष्ठ [OpenLLM](https://github.com/bentoml/OpenLLM) का LangChain के साथ उपयोग करने का प्रदर्शन करता है।
+
+`OpenLLM` बड़े भाषा मॉडलों (LLMs) को उत्पादन में संचालित करने के लिए एक खुला प्लेटफ़ॉर्म है। यह डेवलपर्स को किसी भी ओपन-सोर्स LLM के साथ अनुमान चलाने, क्लाउड या ऑन-प्रेमिसेस पर तैनात करने और शक्तिशाली AI ऐप्स बनाने में आसानी प्रदान करता है।
+
+## स्थापना और सेटअप
+
+PyPI के माध्यम से OpenLLM पैकेज स्थापित करें:
+
+```bash
+pip install openllm
+```
+
+## LLM
+
+OpenLLM कई ओपन-सोर्स LLM का समर्थन करता है, साथ ही उपयोगकर्ताओं के अपने फाइन-ट्यून किए गए LLM को भी सर्व करता है। OpenLLM के लिए पूर्व-अनुकूलित सभी उपलब्ध मॉडल देखने के लिए `openllm model` कमांड का उपयोग करें।
+
+## रैपर्स
+
+OpenLLM रैपर है जो प्रक्रिया में LLM लोड करने या दूरस्थ OpenLLM सर्वर तक पहुंचने का समर्थन करता है:
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+```
+
+### OpenLLM सर्वर के लिए रैपर
+
+यह रैपर HTTP या gRPC के माध्यम से OpenLLM सर्वर से कनेक्ट करने का समर्थन करता है। OpenLLM सर्वर स्थानीय रूप से या क्लाउड पर चल सकता है।
+
+स्थानीय रूप से आजमाने के लिए, एक OpenLLM सर्वर शुरू करें:
+
+```bash
+openllm start flan-t5
+```
+
+रैपर उपयोग:
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(server_url='http://localhost:3000')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### स्थानीय अनुमान के लिए रैपर
+
+आप वर्तमान Python प्रक्रिया में LLM लोड करने के लिए भी OpenLLM रैपर का उपयोग कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(model_name="dolly-v2", model_id='databricks/dolly-v2-7b')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### उपयोग
+
+OpenLLM रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [उदाहरण नोटबुक](/docs/integrations/llms/openllm) देखें।

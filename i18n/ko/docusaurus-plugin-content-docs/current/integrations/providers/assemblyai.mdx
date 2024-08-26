@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# AssemblyAI
+
+>[AssemblyAI](https://www.assemblyai.com/)는 음성-텍스트 변환, 화자 구분, 음성 요약 등의 작업을 위한 `Speech AI` 모델을 구축합니다.
+>`AssemblyAI`의 Speech AI 모델에는 통화, 가상 회의, 팟캐스트 등의 음성 데이터에 대한 정확한 음성-텍스트 변환, 화자 감지, 감정 분석, 챕터 감지, PII 마스킹 기능이 포함됩니다.
+
+## 설치 및 설정
+
+[API 키](https://www.assemblyai.com/dashboard/signup)를 받으세요.
+
+`assemblyai` 패키지를 설치하세요.
+
+```bash
+pip install -U assemblyai
+```
+
+## 문서 로더
+
+### AssemblyAI 오디오 트랜스크립트
+
+`AssemblyAIAudioTranscriptLoader`는 `AssemblyAI API`를 사용하여 오디오 파일을 전사하고 전사된 텍스트를 문서에 로드합니다.
+
+[사용 예시](/docs/integrations/document_loaders/assemblyai)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AssemblyAIAudioTranscriptLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.assemblyai.AssemblyAIAudioTranscriptLoader.html", "title": "AssemblyAI"}]-->
+from langchain_community.document_loaders import AssemblyAIAudioTranscriptLoader
+```

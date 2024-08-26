@@ -1,0 +1,96 @@
+---
+translated: true
+---
+
+# Javelin AI 게이트웨이
+
+[Javelin AI 게이트웨이](https://www.getjavelin.io) 서비스는 AI 애플리케이션을 위한 고성능, 엔터프라이즈 급 API 게이트웨이입니다.
+이는 OpenAI, Cohere, Anthropic 및 조직 내 사용자 정의 대형 언어 모델(LLM)과의 모든 상호 작용에 대한 강력한 액세스 보안을 통합하여 다양한 대형 언어 모델(LLM) 공급자의 사용 및 액세스를 간소화하도록 설계되었습니다.
+
+Javelin은 LLM 관련 요청을 처리하기 위한 통합 엔드포인트를 제공하여 LLM과의 상호 작용을 단순화하는 고수준 인터페이스를 제공합니다.
+
+자세한 내용은 Javelin AI 게이트웨이 [문서](https://docs.getjavelin.io)를 참조하십시오.
+[Javelin Python SDK](https://www.github.com/getjavelin/javelin-python)는 AI 애플리케이션에 포함되도록 설계된 사용하기 쉬운 클라이언트 라이브러리입니다.
+
+## 설치 및 설정
+
+Javelin AI 게이트웨이와 상호 작용하려면 `javelin_sdk`를 설치하십시오:
+
+```sh
+pip install 'javelin_sdk'
+```
+
+Javelin의 API 키를 환경 변수로 설정하십시오:
+
+```sh
+export JAVELIN_API_KEY=...
+```
+
+## 완성 예제
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Javelin AI Gateway"}, {"imported": "JavelinAIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.javelin_ai_gateway.JavelinAIGateway.html", "title": "Javelin AI Gateway"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Javelin AI Gateway"}]-->
+
+from langchain.chains import LLMChain
+from langchain_community.llms import JavelinAIGateway
+from langchain_core.prompts import PromptTemplate
+
+route_completions = "eng_dept03"
+
+gateway = JavelinAIGateway(
+    gateway_uri="http://localhost:8000",
+    route=route_completions,
+    model_name="text-davinci-003",
+)
+
+llmchain = LLMChain(llm=gateway, prompt=prompt)
+result = llmchain.run("podcast player")
+
+print(result)
+
+```
+
+## 임베딩 예제
+
+```python
+<!--IMPORTS:[{"imported": "JavelinAIGatewayEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.javelin_ai_gateway.JavelinAIGatewayEmbeddings.html", "title": "Javelin AI Gateway"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Javelin AI Gateway"}]-->
+from langchain_community.embeddings import JavelinAIGatewayEmbeddings
+from langchain_openai import OpenAIEmbeddings
+
+embeddings = JavelinAIGatewayEmbeddings(
+    gateway_uri="http://localhost:8000",
+    route="embeddings",
+)
+
+print(embeddings.embed_query("hello"))
+print(embeddings.embed_documents(["hello"]))
+```
+
+## 채팅 예제
+
+```python
+<!--IMPORTS:[{"imported": "ChatJavelinAIGateway", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.javelin_ai_gateway.ChatJavelinAIGateway.html", "title": "Javelin AI Gateway"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Javelin AI Gateway"}, {"imported": "SystemMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html", "title": "Javelin AI Gateway"}]-->
+from langchain_community.chat_models import ChatJavelinAIGateway
+from langchain_core.messages import HumanMessage, SystemMessage
+
+messages = [
+    SystemMessage(
+        content="You are a helpful assistant that translates English to French."
+    ),
+    HumanMessage(
+        content="Artificial Intelligence has the power to transform humanity and make the world a better place"
+    ),
+]
+
+chat = ChatJavelinAIGateway(
+    gateway_uri="http://localhost:8000",
+    route="mychatbot_route",
+    model_name="gpt-3.5-turbo"
+    params={
+        "temperature": 0.1
+    }
+)
+
+print(chat(messages))
+
+```

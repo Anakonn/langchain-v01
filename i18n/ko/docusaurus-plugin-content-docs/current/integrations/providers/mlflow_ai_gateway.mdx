@@ -1,0 +1,164 @@
+---
+translated: true
+---
+
+# MLflow AI Gateway
+
+:::warning
+
+MLflow AI Gateway는 더 이상 사용되지 않습니다. 대신 [MLflow Deployments for LLMs](/docs/integrations/providers/mlflow/)을 사용하세요.
+
+:::
+
+>[MLflow AI Gateway](https://www.mlflow.org/docs/latest/index.html) 서비스는 조직 내에서 OpenAI, Anthropic 등 다양한 대규모 언어 모델(LLM) 제공업체를 사용하고 관리하는 것을 간소화하는 강력한 도구입니다. 이 서비스는 LLM 관련 요청을 처리하기 위한 통합 엔드포인트를 제공하여 이러한 서비스와의 상호 작용을 단순화합니다.
+
+## 설치 및 설정
+
+MLflow AI Gateway 종속성이 포함된 `mlflow`를 설치하세요:
+
+```sh
+pip install 'mlflow[gateway]'
+```
+
+OpenAI API 키를 환경 변수로 설정하세요:
+
+```sh
+export OPENAI_API_KEY=...
+```
+
+구성 파일을 만드세요:
+
+```yaml
+routes:
+  - name: completions
+    route_type: llm/v1/completions
+    model:
+      provider: openai
+      name: text-davinci-003
+      config:
+        openai_api_key: $OPENAI_API_KEY
+
+  - name: embeddings
+    route_type: llm/v1/embeddings
+    model:
+      provider: openai
+      name: text-embedding-ada-002
+      config:
+        openai_api_key: $OPENAI_API_KEY
+```
+
+Gateway 서버를 시작하세요:
+
+```sh
+mlflow gateway start --config-path /path/to/config.yaml
+```
+
+## `MLflow`에서 제공하는 예제
+
+>`mlflow.langchain` 모듈은 `LangChain` 모델을 기록하고 로드하기 위한 API를 제공합니다.
+> 이 모듈은 langchain 스타일의 다변량 LangChain 모델과 pyfunc 스타일의 단변량 LangChain
+> 모델을 내보냅니다.
+
+[API 문서와 예제](https://www.mlflow.org/docs/latest/python_api/mlflow.langchain.html?highlight=langchain#module-mlflow.langchain)를 참조하세요.
+
+## Completions 예제
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "MLflow AI Gateway"}, {"imported": "MlflowAIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway.html", "title": "MLflow AI Gateway"}]-->
+import mlflow
+from langchain.chains import LLMChain, PromptTemplate
+from langchain_community.llms import MlflowAIGateway
+
+gateway = MlflowAIGateway(
+    gateway_uri="http://127.0.0.1:5000",
+    route="completions",
+    params={
+        "temperature": 0.0,
+        "top_p": 0.1,
+    },
+)
+
+llm_chain = LLMChain(
+    llm=gateway,
+    prompt=PromptTemplate(
+        input_variables=["adjective"],
+        template="Tell me a {adjective} joke",
+    ),
+)
+result = llm_chain.run(adjective="funny")
+print(result)
+
+with mlflow.start_run():
+    model_info = mlflow.langchain.log_model(chain, "model")
+
+model = mlflow.pyfunc.load_model(model_info.model_uri)
+print(model.predict([{"adjective": "funny"}]))
+```
+
+## Embeddings 예제
+
+```python
+<!--IMPORTS:[{"imported": "MlflowAIGatewayEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.mlflow_gateway.MlflowAIGatewayEmbeddings.html", "title": "MLflow AI Gateway"}]-->
+from langchain_community.embeddings import MlflowAIGatewayEmbeddings
+
+embeddings = MlflowAIGatewayEmbeddings(
+    gateway_uri="http://127.0.0.1:5000",
+    route="embeddings",
+)
+
+print(embeddings.embed_query("hello"))
+print(embeddings.embed_documents(["hello"]))
+```
+
+## Chat 예제
+
+```python
+<!--IMPORTS:[{"imported": "ChatMLflowAIGateway", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.mlflow_ai_gateway.ChatMLflowAIGateway.html", "title": "MLflow AI Gateway"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "MLflow AI Gateway"}, {"imported": "SystemMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html", "title": "MLflow AI Gateway"}]-->
+from langchain_community.chat_models import ChatMLflowAIGateway
+from langchain_core.messages import HumanMessage, SystemMessage
+
+chat = ChatMLflowAIGateway(
+    gateway_uri="http://127.0.0.1:5000",
+    route="chat",
+    params={
+        "temperature": 0.1
+    }
+)
+
+messages = [
+    SystemMessage(
+        content="You are a helpful assistant that translates English to French."
+    ),
+    HumanMessage(
+        content="Translate this sentence from English to French: I love programming."
+    ),
+]
+print(chat(messages))
+```
+
+## Databricks MLflow AI Gateway
+
+Databricks MLflow AI Gateway는 프라이빗 미리 보기 중입니다.
+미리 보기에 등록하려면 Databricks 담당자에게 문의하세요.
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "MLflow AI Gateway"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "MLflow AI Gateway"}, {"imported": "MlflowAIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway.html", "title": "MLflow AI Gateway"}]-->
+from langchain.chains import LLMChain
+from langchain_core.prompts import PromptTemplate
+from langchain_community.llms import MlflowAIGateway
+
+gateway = MlflowAIGateway(
+    gateway_uri="databricks",
+    route="completions",
+)
+
+llm_chain = LLMChain(
+    llm=gateway,
+    prompt=PromptTemplate(
+        input_variables=["adjective"],
+        template="Tell me a {adjective} joke",
+    ),
+)
+result = llm_chain.run(adjective="funny")
+print(result)
+```

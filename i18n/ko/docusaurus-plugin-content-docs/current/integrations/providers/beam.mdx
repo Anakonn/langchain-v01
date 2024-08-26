@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# 빔 (Beam)
+
+>[빔(Beam)](https://www.beam.cloud/)은 GPU가 탑재된 원격 서버에서 코드를 실행할 수 있는 클라우드 컴퓨팅 플랫폼입니다.
+
+## 설치 및 설정
+
+- [계정 생성하기](https://www.beam.cloud/)
+- `curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh` 명령어로 Beam CLI 설치하기
+- `beam configure` 명령어로 API 키 등록하기
+- `BEAM_CLIENT_ID` 및 `BEAM_CLIENT_SECRET` 환경 변수 설정하기
+- Beam SDK 설치하기:
+
+```bash
+pip install beam-sdk
+```
+
+## LLMs
+
+[사용 예시](/docs/integrations/llms/beam)를 참고하세요.
+
+[Beam 문서](https://docs.beam.cloud/examples/langchain)에서 다른 예시를 확인할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Beam", "source": "langchain_community.llms.beam", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.beam.Beam.html", "title": "Beam"}]-->
+from langchain_community.llms.beam import Beam
+```

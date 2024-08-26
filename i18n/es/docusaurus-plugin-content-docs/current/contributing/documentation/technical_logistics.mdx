@@ -1,0 +1,157 @@
+---
+translated: true
+---
+
+# Logística técnica
+
+La documentación de LangChain consta de dos componentes:
+
+1. Documentación principal: Alojada en [python.langchain.com](https://python.langchain.com/), este recurso integral sirve como la documentación principal dirigida al usuario. Cubre una amplia gama de temas, incluyendo tutoriales, casos de uso, integraciones y más, ofreciendo una guía exhaustiva sobre cómo construir con LangChain. El contenido de esta documentación se encuentra en el directorio `/docs` del monorepo.
+2. Documentación en código: Esta es la documentación del código base en sí, que también se utiliza para generar la [Referencia de API](https://api.python.langchain.com/en/latest/langchain_api_reference.html) externa. El contenido de la referencia de API se genera automáticamente escaneando las cadenas de documentación en el código base. Por esta razón, pedimos a los desarrolladores que documenten bien su código.
+
+La documentación principal se construye utilizando [Quarto](https://quarto.org) y [Docusaurus 2](https://docusaurus.io/).
+
+La `Referencia de API` se genera en gran medida de forma automática por [sphinx](https://www.sphinx-doc.org/en/master/) a partir del código y se aloja en [Read the Docs](https://readthedocs.org/).
+
+Agradecemos todas las contribuciones a la documentación, ya sea corrigiendo un error tipográfico, agregando un nuevo tutorial o ejemplo, y ya sea en la documentación principal o en la Referencia de API.
+
+Al igual que con el linting, reconocemos que la documentación puede ser molesta. Si no quieres hacerlo, por favor contacta a un mantenedor del proyecto y ellos pueden ayudarte con eso. No queremos que esto sea un obstáculo para que se contribuya con buen código.
+
+## 📜 Documentación principal
+
+El contenido de la documentación principal se encuentra en el directorio `/docs` del monorepo.
+
+La documentación se escribe utilizando una combinación de cuadernos de ipython (archivos `.ipynb`) y markdown (archivos `.mdx`). Los cuadernos se convierten a markdown utilizando [Quarto](https://quarto.org) y luego se construyen utilizando [Docusaurus 2](https://docusaurus.io/).
+
+¡Siéntete libre de hacer contribuciones a la documentación principal! 🥰
+
+Después de modificar la documentación:
+
+1. Ejecuta los comandos de linting y formateo (ver a continuación) para asegurarte de que la documentación esté bien formateada y libre de errores.
+2. Opcionalmente, construye la documentación localmente para verificar que los cambios se vean bien.
+3. Haz una solicitud de extracción con los cambios.
+4. Puedes previsualizar y verificar que los cambios son los que querías haciendo clic en los botones `View deployment` o `Visit Preview` en la página `Conversation` de la solicitud de extracción. Esto te llevará a una vista previa de los cambios en la documentación.
+
+## ⚒️ Linting y construcción local de la documentación
+
+Después de escribir la documentación, es posible que quieras hacer linting y construir la documentación localmente para asegurarte de que se vea bien y esté libre de errores.
+
+Si no puedes construirla localmente, también está bien, ya que podrás ver una vista previa de la documentación en la página de la solicitud de extracción.
+
+### Instalar dependencias
+
+- [Quarto](https://quarto.org) - paquete que convierte los cuadernos de Jupyter (archivos `.ipynb`) en archivos mdx para servirlos en Docusaurus. [Enlace de descarga](https://quarto.org/docs/download/).
+
+Desde la **raíz del monorepo**, ejecuta el siguiente comando para instalar las dependencias:
+
+```bash
+poetry install --with lint,docs --no-root
+```
+
+### Construcción
+
+El código que construye la documentación se encuentra en el directorio `/docs` del monorepo.
+
+En los siguientes comandos, el prefijo `api_` indica que esas son operaciones para la Referencia de API.
+
+Antes de construir la documentación, siempre es una buena idea limpiar el directorio de construcción:
+
+```bash
+make docs_clean
+make api_docs_clean
+```
+
+A continuación, puedes construir la documentación como se describe a continuación:
+
+```bash
+make docs_build
+make api_docs_build
+```
+
+Finalmente, ejecuta el verificador de enlaces para asegurarte de que todos los enlaces sean válidos:
+
+```bash
+make docs_linkcheck
+make api_docs_linkcheck
+```
+
+### Linting y formateo
+
+El linting de la Documentación Principal se realiza desde la **raíz del monorepo**. Para hacer el linting de la documentación principal, ejecuta lo siguiente desde allí:
+
+```bash
+make lint
+```
+
+Si tienes errores relacionados con el formato, puedes corregirlos automáticamente con:
+
+```bash
+make format
+```
+
+## ⌨️ Documentación en código
+
+La documentación en código se genera en gran medida de forma automática por [sphinx](https://www.sphinx-doc.org/en/master/) a partir del código y se aloja en [Read the Docs](https://readthedocs.org/).
+
+Para que la referencia de API sea útil, el código base debe estar bien documentado. Esto significa que todas las funciones, clases y métodos deben tener una cadena de documentación que explique lo que hacen, cuáles son los argumentos y cuál es el valor de retorno. Esta es una buena práctica en general, pero es especialmente importante para LangChain porque la referencia de API es el principal recurso para que los desarrolladores entiendan cómo usar el código base.
+
+En general, seguimos la [Guía de estilo de Python de Google](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) para las cadenas de documentación.
+
+Aquí hay un ejemplo de una función bien documentada:
+
+```python
+
+def my_function(arg1: int, arg2: str) -> float:
+    """This is a short description of the function. (It should be a single sentence.)
+
+    This is a longer description of the function. It should explain what
+    the function does, what the arguments are, and what the return value is.
+    It should wrap at 88 characters.
+
+    Examples:
+        This is a section for examples of how to use the function.
+
+        .. code-block:: python
+
+            my_function(1, "hello")
+
+    Args:
+        arg1: This is a description of arg1. We do not need to specify the type since
+            it is already specified in the function signature.
+        arg2: This is a description of arg2.
+
+    Returns:
+        This is a description of the return value.
+    """
+    return 3.14
+```
+
+### Linting y formateo
+
+El linting de la documentación en código se realiza desde los directorios pertenecientes a los paquetes que se están documentando.
+
+Por ejemplo, si estás trabajando en el paquete `langchain-community`, cambiarías el directorio de trabajo al directorio `langchain-community`:
+
+```bash
+cd [root]/libs/langchain-community
+```
+
+Configura un entorno virtual para el paquete si aún no lo has hecho.
+
+Instala las dependencias del paquete.
+
+```bash
+poetry install --with lint
+```
+
+Luego puedes ejecutar los siguientes comandos para hacer el linting y formateo de la documentación en código:
+
+```bash
+make format
+make lint
+```
+
+## Verificar cambios en la documentación
+
+Después de enviar los cambios en la documentación al repositorio, puedes previsualizar y verificar que los cambios son los que querías haciendo clic en los botones `View deployment` o `Visit Preview` en la página `Conversation` de la solicitud de extracción. Esto te llevará a una vista previa de los cambios en la documentación.
+Esta vista previa es creada por [Vercel](https://vercel.com/docs/getting-started-with-vercel).

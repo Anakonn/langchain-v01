@@ -1,0 +1,366 @@
+---
+translated: true
+---
+
+# Microsoft
+
+Toutes les fonctionnalités liées à `Microsoft Azure` et aux autres produits `Microsoft`.
+
+## LLMs
+
+### Azure ML
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/azure_ml).
+
+```python
+<!--IMPORTS:[{"imported": "AzureMLOnlineEndpoint", "source": "langchain_community.llms.azureml_endpoint", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.azureml_endpoint.AzureMLOnlineEndpoint.html", "title": "Microsoft"}]-->
+from langchain_community.llms.azureml_endpoint import AzureMLOnlineEndpoint
+```
+
+### Azure OpenAI
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/azure_openai).
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.azure.AzureOpenAI.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureOpenAI
+```
+
+## Modèles de chat
+
+### Azure OpenAI
+
+>[Microsoft Azure](https://en.wikipedia.org/wiki/Microsoft_Azure), souvent appelé `Azure`, est une plateforme de cloud computing gérée par `Microsoft`, qui offre l'accès, la gestion et le développement d'applications et de services via des centres de données mondiaux. Elle propose une gamme de capacités, notamment le logiciel en tant que service (SaaS), la plateforme en tant que service (PaaS) et l'infrastructure en tant que service (IaaS). `Microsoft Azure` prend en charge de nombreux langages de programmation, outils et frameworks, y compris les logiciels et systèmes spécifiques à Microsoft et de tiers.
+
+>[Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) est un service `Azure` avec des modèles de langage puissants d'`OpenAI`, notamment les séries `GPT-3`, `Codex` et `Embeddings`, pour la génération de contenu, la résumé, la recherche sémantique et la traduction de langage naturel en code.
+
+```bash
+pip install langchain-openai
+```
+
+Définissez les variables d'environnement pour accéder au service `Azure OpenAI`.
+
+```python
+import os
+
+os.environ["AZURE_OPENAI_ENDPOINT"] = "https://<your-endpoint.openai.azure.com/"
+os.environ["AZURE_OPENAI_API_KEY"] = "your AzureOpenAI key"
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/azure_chat_openai)
+
+```python
+<!--IMPORTS:[{"imported": "AzureChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureChatOpenAI
+```
+
+## Modèles d'intégration
+
+### Azure OpenAI
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/azureopenai)
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.azure.AzureOpenAIEmbeddings.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureOpenAIEmbeddings
+```
+
+## Chargeurs de documents
+
+### Azure AI Data
+
+>[Azure AI Studio](https://ai.azure.com/) fournit la capacité de télécharger des actifs de données
+> vers le stockage cloud et d'enregistrer des actifs de données existants à partir des sources suivantes :
+>
+>- `Microsoft OneLake`
+>- `Azure Blob Storage`
+>- `Azure Data Lake gen 2`
+
+Tout d'abord, vous devez installer plusieurs packages Python.
+
+```bash
+pip install azureml-fsspec, azure-ai-generative
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/azure_ai_data).
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDataLoader", "source": "langchain.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_ai_data.AzureAIDataLoader.html", "title": "Microsoft"}]-->
+from langchain.document_loaders import AzureAIDataLoader
+```
+
+### Azure AI Document Intelligence
+
+>[Azure AI Document Intelligence](https://aka.ms/doc-intelligence) (anciennement connu
+> sous le nom de `Azure Form Recognizer`) est un service basé sur l'apprentissage automatique qui extrait
+> des textes (y compris l'écriture manuscrite), des tableaux, des structures de documents
+> et des paires clé-valeur
+> à partir de PDF, d'images, de fichiers Office et HTML numériques ou numérisés.
+>
+> Document Intelligence prend en charge `PDF`, `JPEG/JPG`, `PNG`, `BMP`, `TIFF`, `HEIF`, `DOCX`, `XLSX`, `PPTX` et `HTML`.
+
+Tout d'abord, vous devez installer un package Python.
+
+```bash
+pip install azure-ai-documentintelligence
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/azure_document_intelligence).
+
+```python
+from langchain.document_loaders import AzureAIDocumentIntelligenceLoader
+```
+
+### Azure Blob Storage
+
+>[Azure Blob Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) est la solution de stockage d'objets cloud de Microsoft. Blob Storage est optimisé pour stocker de grandes quantités de données non structurées. Les données non structurées sont des données qui ne respectent pas un modèle de données ou une définition particulière, comme du texte ou des données binaires.
+
+>[Azure Files](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction) offre des partages de fichiers entièrement gérés dans le cloud, accessibles via le protocole Server Message Block (`SMB`) standard de l'industrie,
+> le protocole Network File System (`NFS`) et l'`API REST Azure Files`. `Azure Files` est basé sur le `Azure Blob Storage`.
+
+`Azure Blob Storage` est conçu pour :
+- Servir des images ou des documents directement à un navigateur.
+- Stocker des fichiers pour un accès distribué.
+- Diffuser en continu de la vidéo et de l'audio.
+- Écrire dans des fichiers journaux.
+- Stocker des données pour la sauvegarde et la restauration, la récupération d'urgence et l'archivage.
+- Stocker des données pour une analyse par un service hébergé sur site ou dans Azure.
+
+```bash
+pip install azure-storage-blob
+```
+
+Voir un [exemple d'utilisation pour Azure Blob Storage](/docs/integrations/document_loaders/azure_blob_storage_container).
+
+```python
+<!--IMPORTS:[{"imported": "AzureBlobStorageContainerLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_blob_storage_container.AzureBlobStorageContainerLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import AzureBlobStorageContainerLoader
+```
+
+Voir un [exemple d'utilisation pour Azure Files](/docs/integrations/document_loaders/azure_blob_storage_file).
+
+```python
+<!--IMPORTS:[{"imported": "AzureBlobStorageFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_blob_storage_file.AzureBlobStorageFileLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import AzureBlobStorageFileLoader
+```
+
+### Microsoft OneDrive
+
+>[Microsoft OneDrive](https://en.wikipedia.org/wiki/OneDrive) (anciennement `SkyDrive`) est un service d'hébergement de fichiers exploité par Microsoft.
+
+Tout d'abord, vous devez installer un package Python.
+
+```bash
+pip install o365
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_onedrive).
+
+```python
+<!--IMPORTS:[{"imported": "OneDriveLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.onedrive.OneDriveLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import OneDriveLoader
+```
+
+### Microsoft Word
+
+>[Microsoft Word](https://www.microsoft.com/en-us/microsoft-365/word) est un traitement de texte développé par Microsoft.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_word).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredWordDocumentLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.word_document.UnstructuredWordDocumentLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+```
+
+### Microsoft Excel
+
+>[Microsoft Excel](https://en.wikipedia.org/wiki/Microsoft_Excel) est un éditeur de feuilles de calcul développé par
+> Microsoft pour Windows, macOS, Android, iOS et iPadOS.
+> Il dispose de capacités de calcul ou de calcul, d'outils de graphique, de tableaux croisés dynamiques et d'un langage de programmation macro appelé Visual Basic for Applications (VBA). Excel fait partie de la suite logicielle Microsoft 365.
+
+Le `UnstructuredExcelLoader` est utilisé pour charger des fichiers `Microsoft Excel`. Le chargeur fonctionne avec les fichiers `.xlsx` et `.xls`.
+Le contenu de la page sera le texte brut du fichier Excel. Si vous utilisez le chargeur en mode `"elements"`, une représentation HTML
+du fichier Excel sera disponible dans les métadonnées du document sous la clé `text_as_html`.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_excel).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredExcelLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.excel.UnstructuredExcelLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredExcelLoader
+```
+
+### Microsoft SharePoint
+
+>[Microsoft SharePoint](https://en.wikipedia.org/wiki/SharePoint) est un système de collaboration basé sur un site web
+> qui utilise des applications de workflow, des bases de données "liste" et d'autres éléments web et fonctionnalités de sécurité pour
+> permettre aux équipes d'entreprise de travailler ensemble, développé par Microsoft.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_sharepoint).
+
+```python
+<!--IMPORTS:[{"imported": "SharePointLoader", "source": "langchain_community.document_loaders.sharepoint", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.sharepoint.SharePointLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders.sharepoint import SharePointLoader
+```
+
+### Microsoft PowerPoint
+
+>[Microsoft PowerPoint](https://en.wikipedia.org/wiki/Microsoft_PowerPoint) est un programme de présentation de Microsoft.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_powerpoint).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPowerPointLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.powerpoint.UnstructuredPowerPointLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+```
+
+### Microsoft OneNote
+
+Tout d'abord, installons les dépendances :
+
+```bash
+pip install bs4 msal
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_onenote).
+
+```python
+<!--IMPORTS:[{"imported": "OneNoteLoader", "source": "langchain_community.document_loaders.onenote", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.onenote.OneNoteLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders.onenote import OneNoteLoader
+```
+
+## Magasins vectoriels
+
+### Azure Cosmos DB
+
+>[Azure Cosmos DB pour MongoDB vCore](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/) facilite la création d'une base de données avec un support natif complet de MongoDB.
+> Vous pouvez appliquer votre expérience MongoDB et continuer à utiliser vos pilotes, SDK et outils MongoDB préférés en pointant votre application sur la chaîne de connexion du compte API pour MongoDB vCore.
+> Utilisez la recherche vectorielle dans Azure Cosmos DB pour MongoDB vCore pour intégrer en douceur vos applications basées sur l'IA à vos données stockées dans Azure Cosmos DB.
+
+#### Installation et configuration
+
+Voir [instructions de configuration détaillées](/docs/integrations/vectorstores/azure_cosmos_db).
+
+Nous devons installer le package python `pymongo`.
+
+```bash
+pip install pymongo
+```
+
+#### Déployer Azure Cosmos DB sur Microsoft Azure
+
+Azure Cosmos DB pour MongoDB vCore offre aux développeurs un service de base de données compatible avec MongoDB entièrement géré pour construire des applications modernes avec une architecture familière.
+
+Avec Cosmos DB pour MongoDB vCore, les développeurs peuvent profiter des avantages des intégrations natives à Azure, d'un faible coût total de possession (TCO) et de l'architecture vCore familière lors de la migration d'applications existantes ou de la construction de nouvelles.
+
+[Inscrivez-vous](https://azure.microsoft.com/en-us/free/) gratuitement pour commencer dès aujourd'hui.
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/azure_cosmos_db).
+
+```python
+<!--IMPORTS:[{"imported": "AzureCosmosDBVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.azure_cosmos_db.AzureCosmosDBVectorSearch.html", "title": "Microsoft"}]-->
+from langchain_community.vectorstores import AzureCosmosDBVectorSearch
+```
+
+## Récupérateurs
+
+### Azure AI Search
+
+>[Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search) (anciennement connu sous le nom de `Azure Search` ou `Azure Cognitive Search`) est un service de recherche cloud qui fournit aux développeurs l'infrastructure, les API et les outils nécessaires pour construire une expérience de recherche riche sur du contenu privé et hétérogène dans les applications web, mobiles et d'entreprise.
+
+>La recherche est fondamentale pour toute application qui présente du texte aux utilisateurs, où les scénarios courants incluent la recherche de catalogues ou de documents, les applications de commerce de détail en ligne ou l'exploration de données sur un contenu propriétaire. Lorsque vous créez un service de recherche, vous travaillerez avec les capacités suivantes :
+>- Un moteur de recherche pour la recherche en texte intégral sur un index de recherche contenant le contenu appartenant à l'utilisateur
+>- Un indexage riche, avec une analyse lexicale et un enrichissement IA en option pour l'extraction et la transformation de contenu
+>- Une syntaxe de requête riche pour la recherche en texte intégral, la recherche floue, la saisie semi-automatique, la recherche géographique et plus encore
+>- Programmabilité via des API REST et des bibliothèques clientes dans les kits de développement logiciel Azure
+>- Intégration Azure au niveau de la couche de données, de la couche d'apprentissage automatique et des services IA
+
+Voir [instructions de configuration](https://learn.microsoft.com/en-us/azure/search/search-create-service-portal).
+
+Voir un [exemple d'utilisation](/docs/integrations/retrievers/azure_ai_search).
+
+```python
+<!--IMPORTS:[{"imported": "AzureAISearchRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.azure_ai_search.AzureAISearchRetriever.html", "title": "Microsoft"}]-->
+from langchain.retrievers import AzureAISearchRetriever
+```
+
+## Boîtes à outils
+
+### Services Azure IA
+
+Nous devons installer plusieurs packages python.
+
+```bash
+pip install azure-ai-formrecognizer azure-cognitiveservices-speech azure-ai-vision-imageanalysis
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/toolkits/azure_ai_services).
+
+```python
+from langchain_community.agent_toolkits import azure_ai_services
+```
+
+### Courrier électronique et calendrier Microsoft Office 365
+
+Nous devons installer le package python `O365`.
+
+```bash
+pip install O365
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/toolkits/office365).
+
+```python
+<!--IMPORTS:[{"imported": "O365Toolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.office365.toolkit.O365Toolkit.html", "title": "Microsoft"}]-->
+from langchain_community.agent_toolkits import O365Toolkit
+```
+
+### Microsoft Azure PowerBI
+
+Nous devons installer le package python `azure-identity`.
+
+```bash
+pip install azure-identity
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/toolkits/powerbi).
+
+```python
+<!--IMPORTS:[{"imported": "PowerBIToolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.powerbi.toolkit.PowerBIToolkit.html", "title": "Microsoft"}, {"imported": "PowerBIDataset", "source": "langchain_community.utilities.powerbi", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.powerbi.PowerBIDataset.html", "title": "Microsoft"}]-->
+from langchain_community.agent_toolkits import PowerBIToolkit
+from langchain_community.utilities.powerbi import PowerBIDataset
+```
+
+## Utilitaires
+
+### API de recherche Bing
+
+>[Microsoft Bing](https://www.bing.com/), communément appelé `Bing` ou `Bing Search`,
+> est un moteur de recherche web appartenant et exploité par `Microsoft`.
+
+Voir un [exemple d'utilisation](/docs/integrations/tools/bing_search).
+
+```python
+<!--IMPORTS:[{"imported": "BingSearchAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.bing_search.BingSearchAPIWrapper.html", "title": "Microsoft"}]-->
+from langchain_community.utilities import BingSearchAPIWrapper
+```
+
+## Plus
+
+### Microsoft Presidio
+
+>[Presidio](https://microsoft.github.io/presidio/) (Origine du latin praesidium 'protection, garnison')
+> aide à s'assurer que les données sensibles sont correctement gérées et gouvernées. Il fournit des modules d'identification et d'anonymisation rapides pour les entités privées dans le texte et les images telles que les numéros de carte de crédit, les noms, les lieux, les numéros de sécurité sociale, les portefeuilles Bitcoin, les numéros de téléphone américains, les données financières et plus encore.
+
+Tout d'abord, vous devez installer plusieurs packages python et télécharger un modèle `SpaCy`.
+
+```bash
+pip install langchain-experimental openai presidio-analyzer presidio-anonymizer spacy Faker
+python -m spacy download en_core_web_lg
+```
+
+Voir [exemples d'utilisation](/docs/guides/productionization/safety/presidio_data_anonymization/).
+
+```python
+<!--IMPORTS:[{"imported": "PresidioAnonymizer", "source": "langchain_experimental.data_anonymizer", "docs": "https://api.python.langchain.com/en/latest/data_anonymizer/langchain_experimental.data_anonymizer.presidio.PresidioAnonymizer.html", "title": "Microsoft"}, {"imported": "PresidioReversibleAnonymizer", "source": "langchain_experimental.data_anonymizer", "docs": "https://api.python.langchain.com/en/latest/data_anonymizer/langchain_experimental.data_anonymizer.presidio.PresidioReversibleAnonymizer.html", "title": "Microsoft"}]-->
+from langchain_experimental.data_anonymizer import PresidioAnonymizer, PresidioReversibleAnonymizer
+```

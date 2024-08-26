@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# ब्रेव सर्च
+
+>[ब्रेव सर्च](https://en.wikipedia.org/wiki/Brave_Search) एक सर्च इंजन है जिसे ब्रेव सॉफ्टवेयर द्वारा विकसित किया गया है।
+> - `ब्रेव सर्च` अपने स्वयं के वेब इंडेक्स का उपयोग करता है। मई 2022 तक, इसमें 10 बिलियन से अधिक पृष्ठ शामिल थे और इसे किसी भी तृतीय-पक्ष पर निर्भर किए बिना 92% खोज परिणामों को सेवा देने के लिए उपयोग किया गया था, शेष को सर्वर-साइड से बिंग एपीआई या (ऑप्ट-इन आधार पर) क्लाइंट-साइड से गूगल से पुनः प्राप्त किया गया था। ब्रेव के अनुसार, स्पैम और अन्य निम्न-गुणवत्ता वाली सामग्री से बचने में मदद करने के लिए इंडेक्स को "जानबूझकर गूगल या बिंग की तुलना में छोटा रखा गया" था, जिसमें "लंबी-पूंछ वाली क्वेरी को पुनर्प्राप्त करने में ब्रेव सर्च अभी तक गूगल जितना अच्छा नहीं है"।
+>- `ब्रेव सर्च प्रीमियम`: अप्रैल 2023 तक ब्रेव सर्च एक विज्ञापन-मुक्त वेबसाइट है, लेकिन यह अंततः एक नए मॉडल में बदल जाएगा जिसमें विज्ञापन शामिल होंगे और प्रीमियम उपयोगकर्ता एक विज्ञापन-मुक्त अनुभव प्राप्त करेंगे। डिफ़ॉल्ट रूप से उपयोगकर्ता डेटा जिसमें आईपी पते शामिल हैं, उपयोगकर्ताओं से एकत्र नहीं किए जाएंगे। ऑप्ट-इन डेटा संग्रहण के लिए एक प्रीमियम खाता आवश्यक होगा।
+
+## इंस्टॉलेशन और सेटअप
+
+ब्रेव सर्च एपीआई तक पहुंच प्राप्त करने के लिए, आपको [एक खाता बनाना होगा और एक एपीआई कुंजी प्राप्त करनी होगी](https://api.search.brave.com/app/dashboard)।
+
+## दस्तावेज़ लोडर
+
+[उपयोग का उदाहरण](/docs/integrations/document_loaders/brave_search) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearchLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.brave_search.BraveSearchLoader.html", "title": "Brave Search"}]-->
+from langchain_community.document_loaders import BraveSearchLoader
+```
+
+## टूल
+
+[उपयोग का उदाहरण](/docs/integrations/tools/brave_search) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearch", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.brave_search.tool.BraveSearch.html", "title": "Brave Search"}]-->
+from langchain.tools import BraveSearch
+```

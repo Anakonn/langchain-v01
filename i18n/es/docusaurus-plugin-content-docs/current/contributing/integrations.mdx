@@ -1,0 +1,192 @@
+---
+translated: true
+---
+
+# Contribuir con integraciones
+
+Para comenzar, asegúrate de tener todas las dependencias descritas en la guía sobre [Contribuir con código](/docs/contributing/code/).
+
+Hay varios lugares diferentes donde puedes contribuir con integraciones para LangChain:
+
+- **Comunidad**: Para integraciones más ligeras que son mantenidas principalmente por LangChain y la comunidad de código abierto.
+- **Paquetes de socios**: Para paquetes independientes que son co-mantenidos por LangChain y un socio.
+
+En la mayoría de los casos, las nuevas integraciones deben agregarse al paquete de la comunidad. Los paquetes de socios requieren más mantenimiento como paquetes separados, así que por favor confirma con el equipo de LangChain antes de crear un nuevo paquete de socio.
+
+En las siguientes secciones, recorreremos cómo contribuir a cada uno de estos paquetes desde una empresa ficticia, `Parrot Link AI`.
+
+## Paquete de la comunidad
+
+El paquete `langchain-community` se encuentra en `libs/community` y contiene la mayoría de las integraciones.
+
+Se puede instalar con `pip install langchain-community`, y los miembros exportados se pueden importar con código como:
+
+```python
+from langchain_community.chat_models import ChatParrotLink
+from langchain_community.llms import ParrotLinkLLM
+from langchain_community.vectorstores import ParrotLinkVectorStore
+```
+
+El paquete `community` se basa en paquetes dependientes instalados manualmente, por lo que verás errores si intentas importar un paquete que no está instalado. En nuestro ejemplo ficticio, si intentaras importar `ParrotLinkLLM` sin instalar `parrot-link-sdk`, verías un `ImportError` que te indicaría que lo instales cuando intentes usarlo.
+
+Digamos que queremos implementar un modelo de chat para Parrot Link AI. Crearíamos un nuevo archivo en `libs/community/langchain_community/chat_models/parrot_link.py` con el siguiente código:
+
+```python
+<!--IMPORTS:[{"imported": "BaseChatModel", "source": "langchain_core.language_models.chat_models", "docs": "https://api.python.langchain.com/en/latest/language_models/langchain_core.language_models.chat_models.BaseChatModel.html", "title": "Contribute Integrations"}]-->
+from langchain_core.language_models.chat_models import BaseChatModel
+
+class ChatParrotLink(BaseChatModel):
+    """ChatParrotLink chat model.
+
+    Example:
+        .. code-block:: python
+
+            from langchain_community.chat_models import ChatParrotLink
+
+            model = ChatParrotLink()
+    """
+
+    ...
+```
+
+Y escribiríamos pruebas en:
+
+- Pruebas unitarias: `libs/community/tests/unit_tests/chat_models/test_parrot_link.py`
+- Pruebas de integración: `libs/community/tests/integration_tests/chat_models/test_parrot_link.py`
+
+Y agregaríamos documentación a:
+
+- `docs/docs/integrations/chat/parrot_link.ipynb`
+
+## Paquete de socio en el repositorio de LangChain
+
+Los paquetes de socios se pueden alojar en el monorepo de `LangChain` o en un repositorio externo.
+
+El paquete de socio en el repositorio de `LangChain` se coloca en `libs/partners/{partner}` y el código fuente del paquete está en `libs/partners/{partner}/langchain_{partner}`.
+
+Un paquete se instala por los usuarios con `pip install langchain-{partner}`, y los miembros del paquete se pueden importar con código como:
+
+```python
+from langchain_{partner} import X
+```
+
+### Configurar un nuevo paquete
+
+Para configurar un nuevo paquete de socio, usa la última versión de la CLI de LangChain. Puedes instalarlo o actualizarlo con:
+
+```bash
+pip install -U langchain-cli
+```
+
+Digamos que quieres crear un nuevo paquete de socio trabajando para una empresa llamada Parrot Link AI.
+
+Entonces, ejecuta el siguiente comando para crear un nuevo paquete de socio:
+
+```bash
+cd libs/partners
+langchain-cli integration new
+> Name: parrot-link
+> Name of integration in PascalCase [ParrotLink]: ParrotLink
+```
+
+Esto creará un nuevo paquete en `libs/partners/parrot-link` con la siguiente estructura:
+
+```text
+libs/partners/parrot-link/
+  langchain_parrot_link/ # folder containing your package
+    ...
+  tests/
+    ...
+  docs/ # bootstrapped docs notebooks, must be moved to /docs in monorepo root
+    ...
+  scripts/ # scripts for CI
+    ...
+  LICENSE
+  README.md # fill out with information about your package
+  Makefile # default commands for CI
+  pyproject.toml # package metadata, mostly managed by Poetry
+  poetry.lock # package lockfile, managed by Poetry
+  .gitignore
+```
+
+### Implementa tu paquete
+
+Primero, agrega cualquier dependencia que necesite tu paquete, como el SDK de tu empresa:
+
+```bash
+poetry add parrot-link-sdk
+```
+
+Si necesitas dependencias separadas para la verificación de tipos, puedes agregarlas al grupo `typing` con:
+
+```bash
+poetry add --group typing types-parrot-link-sdk
+```
+
+Luego, implementa tu paquete en `libs/partners/parrot-link/langchain_parrot_link`.
+
+De forma predeterminada, esto incluirá stubs para un modelo de chat, un LLM y/o un almacén de vectores. Debes eliminar cualquiera de los archivos que no uses y eliminarlos de `__init__.py`.
+
+### Escribe pruebas unitarias e de integración
+
+Algunas pruebas básicas se presentan en el directorio `tests/`. Debes agregar más pruebas para cubrir la funcionalidad de tu paquete.
+
+Para obtener información sobre cómo ejecutar e implementar pruebas, consulta la [guía de pruebas](/docs/contributing/testing/).
+
+### Escribe documentación
+
+La documentación se genera a partir de los cuadernos de Jupyter en el directorio `docs/`. Debes colocar los cuadernos con ejemplos en el directorio `docs/docs/integrations` relevante en la raíz del monorepo.
+
+### (Si es necesario) Deprecar la integración de la comunidad
+
+Nota: esto solo es necesario si estás migrando una integración existente de la comunidad a un paquete de socio. Si el componente que estás integrando es nuevo en LangChain (es decir, no está ya en el paquete `community`), puedes omitir este paso.
+
+Supongamos que migramos nuestro modelo de chat `ChatParrotLink` del paquete de la comunidad al paquete de socio. Tendríamos que deprecar el modelo antiguo en el paquete de la comunidad.
+
+Haríamos eso agregando un decorador `@deprecated` al modelo antiguo de la siguiente manera, en `libs/community/langchain_community/chat_models/parrot_link.py`.
+
+Antes de nuestro cambio, nuestro modelo de chat podría verse así:
+
+```python
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+Después de nuestro cambio, se vería así:
+
+```python
+<!--IMPORTS:[{"imported": "deprecated", "source": "langchain_core._api.deprecation", "docs": "https://api.python.langchain.com/en/latest/_api/langchain_core._api.deprecation.deprecated.html", "title": "Contribute Integrations"}]-->
+from langchain_core._api.deprecation import deprecated
+
+@deprecated(
+    since="0.0.<next community version>",
+    removal="0.2.0",
+    alternative_import="langchain_parrot_link.ChatParrotLink"
+)
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+Deberías hacer esto para *cada* componente que estés migrando al paquete de socio.
+
+### Pasos adicionales
+
+Pasos del colaborador:
+
+- [ ] Agregar nombres de secretos al flujo de trabajo de integraciones manuales en `.github/workflows/_integration_test.yml`
+- [ ] Agregar secretos al flujo de trabajo de lanzamiento (para pruebas previas al lanzamiento) en `.github/workflows/_release.yml`
+
+Pasos del mantenedor (los colaboradores **no** deben hacer estos):
+
+- [ ] Configurar proyectos de pypi y test pypi
+- [ ] Agregar secretos de credenciales a GitHub Actions
+- [ ] Agregar el paquete a conda-forge
+
+## Paquete de socio en repositorio externo
+
+Los paquetes de socios en repositorios externos deben ser coordinados entre el equipo de LangChain y
+la organización asociada para asegurar que se mantengan y actualicen.
+
+Si está interesado en crear un paquete de socio en un repositorio externo, comience
+con uno en el repositorio de LangChain y luego comuníquese con el equipo de LangChain para discutir
+cómo moverlo a un repositorio externo.

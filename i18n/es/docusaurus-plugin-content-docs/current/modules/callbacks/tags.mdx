@@ -1,0 +1,7 @@
+---
+translated: true
+---
+
+# Etiquetas
+
+Puede agregar etiquetas a sus devoluciones de llamada pasando un argumento `tags` a los métodos `call()`/`run()`/`apply()`. Esto es útil para filtrar sus registros, por ejemplo, si desea registrar todas las solicitudes realizadas a un `LLMChain` específico, puede agregar una etiqueta y luego filtrar sus registros por esa etiqueta. Puede pasar etiquetas tanto a los constructores como a las devoluciones de llamada de solicitud, consulte los ejemplos anteriores para obtener más detalles. Estas etiquetas se pasan luego al argumento `tags` de los métodos de devolución de llamada "start", es decir, `on_llm_start`, `on_chat_model_start`, `on_chain_start`, `on_tool_start`.

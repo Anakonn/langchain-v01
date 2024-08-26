@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Grobid
+
+GROBID은 원시 문서에서 정보를 추출, 구문 분석 및 재구성하는 기계 학습 라이브러리입니다.
+
+특히 학술 논문을 구문 분석하는 데 잘 작동하도록 설계되었습니다.
+
+*참고*: Grobid에 제공되는 기사가 일정 수 이상의 요소를 포함하는 대형 문서(예: 학위 논문)인 경우 처리되지 않을 수 있습니다.
+
+이 페이지에서는 LangChain에 대한 기사를 구문 분석하는 방법을 설명합니다.
+
+## 설치
+
+Grobid 설치에 대한 자세한 내용은 https://grobid.readthedocs.io/en/latest/Install-Grobid/에 설명되어 있습니다.
+그러나 [여기](https://grobid.readthedocs.io/en/latest/Grobid-docker/)에 문서화된 대로 Docker 컨테이너를 통해 Grobid를 실행하는 것이 더 쉽고 문제가 적을 수 있습니다.
+
+## LangChain에서 Grobid 사용하기
+
+Grobid가 설치되어 실행 중이면(http://localhost:8070 에 액세스하여 확인할 수 있음) 준비가 완료됩니다.
+
+이제 GrobidParser를 사용하여 문서를 생성할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "GrobidParser", "source": "langchain_community.document_loaders.parsers", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.parsers.grobid.GrobidParser.html", "title": "Grobid"}, {"imported": "GenericLoader", "source": "langchain_community.document_loaders.generic", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.generic.GenericLoader.html", "title": "Grobid"}]-->
+from langchain_community.document_loaders.parsers import GrobidParser
+from langchain_community.document_loaders.generic import GenericLoader
+
+#Produce chunks from article paragraphs
+loader = GenericLoader.from_filesystem(
+    "/Users/31treehaus/Desktop/Papers/",
+    glob="*",
+    suffixes=[".pdf"],
+    parser= GrobidParser(segment_sentences=False)
+)
+docs = loader.load()
+
+#Produce chunks from article sentences
+loader = GenericLoader.from_filesystem(
+    "/Users/31treehaus/Desktop/Papers/",
+    glob="*",
+    suffixes=[".pdf"],
+    parser= GrobidParser(segment_sentences=True)
+)
+docs = loader.load()
+```
+
+청크 메타데이터에는 경계 상자가 포함됩니다. 이는 약간 이상하게 구문 분석되지만 https://grobid.readthedocs.io/en/latest/Coordinates-in-PDF/에 설명되어 있습니다.

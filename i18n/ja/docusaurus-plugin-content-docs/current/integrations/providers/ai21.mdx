@@ -1,0 +1,45 @@
+---
+translated: true
+---
+
+# AI21 研究所
+
+>[AI21 研究所](https://www.ai21.com/about)は自然言語処理(NLP)を専門とする会社で、自然言語を理解し生成するAIシステムを開発しています。
+
+このページでは、`LangChain`内で`AI21`エコシステムを使用する方法について説明します。
+
+## インストールと設定
+
+- AI21 APIキーを取得し、環境変数(`AI21_API_KEY`)に設定します
+- Pythonパッケージをインストールします:
+
+```bash
+pip install langchain-ai21
+```
+
+## LLMs
+
+[使用例](/docs/integrations/llms/ai21)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "AI21", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ai21.AI21.html", "title": "AI21 Labs"}]-->
+from langchain_community.llms import AI21
+```
+
+## チャットモデル
+
+[使用例](/docs/integrations/chat/ai21)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatAI21", "source": "langchain_ai21", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_ai21.chat_models.ChatAI21.html", "title": "AI21 Labs"}]-->
+from langchain_ai21 import ChatAI21
+```
+
+## 埋め込みモデル
+
+[使用例](/docs/integrations/text_embedding/ai21)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "AI21Embeddings", "source": "langchain_ai21", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_ai21.embeddings.AI21Embeddings.html", "title": "AI21 Labs"}]-->
+from langchain_ai21 import AI21Embeddings
+```

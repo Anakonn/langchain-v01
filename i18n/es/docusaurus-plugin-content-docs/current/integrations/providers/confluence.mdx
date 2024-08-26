@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# Confluence
+
+>[Confluencia](https://www.atlassian.com/software/confluence) es una plataforma de colaboración wiki que guarda y organiza todo el material relacionado con el proyecto. `Confluencia` es una base de conocimiento que se ocupa principalmente de las actividades de gestión de contenidos.
+
+## Instalación y configuración
+
+```bash
+pip install atlassian-python-api
+```
+
+Necesitamos configurar `username/api_key` o `Oauth2 login`.
+Ver [instrucciones](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+
+## Cargador de documentos
+
+Ver un [ejemplo de uso](/docs/integrations/document_loaders/confluence).
+
+```python
+<!--IMPORTS:[{"imported": "ConfluenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.confluence.ConfluenceLoader.html", "title": "Confluence"}]-->
+from langchain_community.document_loaders import ConfluenceLoader
+```

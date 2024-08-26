@@ -1,0 +1,183 @@
+---
+translated: true
+---
+
+# 대화 요약
+
+이제 좀 더 복잡한 유형의 메모리인 `ConversationSummaryMemory`를 사용해 보겠습니다. 이 유형의 메모리는 시간에 따른 대화의 요약을 생성합니다. 이는 대화에서 정보를 압축하는 데 유용할 수 있습니다.
+대화 요약 메모리는 대화가 진행되는 동안 요약을 생성하고 현재 요약을 메모리에 저장합니다. 이 메모리는 프롬프트/체인에 현재까지의 대화 요약을 삽입하는 데 사용할 수 있습니다. 이 메모리는 과거 메시지 기록을 프롬프트에 그대로 포함하면 토큰이 너무 많이 사용되는 장기 대화에 가장 유용합니다.
+
+먼저 이 유형의 메모리의 기본 기능을 살펴보겠습니다.
+
+```python
+<!--IMPORTS:[{"imported": "ConversationSummaryMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.summary.ConversationSummaryMemory.html", "title": "Conversation Summary"}, {"imported": "ChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_core.chat_history.ChatMessageHistory.html", "title": "Conversation Summary"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Conversation Summary"}]-->
+from langchain.memory import ConversationSummaryMemory, ChatMessageHistory
+from langchain_openai import OpenAI
+```
+
+```python
+memory = ConversationSummaryMemory(llm=OpenAI(temperature=0))
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': '\nThe human greets the AI, to which the AI responds.'}
+```
+
+또한 메시지 목록으로 기록을 가져올 수 있습니다(채팅 모델과 함께 사용하는 데 유용).
+
+```python
+memory = ConversationSummaryMemory(llm=OpenAI(temperature=0), return_messages=True)
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': [SystemMessage(content='\nThe human greets the AI, to which the AI responds.', additional_kwargs={})]}
+```
+
+`predict_new_summary` 메서드를 직접 활용할 수도 있습니다.
+
+```python
+messages = memory.chat_memory.messages
+previous_summary = ""
+memory.predict_new_summary(messages, previous_summary)
+```
+
+```output
+    '\nThe human greets the AI, to which the AI responds.'
+```
+
+## 메시지/기존 요약으로 초기화하기
+
+이 클래스 외부에 메시지가 있는 경우 `ChatMessageHistory`로 쉽게 초기화할 수 있습니다. 로드 중에 요약이 계산됩니다.
+
+```python
+history = ChatMessageHistory()
+history.add_user_message("hi")
+history.add_ai_message("hi there!")
+```
+
+```python
+memory = ConversationSummaryMemory.from_messages(
+    llm=OpenAI(temperature=0),
+    chat_memory=history,
+    return_messages=True
+)
+```
+
+```python
+memory.buffer
+```
+
+```output
+    '\nThe human greets the AI, to which the AI responds with a friendly greeting.'
+```
+
+선택적으로 이전에 생성된 요약을 사용하여 초기화 속도를 높이고 요약을 다시 생성하지 않도록 할 수 있습니다.
+
+```python
+memory = ConversationSummaryMemory(
+    llm=OpenAI(temperature=0),
+    buffer="The human asks what the AI thinks of artificial intelligence. The AI thinks artificial intelligence is a force for good because it will help humans reach their full potential.",
+    chat_memory=history,
+    return_messages=True
+)
+```
+
+## 체인에서 사용하기
+
+체인에서 이 기능을 사용하는 예를 살펴보겠습니다. 다시 `verbose=True`로 설정하여 프롬프트를 볼 수 있도록 하겠습니다.
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Conversation Summary"}, {"imported": "ConversationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.conversation.base.ConversationChain.html", "title": "Conversation Summary"}]-->
+from langchain_openai import OpenAI
+from langchain.chains import ConversationChain
+llm = OpenAI(temperature=0)
+conversation_with_summary = ConversationChain(
+    llm=llm,
+    memory=ConversationSummaryMemory(llm=OpenAI()),
+    verbose=True
+)
+conversation_with_summary.predict(input="Hi, what's up?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    Human: Hi, what's up?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Hi there! I'm doing great. I'm currently helping a customer with a technical issue. How about you?"
+```
+
+```python
+conversation_with_summary.predict(input="Tell me more about it!")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    The human greeted the AI and asked how it was doing. The AI replied that it was doing great and was currently helping a customer with a technical issue.
+    Human: Tell me more about it!
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Sure! The customer is having trouble with their computer not connecting to the internet. I'm helping them troubleshoot the issue and figure out what the problem is. So far, we've tried resetting the router and checking the network settings, but the issue still persists. We're currently looking into other possible solutions."
+```
+
+```python
+conversation_with_summary.predict(input="Very cool -- what is the scope of the project?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    The human greeted the AI and asked how it was doing. The AI replied that it was doing great and was currently helping a customer with a technical issue where their computer was not connecting to the internet. The AI was troubleshooting the issue and had already tried resetting the router and checking the network settings, but the issue still persisted and they were looking into other possible solutions.
+    Human: Very cool -- what is the scope of the project?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " The scope of the project is to troubleshoot the customer's computer issue and find a solution that will allow them to connect to the internet. We are currently exploring different possibilities and have already tried resetting the router and checking the network settings, but the issue still persists."
+```

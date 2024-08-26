@@ -1,0 +1,97 @@
+---
+translated: true
+---
+
+# Vectara
+
+>[Vectara](https://vectara.com/) est la plateforme GenAI de confiance pour les développeurs. Elle fournit une API simple pour construire des applications GenAI
+> pour la recherche sémantique ou la génération augmentée par la récupération (RAG).
+
+**Présentation de Vectara :**
+- `Vectara` est une plateforme d'API axée sur les développeurs pour construire des applications GenAI de confiance.
+- Pour utiliser Vectara - d'abord [s'inscrire](https://vectara.com/integrations/langchain) et créer un compte. Ensuite, créer un corpus et une clé API pour l'indexation et la recherche.
+- Vous pouvez utiliser l'[API d'indexation](https://docs.vectara.com/docs/indexing-apis/indexing) de Vectara pour ajouter des documents dans l'index de Vectara
+- Vous pouvez utiliser l'[API de recherche](https://docs.vectara.com/docs/search-apis/search) de Vectara pour interroger l'index de Vectara (qui prend également en charge implicitement la recherche hybride).
+
+## Installation et configuration
+
+Pour utiliser `Vectara` avec LangChain, aucune étape d'installation spéciale n'est requise.
+Pour commencer, [inscrivez-vous](https://vectara.com/integrations/langchain) et suivez notre [guide de démarrage rapide](https://docs.vectara.com/docs/quickstart) pour créer un corpus et une clé API.
+Une fois que vous les avez, vous pouvez les fournir comme arguments au stockage vectoriel Vectara, ou vous pouvez les définir comme variables d'environnement.
+
+- export `VECTARA_CUSTOMER_ID`="your_customer_id"
+- export `VECTARA_CORPUS_ID`="your_corpus_id"
+- export `VECTARA_API_KEY`="your-vectara-api-key"
+
+## Vectara en tant que stockage vectoriel
+
+Il existe un wrapper autour de la plateforme Vectara, vous permettant de l'utiliser comme un stockage vectoriel, que ce soit pour la recherche sémantique ou la sélection d'exemples.
+
+Pour importer ce stockage vectoriel :
+
+```python
+<!--IMPORTS:[{"imported": "Vectara", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vectara.Vectara.html", "title": "Vectara"}]-->
+from langchain_community.vectorstores import Vectara
+```
+
+Pour créer une instance du stockage vectoriel Vectara :
+
+```python
+vectara = Vectara(
+    vectara_customer_id=customer_id,
+    vectara_corpus_id=corpus_id,
+    vectara_api_key=api_key
+)
+```
+
+Le customer_id, le corpus_id et la clé API sont facultatifs, et s'ils ne sont pas fournis, ils seront lus à partir des variables d'environnement `VECTARA_CUSTOMER_ID`, `VECTARA_CORPUS_ID` et `VECTARA_API_KEY`, respectivement.
+
+Après avoir le stockage vectoriel, vous pouvez `add_texts` ou `add_documents` selon l'interface `VectorStore` standard, par exemple :
+
+```python
+vectara.add_texts(["to be or not to be", "that is the question"])
+```
+
+Comme Vectara prend en charge le téléchargement de fichiers, nous avons également ajouté la possibilité de télécharger des fichiers (PDF, TXT, HTML, PPT, DOC, etc.) directement en tant que fichier. Lors de l'utilisation de cette méthode, le fichier est téléchargé directement sur le backend Vectara, traité et découpé de manière optimale là-bas, vous n'avez donc pas à utiliser le chargeur de documents LangChain ou le mécanisme de découpage.
+
+Par exemple :
+
+```python
+vectara.add_files(["path/to/file1.pdf", "path/to/file2.pdf",...])
+```
+
+Pour interroger le stockage vectoriel, vous pouvez utiliser la méthode `similarity_search` (ou `similarity_search_with_score`), qui prend une chaîne de requête et renvoie une liste de résultats :
+
+```python
+results = vectara.similarity_score("what is LangChain?")
+```
+
+Les résultats sont renvoyés sous forme de liste de documents pertinents et d'un score de pertinence de chaque document.
+
+Dans ce cas, nous avons utilisé les paramètres de récupération par défaut, mais vous pouvez également spécifier les arguments supplémentaires suivants dans `similarity_search` ou `similarity_search_with_score` :
+- `k` : nombre de résultats à renvoyer (par défaut 5)
+- `lambda_val` : le facteur de correspondance lexicale [](https://docs.vectara.com/docs/api-reference/search-apis/lexical-matching) pour la recherche hybride (par défaut 0,025)
+- `filter` : un [filtre](https://docs.vectara.com/docs/common-use-cases/filtering-by-metadata/filter-overview) à appliquer aux résultats (par défaut None)
+- `n_sentence_context` : nombre de phrases à inclure avant/après le segment de correspondance réel lors du renvoi des résultats. Cela est par défaut à 2.
+- `mmr_config` : peut être utilisé pour spécifier le mode MMR dans la requête.
+   - `is_enabled` : True ou False
+   - `mmr_k` : nombre de résultats à utiliser pour le reclassement MMR
+   - `diversity_bias` : 0 = pas de diversité, 1 = diversité complète. C'est le paramètre lambda dans la formule MMR et est compris entre 0 et 1
+
+## Vectara pour la génération augmentée par la récupération (RAG)
+
+Vectara fournit un pipeline RAG complet, y compris la génération de résumés.
+Pour utiliser ce pipeline, vous pouvez spécifier l'argument `summary_config` dans `similarity_search` ou `similarity_search_with_score` comme suit :
+
+- `summary_config` : peut être utilisé pour demander un résumé LLM dans RAG
+   - `is_enabled` : True ou False
+   - `max_results` : nombre de résultats à utiliser pour la génération de résumés
+   - `response_lang` : langue du résumé de réponse, au format ISO 639-2 (par exemple 'en', 'fr', 'de', etc.)
+
+## Carnets d'exemples
+
+Pour des exemples plus détaillés de l'utilisation de Vectara, consultez les exemples suivants :
+* [ce carnet](/docs/integrations/vectorstores/vectara) montre comment utiliser Vectara comme stockage vectoriel pour la recherche sémantique
+* [ce carnet](/docs/integrations/providers/vectara/vectara_chat) montre comment construire un chatbot avec Langchain et Vectara
+* [ce carnet](/docs/integrations/providers/vectara/vectara_summary) montre comment utiliser le pipeline RAG complet de Vectara, y compris la génération de résumés
+* [ce carnet](/docs/integrations/retrievers/self_query/vectara_self_query) montre la capacité d'auto-interrogation avec Vectara.

@@ -1,0 +1,110 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# Concepts
+
+L'élément central de toute application de modèle de langage est... le modèle. LangChain vous fournit les briques de base pour interagir avec n'importe quel modèle de langage. Toute cette section vise à faciliter le travail avec les modèles. Cela implique principalement une interface claire de ce qu'est un modèle, des utilitaires d'aide pour construire les entrées des modèles et des utilitaires d'aide pour travailler avec les sorties des modèles.
+
+## Modèles
+
+Il existe deux types principaux de modèles avec lesquels LangChain s'intègre : les LLM (modèles de langage de grande taille) et les modèles de conversation. Ils se définissent par leurs types d'entrée et de sortie.
+
+### LLM
+
+Les LLM dans LangChain font référence aux modèles de complétion de texte pur.
+Les API qu'ils encapsulent prennent une invite de texte en entrée et renvoient un texte complété en sortie. Le GPT-3 d'OpenAI est implémenté en tant que LLM.
+
+### Modèles de conversation
+
+Les modèles de conversation sont souvent basés sur des LLM mais spécialement conçus pour avoir des conversations.
+Leur API fournisseur utilise une interface différente des modèles de complétion de texte pur. Au lieu d'une seule chaîne de caractères, ils prennent une liste de messages de conversation en entrée et renvoient un message de l'IA en sortie. Voir la section ci-dessous pour plus de détails sur ce qu'est exactement un message. Le GPT-4 et le Claude-2 d'Anthropic sont tous deux implémentés en tant que modèles de conversation.
+
+### Considérations
+
+Ces deux types d'API ont des schémas d'entrée et de sortie assez différents. Cela signifie que la meilleure façon d'interagir avec eux peut être assez différente. Bien que LangChain permette de les traiter de manière interchangeable, cela ne veut pas dire que vous **devriez** le faire. En particulier, les stratégies d'invite pour les LLM et les modèles de conversation peuvent être assez différentes. Cela signifie que vous voudrez vous assurer que l'invite que vous utilisez est conçue pour le type de modèle avec lequel vous travaillez.
+
+De plus, tous les modèles ne sont pas les mêmes. Différents modèles ont des stratégies d'invite qui fonctionnent mieux pour eux. Par exemple, les modèles d'Anthropic fonctionnent mieux avec du XML tandis que ceux d'OpenAI fonctionnent mieux avec du JSON. Cela signifie que l'invite que vous utilisez pour un modèle peut ne pas se transférer à d'autres. LangChain fournit de nombreuses invites par défaut, mais rien ne garantit qu'elles fonctionneront bien avec le modèle que vous utilisez. Historiquement, la plupart des invites fonctionnent bien avec OpenAI mais ne sont pas beaucoup testées sur d'autres modèles. C'est quelque chose sur lequel nous travaillons, mais c'est quelque chose dont vous devez tenir compte.
+
+## Messages
+
+Les modèles de conversation prennent une liste de messages en entrée et renvoient un message. Il existe plusieurs types de messages. Tous les messages ont une propriété `role` et une propriété `content`. Le `role` décrit QUI dit le message. LangChain a différentes classes de messages pour différents rôles. La propriété `content` décrit le contenu du message. Cela peut être de plusieurs types :
+
+- Une chaîne de caractères (la plupart des modèles sont de ce type)
+- Une liste de dictionnaires (cela est utilisé pour l'entrée multimodale, où le dictionnaire contient des informations sur ce type d'entrée et son emplacement)
+
+De plus, les messages ont une propriété `additional_kwargs`. C'est là que peuvent être passées des informations supplémentaires sur les messages. Cela est principalement utilisé pour les paramètres d'entrée qui sont *spécifiques au fournisseur* et non généraux. Le meilleur exemple connu de cela est `function_call` d'OpenAI.
+
+### HumanMessage
+
+Cela représente un message de l'utilisateur. Il ne contient généralement que le contenu.
+
+### AIMessage
+
+Cela représente un message du modèle. Il peut avoir des `additional_kwargs` - par exemple `functional_call` en cas d'utilisation de l'appel de fonction d'OpenAI.
+
+### SystemMessage
+
+Cela représente un message système. Seuls certains modèles prennent en charge cela. Cela indique au modèle comment se comporter. Cela ne contient généralement que le contenu.
+
+### FunctionMessage
+
+Cela représente le résultat d'un appel de fonction. En plus de `role` et `content`, ce message a un paramètre `name` qui indique le nom de la fonction qui a été appelée pour produire ce résultat.
+
+### ToolMessage
+
+Cela représente le résultat d'un appel d'outil. Cela est distinct d'un FunctionMessage afin de correspondre aux types de messages `function` et `tool` d'OpenAI. En plus de `role` et `content`, ce message a un paramètre `tool_call_id` qui indique l'identifiant de l'appel à l'outil qui a été appelé pour produire ce résultat.
+
+## Invites
+
+Les entrées des modèles de langage sont souvent appelées invites. Souvent, l'entrée de l'utilisateur de votre application n'est pas l'entrée directe du modèle. Au lieu de cela, son entrée est transformée d'une certaine manière pour produire la chaîne de caractères ou la liste de messages qui est finalement envoyée au modèle. Les objets qui prennent l'entrée de l'utilisateur et la transforment en la chaîne de caractères ou les messages finaux sont appelés "modèles d'invite". LangChain fournit plusieurs abstractions pour faciliter le travail avec les invites.
+
+### PromptValue
+
+Les modèles de conversation et les LLM prennent des types d'entrée différents. PromptValue est une classe conçue pour être interopérable entre les deux. Elle expose une méthode pour être convertie en chaîne de caractères (pour fonctionner avec les LLM) et une autre pour être convertie en liste de messages (pour fonctionner avec les modèles de conversation).
+
+### PromptTemplate
+
+[Ceci](/docs/modules/model_io/prompts/quick_start#prompttemplate) est un exemple de modèle d'invite. Il se compose d'une chaîne de caractères de modèle. Cette chaîne est ensuite formatée avec les entrées de l'utilisateur pour produire une chaîne finale.
+
+### MessagePromptTemplate
+
+Ce type de modèle se compose d'un **message** de modèle - c'est-à-dire un rôle spécifique et un PromptTemplate. Ce PromptTemplate est ensuite formaté avec les entrées de l'utilisateur pour produire une chaîne finale qui devient le `content` de ce message.
+
+#### HumanMessagePromptTemplate
+
+Il s'agit d'un MessagePromptTemplate qui produit un HumanMessage.
+
+#### AIMessagePromptTemplate
+
+Il s'agit d'un MessagePromptTemplate qui produit un AIMessage.
+
+#### SystemMessagePromptTemplate
+
+Il s'agit d'un MessagePromptTemplate qui produit un SystemMessage.
+
+### MessagesPlaceholder
+
+Souvent, les entrées des invites peuvent être une liste de messages. C'est à ce moment que vous utiliseriez un MessagesPlaceholder. Ces objets sont paramétrés par un argument `variable_name`. L'entrée avec la même valeur que cette valeur `variable_name` devrait être une liste de messages.
+
+### ChatPromptTemplate
+
+[Ceci](/docs/modules/model_io/prompts/quick_start#chatprompttemplate) est un exemple de modèle d'invite. Cela se compose d'une liste de MessagePromptTemplates ou de MessagePlaceholders. Ceux-ci sont ensuite formatés avec les entrées de l'utilisateur pour produire une liste finale de messages.
+
+## Analyseurs de sortie
+
+La sortie des modèles est soit une chaîne de caractères, soit un message. Souvent, la chaîne de caractères ou les messages contiennent des informations formatées dans un format spécifique à utiliser en aval (par exemple, une liste séparée par des virgules ou un blob JSON). Les analyseurs de sortie sont chargés de prendre la sortie d'un modèle et de la transformer en une forme plus utilisable. Ils fonctionnent généralement sur le `contenu` du message de sortie, mais parfois sur les valeurs du champ `additional_kwargs`.
+
+### StrOutputParser
+
+Il s'agit d'un simple analyseur de sortie qui convertit simplement la sortie d'un modèle de langage (LLM ou ChatModel) en une chaîne de caractères. Si le modèle est un LLM (et donc produit une chaîne de caractères), il passe simplement cette chaîne de caractères. Si la sortie est un ChatModel (et donc produit un message), il passe l'attribut `.content` du message.
+
+### Analyseurs de fonctions OpenAI
+
+Il existe quelques analyseurs dédiés au travail avec l'appel de fonction OpenAI. Ils prennent la sortie des paramètres `function_call` et `arguments` (qui se trouvent dans `additional_kwargs`) et travaillent avec ceux-ci, ignorant largement le contenu.
+
+### Analyseurs de sortie d'agent
+
+[Les agents](/docs/modules/agents/) sont des systèmes qui utilisent des modèles de langage pour déterminer les étapes à suivre. La sortie d'un modèle de langage doit donc être analysée dans un schéma qui peut représenter les actions (le cas échéant) à entreprendre. Les AgentOutputParsers sont chargés de prendre la sortie brute du LLM ou du ChatModel et de la convertir en ce schéma. La logique à l'intérieur de ces analyseurs de sortie peut différer selon le modèle et la stratégie d'invite utilisés.

@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# StarRocks
+
+>[StarRocks](https://www.starrocks.io/)は高性能な分析データベースです。
+`StarRocks`は、マルチディメンション分析、リアルタイム分析、アドホック クエリなどのフル分析シナリオに対応する次世代のサブセカンド MPP データベースです。
+
+>通常、`StarRocks`はOLAPに分類されており、[ClickBench — a Benchmark For Analytical DBMS](https://benchmark.clickhouse.com/)で優れたパフォーマンスを示しています。高速なベクトル化実行エンジンを持っているため、高速なベクトルデータベースとしても使用できます。
+
+## インストールとセットアップ
+
+```bash
+pip install pymysql
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/starrocks)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "StarRocks", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.starrocks.StarRocks.html", "title": "StarRocks"}]-->
+from langchain_community.vectorstores import StarRocks
+```

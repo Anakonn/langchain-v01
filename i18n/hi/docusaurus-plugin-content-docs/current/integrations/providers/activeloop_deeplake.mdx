@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# एक्टिवलूप डीप लेक
+
+>[एक्टिवलूप डीप लेक](https://docs.activeloop.ai/) गहन शिक्षण अनुप्रयोगों के लिए एक डेटा लेक है, जो आपको इसका उपयोग
+> एक वेक्टर स्टोर के रूप में करने की अनुमति देता है।
+
+## डीप लेक क्यों?
+
+- केवल (बहु-मोडल) वेक्टर स्टोर से अधिक। आप बाद में अपने स्वयं के एलएलएम मॉडल को फाइन-ट्यून करने के लिए डेटासेट का उपयोग कर सकते हैं।
+- केवल एम्बेडिंग्स को नहीं, बल्कि स्वचालित संस्करण नियंत्रण के साथ मूल डेटा को भी संग्रहीत करता है।
+- वास्तव में सर्वरलेस। किसी अन्य सेवा की आवश्यकता नहीं है और प्रमुख क्लाउड प्रदाताओं (`AWS S3`, `GCS` आदि) के साथ उपयोग किया जा सकता है।
+
+`एक्टिवलूप डीप लेक` `सेल्फ क्वेरी रिट्रीवल` का समर्थन करता है:
+[एक्टिवलूप डीप लेक सेल्फ क्वेरी रिट्रीवल](/docs/integrations/retrievers/self_query/activeloop_deeplake_self_query)
+
+## अधिक संसाधन
+
+1. [लैंगचेन और डीप लेक का अंतिम मार्गदर्शिका: अपने वित्तीय डेटा पर प्रश्नों का उत्तर देने के लिए ChatGPT बनाएं](https://www.activeloop.ai/resources/ultimate-guide-to-lang-chain-deep-lake-build-chat-gpt-to-answer-questions-on-your-financial-data/)
+2. [ट्विटर the-algorithm कोडबेस विश्लेषण डीप लेक के साथ](https://github.com/langchain-ai/langchain/blob/master/cookbook/twitter-the-algorithm-analysis-deeplake.ipynb)
+3. यहां [व्हाइटपेपर](https://www.deeplake.ai/whitepaper) और [शोध पत्र](https://arxiv.org/pdf/2209.10785.pdf) डीप लेक के लिए है
+4. यहां समीक्षा के लिए उपलब्ध अतिरिक्त संसाधनों का एक सेट है: [डीप लेक](https://github.com/activeloopai/deeplake), [शुरू करें](https://docs.activeloop.ai/getting-started) और [ट्यूटोरियल](https://docs.activeloop.ai/hub-tutorials)
+
+## स्थापना और सेटअप
+
+पायथन पैकेज स्थापित करें:
+
+```bash
+pip install deeplake
+```
+
+## वेक्टर स्टोर
+
+```python
+<!--IMPORTS:[{"imported": "DeepLake", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.deeplake.DeepLake.html", "title": "Activeloop Deep Lake"}]-->
+from langchain_community.vectorstores import DeepLake
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/activeloop_deeplake) देखें।

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Postgres Embedding
+
+> [pg_embedding](https://github.com/neondatabase/pg_embedding) は、`Postgres`と`Hierarchical Navigable Small Worlds`アルゴリズムを使用した近似最近傍探索を使用したベクトル類似検索のためのオープンソースパッケージです。
+
+## インストールとセットアップ
+
+いくつかのPythonパッケージをインストールする必要があります。
+
+```bash
+pip install psycopg2-binary
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/pgembedding)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "PGEmbedding", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.pgembedding.PGEmbedding.html", "title": "Postgres Embedding"}]-->
+from langchain_community.vectorstores import PGEmbedding
+```

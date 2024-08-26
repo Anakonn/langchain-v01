@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# 曖昧な研究
+
+このページでは、LangChainの中でHazy Researchエコシステムを使用する方法について説明します。
+2つの部分に分かれています: インストールと設定、そして特定のHazy Research ラッパーへの参照。
+
+## インストールと設定
+
+- `manifest`を使用するには、`pip install manifest-ml`でインストールします。
+
+## ラッパー
+
+### LLM
+
+Hazy Researchの`manifest`ライブラリを囲むLLMラッパーが存在します。
+`manifest`は、多くのモデルプロバイダーをラップし、キャッシング、履歴などを追加するPythonライブラリです。
+
+このラッパーを使用するには:
+
+```python
+<!--IMPORTS:[{"imported": "ManifestWrapper", "source": "langchain_community.llms.manifest", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.manifest.ManifestWrapper.html", "title": "Hazy Research"}]-->
+from langchain_community.llms.manifest import ManifestWrapper
+```

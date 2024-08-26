@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+title: Tipos de mensajes
+translated: true
+---
+
+# Tipos de mensajes
+
+Los modelos de chat toman una lista de mensajes como entrada y devuelven un mensaje. Hay varios tipos diferentes de mensajes. Todos los mensajes tienen una propiedad `role` y una propiedad `content`. El `role` describe QUIÉN está diciendo el mensaje. LangChain tiene diferentes clases de mensajes para diferentes roles. La propiedad `content` describe el contenido del mensaje. Esto puede ser de varios tipos diferentes:
+
+- Una cadena (la mayoría de los modelos tratan con este tipo de contenido)
+- Una lista de diccionarios (esto se usa para entrada multimodal, donde el diccionario contiene información sobre ese tipo de entrada y esa ubicación de entrada)
+
+Además, los mensajes tienen una propiedad `additional_kwargs`. Aquí es donde se pueden pasar información adicional sobre los mensajes. Esto se usa en gran medida para parámetros de entrada que son *específicos del proveedor* y no generales. El ejemplo más conocido de esto es `function_call` de OpenAI.
+
+### HumanMessage
+
+Esto representa un mensaje del usuario. Generalmente consta solo de contenido.
+
+### AIMessage
+
+Esto representa un mensaje del modelo. Esto puede tener `additional_kwargs` en él, por ejemplo, `tool_calls` si se usa la llamada a herramientas de OpenAI.
+
+### SystemMessage
+
+Esto representa un mensaje del sistema, que le dice al modelo cómo comportarse. Esto generalmente solo consta de contenido. No todos los modelos admiten esto.
+
+### FunctionMessage
+
+Esto representa el resultado de una llamada a función. Además de `role` y `content`, este mensaje tiene un parámetro `name` que transmite el nombre de la función que se llamó para producir este resultado.
+
+### ToolMessage
+
+Esto representa el resultado de una llamada a herramienta. Esto se distingue de un FunctionMessage para coincidir con los tipos de mensajes `function` y `tool` de OpenAI. Además de `role` y `content`, este mensaje tiene un parámetro `tool_call_id` que transmite el id de la llamada a la herramienta que se llamó para producir este resultado.

@@ -1,0 +1,93 @@
+---
+translated: true
+---
+
+# Layerup 보안
+
+[Layerup 보안](https://uselayerup.com) 통합을 통해 LangChain LLM, LLM 체인 또는 LLM 에이전트에 대한 호출을 보안할 수 있습니다. LLM 객체는 기존 LLM 객체를 감싸서 사용자와 LLM 사이에 보안 계층을 제공합니다.
+
+Layerup 보안 객체는 LLM으로 설계되었지만 실제로는 LLM이 아니며, 단순히 LLM을 감싸서 기본 LLM과 동일한 기능을 수행할 수 있도록 합니다.
+
+## 설정
+
+먼저 Layerup 보안 계정이 필요합니다. Layerup [웹사이트](https://uselayerup.com)에서 계정을 만드세요.
+
+다음으로 [대시보드](https://dashboard.uselayerup.com)에서 프로젝트를 생성하고 API 키를 복사하세요. API 키를 프로젝트의 환경 변수에 저장하는 것이 좋습니다.
+
+Layerup 보안 SDK를 설치하세요:
+
+```bash
+pip install LayerupSecurity
+```
+
+그리고 LangChain Community를 설치하세요:
+
+```bash
+pip install langchain-community
+```
+
+이제 Layerup 보안으로 LLM 호출을 보호할 준비가 되었습니다!
+
+```python
+<!--IMPORTS:[{"imported": "LayerupSecurity", "source": "langchain_community.llms.layerup_security", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.layerup_security.LayerupSecurity.html", "title": "Layerup Security"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Layerup Security"}]-->
+from langchain_community.llms.layerup_security import LayerupSecurity
+from langchain_openai import OpenAI
+
+# Create an instance of your favorite LLM
+openai = OpenAI(
+    model_name="gpt-3.5-turbo",
+    openai_api_key="OPENAI_API_KEY",
+)
+
+# Configure Layerup Security
+layerup_security = LayerupSecurity(
+    # Specify a LLM that Layerup Security will wrap around
+    llm=openai,
+
+    # Layerup API key, from the Layerup dashboard
+    layerup_api_key="LAYERUP_API_KEY",
+
+    # Custom base URL, if self hosting
+    layerup_api_base_url="https://api.uselayerup.com/v1",
+
+    # List of guardrails to run on prompts before the LLM is invoked
+    prompt_guardrails=[],
+
+    # List of guardrails to run on responses from the LLM
+    response_guardrails=["layerup.hallucination"],
+
+    # Whether or not to mask the prompt for PII & sensitive data before it is sent to the LLM
+    mask=False,
+
+    # Metadata for abuse tracking, customer tracking, and scope tracking.
+    metadata={"customer": "example@uselayerup.com"},
+
+    # Handler for guardrail violations on the prompt guardrails
+    handle_prompt_guardrail_violation=(
+        lambda violation: {
+            "role": "assistant",
+            "content": (
+                "There was sensitive data! I cannot respond. "
+                "Here's a dynamic canned response. Current date: {}"
+            ).format(datetime.now())
+        }
+        if violation["offending_guardrail"] == "layerup.sensitive_data"
+        else None
+    ),
+
+    # Handler for guardrail violations on the response guardrails
+    handle_response_guardrail_violation=(
+        lambda violation: {
+            "role": "assistant",
+            "content": (
+                "Custom canned response with dynamic data! "
+                "The violation rule was {}."
+            ).format(violation["offending_guardrail"])
+        }
+    ),
+)
+
+response = layerup_security.invoke(
+    "Summarize this message: my name is Bob Dylan. My SSN is 123-45-6789."
+)
+```

@@ -1,0 +1,205 @@
+---
+translated: true
+---
+
+Upstashは、データベースやメッセージングプラットフォームの運用の複雑さを気にすることなく、強力なアプリケーションを構築できるようにするためのサーバーレスデータベースとメッセージングプラットフォームを開発者に提供しています。
+
+Upstashの大きな利点の1つは、そのデータベースがHTTPをサポートし、すべてのSDKがHTTPを使用することです。
+これは、TCPコネクションをサポートしないサーバーレスプラットフォーム、エッジ、またはその他のプラットフォームでも実行できることを意味します。
+
+現在、LangChainには2つのUpstash統合が用意されています:
+Upstash Vectorをベクトル埋め込みデータベースとして、Upstash Redisをキャッシュとメモリストアとして使用できます。
+
+# Upstash Vector
+
+Upstash Vectorは、ベクトルを保存およびクエリできるサーバーレスベクトルデータベースです。
+
+## インストール
+
+[Upstash Console](https://console.upstash.com/vector)で新しいサーバーレスベクトルデータベースを作成します。
+お使いのモデルに合わせて、好みの距離メトリックと次元数を選択します。
+
+`pip install upstash-vector`でUpstash Vector Python SDKをインストールします。
+LangChainのUpstash Vector統合は、Upstash Vector Python SDKのラッパーです。そのため、`upstash-vector`パッケージが必要です。
+
+## 統合
+
+Upstash Consoleの資格情報を使用して`UpstashVectorStore`オブジェクトを作成します。
+また、テキストをベクトル埋め込みに変換できる`Embeddings`オブジェクトも渡す必要があります。
+
+```python
+<!--IMPORTS:[{"imported": "UpstashVectorStore", "source": "langchain_community.vectorstores.upstash", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.upstash.UpstashVectorStore.html", "title": "Upstash Vector"}]-->
+from langchain_community.vectorstores.upstash import UpstashVectorStore
+import os
+
+os.environ["UPSTASH_VECTOR_REST_URL"] = "<UPSTASH_VECTOR_REST_URL>"
+os.environ["UPSTASH_VECTOR_REST_TOKEN"] = "<UPSTASH_VECTOR_REST_TOKEN>"
+
+store = UpstashVectorStore(
+    embedding=embeddings
+)
+```
+
+`UpstashVectorStore`の別の方法は、`embedding=True`を渡すことです。これは、Upstash Vectorインデックスに関連付けられた埋め込みモデルの機能のおかげで、`UpstashVectorStore`の独自の機能です。この設定では、挿入するドキュメントやクエリするテキストをUpstash Vectorに単純にテキストとして送信します。背景で、Upstash Vectorがこれらのテキストを埋め込み、これらの埋め込みを使用してリクエストを実行します。この機能を使用するには、[モデルを選択してUpstash Vectorインデックスを作成](https://upstash.com/docs/vector/features/embeddingmodels#using-a-model)し、単に`embedding=True`を渡します:
+
+```python
+<!--IMPORTS:[{"imported": "UpstashVectorStore", "source": "langchain_community.vectorstores.upstash", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.upstash.UpstashVectorStore.html", "title": "Upstash Vector"}]-->
+from langchain_community.vectorstores.upstash import UpstashVectorStore
+import os
+
+os.environ["UPSTASH_VECTOR_REST_URL"] = "<UPSTASH_VECTOR_REST_URL>"
+os.environ["UPSTASH_VECTOR_REST_TOKEN"] = "<UPSTASH_VECTOR_REST_TOKEN>"
+
+store = UpstashVectorStore(
+    embedding=True
+)
+```
+
+Upstash Vectorのドキュメントの[詳細](https://upstash.com/docs/vector/features/embeddingmodels)をご覧ください。
+
+### ベクトルの挿入
+
+```python
+<!--IMPORTS:[{"imported": "CharacterTextSplitter", "source": "langchain.text_splitter", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Upstash Vector"}, {"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Upstash Vector"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Upstash Vector"}]-->
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+
+loader = TextLoader("../../modules/state_of_the_union.txt")
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+
+# Create a new embeddings object
+embeddings = OpenAIEmbeddings()
+
+# Create a new UpstashVectorStore object
+store = UpstashVectorStore(
+    embedding=embeddings
+)
+
+# Insert the document embeddings into the store
+store.add_documents(docs)
+```
+
+ドキュメントを挿入する際は、最初に`Embeddings`オブジェクトを使用してそれらを埋め込みます。
+
+ほとんどの埋め込みモデルは、複数のドキュメントを一度に埋め込むことができるため、ドキュメントはバッチ化され、並行して埋め込まれます。
+バッチのサイズは、`embedding_chunk_size`パラメーターを使用して制御できます。
+
+埋め込まれたベクトルは、Upstash Vectorデータベースに格納されます。送信時には、HTTPリクエストの数を減らすために、複数のベクトルがまとめて送信されます。
+バッチのサイズは、`batch_size`パラメーターを使用して制御できます。Upstash Vectorの無料プランでは、1バッチあたり1000ベクトルの制限があります。
+
+```python
+store.add_documents(
+    documents,
+    batch_size=100,
+    embedding_chunk_size=200
+)
+```
+
+### ベクトルのクエリ
+
+ベクトルは、テキストクエリまたは別のベクトルを使用してクエリできます。
+
+返される値は、Documentオブジェクトのリストです。
+
+```python
+result = store.similarity_search(
+    "The United States of America",
+    k=5
+)
+```
+
+またはベクトルを使用して:
+
+```python
+vector = embeddings.embed_query("Hello world")
+
+result = store.similarity_search_by_vector(
+    vector,
+    k=5
+)
+```
+
+検索する際は、`filter`パラメーターを使用してメタデータでフィルタリングすることもできます:
+
+```python
+result = store.similarity_search(
+    "The United States of America",
+    k=5,
+    filter="type = 'country'"
+)
+```
+
+メタデータフィルタリングの詳細については、[Upstash Vectorのドキュメント](https://upstash.com/docs/vector/features/filtering)を参照してください。
+
+### ベクトルの削除
+
+ベクトルはIDで削除できます。
+
+```python
+store.delete(["id1", "id2"])
+```
+
+### ストアに関する情報の取得
+
+距離メトリックや次元数など、データベースに関する情報を取得できます。
+
+挿入が行われると、データベースとインデックス作成が行われます。この間は新しいベクトルをクエリできません。`pendingVectorCount`は、現在インデックス化されているベクトルの数を表します。
+
+```python
+info = store.info()
+print(info)
+
+# Output:
+# {'vectorCount': 44, 'pendingVectorCount': 0, 'indexSize': 2642412, 'dimension': 1536, 'similarityFunction': 'COSINE'}
+```
+
+# Upstash Redis
+
+このページでは、LangChainでの[Upstash Redis](https://upstash.com/redis)の使用方法を説明します。
+
+## インストールと設定
+
+- Upstash Redis Python SDKは`pip install upstash-redis`でインストールできます
+- [Upstash Console](https://console.upstash.com)で、グローバルに分散された低レイテンシーで高可用性のデータベースを作成できます
+
+## 統合
+
+Upstash-LangChain統合のすべては、LangChainのラッパーとして使用される`upstash-redis`Python SDKに基づいています。
+このSDKは、コンソールから取得した UPSTASH_REDIS_REST_URL とUPSTASH_REDIS_REST_TOKENパラメーターを使用してUpstash Redis DBを利用します。
+
+### キャッシュ
+
+[Upstash Redis](https://upstash.com/redis)は、LLMプロンプトとレスポンスのキャッシュとして使用できます。
+
+このキャッシュをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "UpstashRedisCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.UpstashRedisCache.html", "title": "Upstash Vector"}]-->
+from langchain.cache import UpstashRedisCache
+```
+
+LLMで使用するには:
+
+```python
+import langchain
+from upstash_redis import Redis
+
+URL = "<UPSTASH_REDIS_REST_URL>"
+TOKEN = "<UPSTASH_REDIS_REST_TOKEN>"
+
+langchain.llm_cache = UpstashRedisCache(redis_=Redis(url=URL, token=TOKEN))
+```
+
+### メモリ
+
+[使用例](/docs/integrations/memory/upstash_redis_chat_message_history)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UpstashRedisChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.upstash_redis.UpstashRedisChatMessageHistory.html", "title": "Upstash Vector"}]-->
+from langchain_community.chat_message_histories import (
+    UpstashRedisChatMessageHistory,
+)
+```

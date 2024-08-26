@@ -1,0 +1,1047 @@
+---
+translated: true
+---
+
+# 구글
+
+[Google Cloud Platform](https://cloud.google.com/) 및 기타 `Google` 제품과 관련된 모든 기능.
+
+## LLMs
+
+개별 개발자는 Gemini API (`langchain-google-genai`)로 시작하고 상업적 지원 및 더 높은 속도 제한이 필요할 때 Vertex AI (`langchain-google-vertexai`)로 이동하는 것을 권장합니다. 이미 Cloud-friendly 또는 Cloud-native라면 Vertex AI에서 바로 시작할 수 있습니다.
+자세한 정보는 [여기](https://ai.google.dev/gemini-api/docs/migrate-to-cloud)에서 찾을 수 있습니다.
+
+### Google 생성 AI
+
+`GoogleGenerativeAI` 클래스를 통해 `gemini-pro` 및 `gemini-pro-vision`과 같은 GoogleAI `Gemini` 모델에 접근하세요.
+
+파이썬 패키지를 설치하세요.
+
+```bash
+pip install langchain-google-genai
+```
+
+[사용 예제](/docs/integrations/llms/google_ai)를 참조하세요.
+
+```python
+from langchain_google_genai import GoogleGenerativeAI
+```
+
+### Vertex AI Model Garden
+
+`PaLM` 및 수백 개의 OSS 모델에 `Vertex AI Model Garden` 서비스를 통해 접근하세요.
+
+`langchain-google-vertexai` 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install langchain-google-vertexai
+```
+
+[사용 예제](/docs/integrations/llms/google_vertex_ai_palm#vertex-model-garden)를 참조하세요.
+
+```python
+from langchain_google_vertexai import VertexAIModelGarden
+```
+
+## 채팅 모델
+
+### Google 생성 AI
+
+`ChatGoogleGenerativeAI` 클래스를 통해 `gemini-pro` 및 `gemini-pro-vision`과 같은 GoogleAI `Gemini` 모델에 접근하세요.
+
+```bash
+pip install -U langchain-google-genai
+```
+
+API 키를 구성하세요.
+
+```bash
+export GOOGLE_API_KEY=your-api-key
+```
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(model="gemini-pro")
+llm.invoke("Sing a ballad of LangChain.")
+```
+
+Gemini 비전 모델은 단일 채팅 메시지를 제공할 때 이미지 입력을 지원합니다.
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Google"}]-->
+from langchain_core.messages import HumanMessage
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+
+message = HumanMessage(
+    content=[
+        {
+            "type": "text",
+            "text": "What's in this image?",
+        },  # You can optionally provide text parts
+        {"type": "image_url", "image_url": "https://picsum.photos/seed/picsum/200/300"},
+    ]
+)
+llm.invoke([message])
+```
+
+image_url의 값은 다음 중 하나일 수 있습니다:
+
+- 공개 이미지 URL
+- gcs 파일 (예: "gcs://path/to/file.png")
+- 로컬 파일 경로
+- base64로 인코딩된 이미지 (예: data:image/png;base64,abcd124)
+- PIL 이미지
+
+### Vertex AI
+
+Google Cloud를 통해 `chat-bison` 및 `codechat-bison`과 같은 PaLM 채팅 모델에 접근하세요.
+
+`langchain-google-vertexai` 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install langchain-google-vertexai
+```
+
+[사용 예제](/docs/integrations/chat/google_vertex_ai_palm)를 참조하세요.
+
+```python
+from langchain_google_vertexai import ChatVertexAI
+```
+
+## 임베딩 모델
+
+### Google 생성 AI 임베딩
+
+[사용 예제](/docs/integrations/text_embedding/google_generative_ai)를 참조하세요.
+
+```bash
+pip install -U langchain-google-genai
+```
+
+API 키를 구성하세요.
+
+```bash
+export GOOGLE_API_KEY=your-api-key
+```
+
+```python
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+```
+
+### Vertex AI
+
+`langchain-google-vertexai` 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install langchain-google-vertexai
+```
+
+[사용 예제](/docs/integrations/text_embedding/google_vertex_ai_palm)를 참조하세요.
+
+```python
+from langchain_google_vertexai import VertexAIEmbeddings
+```
+
+## 문서 로더
+
+### PostgreSQL용 AlloyDB
+
+> [Google Cloud AlloyDB](https://cloud.google.com/alloydb)는 Google Cloud에서 뛰어난 성능, 원활한 통합, 인상적인 확장성을 제공하는 완전 관리형 관계형 데이터베이스 서비스입니다. AlloyDB는 PostgreSQL과 100% 호환됩니다.
+
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-alloydb-pg
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_alloydb)를 참조하세요.
+
+```python
+from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBLoader
+```
+
+### BigQuery
+
+> [Google Cloud BigQuery](https://cloud.google.com/bigquery)는 서버리스 및 비용 효율적인 엔터프라이즈 데이터 웨어하우스로, 구글 클라우드에서 데이터를 처리하고 확장합니다.
+
+Big Query 종속성과 함께 `langchain-google-community`를 설치해야 합니다.
+
+```bash
+pip install langchain-google-community[bigquery]
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_bigquery)를 참조하세요.
+
+```python
+from langchain_google_community import BigQueryLoader
+```
+
+### Bigtable
+
+> [Google Cloud Bigtable](https://cloud.google.com/bigtable/docs)은 Google Cloud에서 제공하는 완전 관리형 NoSQL 빅 데이터 데이터베이스 서비스입니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-bigtable
+```
+
+[Googel Cloud 사용 예제](/docs/integrations/document_loaders/google_bigtable)를 참조하세요.
+
+```python
+from langchain_google_bigtable import BigtableLoader
+```
+
+### MySQL용 Cloud SQL
+
+> [Google Cloud SQL for MySQL](https://cloud.google.com/sql)은 Google Cloud에서 MySQL 관계형 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움이 되는 완전 관리형 데이터베이스 서비스입니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-cloud-sql-mysql
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_cloud_sql_mysql)를 참조하세요.
+
+```python
+from langchain_google_cloud_sql_mysql import MySQLEngine, MySQLDocumentLoader
+```
+
+### SQL Server용 Cloud SQL
+
+> [Google Cloud SQL for SQL Server](https://cloud.google.com/sql)은 Google Cloud에서 SQL Server 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움이 되는 완전 관리형 데이터베이스 서비스입니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-cloud-sql-mssql
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_cloud_sql_mssql)를 참조하세요.
+
+```python
+from langchain_google_cloud_sql_mssql import MSSQLEngine, MSSQLLoader
+```
+
+### PostgreSQL용 Cloud SQL
+
+> [Google Cloud SQL for PostgreSQL](https://cloud.google.com/sql)은 Google Cloud에서 PostgreSQL 관계형 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움이 되는 완전 관리형 데이터베이스 서비스입니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-cloud-sql-pg
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_cloud_sql_pg)를 참조하세요.
+
+```python
+from langchain_google_cloud_sql_pg import PostgresEngine, PostgresLoader
+```
+
+### Cloud Storage
+
+>[Cloud Storage](https://en.wikipedia.org/wiki/Google_Cloud_Storage)는 Google Cloud에서 비정형 데이터를 저장하기 위한 관리형 서비스입니다.
+
+Google Cloud Storage 종속성과 함께 `langchain-google-community`를 설치해야 합니다.
+
+```bash
+pip install langchain-google-community[gcs]
+```
+
+`Google Cloud Storage`에는 `Directory` 및 `File` 로더가 있습니다.
+
+[사용 예제](/docs/integrations/document_loaders/google_cloud_storage_directory)를 참조하세요.
+
+```python
+from langchain_google_community import GCSDirectoryLoader
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_cloud_storage_file)를 참조하세요.
+
+```python
+from langchain_google_community import GCSFileLoader
+```
+
+### Oracle 워크로드용 El Carro
+
+> Google [El Carro Oracle Operator](https://github.com/GoogleCloudPlatform/elcarro-oracle-operator)
+는 Oracle 데이터베이스를 Kubernetes에서 실행할 수 있는 방법을 제공하며, 이는 휴대 가능하고 오픈 소스인 커뮤니티 주도, 벤더 종속이 없는 컨테이너 오케스트레이션 시스템입니다.
+
+```bash
+pip install langchain-google-el-carro
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_el_carro)를 참조하세요.
+
+```python
+from langchain_google_el_carro import ElCarroLoader
+```
+
+### Google Drive
+
+>[Google Drive](https://en.wikipedia.org/wiki/Google_Drive)는 Google에서 개발한 파일 저장 및 동기화 서비스입니다.
+
+현재 `Google Docs`만 지원됩니다.
+
+Google Drive 종속성과 함께 `langchain-google-community`를 설치해야 합니다.
+
+```bash
+pip install langchain-google-community[drive]
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/document_loaders/google_drive)을 참조하세요.
+
+```python
+from langchain_google_community import GoogleDriveLoader
+```
+
+### Firestore (네이티브 모드)
+
+> [Google Cloud Firestore](https://cloud.google.com/firestore/docs/)는 자동 확장, 높은 성능, 애플리케이션 개발의 용이성을 위해 설계된 NoSQL 문서 데이터베이스입니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-firestore
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_firestore)를 참조하세요.
+
+```python
+from langchain_google_firestore import FirestoreLoader
+```
+
+### Firestore (Datastore 모드)
+
+> [Google Cloud Firestore in Datastore mode](https://cloud.google.com/datastore/docs)는 자동 확장, 높은 성능, 애플리케이션 개발의 용이성을 위해 설계된 NoSQL 문서 데이터베이스입니다.
+> Firestore는 Datastore의 최신 버전이며, Datastore보다 여러 개선 사항을 도입했습니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-datastore
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_datastore)를 참조하세요.
+
+```python
+from langchain_google_datastore import DatastoreLoader
+```
+
+### Redis용 Memorystore
+
+> [Google Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis)는 Google Cloud에서 제공하는 완전 관리형 Redis 서비스입니다. Google Cloud에서 실행되는 애플리케이션은 복잡한 Redis 배포를 관리하는 부담 없이 고도로 확장 가능하고, 가용하며, 안전한 Redis 서비스를 활용하여 극한의 성능을 달성할 수 있습니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-memorystore-redis
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_memorystore_redis)를 참조하세요.
+
+```python
+from langchain_google_memorystore_redis import MemorystoreLoader
+```
+
+### Spanner
+
+> [Google Cloud Spanner](https://cloud.google.com/spanner/docs)는 Google Cloud에서 제공하는 완전 관리형, 미션 크리티컬, 관계형 데이터베이스 서비스로, 전 세계 수준의 트랜잭션 일관성, 고가용성을 위한 자동, 동기 복제 및 두 가지 SQL 방언(GoogleSQL (ANSI 2011 확장 포함) 및 PostgreSQL)을 지원합니다.
+파이썬 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-spanner
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_spanner)를 참조하세요.
+
+```python
+from langchain_google_spanner import SpannerLoader
+```
+
+### 음성-텍스트 변환
+
+> [Google Cloud Speech-to-Text](https://cloud.google.com/speech-to-text)는 Google Cloud에서 Google의 음성 인식 모델을 사용하여 오디오를 텍스트로 변환하는 API입니다.
+
+이 문서 로더는 오디오 파일을 전사하여 텍스트 결과를 문서로 출력합니다.
+
+먼저, 음성-텍스트 변환 종속성과 함께 `langchain-google-community`를 설치해야 합니다.
+
+```bash
+pip install langchain-google-community[speech]
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/document_loaders/google_speech_to_text)을 참조하세요.
+
+```python
+from langchain_google_community import SpeechToTextLoader
+```
+
+## 문서 변환기
+
+### Document AI
+
+>[Google Cloud Document AI](https://cloud.google.com/document-ai/docs/overview)는 Google Cloud
+> 서비스로, 문서의 비정형 데이터를 구조화된 데이터로 변환하여 이해, 분석 및 소비를 더 쉽게 만듭니다.
+
+우리는 [`GCS` 버킷을 설정하고 자체 OCR 프로세서를 생성해야 합니다](https://cloud.google.com/document-ai/docs/create-processor)
+`GCS_OUTPUT_PATH`는 GCS의 폴더 경로여야 하며(`gs://`로 시작), 프로세서 이름은 `projects/PROJECT_NUMBER/locations/LOCATION/processors/PROCESSOR_ID`와 같아야 합니다.
+이를 프로그래밍 방식으로 얻거나 Google Cloud Console의 `Processor details` 탭의 `Prediction endpoint` 섹션에서 복사할 수 있습니다.
+
+```bash
+pip install langchain-google-community[docai]
+```
+
+[사용 예제](/docs/integrations/document_transformers/google_docai)를 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "Blob", "source": "langchain_core.document_loaders.blob_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_core.document_loaders.blob_loaders.Blob.html", "title": "Google"}]-->
+from langchain_core.document_loaders.blob_loaders import Blob
+from langchain_google_community import DocAIParser
+```
+
+### Google Translate
+
+> [Google Translate](https://translate.google.com/)는 Google에서 개발한 다국어 신경망 번역 서비스로, 텍스트, 문서 및 웹사이트를 한 언어에서 다른 언어로 번역합니다.
+
+`GoogleTranslateTransformer`는 [Google Cloud Translation API](https://cloud.google.com/translate)를 사용하여 텍스트와 HTML을 번역할 수 있게 해줍니다.
+
+먼저, 번역 종속성을 포함한 `langchain-google-community`를 설치해야 합니다.
+
+```bash
+pip install langchain-google-community[translate]
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/document_transformers/google_translate)을 참조하십시오.
+
+```python
+from langchain_google_community import GoogleTranslateTransformer
+```
+
+## 벡터 저장소
+
+### AlloyDB for PostgreSQL
+
+> [Google Cloud AlloyDB](https://cloud.google.com/alloydb)는 Google Cloud에서 고성능, 원활한 통합 및 인상적인 확장성을 제공하는 완전 관리형 관계형 데이터베이스 서비스입니다. AlloyDB는 PostgreSQL과 100% 호환됩니다.
+
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-alloydb-pg
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_alloydb)를 참조하십시오.
+
+```python
+from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBVectorStore
+```
+
+### BigQuery Vector Search
+
+> [Google Cloud BigQuery](https://cloud.google.com/bigquery),
+> BigQuery는 Google Cloud의 서버리스 비용 효율적인 엔터프라이즈 데이터 웨어하우스입니다.
+>
+> [Google Cloud BigQuery Vector Search](https://cloud.google.com/bigquery/docs/vector-search-intro)
+> BigQuery 벡터 검색은 GoogleSQL을 사용하여 벡터 인덱스를 사용한 빠르지만 대략적인 결과를 위한 의미 검색 또는 정확한 결과를 위한 무차별 대입 검색을 수행할 수 있게 합니다.
+
+> 유클리드 거리 또는 코사인 거리를 계산할 수 있습니다. LangChain을 사용하면 기본적으로 유클리드 거리를 사용합니다.
+
+여러 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-cloud-bigquery
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_bigquery_vector_search)를 참조하십시오.
+
+```python
+from langchain.vectorstores import BigQueryVectorSearch
+```
+
+### Memorystore for Redis
+
+> [Google Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis)는 Google Cloud를 위한 완전 관리형 Redis 서비스입니다. Google Cloud에서 실행되는 애플리케이션은 복잡한 Redis 배포를 관리하는 부담 없이 고도로 확장 가능하고, 가용하며, 안전한 Redis 서비스를 활용하여 극한의 성능을 달성할 수 있습니다.
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-memorystore-redis
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_memorystore_redis)를 참조하십시오.
+
+```python
+from langchain_google_memorystore_redis import RedisVectorStore
+```
+
+### Spanner
+
+> [Google Cloud Spanner](https://cloud.google.com/spanner/docs)는 전역 규모의 트랜잭션 일관성을 제공하고 높은 가용성을 위한 자동 동기 복제를 제공하며 두 가지 SQL 방언을 지원하는 Google Cloud의 완전 관리형, 미션 크리티컬 관계형 데이터베이스 서비스입니다: GoogleSQL (ANSI 2011 with extensions)과 PostgreSQL.
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-spanner
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_spanner)를 참조하십시오.
+
+```python
+from langchain_google_spanner import SpannerVectorStore
+```
+
+### Firestore (Native Mode)
+
+> [Google Cloud Firestore](https://cloud.google.com/firestore/docs/)는 자동 확장, 고성능 및 애플리케이션 개발의 용이성을 위해 설계된 NoSQL 문서 데이터베이스입니다.
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-firestore
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_firestore)를 참조하십시오.
+
+```python
+from langchain_google_firestore import FirestoreVectorstore
+```
+
+### Cloud SQL for MySQL
+
+> [Google Cloud SQL for MySQL](https://cloud.google.com/sql)는 Google Cloud에서 MySQL 관계형 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움을 주는 완전 관리형 데이터베이스 서비스입니다.
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-cloud-sql-mysql
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_cloud_sql_mysql)를 참조하십시오.
+
+```python
+from langchain_google_cloud_sql_mysql import MySQLEngine, MySQLVectorStore
+```
+
+### Cloud SQL for PostgreSQL
+
+> [Google Cloud SQL for PostgreSQL](https://cloud.google.com/sql)는 Google Cloud에서 PostgreSQL 관계형 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움을 주는 완전 관리형 데이터베이스 서비스입니다.
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-cloud-sql-pg
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_cloud_sql_pg)를 참조하십시오.
+
+```python
+from langchain_google_cloud_sql_pg import PostgresEngine, PostgresVectorStore
+```
+
+### Vertex AI Vector Search
+
+> [Google Cloud Vertex AI Vector Search](https://cloud.google.com/vertex-ai/docs/vector-search/overview)는 Google Cloud에서 제공하는 서비스로, 이전에는 `Vertex AI Matching Engine`으로 알려졌으며, 업계 최고의 고규모 저지연 벡터 데이터베이스를 제공합니다. 이러한 벡터 데이터베이스는 일반적으로 벡터 유사성 매칭 또는 근사 최근접 이웃(ANN) 서비스라고 합니다.
+
+파이썬 패키지를 설치하십시오:
+
+```bash
+pip install langchain-google-vertexai
+```
+
+[사용 예제](/docs/integrations/vectorstores/google_vertex_ai_vector_search)를 참조하십시오.
+
+```python
+from langchain_google_vertexai import VectorSearchVectorStore
+```
+
+### ScaNN
+
+>[Google ScaNN](https://github.com/google-research/google-research/tree/master/scann)
+> (Scalable Nearest Neighbors)는 파이썬 패키지입니다.
+>
+>`ScaNN`은 대규모 벡터 유사성 검색을 위한 효율적인 방법입니다.
+
+>`ScaNN`은 최대 내부
+> 곱 검색을 위한 검색 공간 가지치기 및 양자화를 포함하며, 유클리드 거리와 같은 다른 거리 함수도 지원합니다. 구현은 AVX2 지원 x86 프로세서에 최적화되어 있습니다. 자세한 내용은 [Google Research github](https://github.com/google-research/google-research/tree/master/scann)를 참조하십시오.
+
+`scann` 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install scann
+```
+
+[사용 예제](/docs/integrations/vectorstores/scann)를 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "ScaNN", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.scann.ScaNN.html", "title": "Google"}]-->
+from langchain_community.vectorstores import ScaNN
+```
+
+## 검색기
+
+### Google Drive
+
+여러 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/retrievers/google_drive)을 참조하십시오.
+
+```python
+from langchain_googledrive.retrievers import GoogleDriveRetriever
+```
+
+### Vertex AI Search
+
+> [Vertex AI Search](https://cloud.google.com/generative-ai-app-builder/docs/introduction)
+>는 Google Cloud에서 제공하며, 개발자가 고객 및 직원을 위한 생성형 AI 기반 검색 엔진을 빠르게 구축할 수 있게 해줍니다.
+
+`google-cloud-discoveryengine` 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-cloud-discoveryengine
+```
+
+[사용 예제](/docs/integrations/retrievers/google_vertex_ai_search)를 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleVertexAISearchRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.google_vertex_ai_search.GoogleVertexAISearchRetriever.html", "title": "Google"}]-->
+from langchain.retrievers import GoogleVertexAISearchRetriever
+```
+
+### Document AI Warehouse
+
+> [Document AI Warehouse](https://cloud.google.com/document-ai-warehouse)
+>는 Google Cloud에서 제공하며, 기업이 단일 플랫폼에서 문서와 AI 추출 데이터 및 메타데이터를 검색, 저장, 관리 및 관리할 수 있게 해줍니다.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleDocumentAIWarehouseRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.google_cloud_documentai_warehouse.GoogleDocumentAIWarehouseRetriever.html", "title": "Google"}]-->
+from langchain.retrievers import GoogleDocumentAIWarehouseRetriever
+docai_wh_retriever = GoogleDocumentAIWarehouseRetriever(
+    project_number=...
+)
+query = ...
+documents = docai_wh_retriever.invoke(
+    query, user_ldap=...
+)
+```
+
+## 도구
+
+### Text-to-Speech
+
+>[Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech)는 개발자가 여러 언어와 변형으로 제공되는 100개 이상의 목소리를 사용하여 자연스러운 음성을 합성할 수 있게 해주는 Google Cloud 서비스입니다.
+> 이는 WaveNet 및 Google의 강력한 신경망에서 DeepMind의 획기적인 연구를 적용하여 가장 높은 충실도를 제공합니다.
+
+파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-cloud-text-to-speech
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_cloud_texttospeech)을 참조하십시오.
+
+```python
+from langchain_google_community import TextToSpeechTool
+```
+
+### Google Drive
+
+여러 파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_drive)을 참조하십시오.
+
+```python
+from langchain_community.utilities.google_drive import GoogleDriveAPIWrapper
+from langchain_community.tools.google_drive.tool import GoogleDriveSearchTool
+```
+
+### Google Finance
+
+파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-search-results
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_finance)을 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleFinanceQueryRun", "source": "langchain_community.tools.google_finance", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_finance.tool.GoogleFinanceQueryRun.html", "title": "Google"}, {"imported": "GoogleFinanceAPIWrapper", "source": "langchain_community.utilities.google_finance", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_finance.GoogleFinanceAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_finance import GoogleFinanceQueryRun
+from langchain_community.utilities.google_finance import GoogleFinanceAPIWrapper
+```
+
+### Google Jobs
+
+파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-search-results
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_jobs)을 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleJobsQueryRun", "source": "langchain_community.tools.google_jobs", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_jobs.tool.GoogleJobsQueryRun.html", "title": "Google"}, {"imported": "GoogleFinanceAPIWrapper", "source": "langchain_community.utilities.google_finance", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_finance.GoogleFinanceAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_jobs import GoogleJobsQueryRun
+from langchain_community.utilities.google_finance import GoogleFinanceAPIWrapper
+```
+
+### Google Lens
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_lens)을 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleLensQueryRun", "source": "langchain_community.tools.google_lens", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_lens.tool.GoogleLensQueryRun.html", "title": "Google"}, {"imported": "GoogleLensAPIWrapper", "source": "langchain_community.utilities.google_lens", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_lens.GoogleLensAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_lens import GoogleLensQueryRun
+from langchain_community.utilities.google_lens import GoogleLensAPIWrapper
+```
+
+### Google Places
+
+파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install googlemaps
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_places)을 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GooglePlacesTool", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_places.tool.GooglePlacesTool.html", "title": "Google"}]-->
+from langchain.tools import GooglePlacesTool
+```
+
+### Google Scholar
+
+파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-search-results
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_scholar)을 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleScholarQueryRun", "source": "langchain_community.tools.google_scholar", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_scholar.tool.GoogleScholarQueryRun.html", "title": "Google"}, {"imported": "GoogleScholarAPIWrapper", "source": "langchain_community.utilities.google_scholar", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_scholar.GoogleScholarAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_scholar import GoogleScholarQueryRun
+from langchain_community.utilities.google_scholar import GoogleScholarAPIWrapper
+```
+
+### Google Search
+
+- [이 지침](https://stackoverflow.com/questions/37083058/programmatically-searching-google-in-python-using-custom-search)에 따라 사용자 정의 검색 엔진을 설정하십시오.
+- 이전 단계에서 API 키와 사용자 정의 검색 엔진 ID를 얻고, 이를 각각 `GOOGLE_API_KEY` 및 `GOOGLE_CSE_ID` 환경 변수로 설정하십시오.
+
+```python
+from langchain_google_community import GoogleSearchAPIWrapper
+```
+
+이 래퍼의 더 자세한 설명은 [이 노트북](/docs/integrations/tools/google_search)을 참조하십시오.
+
+이 래퍼를 쉽게 도구로 로드할 수 있습니다(에이전트와 함께 사용하기 위해). 다음과 같이 할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Google"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["google-search"])
+```
+
+### Google Trends
+
+파이썬 패키지를 설치해야 합니다.
+
+```bash
+pip install google-search-results
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_trends)을 참조하십시오.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleTrendsQueryRun", "source": "langchain_community.tools.google_trends", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_trends.tool.GoogleTrendsQueryRun.html", "title": "Google"}, {"imported": "GoogleTrendsAPIWrapper", "source": "langchain_community.utilities.google_trends", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_trends.GoogleTrendsAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_trends import GoogleTrendsQueryRun
+from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
+```
+
+## 툴킷
+
+### GMail
+
+> [Google Gmail](https://en.wikipedia.org/wiki/Gmail) 는 Google에서 제공하는 무료 이메일 서비스입니다.
+이 툴킷은 `Gmail API`를 통해 이메일을 처리합니다.
+
+필요한 종속성과 함께 `langchain-google-community`를 설치해야 합니다:
+
+```bash
+pip install langchain-google-community[gmail]
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/toolkits/gmail)을 참조하세요.
+
+```python
+from langchain_google_community import GmailToolkit
+```
+
+## 메모리
+
+### AlloyDB for PostgreSQL
+
+> [AlloyDB for PostgreSQL](https://cloud.google.com/alloydb) 는 Google Cloud에서 고성능, 원활한 통합, 그리고 인상적인 확장성을 제공하는 완전 관리형 관계형 데이터베이스 서비스입니다. AlloyDB는 PostgreSQL과 100% 호환됩니다.
+
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-alloydb-pg
+```
+
+[사용 예제](/docs/integrations/memory/google_alloydb)를 참조하세요.
+
+```python
+from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBChatMessageHistory
+```
+
+### Cloud SQL for PostgreSQL
+
+> [Cloud SQL for PostgreSQL](https://cloud.google.com/sql) 는 Google Cloud에서 PostgreSQL 관계형 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움을 주는 완전 관리형 데이터베이스 서비스입니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-cloud-sql-pg
+```
+
+[사용 예제](/docs/integrations/memory/google_sql_pg)를 참조하세요.
+
+```python
+from langchain_google_cloud_sql_pg import PostgresEngine, PostgresChatMessageHistory
+```
+
+### Cloud SQL for MySQL
+
+> [Cloud SQL for MySQL](https://cloud.google.com/sql) 는 Google Cloud에서 MySQL 관계형 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움을 주는 완전 관리형 데이터베이스 서비스입니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-cloud-sql-mysql
+```
+
+[사용 예제](/docs/integrations/memory/google_sql_mysql)를 참조하세요.
+
+```python
+from langchain_google_cloud_sql_mysql import MySQLEngine, MySQLChatMessageHistory
+```
+
+### Cloud SQL for SQL Server
+
+> [Cloud SQL for SQL Server](https://cloud.google.com/sql) 는 Google Cloud에서 SQL Server 데이터베이스를 설정, 유지 관리, 관리 및 관리하는 데 도움을 주는 완전 관리형 데이터베이스 서비스입니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-cloud-sql-mssql
+```
+
+[사용 예제](/docs/integrations/memory/google_sql_mssql)를 참조하세요.
+
+```python
+from langchain_google_cloud_sql_mssql import MSSQLEngine, MSSQLChatMessageHistory
+```
+
+### Spanner
+
+> [Google Cloud Spanner](https://cloud.google.com/spanner/docs) 는 Google Cloud에서 글로벌 규모의 트랜잭션 일관성, 높은 가용성을 위한 자동 동기 복제, 그리고 두 가지 SQL 방언인 GoogleSQL (ANSI 2011 확장 포함)과 PostgreSQL을 지원하는 완전 관리형 미션 크리티컬 관계형 데이터베이스 서비스입니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-spanner
+```
+
+[사용 예제](/docs/integrations/memory/google_spanner)를 참조하세요.
+
+```python
+from langchain_google_spanner import SpannerChatMessageHistory
+```
+
+### Memorystore for Redis
+
+> [Google Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis) 는 Google Cloud를 위한 완전 관리형 Redis 서비스입니다. Google Cloud에서 실행 중인 애플리케이션은 복잡한 Redis 배포를 관리하는 부담 없이 고도로 확장 가능하고, 가용하며, 안전한 Redis 서비스를 활용하여 극도의 성능을 달성할 수 있습니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-memorystore-redis
+```
+
+[사용 예제](/docs/integrations/document_loaders/google_memorystore_redis)를 참조하세요.
+
+```python
+from langchain_google_memorystore_redis import MemorystoreChatMessageHistory
+```
+
+### Bigtable
+
+> [Google Cloud Bigtable](https://cloud.google.com/bigtable/docs) 는 Google Cloud에서 제공하는 Google의 완전 관리형 NoSQL 빅 데이터 데이터베이스 서비스입니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-bigtable
+```
+
+[사용 예제](/docs/integrations/memory/google_bigtable)를 참조하세요.
+
+```python
+from langchain_google_bigtable import BigtableChatMessageHistory
+```
+
+### Firestore (Native Mode)
+
+> [Google Cloud Firestore](https://cloud.google.com/firestore/docs/) 는 자동 확장, 고성능 및 애플리케이션 개발의 용이성을 위해 설계된 NoSQL 문서 데이터베이스입니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-firestore
+```
+
+[사용 예제](/docs/integrations/memory/google_firestore)를 참조하세요.
+
+```python
+from langchain_google_firestore import FirestoreChatMessageHistory
+```
+
+### Firestore (Datastore Mode)
+
+> [Google Cloud Firestore in Datastore mode](https://cloud.google.com/datastore/docs) 는 자동 확장, 고성능 및 애플리케이션 개발의 용이성을 위해 설계된 NoSQL 문서 데이터베이스입니다.
+> Firestore는 Datastore의 최신 버전으로, Datastore에 비해 여러 가지 개선점을 도입했습니다.
+Python 패키지를 설치하세요:
+
+```bash
+pip install langchain-google-datastore
+```
+
+[사용 예제](/docs/integrations/memory/google_firestore_datastore)를 참조하세요.
+
+```python
+from langchain_google_datastore import DatastoreChatMessageHistory
+```
+
+### El Carro: The Oracle Operator for Kubernetes
+
+> Google [El Carro Oracle Operator for Kubernetes](https://github.com/GoogleCloudPlatform/elcarro-oracle-operator)
+는 `Kubernetes`에서 `Oracle` 데이터베이스를 휴대 가능하고, 오픈 소스이며, 커뮤니티 주도, 벤더 종속성이 없는 컨테이너 오케스트레이션 시스템으로 실행하는 방법을 제공합니다.
+
+```bash
+pip install langchain-google-el-carro
+```
+
+[사용 예제](/docs/integrations/memory/google_el_carro)를 참조하세요.
+
+```python
+from langchain_google_el_carro import ElCarroChatMessageHistory
+```
+
+## 채팅 로더
+
+### GMail
+
+> [Gmail](https://en.wikipedia.org/wiki/Gmail) 는 Google에서 제공하는 무료 이메일 서비스입니다.
+이 로더는 `Gmail API`를 통해 이메일을 처리합니다.
+
+기본 종속성과 함께 `langchain-google-community`를 설치해야 합니다.
+
+```bash
+pip install langchain-google-community[gmail]
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/chat_loaders/gmail)을 참조하세요.
+
+```python
+from langchain_google_community import GMailLoader
+```
+
+## 3rd Party Integrations
+
+### SearchApi
+
+>[SearchApi](https://www.searchapi.io/) 는 Google 검색 결과, YouTube 검색 및 전사, 그리고 기타 Google 관련 엔진에 접근할 수 있는 3rd-party API를 제공합니다.
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/searchapi)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SearchApiAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searchapi.SearchApiAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.utilities import SearchApiAPIWrapper
+```
+
+### SerpApi
+
+>[SerpApi](https://serpapi.com/) 는 Google 검색 결과에 접근할 수 있는 3rd-party API를 제공합니다.
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/serpapi)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SerpAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.serpapi.SerpAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.utilities import SerpAPIWrapper
+```
+
+### Serper.dev
+
+[사용 예제 및 인증 지침](/docs/integrations/tools/google_serper)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+```
+
+### YouTube
+
+>[YouTube Search](https://github.com/joetats/youtube_search) 패키지는 사용이 제한된 API를 피하면서 `YouTube` 동영상을 검색합니다.
+>
+>YouTube 홈페이지의 양식을 사용하고 결과 페이지를 스크랩합니다.
+
+Python 패키지를 설치해야 합니다.
+
+```bash
+pip install youtube_search
+```
+
+[사용 예제](/docs/integrations/tools/youtube)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "YouTubeSearchTool", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.youtube.search.YouTubeSearchTool.html", "title": "Google"}]-->
+from langchain.tools import YouTubeSearchTool
+```
+
+### YouTube 오디오
+
+>[YouTube](https://www.youtube.com/) 는 `Google`이 만든 온라인 비디오 공유 및 소셜 미디어 플랫폼입니다.
+
+`YoutubeAudioLoader`를 사용하여 오디오 파일을 가져오거나 다운로드합니다.
+
+그런 다음, `OpenAIWhisperParser`를 사용하여 텍스트로 전사합니다.
+
+여러 Python 패키지를 설치해야 합니다.
+
+```bash
+pip install yt_dlp pydub librosa
+```
+
+[사용 예제 및 인증 지침](/docs/integrations/document_loaders/youtube_audio)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "YoutubeAudioLoader", "source": "langchain_community.document_loaders.blob_loaders.youtube_audio", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.blob_loaders.youtube_audio.YoutubeAudioLoader.html", "title": "Google"}, {"imported": "OpenAIWhisperParser", "source": "langchain_community.document_loaders.parsers", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.parsers.audio.OpenAIWhisperParser.html", "title": "Google"}]-->
+from langchain_community.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader
+from langchain_community.document_loaders.parsers import OpenAIWhisperParser, OpenAIWhisperParserLocal
+```
+
+### YouTube 전사
+
+>[YouTube](https://www.youtube.com/) 는 `Google`이 만든 온라인 비디오 공유 및 소셜 미디어 플랫폼입니다.
+
+`youtube-transcript-api` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install youtube-transcript-api
+```
+
+[사용 예제](/docs/integrations/document_loaders/youtube_transcript)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "YoutubeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.youtube.YoutubeLoader.html", "title": "Google"}]-->
+from langchain_community.document_loaders import YoutubeLoader
+```

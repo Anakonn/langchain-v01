@@ -1,0 +1,83 @@
+---
+translated: true
+---
+
+# Serper - API de recherche Google
+
+Cette page explique comment utiliser l'[API de recherche Google Serper](https://serper.dev) dans LangChain. Serper est une API de recherche Google à faible coût qui peut être utilisée pour ajouter des données de boîte de réponse, de graphique de connaissances et de résultats organiques de la recherche Google.
+Il est divisé en deux parties : la configuration et les références à l'enveloppe Google Serper spécifique.
+
+## Configuration
+
+- Allez sur [serper.dev](https://serper.dev) pour vous inscrire à un compte gratuit
+- Obtenez la clé API et définissez-la comme une variable d'environnement (`SERPER_API_KEY`)
+
+## Enveloppes
+
+### Utilitaire
+
+Il existe une utilitaire GoogleSerperAPIWrapper qui enveloppe cette API. Pour importer cet utilitaire :
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Serper - Google Search API"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+```
+
+Vous pouvez l'utiliser dans le cadre d'une chaîne Self Ask :
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Serper - Google Search API"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Serper - Google Search API"}, {"imported": "initialize_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html", "title": "Serper - Google Search API"}, {"imported": "Tool", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.Tool.html", "title": "Serper - Google Search API"}, {"imported": "AgentType", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html", "title": "Serper - Google Search API"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+from langchain_openai import OpenAI
+from langchain.agents import initialize_agent, Tool
+from langchain.agents import AgentType
+
+import os
+
+os.environ["SERPER_API_KEY"] = ""
+os.environ['OPENAI_API_KEY'] = ""
+
+llm = OpenAI(temperature=0)
+search = GoogleSerperAPIWrapper()
+tools = [
+    Tool(
+        name="Intermediate Answer",
+        func=search.run,
+        description="useful for when you need to ask with search"
+    )
+]
+
+self_ask_with_search = initialize_agent(tools, llm, agent=AgentType.SELF_ASK_WITH_SEARCH, verbose=True)
+self_ask_with_search.run("What is the hometown of the reigning men's U.S. Open champion?")
+```
+
+#### Sortie
+
+```output
+Entering new AgentExecutor chain...
+ Yes.
+Follow up: Who is the reigning men's U.S. Open champion?
+Intermediate answer: Current champions Carlos Alcaraz, 2022 men's singles champion.
+Follow up: Where is Carlos Alcaraz from?
+Intermediate answer: El Palmar, Spain
+So the final answer is: El Palmar, Spain
+
+> Finished chain.
+
+'El Palmar, Spain'
+```
+
+Pour une présentation plus détaillée de cette enveloppe, voir [ce notebook](/docs/integrations/tools/google_serper).
+
+### Outil
+
+Vous pouvez également charger facilement cette enveloppe en tant qu'outil (à utiliser avec un agent).
+Vous pouvez le faire avec :
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Serper - Google Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["google-serper"])
+```
+
+Pour plus d'informations sur les outils, consultez [cette page](/docs/modules/tools/).

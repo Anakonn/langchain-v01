@@ -1,0 +1,153 @@
+---
+translated: true
+---
+
+# Redis
+
+>[Redis (Remote Dictionary Server)](https://en.wikipedia.org/wiki/Redis) est un stockage en mémoire vive open-source,
+> utilisé comme une base de données clé-valeur distribuée en mémoire, un cache et un courtier de messages, avec une durabilité facultative.
+> Parce qu'il stocke toutes les données en mémoire et en raison de sa conception, `Redis` offre des lectures et des écritures à faible latence,
+> le rendant particulièrement adapté aux cas d'utilisation nécessitant un cache. Redis est la base de données NoSQL la plus populaire,
+> et l'une des bases de données les plus populaires dans l'ensemble.
+
+Cette page couvre comment utiliser l'écosystème [Redis](https://redis.com) dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers Redis spécifiques.
+
+## Installation et configuration
+
+Installez le SDK Python :
+
+```bash
+pip install redis
+```
+
+Pour exécuter Redis localement, vous pouvez utiliser Docker :
+
+```bash
+docker run --name langchain-redis -d -p 6379:6379 redis redis-server --save 60 1 --loglevel warning
+```
+
+Pour arrêter le conteneur :
+
+```bash
+docker stop langchain-redis
+```
+
+Et pour le redémarrer :
+
+```bash
+docker start langchain-redis
+```
+
+### Connexions
+
+Nous avons besoin d'une chaîne de connexion url redis pour nous connecter à la base de données en charge soit d'un serveur Redis autonome
+ou d'une configuration haute disponibilité avec réplication et Redis Sentinels.
+
+#### URL de connexion Redis autonome
+
+Pour un serveur `Redis` autonome, les formats d'URL de connexion officiels de redis peuvent être utilisés comme décrit dans la méthode "from_url()" du module redis python
+[Redis.from_url](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)
+
+Exemple : `redis_url = "redis://:secret-pass@localhost:6379/0"`
+
+#### URL de connexion Redis Sentinel
+
+Pour les configurations [Redis sentinel](https://redis.io/docs/management/sentinel/), le schéma de connexion est "redis+sentinel".
+Il s'agit d'une extension non officielle des schémas de protocole enregistrés officiellement par l'IANA tant qu'il n'y a pas d'URL de connexion
+pour les Sentinels disponible.
+
+Exemple : `redis_url = "redis+sentinel://:secret-pass@sentinel-host:26379/mymaster/0"`
+
+Le format est `redis+sentinel://[[username]:[password]]@[host-or-ip]:[port]/[service-name]/[db-number]`
+avec les valeurs par défaut de "service-name = mymaster" et "db-number = 0" s'ils ne sont pas explicitement définis.
+Le nom du service est le nom du groupe de surveillance du serveur redis configuré dans le Sentinel.
+
+Le format d'URL actuel limite la chaîne de connexion à un seul hôte sentinel (aucune liste ne peut être donnée) et
+le serveur Redis et le sentinel doivent avoir le même mot de passe défini (s'il est utilisé).
+
+#### URL de connexion Redis Cluster
+
+Le cluster Redis n'est pas pris en charge pour le moment pour toutes les méthodes nécessitant un paramètre "redis_url".
+La seule façon d'utiliser un cluster Redis est avec des classes LangChain acceptant un client Redis pré-configuré comme `RedisCache`
+(exemple ci-dessous).
+
+## Cache
+
+Le wrapper de cache permet d'utiliser [Redis](https://redis.io) comme un cache distant, à faible latence et en mémoire pour les invites et les réponses des LLM.
+
+### Cache standard
+
+Le cache standard est le pain et le beurre des cas d'utilisation en production pour les utilisateurs [open-source](https://redis.io) et [entreprise](https://redis.com) du monde entier.
+
+```python
+<!--IMPORTS:[{"imported": "RedisCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisCache
+```
+
+Pour utiliser ce cache avec vos LLM :
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+redis_client = redis.Redis.from_url(...)
+set_llm_cache(RedisCache(redis_client))
+```
+
+### Cache sémantique
+
+Le cache sémantique permet aux utilisateurs de récupérer les invites mises en cache en fonction de la similarité sémantique entre l'entrée de l'utilisateur et les résultats mis en cache précédemment. En interne, il combine Redis à la fois comme un cache et un magasin de vecteurs.
+
+```python
+<!--IMPORTS:[{"imported": "RedisSemanticCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisSemanticCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisSemanticCache
+```
+
+Pour utiliser ce cache avec vos LLM :
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+redis_url = "redis://localhost:6379"
+
+set_llm_cache(RedisSemanticCache(
+    embedding=FakeEmbeddings(),
+    redis_url=redis_url
+))
+```
+
+## VectorStore
+
+Le wrapper de magasin de vecteurs transforme Redis en une base de données de vecteurs [à faible latence](https://redis.com/solutions/use-cases/vector-database/) pour la recherche sémantique ou la récupération de contenu LLM.
+
+```python
+<!--IMPORTS:[{"imported": "Redis", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.redis.base.Redis.html", "title": "Redis"}]-->
+from langchain_community.vectorstores import Redis
+```
+
+Pour un parcours plus détaillé du wrapper de magasin de vecteurs Redis, voir [ce notebook](/docs/integrations/vectorstores/redis).
+
+## Retriever
+
+Le wrapper du récupérateur de magasin de vecteurs Redis généralise la classe de magasin de vecteurs pour effectuer
+la récupération de documents à faible latence. Pour créer le récupérateur, il suffit
+d'appeler `.as_retriever()` sur la classe de magasin de vecteurs de base.
+
+## Mémoire
+
+Redis peut être utilisé pour conserver les conversations LLM.
+
+### Mémoire du récupérateur de magasin de vecteurs
+
+Pour un parcours plus détaillé du wrapper `VectorStoreRetrieverMemory`, voir [ce notebook](/docs/modules/memory/types/vectorstore_retriever_memory).
+
+### Mémoire de l'historique des messages de discussion
+
+Pour un exemple détaillé de l'utilisation de Redis pour mettre en cache l'historique des messages de conversation, voir [ce notebook](/docs/integrations/memory/redis_chat_message_history).

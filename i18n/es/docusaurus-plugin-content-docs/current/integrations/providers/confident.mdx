@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# IA Confiable
+
+>[Confident AI](https://confident-ai.com) es un creador de `DeepEval`.
+>
+>[DeepEval](https://github.com/confident-ai/deepeval) es un paquete para pruebas unitarias de LLM.
+> Usando `DeepEval`, todos pueden construir modelos de lenguaje robustos a través de iteraciones más rápidas
+> utilizando tanto pruebas unitarias como de integración. `DeepEval` brinda soporte para cada paso en la iteración
+> desde la creación de datos sintéticos hasta las pruebas.
+
+## Instalación y Configuración
+
+Necesitas obtener las [credenciales de la API DeepEval](https://app.confident-ai.com).
+
+Necesitas instalar el paquete Python `DeepEval`:
+
+```bash
+pip install deepeval
+```
+
+## Callbacks
+
+Consulta un [ejemplo](/docs/integrations/callbacks/confident).
+
+```python
+<!--IMPORTS:[{"imported": "DeepEvalCallbackHandler", "source": "langchain.callbacks.confident_callback", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.confident_callback.DeepEvalCallbackHandler.html", "title": "Confident AI"}]-->
+from langchain.callbacks.confident_callback import DeepEvalCallbackHandler
+```

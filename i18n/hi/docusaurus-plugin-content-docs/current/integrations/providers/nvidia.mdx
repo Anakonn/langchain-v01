@@ -1,0 +1,61 @@
+---
+translated: true
+---
+
+# NVIDIA
+
+>NVIDIA लैंगचेन के लिए एक एकीकरण पैकेज प्रदान करता है: `langchain-nvidia-ai-endpoints`.
+
+## NVIDIA AI Foundation Endpoints
+
+> [NVIDIA AI Foundation Endpoints](https://www.nvidia.com/en-us/ai-data-science/foundation-models/) उपयोगकर्ताओं को NVIDIA होस्ट किए गए API एंडपॉइंट्स तक आसान पहुंच प्रदान करते हैं जैसे कि `Mixtral 8x7B`, `Llama 2`, `Stable Diffusion` आदि। ये मॉडल, [NVIDIA API कैटलॉग](https://build.nvidia.com/) पर होस्ट किए गए हैं, NVIDIA AI प्लेटफॉर्म पर अनुकूलित, परीक्षित और होस्ट किए गए हैं, जिससे वे तेज़ और आकलन करने, और किसी भी त्वरित स्टैक पर अधिकतम प्रदर्शन के साथ सुचारू रूप से चलाने में आसान हो जाते हैं।
+
+> [NVIDIA AI Foundation Endpoints](https://www.nvidia.com/en-us/ai-data-science/foundation-models/) के साथ, आप [NVIDIA DGX Cloud](https://www.nvidia.com/en-us/data-center/dgx-cloud/) पर चल रहे पूरी तरह से त्वरित स्टैक से त्वरित परिणाम प्राप्त कर सकते हैं। एक बार अनुकूलित होने के बाद, ये मॉडल [NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise/) का उपयोग करके उद्यम-स्तरीय सुरक्षा, स्थिरता और समर्थन के साथ कहीं भी तैनात किए जा सकते हैं।
+
+LangChain में परिचित API के साथ NVIDIA AI Foundation मॉडलों का एक चयन सीधे समर्थित है।
+
+समर्थित मॉडल [build.nvidia.com](https://build.nvidia.com/) पर पाए जा सकते हैं।
+
+ये मॉडल [`langchain-nvidia-ai-endpoints`](https://pypi.org/project/langchain-nvidia-ai-endpoints/) पैकेज के माध्यम से एक्सेस किए जा सकते हैं, जैसा कि नीचे दिखाया गया है।
+
+### सेटअप करना
+
+1. [NVIDIA](https://build.nvidia.com/) के साथ एक मुफ्त खाता बनाएं, जो NVIDIA AI Foundation मॉडल होस्ट करता है
+
+2. अपने पसंदीदा मॉडल पर क्लिक करें
+
+3. `इनपुट` के तहत `पायथन` टैब पर क्लिक करें, और `API कुंजी प्राप्त करें` पर क्लिक करें। फिर `कुंजी उत्पन्न करें` पर क्लिक करें।
+
+4. उत्पन्न कुंजी को `NVIDIA_API_KEY` के रूप में कॉपी और सहेजें। इसके बाद, आपको एंडपॉइंट्स तक पहुंच होनी चाहिए।
+
+```bash
+export NVIDIA_API_KEY=nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+- एक पैकेज स्थापित करें:
+
+```bash
+pip install -U langchain-nvidia-ai-endpoints
+```
+
+### चैट मॉडल
+
+[उपयोग उदाहरण](/docs/integrations/chat/nvidia_ai_endpoints) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatNVIDIA", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_nvidia_ai_endpoints.chat_models.ChatNVIDIA.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
+
+llm = ChatNVIDIA(model="mixtral_8x7b")
+result = llm.invoke("Write a ballad about LangChain.")
+print(result.content)
+```
+
+### एम्बेडिंग मॉडल
+
+[उपयोग उदाहरण](/docs/integrations/text_embedding/nvidia_ai_endpoints) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "NVIDIAEmbeddings", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_nvidia_ai_endpoints.embeddings.NVIDIAEmbeddings.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+```

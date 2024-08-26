@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Wolfram Alpha
+
+>[WolframAlpha](https://en.wikipedia.org/wiki/WolframAlpha) es un motor de respuestas desarrollado por `Wolfram Research`.
+> Responde a consultas fácticas calculando respuestas a partir de datos de fuentes externas.
+
+Esta página cubre cómo usar la `API de Wolfram Alpha` dentro de LangChain.
+
+## Instalación y configuración
+
+- Instalar los requisitos con
+
+```bash
+pip install wolframalpha
+```
+
+- Ir a wolfram alpha y registrarse para obtener una cuenta de desarrollador [aquí](https://developer.wolframalpha.com/)
+- Crear una aplicación y obtener tu `ID DE APLICACIÓN`
+- Establecer tu ID DE APLICACIÓN como una variable de entorno `WOLFRAM_ALPHA_APPID`
+
+## Envoltorios
+
+### Utilidad
+
+Existe una utilidad WolframAlphaAPIWrapper que envuelve esta API. Para importar esta utilidad:
+
+```python
+<!--IMPORTS:[{"imported": "WolframAlphaAPIWrapper", "source": "langchain_community.utilities.wolfram_alpha", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.wolfram_alpha.WolframAlphaAPIWrapper.html", "title": "Wolfram Alpha"}]-->
+from langchain_community.utilities.wolfram_alpha import WolframAlphaAPIWrapper
+```
+
+Para obtener un recorrido más detallado de este envoltorio, consulta [este cuaderno](/docs/integrations/tools/wolfram_alpha).
+
+### Herramienta
+
+También puedes cargar fácilmente este envoltorio como una Herramienta (para usar con un Agente).
+Puedes hacer esto con:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Wolfram Alpha"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["wolfram-alpha"])
+```
+
+Para obtener más información sobre las herramientas, consulta [esta página](/docs/modules/tools/).

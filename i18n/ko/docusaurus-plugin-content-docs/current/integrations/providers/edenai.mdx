@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# Eden AI
+
+>[Eden AI](https://docs.edenai.co/docs/getting-started-with-eden-ai) 사용자 인터페이스(UI)
+> 는 AI 프로젝트를 처리하도록 설계되었습니다. `Eden AI Portal`을 사용하면
+> 시장 최고의 엔진을 사용하여 코드 없이 AI를 수행할 수 있습니다.
+
+## 설치 및 설정
+
+Eden AI API에 액세스하려면 API 키가 필요합니다. [계정 생성](https://app.edenai.run/user/register)하고
+[여기](https://app.edenai.run/admin/account/settings)로 이동하여 API 키를 얻을 수 있습니다.
+
+## LLMs
+
+[사용 예제](/docs/integrations/llms/edenai)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "EdenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.edenai.EdenAI.html", "title": "Eden AI"}]-->
+from langchain_community.llms import EdenAI
+
+```
+
+## 채팅 모델
+
+[사용 예제](/docs/integrations/chat/edenai)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ChatEdenAI", "source": "langchain_community.chat_models.edenai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.edenai.ChatEdenAI.html", "title": "Eden AI"}]-->
+from langchain_community.chat_models.edenai import ChatEdenAI
+```
+
+## 임베딩 모델
+
+[사용 예제](/docs/integrations/text_embedding/edenai)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "EdenAiEmbeddings", "source": "langchain_community.embeddings.edenai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.edenai.EdenAiEmbeddings.html", "title": "Eden AI"}]-->
+from langchain_community.embeddings.edenai import EdenAiEmbeddings
+```
+
+## 도구
+
+Eden AI는 다음과 같은 다양한 작업을 수행할 수 있는 도구 목록을 제공합니다:
+* 음성 인식
+* 텍스트 음성 변환
+* 텍스트 명시적 콘텐츠 감지
+* 이미지 명시적 콘텐츠 감지
+* 객체 감지
+* OCR 송장 파싱
+* OCR ID 파싱
+
+[사용 예제](/docs/integrations/tools/edenai_tools)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "EdenAiExplicitImageTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.image_explicitcontent.EdenAiExplicitImageTool.html", "title": "Eden AI"}, {"imported": "EdenAiObjectDetectionTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.image_objectdetection.EdenAiObjectDetectionTool.html", "title": "Eden AI"}, {"imported": "EdenAiParsingIDTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.ocr_identityparser.EdenAiParsingIDTool.html", "title": "Eden AI"}, {"imported": "EdenAiParsingInvoiceTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.ocr_invoiceparser.EdenAiParsingInvoiceTool.html", "title": "Eden AI"}, {"imported": "EdenAiSpeechToTextTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.audio_speech_to_text.EdenAiSpeechToTextTool.html", "title": "Eden AI"}, {"imported": "EdenAiTextModerationTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.text_moderation.EdenAiTextModerationTool.html", "title": "Eden AI"}, {"imported": "EdenAiTextToSpeechTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.audio_text_to_speech.EdenAiTextToSpeechTool.html", "title": "Eden AI"}]-->
+from langchain_community.tools.edenai import (
+    EdenAiExplicitImageTool,
+    EdenAiObjectDetectionTool,
+    EdenAiParsingIDTool,
+    EdenAiParsingInvoiceTool,
+    EdenAiSpeechToTextTool,
+    EdenAiTextModerationTool,
+    EdenAiTextToSpeechTool,
+)
+```

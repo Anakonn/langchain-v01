@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# spaCy
+
+>[spaCy](https://spacy.io/)는 Python과 Cython 프로그래밍 언어로 작성된 고급 자연어 처리를 위한 오픈 소스 소프트웨어 라이브러리입니다.
+
+## 설치 및 설정
+
+```bash
+pip install spacy
+```
+
+## 텍스트 분할기
+
+[사용 예시](/docs/modules/data_connection/document_transformers/split_by_token#spacy)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SpacyTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/spacy/langchain_text_splitters.spacy.SpacyTextSplitter.html", "title": "spaCy"}]-->
+from langchain_text_splitters import SpacyTextSplitter
+```
+
+## 텍스트 임베딩 모델
+
+[사용 예시](/docs/integrations/text_embedding/spacy_embedding)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SpacyEmbeddings", "source": "langchain_community.embeddings.spacy_embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.spacy_embeddings.SpacyEmbeddings.html", "title": "spaCy"}]-->
+from langchain_community.embeddings.spacy_embeddings import SpacyEmbeddings
+```

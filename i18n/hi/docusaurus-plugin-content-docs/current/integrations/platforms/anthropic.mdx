@@ -1,0 +1,47 @@
+---
+translated: true
+---
+
+# एंथ्रोपिक
+
+एंथ्रोपिक मॉडल से संबंधित सभी कार्यक्षमता।
+
+[एंथ्रोपिक](https://www.anthropic.com/) एक एआई सुरक्षा और अनुसंधान कंपनी है, और क्लॉड का निर्माता है।
+यह पृष्ठ एंथ्रोपिक मॉडल और LangChain के बीच सभी एकीकरण को कवर करता है।
+
+## स्थापना
+
+एंथ्रोपिक मॉडल का उपयोग करने के लिए, आपको `langchain-anthropic` पैकेज स्थापित करने की आवश्यकता होगी।
+आप निम्नलिखित कमांड से ऐसा कर सकते हैं:
+
+```bash
+pip install langchain-anthropic
+```
+
+## पर्यावरण सेटअप
+
+एंथ्रोपिक मॉडल का उपयोग करने के लिए, आपको `ANTHROPIC_API_KEY` पर्यावरण चर सेट करने की आवश्यकता होगी।
+आप [यहां](https://console.anthropic.com/settings/keys) से एक एंथ्रोपिक API कुंजी प्राप्त कर सकते हैं।
+
+## `ChatAnthropic`
+
+`ChatAnthropic` LangChain के `ChatModel` का एक उपवर्ग है।
+आप इस रैपर को निम्नलिखित कोड के साथ आयात कर सकते हैं:
+
+```python
+from langchain_anthropic import ChatAnthropic
+model = ChatAnthropic(model='claude-3-opus-20240229')
+```
+
+[ChatAnthropic दस्तावेज़ीकरण](/docs/integrations/chat/anthropic) में और पढ़ें।
+
+## [पुराना] `AnthropicLLM`
+
+`AnthropicLLM` LangChain के `LLM` का एक उपवर्ग है। यह एंथ्रोपिक के पाठ-आधारित पूर्णता अंतःक्रियाओं का एक रैपर है।
+
+```python
+<!--IMPORTS:[{"imported": "AnthropicLLM", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_anthropic.llms.AnthropicLLM.html", "title": "Anthropic"}]-->
+from langchain_anthropic import AnthropicLLM
+
+model = AnthropicLLM(model='claude-2.1')
+```

@@ -1,0 +1,56 @@
+---
+translated: true
+---
+
+# Baidu
+
+>[Baidu Cloud](https://cloud.baidu.com/)は、北京に本社を置く`Baidu, Inc.`が提供するクラウドサービスです。
+>クラウドストレージサービス、クライアントソフトウェア、ファイル管理、リソース共有、サードパーティ統合を提供しています。
+
+## インストールとセットアップ
+
+[ここ](https://cloud.baidu.com/product/wenxinworkshop)で`Qianfan` `AK`と`SK`キーを登録して取得してください。
+
+## LLMs
+
+### Baidu Qianfan
+
+[使用例](/docs/integrations/llms/baidu_qianfan_endpoint)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "QianfanLLMEndpoint", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.baidu_qianfan_endpoint.QianfanLLMEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.llms import QianfanLLMEndpoint
+```
+
+## チャットモデル
+
+### Qianfan Chat Endpoint
+
+[使用例](/docs/integrations/chat/baidu_qianfan_endpoint)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "QianfanChatEndpoint", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.baidu_qianfan_endpoint.QianfanChatEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.chat_models import QianfanChatEndpoint
+```
+
+## 埋め込みモデル
+
+### Baidu Qianfan
+
+[使用例](/docs/integrations/text_embedding/baidu_qianfan_endpoint)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "QianfanEmbeddingsEndpoint", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.baidu_qianfan_endpoint.QianfanEmbeddingsEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.embeddings import QianfanEmbeddingsEndpoint
+```
+
+## ベクトルストア
+
+### Baidu Cloud ElasticSearch VectorSearch
+
+[使用例](/docs/integrations/vectorstores/baiducloud_vector_search)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "BESVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.baiducloud_vector_search.BESVectorStore.html", "title": "Baidu"}]-->
+from langchain_community.vectorstores import BESVectorStore
+```

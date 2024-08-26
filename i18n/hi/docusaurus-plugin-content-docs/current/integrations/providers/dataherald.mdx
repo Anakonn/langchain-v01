@@ -1,0 +1,74 @@
+---
+translated: true
+---
+
+# डेटाहेराल्ड
+
+>[डेटाहेराल्ड](https://www.dataherald.com) एक प्राकृतिक भाषा से SQL तक का अनुवाद है।
+
+यह पृष्ठ LangChain में `डेटाहेराल्ड एपीआई` का उपयोग करने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+- आवश्यकताओं को इंस्टॉल करें
+
+```bash
+pip install dataherald
+```
+
+- dataherald पर जाएं और [यहां](https://www.dataherald.com) साइन अप करें
+- एक ऐप बनाएं और अपना `एपीआई कुंजी` प्राप्त करें
+- अपना `एपीआई कुंजी` को एक पर्यावरण चर `DATAHERALD_API_KEY` के रूप में सेट करें
+
+## रैपर
+
+### उपयोगिता
+
+एक DataheraldAPIWrapper उपयोगिता मौजूद है जो इस एपीआई को रैप करता है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "DataheraldAPIWrapper", "source": "langchain_community.utilities.dataherald", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dataherald.DataheraldAPIWrapper.html", "title": "Dataherald"}]-->
+from langchain_community.utilities.dataherald import DataheraldAPIWrapper
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/tools/dataherald) देखें।
+
+### उपकरण
+
+आप एक एजेंट में इस उपकरण का उपयोग कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "DataheraldAPIWrapper", "source": "langchain_community.utilities.dataherald", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dataherald.DataheraldAPIWrapper.html", "title": "Dataherald"}, {"imported": "DataheraldTextToSQL", "source": "langchain_community.tools.dataherald.tool", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.dataherald.tool.DataheraldTextToSQL.html", "title": "Dataherald"}, {"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Dataherald"}, {"imported": "AgentExecutor", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html", "title": "Dataherald"}, {"imported": "create_react_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html", "title": "Dataherald"}, {"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Dataherald"}]-->
+from langchain_community.utilities.dataherald import DataheraldAPIWrapper
+from langchain_community.tools.dataherald.tool import DataheraldTextToSQL
+from langchain_openai import ChatOpenAI
+from langchain import hub
+from langchain.agents import AgentExecutor, create_react_agent, load_tools
+
+api_wrapper = DataheraldAPIWrapper(db_connection_id="<db_connection_id>")
+tool = DataheraldTextToSQL(api_wrapper=api_wrapper)
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+prompt = hub.pull("hwchase17/react")
+agent = create_react_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+agent_executor.invoke({"input":"Return the sql for this question: How many employees are in the company?"})
+```
+
+आउटपुट
+
+```shell
+> Entering new AgentExecutor chain...
+I need to use a tool that can convert this question into SQL.
+Action: dataherald
+Action Input: How many employees are in the company?Answer: SELECT
+    COUNT(*) FROM employeesI now know the final answer
+Final Answer: SELECT
+    COUNT(*)
+FROM
+    employees
+
+> Finished chain.
+{'input': 'Return the sql for this question: How many employees are in the company?', 'output': "SELECT \n    COUNT(*)\nFROM \n    employees"}
+```
+
+उपकरणों के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

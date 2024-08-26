@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# कोंको
+
+कोंको से संबंधित सभी कार्यक्षमता
+
+>[कोंको एआई](https://www.konko.ai/) एप्लिकेशन डेवलपर्स की मदद करने के लिए पूरी तरह से प्रबंधित एपीआई प्रदान करता है
+
+>1. अपने एप्लिकेशन के लिए सही ओपन सोर्स या प्रोप्राइटरी एलएलएम का **चयन** करें
+>2. अग्रणी एप्लिकेशन फ्रेमवर्क और पूरी तरह से प्रबंधित एपीआई के साथ एकीकरण के साथ **बनाएं** एप्लिकेशन तेजी से
+>3. लागत के एक छोटे हिस्से पर उद्योग-अग्रणी प्रदर्शन प्राप्त करने के लिए छोटे ओपन-सोर्स एलएलएम को **फाइन ट्यून** करें
+>4. कोंको एआई के एसओसी 2 अनुपालन, बहु-क्लाउड बुनियादी ढांचे का उपयोग करके बिना बुनियादी ढांचे सेटअप या प्रशासन के उत्पादन-स्केल एपीआई को **तैनात** करें जो सुरक्षा, गोपनीयता, थ्रूपुट और लेटेंसी एसएलए को पूरा करते हैं
+
+## स्थापना और सेटअप
+
+1. [एपीआई कुंजी बनाने](https://platform.konko.ai/settings/api-keys) के लिए हमारे वेब ऐप में साइन इन करें ताकि आप [चैट पूर्णता](https://docs.konko.ai/reference/post-chat-completions) और [पूर्णता](https://docs.konko.ai/reference/post-completions) के लिए हमारे एंडपॉइंट के माध्यम से मॉडल का उपयोग कर सकें।
+2. Python3.8+ वातावरण सक्षम करें
+3. एसडीके स्थापित करें
+
+```bash
+pip install konko
+```
+
+4. एपीआई कुंजी को पर्यावरण चर (`KONKO_API_KEY`, `OPENAI_API_KEY`) के रूप में सेट करें
+
+```bash
+export KONKO_API_KEY={your_KONKO_API_KEY_here}
+export OPENAI_API_KEY={your_OPENAI_API_KEY_here} #Optional
+```
+
+कृपया [कोंको दस्तावेज़](https://docs.konko.ai/docs/getting-started) देखें अधिक जानकारी के लिए।
+
+## एलएलएम
+
+**उपलब्ध मॉडल का अन्वेषण करें:** शुरू करने के लिए [उपलब्ध मॉडल](https://docs.konko.ai/docs/list-of-models) ब्राउज़ करें। प्रत्येक मॉडल अलग-अलग उपयोग मामलों और क्षमताओं के लिए है।
+
+कोंको इंस्टेंस पर चल रहे मॉडलों की सूची का एक और तरीका है [एंडपॉइंट](https://docs.konko.ai/reference/get-models) के माध्यम से।
+
+उपयोग [उदाहरण](/docs/integrations/llms/konko) देखें।
+
+### एंडपॉइंट उपयोग के उदाहरण
+
+- **mistralai/Mistral-7B-v0.1 के साथ पूर्णता:**
+
+  ```python
+  from langchain.llms import Konko
+  llm = Konko(max_tokens=800, model='mistralai/Mistral-7B-v0.1')
+  prompt = "Generate a Product Description for Apple Iphone 15"
+  response = llm.invoke(prompt)
+  ```
+
+## चैट मॉडल
+
+उपयोग [उदाहरण](/docs/integrations/chat/konko) देखें।
+
+- **Mistral-7B के साथ ChatCompletion:**
+
+  ```python
+  from langchain_core.messages import HumanMessage
+  from langchain_community.chat_models import ChatKonko
+  chat_instance = ChatKonko(max_tokens=10, model = 'mistralai/mistral-7b-instruct-v0.1')
+  msg = HumanMessage(content="Hi")
+  chat_response = chat_instance([msg])
+  ```
+
+अधिक सहायता के लिए, [support@konko.ai](mailto:support@konko.ai) पर संपर्क करें या हमारे [Discord](https://discord.gg/TXV2s3z7RZ) में शामिल हों।

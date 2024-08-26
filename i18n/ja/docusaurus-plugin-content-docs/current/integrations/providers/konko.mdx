@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# Konko
+
+Konkoに関連するすべての機能
+
+>[Konko AI](https://www.konko.ai/)は、アプリケーション開発者のために完全に管理されたAPIを提供します。
+
+>1. **選択**する適切なオープンソースまたは独自のLLMを選択
+>2. **構築**するアプリケーションを、リーディングアプリケーションフレームワークとの統合および完全に管理されたAPIを使用して高速化
+>3. **微調整**する小規模なオープンソースLLMを、コストの一部で業界トップレベルのパフォーマンスを達成
+>4. **デプロイ**する本番規模のAPI。Konko AIのSOC 2準拠のマルチクラウドインフラストラクチャを使用して、セキュリス、プライバシー、スループット、レイテンシーのSLAを満たす
+
+## インストールとセットアップ
+
+1. ウェブアプリにサインインして[APIキーを作成](https://platform.konko.ai/settings/api-keys)し、[チャット補完](https://docs.konko.ai/reference/post-chat-completions)と[補完](https://docs.konko.ai/reference/post-completions)のエンドポイントを介してモデルにアクセスします。
+2. Python3.8+の環境を有効にする
+3. SDKをインストールする
+
+```bash
+pip install konko
+```
+
+4. APIキーを環境変数(`KONKO_API_KEY`,`OPENAI_API_KEY`)として設定する
+
+```bash
+export KONKO_API_KEY={your_KONKO_API_KEY_here}
+export OPENAI_API_KEY={your_OPENAI_API_KEY_here} #Optional
+```
+
+詳細は[Konkoのドキュメント](https://docs.konko.ai/docs/getting-started)を参照してください。
+
+## LLM
+
+**利用可能なモデルを探索:** [利用可能なモデル](https://docs.konko.ai/docs/list-of-models)を参照してください。各モデルは異なるユースケースと機能に対応しています。
+
+Konkoインスタンスで実行されているモデルのリストは、この[エンドポイント](https://docs.konko.ai/reference/get-models)から取得できます。
+
+使用[例](/docs/integrations/llms/konko)を参照してください。
+
+### エンドポイントの使用例
+
+- **mistralai/Mistral-7B-v0.1での補完:**
+
+  ```python
+  from langchain.llms import Konko
+  llm = Konko(max_tokens=800, model='mistralai/Mistral-7B-v0.1')
+  prompt = "Generate a Product Description for Apple Iphone 15"
+  response = llm.invoke(prompt)
+  ```
+
+## チャットモデル
+
+使用[例](/docs/integrations/chat/konko)を参照してください。
+
+- **Mistral-7Bでのチャット補完:**
+
+  ```python
+  from langchain_core.messages import HumanMessage
+  from langchain_community.chat_models import ChatKonko
+  chat_instance = ChatKonko(max_tokens=10, model = 'mistralai/mistral-7b-instruct-v0.1')
+  msg = HumanMessage(content="Hi")
+  chat_response = chat_instance([msg])
+  ```
+
+さらなるサポートが必要な場合は、[support@konko.ai](mailto:support@konko.ai)までご連絡いただくか、[Discord](https://discord.gg/TXV2s3z7RZ)に参加してください。

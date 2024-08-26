@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# NLPCloud
+
+>[NLP Cloud](https://docs.nlpcloud.com/#introduction)は、最先端のAIエンジンを使用したり、独自のデータでエンジンを訓練したりできる人工知能プラットフォームです。
+
+## インストールとセットアップ
+
+- `nlpcloud`パッケージをインストールします。
+
+```bash
+pip install nlpcloud
+```
+
+- NLPCloudのAPIキーを取得し、環境変数(`NLPCLOUD_API_KEY`)に設定します。
+
+## LLM
+
+[使用例](/docs/integrations/llms/nlpcloud)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloud", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.nlpcloud.NLPCloud.html", "title": "NLPCloud"}]-->
+from langchain_community.llms import NLPCloud
+```
+
+## テキストエンベディングモデル
+
+[使用例](/docs/integrations/text_embedding/nlp_cloud)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloudEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.nlpcloud.NLPCloudEmbeddings.html", "title": "NLPCloud"}]-->
+from langchain_community.embeddings import NLPCloudEmbeddings
+```

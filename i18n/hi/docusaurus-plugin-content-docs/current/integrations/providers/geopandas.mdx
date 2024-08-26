@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Geopandas
+
+>[GeoPandas](https://geopandas.org/) एक ओपन सोर्स प्रोजेक्ट है जो पायथन में भौगोलिक डेटा के साथ काम करना आसान बनाता है। `GeoPandas` `pandas` द्वारा उपयोग किए जाने वाले डेटा प्रकारों का विस्तार करता है ताकि ज्यामितीय प्रकारों पर स्थानिक ऑपरेशन किए जा सकें। ज्यामितीय ऑपरेशन `shapely` द्वारा किए जाते हैं।
+
+## स्थापना और सेटअप
+
+हमें कई पायथन पैकेज स्थापित करने होंगे।
+
+```bash
+pip install -U sodapy pandas geopandas
+```
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/geopandas) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OpenCityDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.open_city_data.OpenCityDataLoader.html", "title": "Geopandas"}]-->
+from langchain_community.document_loaders import OpenCityDataLoader
+```

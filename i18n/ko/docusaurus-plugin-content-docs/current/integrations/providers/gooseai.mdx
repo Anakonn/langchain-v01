@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# GooseAI
+
+이 페이지에서는 LangChain 내에서 GooseAI 생태계를 사용하는 방법을 다룹니다.
+두 부분으로 나뉘어 있습니다: 설치 및 설정, 그리고 특정 GooseAI 래퍼에 대한 참조.
+
+## 설치 및 설정
+
+- `pip install openai`로 Python SDK를 설치하세요.
+- 이 링크 [여기](https://goose.ai/)에서 GooseAI API 키를 받으세요.
+- 환경 변수(`GOOSEAI_API_KEY`)를 설정하세요.
+
+```python
+import os
+os.environ["GOOSEAI_API_KEY"] = "YOUR_API_KEY"
+```
+
+## 래퍼
+
+### LLM
+
+GooseAI LLM 래퍼가 존재하며, 다음과 같이 액세스할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "GooseAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gooseai.GooseAI.html", "title": "GooseAI"}]-->
+from langchain_community.llms import GooseAI
+```

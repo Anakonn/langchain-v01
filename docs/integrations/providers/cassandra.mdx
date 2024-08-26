@@ -1,0 +1,77 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/cassandra
+translated: false
+---
+
+# Cassandra
+
+> [Apache Cassandra®](https://cassandra.apache.org/) is a NoSQL, row-oriented, highly scalable and highly available database.
+> Starting with version 5.0, the database ships with [vector search capabilities](https://cassandra.apache.org/doc/trunk/cassandra/vector-search/overview.html).
+
+The integrations outlined in this page can be used with `Cassandra` as well as other CQL-compatible databases,
+i.e. those using the `Cassandra Query Language` protocol.
+
+## Installation and Setup
+
+Install the following Python package:
+
+```bash
+pip install "cassio>=0.1.6"
+```
+
+## Vector Store
+
+```python
+<!--IMPORTS:[{"imported": "Cassandra", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.cassandra.Cassandra.html", "title": "Cassandra"}]-->
+from langchain_community.vectorstores import Cassandra
+```
+
+Learn more in the [example notebook](/docs/integrations/vectorstores/cassandra).
+
+## Chat message history
+
+```python
+<!--IMPORTS:[{"imported": "CassandraChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.cassandra.CassandraChatMessageHistory.html", "title": "Cassandra"}]-->
+from langchain_community.chat_message_histories import CassandraChatMessageHistory
+```
+
+Learn more in the [example notebook](/docs/integrations/memory/cassandra_chat_message_history).
+
+## LLM Cache
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraCache
+set_llm_cache(CassandraCache())
+```
+
+Learn more in the [example notebook](/docs/integrations/llms/llm_caching#cassandra-caches) (scroll to the Cassandra section).
+
+## Semantic LLM Cache
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraSemanticCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraSemanticCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraSemanticCache
+set_llm_cache(CassandraSemanticCache(
+    embedding=my_embedding,
+    table_name="my_store",
+))
+```
+
+Learn more in the [example notebook](/docs/integrations/llms/llm_caching#cassandra-caches) (scroll to the appropriate section).
+
+## Document loader
+
+```python
+<!--IMPORTS:[{"imported": "CassandraLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.cassandra.CassandraLoader.html", "title": "Cassandra"}]-->
+from langchain_community.document_loaders import CassandraLoader
+```
+
+Learn more in the [example notebook](/docs/integrations/document_loaders/cassandra).
+
+#### Attribution statement
+
+> Apache Cassandra, Cassandra and Apache are either registered trademarks or trademarks of
+> the [Apache Software Foundation](http://www.apache.org/) in the United States and/or other countries.

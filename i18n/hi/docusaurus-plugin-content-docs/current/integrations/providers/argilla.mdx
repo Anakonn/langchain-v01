@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# अर्जिला
+
+>[अर्जिला](https://argilla.io/) एक ओपन-सोर्स डेटा क्यूरेशन प्लेटफॉर्म है LLMs के लिए।
+> `अर्जिला` का उपयोग करके, हर कोई मानव और मशीन फीडबैक का उपयोग करके तेजी से डेटा क्यूरेशन के माध्यम से रोबस्ट भाषा मॉडल बना सकता है। `अर्जिला` MLOps चक्र के प्रत्येक चरण में समर्थन प्रदान करता है,
+> डेटा लेबलिंग से लेकर मॉडल मॉनिटरिंग तक।
+
+## इंस्टॉलेशन और सेटअप
+
+अपना [API कुंजी](https://platform.openai.com/account/api-keys) प्राप्त करें।
+
+Python पैकेज इंस्टॉल करें:
+
+```bash
+pip install argilla
+```
+
+## कॉलबैक
+
+```python
+<!--IMPORTS:[{"imported": "ArgillaCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.argilla_callback.ArgillaCallbackHandler.html", "title": "Argilla"}]-->
+from langchain.callbacks import ArgillaCallbackHandler
+```
+
+एक [उदाहरण](/docs/integrations/callbacks/argilla) देखें।

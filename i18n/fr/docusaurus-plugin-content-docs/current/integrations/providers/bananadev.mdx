@@ -1,0 +1,70 @@
+---
+translated: true
+---
+
+# Banane
+
+>[Banane](https://www.banana.dev/) a fourni une inférence GPU sans serveur pour les modèles d'IA,
+> un pipeline de construction CI/CD et un simple cadre Python (`Potassium`) pour servir vos modèles.
+
+Cette page couvre comment utiliser l'écosystème [Banane](https://www.banana.dev) dans LangChain.
+
+## Installation et configuration
+
+- Installez le package python `banana-dev` :
+
+```bash
+pip install banana-dev
+```
+
+- Obtenez une clé d'API Banane depuis le [tableau de bord Banana.dev](https://app.banana.dev) et définissez-la comme variable d'environnement (`BANANA_API_KEY`)
+- Obtenez la clé de votre modèle et l'URL slug depuis la page des détails du modèle.
+
+## Définir votre modèle Banane
+
+Vous devrez configurer un dépôt Github pour votre application Banane. Vous pouvez démarrer en 5 minutes en utilisant [ce guide](https://docs.banana.dev/banana-docs/).
+
+Alternativement, pour un exemple de LLM prêt à l'emploi, vous pouvez consulter le dépôt GitHub de Banana [CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq). Forkez-le simplement et déployez-le dans Banane.
+
+D'autres dépôts de démarrage sont disponibles [ici](https://github.com/orgs/bananaml/repositories?q=demo-&type=all&language=&sort=).
+
+## Construire l'application Banane
+
+Pour utiliser les applications Banane dans Langchain, vous devez inclure la clé `outputs` dans le json renvoyé, et la valeur doit être une chaîne de caractères.
+
+```python
+# Return the results as a dictionary
+result = {'outputs': result}
+```
+
+Un exemple de fonction d'inférence serait :
+
+```python
+@app.handler("/")
+def handler(context: dict, request: Request) -> Response:
+    """Handle a request to generate code from a prompt."""
+    model = context.get("model")
+    tokenizer = context.get("tokenizer")
+    max_new_tokens = request.json.get("max_new_tokens", 512)
+    temperature = request.json.get("temperature", 0.7)
+    prompt = request.json.get("prompt")
+    prompt_template=f'''[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```:
+    {prompt}
+    [/INST]
+    '''
+    input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
+    output = model.generate(inputs=input_ids, temperature=temperature, max_new_tokens=max_new_tokens)
+    result = tokenizer.decode(output[0])
+    return Response(json={"outputs": result}, status=200)
+```
+
+Cet exemple provient du fichier `app.py` dans [CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq).
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Banana", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.bananadev.Banana.html", "title": "Banana"}]-->
+from langchain_community.llms import Banana
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/banana).

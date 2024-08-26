@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Pinecone
+
+>[Pinecone](https://docs.pinecone.io/docs/overview) est une base de données vectorielle avec de larges fonctionnalités.
+
+## Installation et configuration
+
+Installez le SDK Python :
+
+```bash
+pip install langchain-pinecone
+```
+
+## Magasin vectoriel
+
+Il existe un wrapper autour des index Pinecone, vous permettant de l'utiliser comme un vectorstore,
+que ce soit pour la recherche sémantique ou la sélection d'exemples.
+
+```python
+<!--IMPORTS:[{"imported": "PineconeVectorStore", "source": "langchain_pinecone", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_pinecone.vectorstores.PineconeVectorStore.html", "title": "Pinecone"}]-->
+from langchain_pinecone import PineconeVectorStore
+```
+
+Pour un parcours plus détaillé du vectorstore Pinecone, voir [ce notebook](/docs/integrations/vectorstores/pinecone)
+
+## Récupérateurs
+
+### Recherche hybride Pinecone
+
+```bash
+pip install pinecone-client pinecone-text
+```
+
+```python
+<!--IMPORTS:[{"imported": "PineconeHybridSearchRetriever", "source": "langchain_community.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.pinecone_hybrid_search.PineconeHybridSearchRetriever.html", "title": "Pinecone"}]-->
+from langchain_community.retrievers import (
+    PineconeHybridSearchRetriever,
+)
+```
+
+Pour plus d'informations détaillées, voir [ce notebook](/docs/integrations/retrievers/pinecone_hybrid_search).
+
+### Récupérateur d'auto-requête
+
+Le magasin vectoriel Pinecone peut être utilisé comme un récupérateur pour l'auto-requête.
+
+Pour plus d'informations détaillées, voir [ce notebook](/docs/integrations/retrievers/self_query/pinecone).

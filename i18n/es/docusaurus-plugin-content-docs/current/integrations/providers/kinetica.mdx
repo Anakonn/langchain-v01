@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Kinetica
+
+[Kinetica](https://www.kinetica.com/) es una base de datos en tiempo real diseñada específicamente para permitir
+análisis y IA generativa en datos de series temporales y espaciales.
+
+## Modelo de chat
+
+El wrapper de LLM de Kinetica utiliza el [Kinetica SqlAssist
+LLM](https://docs.kinetica.com/7.2/sql-gpt/concepts/) para transformar el lenguaje natural en
+SQL y simplificar el proceso de recuperación de datos.
+
+Consulte [Kinetica SqlAssist LLM Demo](/docs/integrations/chat/kinetica) para su uso.
+
+```python
+<!--IMPORTS:[{"imported": "ChatKinetica", "source": "langchain_community.chat_models.kinetica", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.kinetica.ChatKinetica.html", "title": "Kinetica"}]-->
+from langchain_community.chat_models.kinetica import ChatKinetica
+```
+
+## Almacén de vectores
+
+El wrapper de almacén de vectores de Kinetica aprovecha el soporte nativo de Kinetica para [búsqueda de similitud de vectores](https://docs.kinetica.com/7.2/vector_search/).
+
+Consulte [Kinetica Vectorsore API](/docs/integrations/vectorstores/kinetica) para su uso.
+
+```python
+<!--IMPORTS:[{"imported": "Kinetica", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.kinetica.Kinetica.html", "title": "Kinetica"}]-->
+from langchain_community.vectorstores import Kinetica
+```
+
+## Cargador de documentos
+
+El cargador de documentos de Kinetica se puede usar para cargar documentos de LangChain desde la
+base de datos de Kinetica.
+
+Consulte [Kinetica Document Loader](/docs/integrations/document_loaders/kinetica) para su uso
+
+```python
+<!--IMPORTS:[{"imported": "KineticaLoader", "source": "langchain_community.document_loaders.kinetica_loader", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.kinetica_loader.KineticaLoader.html", "title": "Kinetica"}]-->
+from langchain_community.document_loaders.kinetica_loader import KineticaLoader
+```
+
+## Recuperador
+
+El recuperador de Kinetica puede devolver documentos dados una consulta no estructurada.
+
+Consulte [Kinetica VectorStore based Retriever](/docs/integrations/retrievers/kinetica) para su uso

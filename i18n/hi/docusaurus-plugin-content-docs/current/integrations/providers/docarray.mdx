@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# डॉकरे
+
+> [डॉकरे](https://docarray.jina.ai/) एक लाइब्रेरी है जो अनस्ट्रक्चर्ड, मल्टीमोडल डेटा में नेस्टेड होता है, जिसमें टेक्स्ट, छवि, ऑडियो, वीडियो, 3D मेश आदि शामिल हैं। यह डीप-लर्निंग इंजीनियरों को एक पायथोनिक एपीआई के साथ मल्टीमोडल डेटा को कुशलतापूर्वक प्रोसेस, एम्बेड, खोज, सिफारिश, संग्रहित और स्थानांतरित करने की अनुमति देता है।
+
+## इंस्टॉलेशन और सेटअप
+
+हमें `docarray` पायथन पैकेज को इंस्टॉल करना होगा।
+
+```bash
+pip install docarray
+```
+
+## वेक्टर स्टोर
+
+LangChain `DocArray` लाइब्रेरी से `In-memory` और `HNSW` वेक्टर स्टोर तक पहुंच प्रदान करता है।
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/docarray_hnsw) देखें।
+
+```python
+from langchain_community.vectorstores DocArrayHnswSearch
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/docarray_in_memory) देखें।
+
+```python
+from langchain_community.vectorstores DocArrayInMemorySearch
+```

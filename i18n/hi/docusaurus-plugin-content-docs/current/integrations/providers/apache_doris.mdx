@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Apache Doris
+
+>[Apache Doris](https://doris.apache.org/) एक वास्तविक समय के विश्लेषण के लिए एक आधुनिक डेटा वेयरहाउस है।
+यह बड़े पैमाने पर वास्तविक समय के डेटा पर चमकदार तेज विश्लेषण प्रदान करता है।
+
+>आमतौर पर `Apache Doris` को OLAP में वर्गीकृत किया जाता है, और इसने [ClickBench — एक विश्लेषणात्मक DBMS के लिए बेंचमार्क](https://benchmark.clickhouse.com/) में उत्कृष्ट प्रदर्शन दिखाया है।
+> चूंकि इसमें एक सुपर-तेज वेक्टरीकृत कार्यान्वयन इंजन है, इसका उपयोग एक तेज वेक्टरडीबी के रूप में भी किया जा सकता है।
+
+## स्थापना और सेटअप
+
+```bash
+pip install pymysql
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/apache_doris) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ApacheDoris", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.apache_doris.ApacheDoris.html", "title": "Apache Doris"}]-->
+from langchain_community.vectorstores import ApacheDoris
+```

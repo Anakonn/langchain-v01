@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Arxiv
+
+>[arXiv](https://arxiv.org/) は、物理学、数学、コンピューターサイエンス、定量生物学、定量金融、統計学、電気工学、システム科学、経済学の分野で、200万件を超える学術論文を収録したオープンアクセスのアーカイブです。
+
+## インストールとセットアップ
+
+まず、`arxiv` Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install arxiv
+```
+
+次に、`arxiv.org`サイトからダウンロードしたPDFファイルをテキスト形式に変換する`PyMuPDF` Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install pymupdf
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/arxiv)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ArxivLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arxiv.ArxivLoader.html", "title": "Arxiv"}]-->
+from langchain_community.document_loaders import ArxivLoader
+```
+
+## リトリーバー
+
+[使用例](/docs/integrations/retrievers/arxiv)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ArxivRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.arxiv.ArxivRetriever.html", "title": "Arxiv"}]-->
+from langchain.retrievers import ArxivRetriever
+```

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Datadog 로그
+
+>[Datadog](https://www.datadoghq.com/)은 클라우드 규모 애플리케이션을 위한 모니터링 및 분석 플랫폼입니다.
+
+## 설치 및 설정
+
+```bash
+pip install datadog_api_client
+```
+
+Datadog API 키와 APP 키로 로더를 초기화해야 하며, 원하는 로그를 추출하기 위한 쿼리를 설정해야 합니다.
+
+## 문서 로더
+
+[사용 예제](/docs/integrations/document_loaders/datadog_logs)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "DatadogLogsLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.datadog_logs.DatadogLogsLoader.html", "title": "Datadog Logs"}]-->
+from langchain_community.document_loaders import DatadogLogsLoader
+```

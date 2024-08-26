@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Weaviate
+
+>[Weaviate](https://weaviate.io/)는 오픈 소스 벡터 데이터베이스입니다. 데이터 객체와 ML 모델에서 생성된 벡터 임베딩을 저장하고 수십억 개의 데이터 객체로 확장할 수 있습니다.
+
+`Weaviate`란 무엇인가요?
+- Weaviate는 오픈 소스 벡터 검색 엔진 유형의 데이터베이스입니다.
+- Weaviate를 사용하면 JSON 문서를 클래스 속성 방식으로 저장하고 이러한 문서를 벡터 공간에 나타내는 기계 학습 벡터를 연결할 수 있습니다.
+- Weaviate는 독립적으로 사용(벡터 제공) 또는 다양한 모듈과 함께 사용할 수 있으며, 이 모듈은 벡터화를 수행하고 핵심 기능을 확장할 수 있습니다.
+- Weaviate에는 데이터에 쉽게 액세스할 수 있는 GraphQL API가 있습니다.
+- 우리는 수 밀리초 내에 쿼리할 수 있는 벡터 검색 설정을 프로덕션에 가져오는 것을 목표로 합니다([오픈 소스 벤치마크](https://weaviate.io/developers/weaviate/current/benchmarks/)를 확인하여 Weaviate가 사용 사례에 적합한지 확인하세요).
+- [기본 시작 가이드](https://weaviate.io/developers/weaviate/current/core-knowledge/basics.html)에서 5분 내에 Weaviate를 알아보세요.
+
+**Weaviate 자세히 알아보기:**
+
+`Weaviate`는 다양한 미디어 유형(텍스트, 이미지 등)에 대한 기본 지원이 있는 저지연 벡터 검색 엔진입니다. 의미 검색, 질문-답변 추출, 분류, 사용자 정의 모델(PyTorch/TensorFlow/Keras) 등을 제공합니다. Go로 처음부터 구축된 Weaviate는 객체와 벡터를 모두 저장하여 벡터 검색을 구조화된 필터링과 클라우드 네이티브 데이터베이스의 내결함성과 결합할 수 있습니다. 이 모든 것은 GraphQL, REST 및 다양한 클라이언트 측 프로그래밍 언어를 통해 액세스할 수 있습니다.
+
+## 설치 및 설정
+
+Python SDK 설치:
+
+```bash
+pip install langchain-weaviate
+```
+
+## 벡터 저장소
+
+`Weaviate` 인덱스를 래핑하는 래퍼가 있어 의미 검색이나 예제 선택을 위해 벡터 저장소로 사용할 수 있습니다.
+
+이 벡터 저장소를 가져오려면:
+
+```python
+from langchain_weaviate import WeaviateVectorStore
+```
+
+Weaviate 래퍼에 대한 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/weaviate)을 참조하세요.

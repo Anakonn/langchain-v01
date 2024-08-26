@@ -1,0 +1,248 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# 코드 기여
+
+이 프로젝트에 기여하려면 ["포크 및 풀 리퀘스트"](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) 워크플로를 따르세요.
+메인테이너가 아닌 경우 이 저장소에 직접 푸시하지 마세요.
+
+풀 리퀘스트를 열 때 체크인된 풀 리퀘스트 템플릿을 따르세요. 관련 이슈를 기록하고 관련 메인테이너를 태그하세요.
+
+풀 리퀘스트는 먼저 포맷팅, 린팅, 테스트 검사를 통과하지 않으면 병합될 수 없습니다. 로컬에서 이러한 검사를 실행하는 방법은 [테스트](#testing) 및 [포맷팅 및 린팅](#formatting-and-linting)을 참조하세요.
+
+우리는 훌륭한 문서화 및 테스트를 유지하는 것이 중요합니다. 만약 당신이:
+
+- 버그를 수정하는 경우
+  - 가능한 경우 관련 유닛 또는 통합 테스트를 추가하세요. 이는 `tests/unit_tests` 및 `tests/integration_tests`에 위치합니다.
+- 개선을 하는 경우
+  - 영향을 받는 예제 노트북 및 문서를 업데이트하세요. 이는 `docs`에 위치합니다.
+  - 관련이 있을 때 유닛 및 통합 테스트를 업데이트하세요.
+- 기능을 추가하는 경우
+  - `docs/docs/`에 데모 노트북을 추가하세요.
+  - 유닛 및 통합 테스트를 추가하세요.
+
+우리는 작고 진보 지향적인 팀입니다. 추가하거나 변경하고 싶은 것이 있다면 풀 리퀘스트를 여는 것이 우리의 주의를 끌 수 있는 가장 좋은 방법입니다.
+
+## 🚀 빠른 시작
+
+이 빠른 시작 가이드는 로컬에서 저장소를 실행하는 방법을 설명합니다.
+[개발 컨테이너](https://containers.dev/)에 대한 내용은 [.devcontainer 폴더](https://github.com/langchain-ai/langchain/tree/master/.devcontainer)를 참조하세요.
+
+### 종속성 관리: Poetry 및 기타 환경/종속성 관리자
+
+이 프로젝트는 [Poetry](https://python-poetry.org/) v1.7.1+을 종속성 관리자로 사용합니다.
+
+❗참고: _Poetry를 설치하기 전에_, `Conda`를 사용하는 경우 새 Conda 환경을 생성하고 활성화하세요 (예: `conda create -n langchain python=3.9`).
+
+Poetry 설치: **[설치 방법에 대한 문서](https://python-poetry.org/docs/#installation)**.
+
+❗참고: `Conda` 또는 `Pyenv`를 환경/패키지 관리자로 사용하는 경우, Poetry 설치 후 가상 환경 Python을 사용하도록 Poetry에 알려야 합니다 (`poetry config virtualenvs.prefer-active-python true`).
+
+### 다른 패키지
+
+이 저장소에는 여러 패키지가 포함되어 있습니다:
+
+- `langchain-core`: 주요 추상화의 기본 인터페이스 및 체인에서 이를 결합하는 논리 (LangChain Expression Language).
+- `langchain-community`: 다양한 구성 요소의 서드 파티 통합.
+- `langchain`: 애플리케이션의 인지 아키텍처를 구성하는 체인, 에이전트 및 검색 논리.
+- `langchain-experimental`: 기술이 새롭고 아직 테스트 중이거나 대부분의 프로덕션 시스템에서 가능하지 않은 접근 권한이 필요한 구성 요소 및 체인.
+- 파트너 통합: 독립적으로 버전 관리되는 `libs/partners`의 파트너 패키지.
+
+각각 자체 개발 환경을 가지고 있습니다. 문서는 최상위 makefile에서 실행되지만, 개발은 개별 테스트 및 릴리스 플로우로 나뉩니다.
+
+이 빠른 시작 가이드에서는 langchain-community부터 시작합니다:
+
+```bash
+cd libs/community
+```
+
+### 로컬 개발 종속성
+
+langchain-community 개발 요구 사항을 설치합니다 (langchain 실행, 예제 실행, 린팅, 포맷팅, 테스트 및 커버리지 실행):
+
+```bash
+poetry install --with lint,typing,test,test_integration
+```
+
+그런 다음 종속성 설치를 확인합니다:
+
+```bash
+make test
+```
+
+설치 중에 `debugpy`의 `WheelFileValidationError`를 받는 경우, Poetry v1.6.1+를 실행하고 있는지 확인하세요. 이 버그는 이전 버전의 Poetry (예: 1.4.1)에 있었고 최신 릴리스에서 해결되었습니다.
+v1.6.1+에서 여전히 이 버그가 발생하는 경우, "모던 설치"를 비활성화하고 (`poetry config installer.modern-installation false`) 종속성을 다시 설치해 보세요.
+자세한 내용은 [이 `debugpy` 이슈](https://github.com/microsoft/debugpy/issues/1246)를 참조하세요.
+
+### 테스트
+
+_In `langchain`, `langchain-community`, 및 `langchain-experimental`, 일부 테스트 종속성은 선택 사항입니다; 선택적 종속성 섹션을 참조하세요._
+
+유닛 테스트는 외부 API 호출이 필요하지 않은 모듈식 논리를 다룹니다.
+새로운 논리를 추가하는 경우 유닛 테스트를 추가하세요.
+
+유닛 테스트를 실행하려면:
+
+```bash
+make test
+```
+
+Docker에서 유닛 테스트를 실행하려면:
+
+```bash
+make docker_tests
+```
+
+또한 [통합 테스트 및 코드 커버리지](/docs/contributing/testing/)도 가능합니다.
+
+### langchain_core 또는 langchain_experimental만 개발하기
+
+`langchain_core` 또는 `langchain_experimental`만 개발하는 경우, 해당 프로젝트의 종속성만 설치하고 테스트를 실행할 수 있습니다:
+
+```bash
+cd libs/core
+poetry install --with test
+make test
+```
+
+또는:
+
+```bash
+cd libs/experimental
+poetry install --with test
+make test
+```
+
+### 포맷팅 및 린팅
+
+PR을 제출하기 전에 로컬에서 실행하세요; CI 시스템도 확인할 것입니다.
+
+#### 코드 포맷팅
+
+이 프로젝트의 포맷팅은 [ruff](https://docs.astral.sh/ruff/rules/)를 통해 이루어집니다.
+
+문서, 요리책 및 템플릿에 대한 포맷팅을 실행하려면:
+
+```bash
+make format
+```
+
+라이브러리에 대한 포맷팅을 실행하려면, 관련 라이브러리 디렉터리에서 동일한 명령을 실행하세요:
+
+```bash
+cd libs/{LIBRARY}
+make format
+```
+
+또한, 현재 브랜치에서 수정된 파일에 대해서만 포맷터를 실행하려면 format_diff 명령을 사용할 수 있습니다:
+
+```bash
+make format_diff
+```
+
+이는 프로젝트의 일부분만 수정했을 때 변경 사항이 제대로 포맷팅되었는지 확인하는 데 특히 유용합니다.
+
+#### 린팅
+
+이 프로젝트의 린팅은 [ruff](https://docs.astral.sh/ruff/rules/) 및 [mypy](http://mypy-lang.org/)의 조합을 통해 이루어집니다.
+
+문서, 요리책 및 템플릿에 대한 린팅을 실행하려면:
+
+```bash
+make lint
+```
+
+라이브러리에 대한 린팅을 실행하려면, 관련 라이브러리 디렉터리에서 동일한 명령을 실행하세요:
+
+```bash
+cd libs/{LIBRARY}
+make lint
+```
+
+또한, 현재 브랜치에서 수정된 파일에 대해서만 린터를 실행하려면 lint_diff 명령을 사용할 수 있습니다:
+
+```bash
+make lint_diff
+```
+
+이는 프로젝트의 특정 부분만 변경했을 때 변경 사항이 린팅 기준을 충족하는지 확인하는 데 매우 유용합니다.
+
+린팅이 번거로울 수 있다는 것을 인식하고 있습니다. 린팅을 하고 싶지 않다면 프로젝트 메인테이너에게 연락하세요. 메인테이너가 도와드릴 수 있습니다. 우리는 이것이 좋은 코드 기여의 장애물이 되지 않기를 원합니다.
+
+#### 철자 검사
+
+이 프로젝트의 철자 검사는 [codespell](https://github.com/codespell-project/codespell)을 통해 이루어집니다.
+`codespell`은 일반적인 오타를 찾기 때문에, 잘못된 긍정 (정확하게 철자가 맞지만 드물게 사용되는 단어) 및 잘못된 부정 (철자가 잘못된 단어를 찾지 못함) 단어가 있을 수 있습니다.
+
+이 프로젝트에 대한 철자를 검사하려면:
+
+```bash
+make spell_check
+```
+
+제자에서 철자를 수정하려면:
+
+```bash
+make spell_fix
+```
+
+codespell이 단어를 잘못 표시하는 경우, 해당 단어를 `pyproject.toml` 파일의 codespell 구성에 추가하여 철자 검사를 건너뛸 수 있습니다.
+
+```python
+[tool.codespell]
+...
+# 여기에 추가하세요:
+
+ignore-words-list = 'momento,collison,ned,foor,reworkd,parth,whats,aapply,mysogyny,unsecure'
+```
+
+## 선택적 종속성 작업
+
+`langchain`, `langchain-community`, 및 `langchain-experimental`은 이러한 패키지를 경량화하기 위해 선택적 종속성에 의존합니다.
+
+`langchain-core` 및 파트너 패키지는 **이러한 방식으로** 선택적 종속성을 사용하지 않습니다.
+
+**유닛 테스트**가 패키지에 의존하는 경우에만 새로운 종속성을 추가해야 합니다.
+패키지가 **통합 테스트**에만 필요하다면, 이러한 단계를 건너뛰고 모든 pyproject.toml 및 poetry.lock 파일을 그대로 두세요.
+
+Langchain에 새로운 종속성을 추가하는 경우, 선택적 종속성일 것이라고 가정하고 대부분의 사용자가 설치하지 않을 것임을 가정하세요.
+
+종속성을 설치하지 않은 사용자는 **경고, 오류, 예외 없이** 코드를 **임포트**할 수 있어야 합니다.
+
+pyproject.toml 파일에 종속성을 올바르게 추가하려면 다음 단계를 따르세요:
+
+1. 주요 그룹에 종속성을 선택적 종속성으로 추가합니다.
+
+```bash
+poetry add --optional [package_name]
+```
+
+2. pyproject.toml을 열고 종속성을 `extended_testing` extra에 추가합니다.
+3. extra를 업데이트하려면 poetry 파일을 다시 잠급니다.
+
+```bash
+poetry lock --no-update
+```
+
+4. 최소한 새 코드를 임포트하려고 시도하는 유닛 테스트를 추가합니다. 이상적으로는 경량 픽스처를 사용하여 코드의 논리를 테스트합니다.
+5. 종속성이 필요한 모든 테스트에 대해 `@pytest.mark.requires(package_name)` 데코레이터를 사용하세요.
+
+## Jupyter 노트북 추가
+
+Jupyter 노트북 예제를 추가하는 경우, 선택적 `dev` 종속성을 설치하고 싶을 것입니다.
+
+dev 종속성을 설치하려면:
+
+```bash
+poetry install --with dev
+```
+
+노트북을 실행하려면:
+
+```bash
+poetry run jupyter notebook
+```
+
+`poetry install`을 실행하면, `langchain` 패키지가 가상 환경에 편집 가능한 상태로 설치되므로 새 논리를 노트북에 임포트할 수 있습니다.

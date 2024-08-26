@@ -1,0 +1,32 @@
+---
+translated: true
+---
+
+# Linterna
+
+Esta página cubre cómo usar la [Linterna](https://github.com/lanterndata/lantern) dentro de LangChain.
+Se divide en dos partes: configuración y referencias a envolturas específicas de Linterna.
+
+## Configuración
+
+1. El primer paso es crear una base de datos con la extensión `lantern` instalada.
+
+    Siga los pasos de la [Guía de instalación de Linterna](https://github.com/lanterndata/lantern#-quick-install) para instalar la base de datos y la extensión. La imagen de Docker es la forma más sencilla de comenzar.
+
+## Envolturas
+
+### VectorStore
+
+Existe una envoltura alrededor de las bases de datos vectoriales de Postgres, lo que le permite usarla como un almacén de vectores,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+Para importar este almacén de vectores:
+
+```python
+<!--IMPORTS:[{"imported": "Lantern", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lantern.Lantern.html", "title": "Lantern"}]-->
+from langchain_community.vectorstores import Lantern
+```
+
+### Uso
+
+Para una guía más detallada de la envoltura de Linterna, consulte [este cuaderno](/docs/integrations/vectorstores/lantern)

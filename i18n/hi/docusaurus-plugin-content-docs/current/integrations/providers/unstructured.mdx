@@ -1,0 +1,249 @@
+---
+translated: true
+---
+
+# अनरचित
+
+> [Unstructured.IO](https://www.unstructured.io/) से `अनरचित` पैकेज PDF और Word दस्तावेज़ जैसे कच्चे स्रोत दस्तावेज़ों से साफ़ पाठ निकालता है।
+यह पृष्ठ LangChain में [`अनरचित`](https://github.com/Unstructured-IO/unstructured) पारिस्थितिकी तंत्र का उपयोग करने को कवर करता है।
+
+## स्थापना और सेटअप
+
+यदि आप स्थानीय रूप से चलने वाले लोडर का उपयोग कर रहे हैं, तो `अनरचित` और इसकी निर्भरताओं को स्थानीय रूप से चलाने के लिए निम्नलिखित चरणों का उपयोग करें।
+
+- `pip install अनरचित` के साथ Python SDK स्थापित करें।
+    - आप दस्तावेज़ विशिष्ट आवश्यकताओं को अतिरिक्त के साथ स्थापित कर सकते हैं, यानी `pip install "अनरचित[docx]"`।
+    - सभी दस्तावेज़ प्रकारों के लिए आवश्यकताओं को स्थापित करने के लिए `pip install "अनरचित[all-docs]"` का उपयोग करें।
+- यदि वे आपके सिस्टम पर पहले से उपलब्ध नहीं हैं, तो निम्नलिखित सिस्टम निर्भरताएं स्थापित करें। आप किन दस्तावेज़ प्रकारों का पार्सिंग कर रहे हैं, इस पर निर्भर करता है कि आपको इनमें से सभी की आवश्यकता नहीं हो सकती है।
+    - `libmagic-dev` (फ़ाइल प्रकार का पता लगाना)
+    - `poppler-utils` (छवियां और PDF)
+    - `tesseract-ocr`(छवियां और PDF)
+    - `libreoffice` (MS Office दस्तावेज़)
+    - `pandoc` (EPUB)
+
+यदि आप कम सेटअप के साथ तेजी से चालू होना चाहते हैं, तो आप `pip install अनरचित` चला सकते हैं और `UnstructuredAPIFileLoader` या `UnstructuredAPIFileIOLoader` का उपयोग कर सकते हैं। यह होस्ट किए गए Unstructured API का उपयोग करके आपके दस्तावेज़ को प्रोसेस करेगा।
+
+`Unstructured API` अनुरोध करने के लिए API कुंजियों की आवश्यकता होती है।
+आप [यहाँ](https://unstructured.io/api-key-hosted) से एक API कुंजी का अनुरोध कर सकते हैं और आज ही इसका उपयोग शुरू कर सकते हैं!
+API कॉल करने की शुरुआत करने के लिए README [यहाँ](https://github.com/Unstructured-IO/unstructured-api) देखें।
+हम आपके प्रतिक्रिया सुनने के लिए उत्सुक हैं, हमारे [समुदाय स्लैक](https://join.slack.com/t/unstructuredw-kbe4326/shared_invite/zt-1x7cgo0pg-PTptXWylzPQF9xZolzCnwQ) में इसके बारे में बताएं।
+और गुणवत्ता और प्रदर्शन में सुधार के लिए तैयार रहें!
+यदि आप Unstructured API को स्वयं होस्ट करना या इसे स्थानीय रूप से चलाना चाहते हैं, तो [यहाँ](https://github.com/Unstructured-IO/unstructured-api#dizzy-instructions-for-using-the-docker-image) दिए गए निर्देशों का पालन करें।
+
+## डेटा लोडर
+
+`Unstructured` का प्राथमिक उपयोग डेटा लोडर में है।
+
+### UnstructuredAPIFileIOLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/unstructured_file#unstructured-api) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredAPIFileIOLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredAPIFileIOLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredAPIFileIOLoader
+```
+
+### UnstructuredAPIFileLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/unstructured_file#unstructured-api) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredAPIFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredAPIFileLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredAPIFileLoader
+```
+
+### UnstructuredCHMLoader
+
+`CHM` का मतलब है `Microsoft Compiled HTML Help`।
+
+API दस्तावेज़ में उपयोग उदाहरण देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredCHMLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.chm.UnstructuredCHMLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredCHMLoader
+```
+
+### UnstructuredCSVLoader
+
+एक `अल्पविराम-पृथक मूल्य` (`CSV`) फ़ाइल एक विराम-पृथक पाठ फ़ाइल है जो मूल्यों को अल्पविराम से अलग करने के लिए एक अल्पविराम का उपयोग करती है। फ़ाइल की प्रत्येक पंक्ति एक डेटा रिकॉर्ड है।
+प्रत्येक रिकॉर्ड में एक या अधिक फ़ील्ड होते हैं, जो अल्पविराम से अलग होते हैं।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/csv#unstructuredcsvloader) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredCSVLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.csv_loader.UnstructuredCSVLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredCSVLoader
+```
+
+### UnstructuredEmailLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/email) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredEmailLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.email.UnstructuredEmailLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredEmailLoader
+```
+
+### UnstructuredEPubLoader
+
+[EPUB](https://en.wikipedia.org/wiki/EPUB) एक `ई-बुक फ़ाइल प्रारूप` है जो ".epub" फ़ाइल एक्सटेंशन का उपयोग करता है। इस शब्द का अर्थ है इलेक्ट्रॉनिक प्रकाशन और कभी-कभी `ePub` के रूप में स्टाइल किया जाता है। `EPUB` कई ई-रीडर द्वारा समर्थित है, और अधिकांश स्मार्टफोन, टैबलेट और कंप्यूटरों के लिए संगत सॉफ़्टवेयर उपलब्ध है।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/epub) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredEPubLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.epub.UnstructuredEPubLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredEPubLoader
+```
+
+### UnstructuredExcelLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_excel) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredExcelLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.excel.UnstructuredExcelLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredExcelLoader
+```
+
+### UnstructuredFileIOLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/google_drive#passing-in-optional-file-loaders) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredFileIOLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredFileIOLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredFileIOLoader
+```
+
+### UnstructuredFileLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/unstructured_file) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredFileLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredFileLoader
+```
+
+### UnstructuredHTMLLoader
+
+[उपयोग उदाहरण](/docs/modules/data_connection/document_loaders/html) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html.UnstructuredHTMLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredHTMLLoader
+```
+
+### UnstructuredImageLoader
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/image) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredImageLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.image.UnstructuredImageLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredImageLoader
+```
+
+### UnstructuredMarkdownLoader
+
+[उपयोग उदाहरण](/docs/integrations/vectorstores/starrocks) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredMarkdownLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.markdown.UnstructuredMarkdownLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
+```
+
+### UnstructuredODTLoader
+
+`Open Document Format for Office Applications (ODF)`, जिसे `OpenDocument` भी कहा जाता है, एक खुला फ़ाइल प्रारूप है जो वर्ड प्रोसेसिंग दस्तावेज़, स्प्रेडशीट, प्रस्तुतियों और ग्राफ़िक्स के लिए है और ZIP-संपीड़ित XML फ़ाइलों का उपयोग करता है। इसका विकास कार्यालय अनुप्रयोगों के लिए एक खुला, XML-आधारित फ़ाइल प्रारूप विनिर्देश प्रदान करने के उद्देश्य से किया गया था।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/odt) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredODTLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.odt.UnstructuredODTLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredODTLoader
+```
+
+### UnstructuredOrgModeLoader
+
+एक [Org Mode](https://en.wikipedia.org/wiki/Org-mode) दस्तावेज़ एक दस्तावेज़ संपादन, स्वरूपण और संगठन मोड है, जो नोट्स, योजना और Emacs मुक्त सॉफ़्टवेयर पाठ संपादक के भीतर लेखन के लिए डिज़ाइन किया गया है।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/org_mode) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredOrgModeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.org_mode.UnstructuredOrgModeLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredOrgModeLoader
+```
+
+### UnstructuredPDFLoader
+
+[उपयोग उदाहरण](/docs/modules/data_connection/document_loaders/pdf#using-unstructured) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPDFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.pdf.UnstructuredPDFLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredPDFLoader
+```
+
+### अनरचित पावरपॉइंट लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_powerpoint) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPowerPointLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.powerpoint.UnstructuredPowerPointLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+```
+
+### अनरचित आरएसटी लोडर
+
+एक `reStructured Text` (`RST`) फ़ाइल तकनीकी प्रलेखन के लिए प्राथमिक रूप से Python प्रोग्रामिंग भाषा समुदाय में उपयोग किए जाने वाले पाठ्य आंकड़ों के लिए एक फ़ाइल प्रारूप है।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/rst) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredRSTLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rst.UnstructuredRSTLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredRSTLoader
+```
+
+### अनरचित आरटीएफ लोडर
+
+API प्रलेखन में उपयोग उदाहरण देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredRTFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rtf.UnstructuredRTFLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredRTFLoader
+```
+
+### अनरचित टीएसवी लोडर
+
+एक `tab-separated values` (`TSV`) फ़ाइल तालिकीय आंकड़ों को संग्रहीत करने के लिए एक सरल, पाठ-आधारित फ़ाइल प्रारूप है।
+रिकॉर्ड नई पंक्तियों द्वारा अलग किए जाते हैं, और एक रिकॉर्ड के भीतर मूल्य टैब वर्णों द्वारा अलग किए जाते हैं।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/tsv) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredTSVLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tsv.UnstructuredTSVLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredTSVLoader
+```
+
+### अनरचित यूआरएल लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/url) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredURLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.url.UnstructuredURLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredURLLoader
+```
+
+### अनरचित वर्ड दस्तावेज़ लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_word#using-unstructured) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredWordDocumentLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.word_document.UnstructuredWordDocumentLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+```
+
+### अनरचित एक्सएमएल लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/xml) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredXMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.xml.UnstructuredXMLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredXMLLoader
+```

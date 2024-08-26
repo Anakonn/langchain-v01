@@ -1,0 +1,98 @@
+---
+translated: true
+---
+
+# Tencent
+
+>[Tencent Holdings Ltd. (Wikipedia)](https://en.wikipedia.org/wiki/Tencent) (chino: 腾讯; pinyin: Téngxùn)
+> es un conglomerado tecnológico multinacional chino y una empresa matriz con sede
+> en Shenzhen. `Tencent` es una de las empresas multimedia con mayores ingresos
+> del mundo en función de los ingresos. También es la empresa más grande del mundo
+> en la industria de los videojuegos en función de sus inversiones de capital.
+
+## Modelo de chat
+
+>[API de modelo híbrido de Tencent](https://cloud.tencent.com/document/product/1729) (`Hunyuan API`)
+> implementa la comunicación de diálogo, la generación de contenido,
+> el análisis y la comprensión, y se puede utilizar ampliamente en diversos escenarios como el servicio
+> al cliente inteligente, el marketing inteligente, la interpretación de roles, la publicidad, la redacción,
+> la descripción de productos, la creación de guiones, la generación de currículums, la redacción de artículos, la generación de código, el análisis de datos y el análisis de contenido.
+
+Para más información, consulte [este cuaderno](/docs/integrations/chat/tencent_hunyuan)
+
+```python
+<!--IMPORTS:[{"imported": "ChatHunyuan", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.hunyuan.ChatHunyuan.html", "title": "Tencent"}]-->
+from langchain_community.chat_models import ChatHunyuan
+```
+
+## Cargadores de documentos
+
+### Tencent COS
+
+>[Tencent Cloud Object Storage (COS)](https://www.tencentcloud.com/products/cos) es un servicio de almacenamiento distribuido
+> que le permite almacenar cualquier cantidad de datos desde cualquier lugar a través de protocolos HTTP/HTTPS.
+> `COS` no tiene restricciones en la estructura o el formato de los datos. Tampoco tiene límite de tamaño de bucket y
+> administración de particiones, lo que lo hace adecuado para prácticamente cualquier caso de uso, como entrega de datos,
+> procesamiento de datos y lagos de datos. COS proporciona una consola basada en web, SDK y API en varios idiomas,
+> herramienta de línea de comandos y herramientas gráficas. Funciona bien con las API de Amazon S3, lo que le permite
+> acceder rápidamente a las herramientas y complementos de la comunidad.
+
+Instale el SDK de Python:
+
+```bash
+pip install cos-python-sdk-v5
+```
+
+#### Directorio Tencent COS
+
+Para más información, consulte [este cuaderno](/docs/integrations/document_loaders/tencent_cos_directory)
+
+```python
+<!--IMPORTS:[{"imported": "TencentCOSDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tencent_cos_directory.TencentCOSDirectoryLoader.html", "title": "Tencent"}]-->
+from langchain_community.document_loaders import TencentCOSDirectoryLoader
+from qcloud_cos import CosConfig
+```
+
+#### Archivo Tencent COS
+
+Para más información, consulte [este cuaderno](/docs/integrations/document_loaders/tencent_cos_file)
+
+```python
+<!--IMPORTS:[{"imported": "TencentCOSFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tencent_cos_file.TencentCOSFileLoader.html", "title": "Tencent"}]-->
+from langchain_community.document_loaders import TencentCOSFileLoader
+from qcloud_cos import CosConfig
+```
+
+## Tienda de vectores
+
+### Tencent VectorDB
+
+>[Tencent Cloud VectorDB](https://www.tencentcloud.com/products/vdb) es un servicio de base de datos distribuida
+> totalmente administrada y desarrollada internamente, dedicado al almacenamiento, la recuperación y el análisis
+> de datos vectoriales multidimensionales. La base de datos admite una variedad de tipos de índice y métodos de cálculo
+> de similitud, y un solo índice admite 1000 millones de vectores, millones de QPS y una latencia de consulta de milisegundos.
+> `Tencent Cloud Vector Database` no solo puede proporcionar una base de conocimientos externa para modelos a gran escala y mejorar
+> la precisión de las respuestas de los modelos a gran escala, sino que también se puede utilizar ampliamente en campos de IA como
+> sistemas de recomendación, servicios de PLN, visión por computadora y servicio al cliente inteligente.
+
+Instale el SDK de Python:
+
+```bash
+pip install tcvectordb
+```
+
+Para más información, consulte [este cuaderno](/docs/integrations/vectorstores/tencentvectordb)
+
+```python
+<!--IMPORTS:[{"imported": "TencentVectorDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tencentvectordb.TencentVectorDB.html", "title": "Tencent"}]-->
+from langchain_community.vectorstores import TencentVectorDB
+```
+
+## Cargador de chat
+
+### WeChat
+
+>[WeChat](https://www.wechat.com/) o `Weixin` en chino es una aplicación china
+> de mensajería instantánea, redes sociales y pago móvil desarrollada por `Tencent`.
+
+Consulte un [ejemplo de uso](/docs/integrations/chat_loaders/wechat).

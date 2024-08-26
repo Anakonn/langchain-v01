@@ -1,0 +1,158 @@
+---
+translated: true
+---
+
+# Flyte
+
+> [Flyte](https://github.com/flyteorg/flyte) est un orchestrateur open-source qui facilite la construction de pipelines de données et d'apprentissage automatique de niveau production.
+> Il est conçu pour la mise à l'échelle et la reproductibilité, en s'appuyant sur Kubernetes comme plateforme sous-jacente.
+
+L'objectif de ce notebook est de démontrer l'intégration d'un `FlyteCallback` dans votre tâche Flyte, vous permettant de surveiller et de suivre efficacement vos expériences LangChain.
+
+## Installation et configuration
+
+- Installez la bibliothèque Flytekit en exécutant la commande `pip install flytekit`.
+- Installez le plugin Flytekit-Envd en exécutant la commande `pip install flytekitplugins-envd`.
+- Installez LangChain en exécutant la commande `pip install langchain`.
+- Installez [Docker](https://docs.docker.com/engine/install/) sur votre système.
+
+## Tâches Flyte
+
+Une [tâche](https://docs.flyte.org/en/latest/user_guide/basics/tasks.html) Flyte est le bloc de construction fondamental de Flyte.
+Pour exécuter des expériences LangChain, vous devez écrire des tâches Flyte qui définissent les étapes et les opérations spécifiques impliquées.
+
+REMARQUE : Le [guide de démarrage](https://docs.flyte.org/projects/cookbook/en/latest/index.html) offre des instructions détaillées et étape par étape sur l'installation locale de Flyte et l'exécution de votre premier pipeline Flyte.
+
+Tout d'abord, importez les dépendances nécessaires pour prendre en charge vos expériences LangChain.
+
+```python
+<!--IMPORTS:[{"imported": "AgentType", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html", "title": "Flyte"}, {"imported": "initialize_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html", "title": "Flyte"}, {"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Flyte"}, {"imported": "FlyteCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.flyte_callback.FlyteCallbackHandler.html", "title": "Flyte"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Flyte"}, {"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Flyte"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Flyte"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Flyte"}]-->
+import os
+
+from flytekit import ImageSpec, task
+from langchain.agents import AgentType, initialize_agent, load_tools
+from langchain.callbacks import FlyteCallbackHandler
+from langchain.chains import LLMChain
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain_core.messages import HumanMessage
+```
+
+Configurez les variables d'environnement nécessaires pour utiliser l'API OpenAI et l'API Serp :
+
+```python
+# Set OpenAI API key
+os.environ["OPENAI_API_KEY"] = "<your_openai_api_key>"
+
+# Set Serp API key
+os.environ["SERPAPI_API_KEY"] = "<your_serp_api_key>"
+```
+
+Remplacez `<your_openai_api_key>` et `<your_serp_api_key>` par vos clés API respectives obtenues auprès d'OpenAI et de Serp API.
+
+Pour garantir la reproductibilité de vos pipelines, les tâches Flyte sont conteneurisées.
+Chaque tâche Flyte doit être associée à une image, qui peut être partagée dans l'ensemble du [workflow](https://docs.flyte.org/en/latest/user_guide/basics/workflows.html) Flyte ou fournie séparément pour chaque tâche.
+
+Pour simplifier le processus d'approvisionnement des dépendances requises pour chaque tâche Flyte, vous pouvez initialiser un objet [`ImageSpec`](https://docs.flyte.org/en/latest/user_guide/customizing_dependencies/imagespec.html).
+Cette approche déclenche automatiquement une construction Docker, éliminant le besoin pour les utilisateurs de créer manuellement une image Docker.
+
+```python
+custom_image = ImageSpec(
+    name="langchain-flyte",
+    packages=[
+        "langchain",
+        "openai",
+        "spacy",
+        "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0.tar.gz",
+        "textstat",
+        "google-search-results",
+    ],
+    registry="<your-registry>",
+)
+```
+
+Vous avez la flexibilité de pousser l'image Docker vers un registre de votre choix.
+[Docker Hub](https://hub.docker.com/) ou [GitHub Container Registry (GHCR)](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) est une option pratique pour commencer.
+
+Une fois que vous avez sélectionné un registre, vous pouvez procéder à la création de tâches Flyte qui enregistrent les métriques LangChain dans Flyte Deck.
+
+Les exemples suivants démontrent des tâches liées aux modèles de langage OpenAI, aux chaînes et aux agents avec des outils :
+
+### Modèle de langage
+
+```python
+@task(disable_deck=False, container_image=custom_image)
+def langchain_llm() -> str:
+    llm = ChatOpenAI(
+        model_name="gpt-3.5-turbo",
+        temperature=0.2,
+        callbacks=[FlyteCallbackHandler()],
+    )
+    return llm.invoke([HumanMessage(content="Tell me a joke")]).content
+```
+
+### Chaîne
+
+```python
+@task(disable_deck=False, container_image=custom_image)
+def langchain_chain() -> list[dict[str, str]]:
+    template = """You are a playwright. Given the title of play, it is your job to write a synopsis for that title.
+Title: {title}
+Playwright: This is a synopsis for the above play:"""
+    llm = ChatOpenAI(
+        model_name="gpt-3.5-turbo",
+        temperature=0,
+        callbacks=[FlyteCallbackHandler()],
+    )
+    prompt_template = PromptTemplate(input_variables=["title"], template=template)
+    synopsis_chain = LLMChain(
+        llm=llm, prompt=prompt_template, callbacks=[FlyteCallbackHandler()]
+    )
+    test_prompts = [
+        {
+            "title": "documentary about good video games that push the boundary of game design"
+        },
+    ]
+    return synopsis_chain.apply(test_prompts)
+```
+
+### Agent
+
+```python
+@task(disable_deck=False, container_image=custom_image)
+def langchain_agent() -> str:
+    llm = OpenAI(
+        model_name="gpt-3.5-turbo",
+        temperature=0,
+        callbacks=[FlyteCallbackHandler()],
+    )
+    tools = load_tools(
+        ["serpapi", "llm-math"], llm=llm, callbacks=[FlyteCallbackHandler()]
+    )
+    agent = initialize_agent(
+        tools,
+        llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        callbacks=[FlyteCallbackHandler()],
+        verbose=True,
+    )
+    return agent.run(
+        "Who is Leonardo DiCaprio's girlfriend? Could you calculate her current age and raise it to the power of 0.43?"
+    )
+```
+
+Ces tâches servent de point de départ pour exécuter vos expériences LangChain dans Flyte.
+
+## Exécuter les tâches Flyte sur Kubernetes
+
+Pour exécuter les tâches Flyte sur le backend Flyte configuré, utilisez la commande suivante :
+
+```bash
+pyflyte run --image <your-image> langchain_flyte.py langchain_llm
+```
+
+Cette commande lancera l'exécution de la tâche `langchain_llm` sur le backend Flyte. Vous pouvez déclencher les deux autres tâches de la même manière.
+
+Les métriques seront affichées dans l'interface utilisateur de Flyte comme suit :
+
+![Screenshot of Flyte Deck showing LangChain metrics and a dependency tree visualization.](https://ik.imagekit.io/c8zl7irwkdda/Screenshot_2023-06-20_at_1.23.29_PM_MZYeG0dKa.png?updatedAt=1687247642993 "Affichage des métriques Flyte Deck")

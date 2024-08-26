@@ -1,0 +1,46 @@
+---
+translated: true
+---
+
+# किनेटिका
+
+[किनेटिका](https://www.kinetica.com/) एक वास्तविक समय डेटाबेस है जो समय-श्रृंखला और स्थानिक डेटा पर विश्लेषण और जनरेटिव एआई को सक्षम करने के लिए बनाया गया है।
+
+## चैट मॉडल
+
+किनेटिका एलएलएम रैपर [किनेटिका SqlAssist एलएलएम](https://docs.kinetica.com/7.2/sql-gpt/concepts/) का उपयोग करता है ताकि डेटा पुनर्प्राप्ति की प्रक्रिया को सरल बनाया जा सके।
+
+[किनेटिका SqlAssist एलएलएम डेमो](/docs/integrations/chat/kinetica) का उपयोग देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatKinetica", "source": "langchain_community.chat_models.kinetica", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.kinetica.ChatKinetica.html", "title": "Kinetica"}]-->
+from langchain_community.chat_models.kinetica import ChatKinetica
+```
+
+## वेक्टर स्टोर
+
+किनेटिका वेक्टर स्टोर रैपर [वेक्टर समानता खोज](https://docs.kinetica.com/7.2/vector_search/) के लिए किनेटिका के मूल समर्थन का उपयोग करता है।
+
+[किनेटिका वेक्टर स्टोर एपीआई](/docs/integrations/vectorstores/kinetica) का उपयोग देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Kinetica", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.kinetica.Kinetica.html", "title": "Kinetica"}]-->
+from langchain_community.vectorstores import Kinetica
+```
+
+## दस्तावेज़ लोडर
+
+किनेटिका दस्तावेज़ लोडर का उपयोग किया जा सकता है ताकि LangChain दस्तावेज़ों को किनेटिका डेटाबेस से लोड किया जा सके।
+
+[किनेटिका दस्तावेज़ लोडर](/docs/integrations/document_loaders/kinetica) का उपयोग देखें।
+
+```python
+<!--IMPORTS:[{"imported": "KineticaLoader", "source": "langchain_community.document_loaders.kinetica_loader", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.kinetica_loader.KineticaLoader.html", "title": "Kinetica"}]-->
+from langchain_community.document_loaders.kinetica_loader import KineticaLoader
+```
+
+## रिट्रीवर
+
+किनेटिका रिट्रीवर अव्यवस्थित क्वेरी के आधार पर दस्तावेज़ लौटा सकता है।
+
+[किनेटिका वेक्टर स्टोर आधारित रिट्रीवर](/docs/integrations/retrievers/kinetica) का उपयोग देखें।

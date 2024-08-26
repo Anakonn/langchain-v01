@@ -1,0 +1,116 @@
+---
+keywords:
+- compatibilidad
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# LLMs
+
+## Características (compatibilidad nativa)
+
+Todos los LLM implementan la interfaz Runnable, que viene con implementaciones predeterminadas de todos los métodos, es decir, `ainvoke`, `batch`, `abatch`, `stream`, `astream`. Esto brinda a todos los LLM un soporte básico para async, streaming y batch, que por defecto se implementa de la siguiente manera:
+- El soporte *Async* predeterminado llama al método sync respectivo en el ejecutor de subprocesos predeterminado de asyncio. Esto permite que otras funciones asincrónicas en tu aplicación avancen mientras se ejecuta el LLM, al mover esta llamada a un subproceso en segundo plano.
+- El soporte *Streaming* predeterminado devuelve un `Iterator` (o `AsyncIterator` en el caso de streaming asíncrono) de un solo valor, el resultado final devuelto por el proveedor de LLM subyacente. Obviamente, esto no proporciona streaming token por token, que requiere soporte nativo del proveedor de LLM, pero garantiza que tu código que espera un iterador de tokens pueda funcionar para cualquiera de nuestras integraciones de LLM.
+- El soporte *Batch* predeterminado llama al LLM subyacente en paralelo para cada entrada utilizando un ejecutor de subprocesos (en el caso de batch sincrónico) o `asyncio.gather` (en el caso de batch asíncrono). La concurrencia se puede controlar con la clave `max_concurrency` en `RunnableConfig`.
+
+Cada integración de LLM puede proporcionar opcionalmente implementaciones nativas para async, streaming o batch, que, para los proveedores que lo admiten, pueden ser más eficientes. La tabla muestra, para cada integración, qué características se han implementado con soporte nativo.
+
+Modelo|Invocar|Invocar async|Transmitir|Transmitir async|Batch|Batch async
+:-|:-:|:-:|:-:|:-:|:-:|:-:
+AI21|✅|❌|❌|❌|❌|❌
+AlephAlpha|✅|❌|❌|❌|❌|❌
+AmazonAPIGateway|✅|❌|❌|❌|❌|❌
+Anthropic|✅|✅|✅|✅|❌|❌
+Anyscale|✅|✅|✅|✅|✅|✅
+Aphrodite|✅|❌|❌|❌|✅|❌
+Arcee|✅|❌|❌|❌|❌|❌
+Aviary|✅|❌|❌|❌|❌|❌
+AzureMLOnlineEndpoint|✅|❌|❌|❌|✅|❌
+AzureOpenAI|✅|✅|✅|✅|✅|✅
+BaichuanLLM|✅|❌|❌|❌|❌|❌
+Banana|✅|❌|❌|❌|❌|❌
+Baseten|✅|❌|❌|❌|❌|❌
+Beam|✅|❌|❌|❌|❌|❌
+Bedrock|✅|✅|✅|✅|❌|❌
+CTransformers|✅|✅|❌|❌|❌|❌
+CTranslate2|✅|❌|❌|❌|✅|❌
+CerebriumAI|✅|❌|❌|❌|❌|❌
+ChatGLM|✅|❌|❌|❌|❌|❌
+Clarifai|✅|❌|❌|❌|❌|❌
+Cohere|✅|✅|❌|❌|❌|❌
+Databricks|✅|❌|❌|❌|❌|❌
+DeepInfra|✅|✅|✅|✅|❌|❌
+DeepSparse|✅|✅|✅|✅|❌|❌
+EdenAI|✅|✅|❌|❌|❌|❌
+Fireworks|✅|✅|✅|✅|✅|✅
+ForefrontAI|✅|❌|❌|❌|❌|❌
+Friendli|✅|✅|✅|✅|❌|❌
+GPT4All|✅|❌|❌|❌|❌|❌
+GigaChat|✅|✅|✅|✅|✅|✅
+GooglePalm|✅|❌|✅|❌|✅|❌
+GooseAI|✅|❌|❌|❌|❌|❌
+GradientLLM|✅|✅|❌|❌|✅|✅
+HuggingFaceEndpoint|✅|✅|✅|✅|❌|❌
+HuggingFaceHub|✅|❌|❌|❌|❌|❌
+HuggingFacePipeline|✅|❌|❌|❌|✅|❌
+HuggingFaceTextGenInference|✅|✅|✅|✅|❌|❌
+HumanInputLLM|✅|❌|❌|❌|❌|❌
+IpexLLM|✅|❌|❌|❌|❌|❌
+JavelinAIGateway|✅|✅|❌|❌|❌|❌
+KoboldApiLLM|✅|❌|❌|❌|❌|❌
+Konko|✅|✅|❌|❌|❌|❌
+LlamaCpp|✅|❌|✅|❌|❌|❌
+Llamafile|✅|❌|✅|❌|❌|❌
+MLXPipeline|✅|❌|✅|❌|❌|❌
+ManifestWrapper|✅|❌|❌|❌|❌|❌
+Minimax|✅|❌|❌|❌|❌|❌
+Mlflow|✅|❌|❌|❌|❌|❌
+MlflowAIGateway|✅|❌|❌|❌|❌|❌
+Modal|✅|❌|❌|❌|❌|❌
+MosaicML|✅|❌|❌|❌|❌|❌
+NIBittensorLLM|✅|❌|❌|❌|❌|❌
+NLPCloud|✅|❌|❌|❌|❌|❌
+Nebula|✅|❌|❌|❌|❌|❌
+OCIGenAI|✅|❌|❌|❌|❌|❌
+OCIModelDeploymentTGI|✅|❌|❌|❌|❌|❌
+OCIModelDeploymentVLLM|✅|❌|❌|❌|❌|❌
+OctoAIEndpoint|✅|✅|✅|✅|✅|✅
+Ollama|✅|❌|❌|❌|❌|❌
+OpaquePrompts|✅|❌|❌|❌|❌|❌
+OpenAI|✅|✅|✅|✅|✅|✅
+OpenLLM|✅|✅|❌|❌|❌|❌
+OpenLM|✅|✅|✅|✅|✅|✅
+PaiEasEndpoint|✅|❌|✅|❌|❌|❌
+Petals|✅|❌|❌|❌|❌|❌
+PipelineAI|✅|❌|❌|❌|❌|❌
+Predibase|✅|❌|❌|❌|❌|❌
+PredictionGuard|✅|❌|❌|❌|❌|❌
+PromptLayerOpenAI|✅|❌|❌|❌|❌|❌
+QianfanLLMEndpoint|✅|✅|✅|✅|❌|❌
+RWKV|✅|❌|❌|❌|❌|❌
+Replicate|✅|❌|✅|❌|❌|❌
+SagemakerEndpoint|✅|❌|❌|❌|❌|❌
+SambaStudio|✅|❌|✅|❌|❌|❌
+Sambaverse|✅|❌|✅|❌|❌|❌
+SelfHostedHuggingFaceLLM|✅|❌|❌|❌|❌|❌
+SelfHostedPipeline|✅|❌|❌|❌|❌|❌
+SparkLLM|✅|❌|✅|❌|❌|❌
+StochasticAI|✅|❌|❌|❌|❌|❌
+TextGen|✅|❌|❌|❌|❌|❌
+TitanTakeoff|✅|❌|✅|❌|❌|❌
+TitanTakeoffPro|✅|❌|✅|❌|❌|❌
+Together|✅|✅|❌|❌|❌|❌
+Tongyi|✅|✅|✅|✅|✅|✅
+VLLM|✅|❌|❌|❌|✅|❌
+VLLMOpenAI|✅|✅|✅|✅|✅|✅
+VertexAI|✅|✅|✅|❌|✅|✅
+VertexAIModelGarden|✅|✅|❌|❌|✅|✅
+VolcEngineMaasLLM|✅|❌|✅|❌|❌|❌
+WatsonxLLM|✅|❌|✅|❌|✅|❌
+WeightOnlyQuantPipeline|✅|❌|❌|❌|❌|❌
+Writer|✅|❌|❌|❌|❌|❌
+Xinference|✅|❌|❌|❌|❌|❌
+YandexGPT|✅|✅|❌|❌|❌|❌
+Yuan2|✅|❌|❌|❌|❌|❌

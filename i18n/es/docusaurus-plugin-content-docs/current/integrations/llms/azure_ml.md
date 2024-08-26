@@ -1,0 +1,201 @@
+---
+translated: true
+---
+
+# Azure ML
+
+[Azure ML](https://azure.microsoft.com/en-us/products/machine-learning/) es una plataforma utilizada para construir, entrenar y desplegar modelos de aprendizaje automático. Los usuarios pueden explorar los tipos de modelos a implementar en el Catálogo de modelos, que proporciona modelos fundamentales y de propósito general de diferentes proveedores.
+
+Este cuaderno explica cómo usar un LLM alojado en un `Punto de conexión en línea de Azure ML`.
+
+```python
+from langchain_community.llms.azureml_endpoint import AzureMLOnlineEndpoint
+```
+
+## Configurar
+
+Debe [implementar un modelo en Azure ML](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-use-foundation-models?view=azureml-api-2#deploying-foundation-models-to-endpoints-for-inferencing) o [en Azure AI Studio](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/deploy-models-open) y obtener los siguientes parámetros:
+
+* `endpoint_url`: La URL del punto de conexión REST proporcionada por el punto de conexión.
+* `endpoint_api_type`: Utilice `endpoint_type='dedicated'` al implementar modelos en **Puntos de conexión dedicados** (infraestructura administrada hospedada). Utilice `endpoint_type='serverless'` al implementar modelos utilizando la oferta **Pago por uso** (modelo como servicio).
+* `endpoint_api_key`: La clave API proporcionada por el punto de conexión.
+* `deployment_name`: (Opcional) El nombre de implementación del modelo que utiliza el punto de conexión.
+
+## Formateador de contenido
+
+El parámetro `content_formatter` es una clase controladora para transformar la solicitud y la respuesta de un punto de conexión de AzureML para que coincida con el esquema requerido. Dado que hay una amplia gama de modelos en el catálogo de modelos, cada uno de los cuales puede procesar los datos de manera diferente entre sí, se proporciona una clase `ContentFormatterBase` para permitir a los usuarios transformar los datos a su gusto. Se proporcionan los siguientes formateadores de contenido:
+
+* `GPT2ContentFormatter`: Formatea los datos de solicitud y respuesta para GPT2
+* `DollyContentFormatter`: Formatea los datos de solicitud y respuesta para Dolly-v2
+* `HFContentFormatter`: Formatea los datos de solicitud y respuesta para modelos de generación de texto de Hugging Face
+* `CustomOpenAIContentFormatter`: Formatea los datos de solicitud y respuesta para modelos como LLaMa2 que siguen el esquema compatible con la API de OpenAI.
+
+*Nota: `OSSContentFormatter` se está deprecando y se reemplaza por `GPT2ContentFormatter`. La lógica es la misma, pero `GPT2ContentFormatter` es un nombre más adecuado. Aún puede continuar usando `OSSContentFormatter` ya que los cambios son compatibles con versiones anteriores.*
+
+## Ejemplos
+
+### Ejemplo: Completaciones de LlaMa 2 con puntos de conexión en tiempo real
+
+```python
+from langchain_community.llms.azureml_endpoint import (
+    AzureMLEndpointApiType,
+    CustomOpenAIContentFormatter,
+)
+from langchain_core.messages import HumanMessage
+
+llm = AzureMLOnlineEndpoint(
+    endpoint_url="https://<your-endpoint>.<your_region>.inference.ml.azure.com/score",
+    endpoint_api_type=AzureMLEndpointApiType.dedicated,
+    endpoint_api_key="my-api-key",
+    content_formatter=CustomOpenAIContentFormatter(),
+    model_kwargs={"temperature": 0.8, "max_new_tokens": 400},
+)
+response = llm.invoke("Write me a song about sparkling water:")
+response
+```
+
+Los parámetros del modelo también se pueden indicar durante la invocación:
+
+```python
+response = llm.invoke("Write me a song about sparkling water:", temperature=0.5)
+response
+```
+
+### Ejemplo: Completaciones de chat con implementaciones de pago por uso (modelo como servicio)
+
+```python
+from langchain_community.llms.azureml_endpoint import (
+    AzureMLEndpointApiType,
+    CustomOpenAIContentFormatter,
+)
+from langchain_core.messages import HumanMessage
+
+llm = AzureMLOnlineEndpoint(
+    endpoint_url="https://<your-endpoint>.<your_region>.inference.ml.azure.com/v1/completions",
+    endpoint_api_type=AzureMLEndpointApiType.serverless,
+    endpoint_api_key="my-api-key",
+    content_formatter=CustomOpenAIContentFormatter(),
+    model_kwargs={"temperature": 0.8, "max_new_tokens": 400},
+)
+response = llm.invoke("Write me a song about sparkling water:")
+response
+```
+
+### Ejemplo: Formateador de contenido personalizado
+
+A continuación se muestra un ejemplo utilizando un modelo de resumen de Hugging Face.
+
+```python
+import json
+import os
+from typing import Dict
+
+from langchain_community.llms.azureml_endpoint import (
+    AzureMLOnlineEndpoint,
+    ContentFormatterBase,
+)
+
+
+class CustomFormatter(ContentFormatterBase):
+    content_type = "application/json"
+    accepts = "application/json"
+
+    def format_request_payload(self, prompt: str, model_kwargs: Dict) -> bytes:
+        input_str = json.dumps(
+            {
+                "inputs": [prompt],
+                "parameters": model_kwargs,
+                "options": {"use_cache": False, "wait_for_model": True},
+            }
+        )
+        return str.encode(input_str)
+
+    def format_response_payload(self, output: bytes) -> str:
+        response_json = json.loads(output)
+        return response_json[0]["summary_text"]
+
+
+content_formatter = CustomFormatter()
+
+llm = AzureMLOnlineEndpoint(
+    endpoint_api_type="dedicated",
+    endpoint_api_key=os.getenv("BART_ENDPOINT_API_KEY"),
+    endpoint_url=os.getenv("BART_ENDPOINT_URL"),
+    model_kwargs={"temperature": 0.8, "max_new_tokens": 400},
+    content_formatter=content_formatter,
+)
+large_text = """On January 7, 2020, Blockberry Creative announced that HaSeul would not participate in the promotion for Loona's
+next album because of mental health concerns. She was said to be diagnosed with "intermittent anxiety symptoms" and would be
+taking time to focus on her health.[39] On February 5, 2020, Loona released their second EP titled [#] (read as hash), along
+with the title track "So What".[40] Although HaSeul did not appear in the title track, her vocals are featured on three other
+songs on the album, including "365". Once peaked at number 1 on the daily Gaon Retail Album Chart,[41] the EP then debuted at
+number 2 on the weekly Gaon Album Chart. On March 12, 2020, Loona won their first music show trophy with "So What" on Mnet's
+M Countdown.[42]
+
+On October 19, 2020, Loona released their third EP titled [12:00] (read as midnight),[43] accompanied by its first single
+"Why Not?". HaSeul was again not involved in the album, out of her own decision to focus on the recovery of her health.[44]
+The EP then became their first album to enter the Billboard 200, debuting at number 112.[45] On November 18, Loona released
+the music video for "Star", another song on [12:00].[46] Peaking at number 40, "Star" is Loona's first entry on the Billboard
+Mainstream Top 40, making them the second K-pop girl group to enter the chart.[47]
+
+On June 1, 2021, Loona announced that they would be having a comeback on June 28, with their fourth EP, [&] (read as and).
+[48] The following day, on June 2, a teaser was posted to Loona's official social media accounts showing twelve sets of eyes,
+confirming the return of member HaSeul who had been on hiatus since early 2020.[49] On June 12, group members YeoJin, Kim Lip,
+Choerry, and Go Won released the song "Yum-Yum" as a collaboration with Cocomong.[50] On September 8, they released another
+collaboration song named "Yummy-Yummy".[51] On June 27, 2021, Loona announced at the end of their special clip that they are
+making their Japanese debut on September 15 under Universal Music Japan sublabel EMI Records.[52] On August 27, it was announced
+that Loona will release the double A-side single, "Hula Hoop / Star Seed" on September 15, with a physical CD release on October
+20.[53] In December, Chuu filed an injunction to suspend her exclusive contract with Blockberry Creative.[54][55]
+"""
+summarized_text = llm.invoke(large_text)
+print(summarized_text)
+```
+
+### Ejemplo: Dolly con LLMChain
+
+```python
+from langchain.chains import LLMChain
+from langchain_community.llms.azureml_endpoint import DollyContentFormatter
+from langchain_core.prompts import PromptTemplate
+
+formatter_template = "Write a {word_count} word essay about {topic}."
+
+prompt = PromptTemplate(
+    input_variables=["word_count", "topic"], template=formatter_template
+)
+
+content_formatter = DollyContentFormatter()
+
+llm = AzureMLOnlineEndpoint(
+    endpoint_api_key=os.getenv("DOLLY_ENDPOINT_API_KEY"),
+    endpoint_url=os.getenv("DOLLY_ENDPOINT_URL"),
+    model_kwargs={"temperature": 0.8, "max_tokens": 300},
+    content_formatter=content_formatter,
+)
+
+chain = LLMChain(llm=llm, prompt=prompt)
+print(chain.invoke({"word_count": 100, "topic": "how to make friends"}))
+```
+
+## Serializar un LLM
+
+También puede guardar y cargar configuraciones de LLM
+
+```python
+from langchain_community.llms.loading import load_llm
+
+save_llm = AzureMLOnlineEndpoint(
+    deployment_name="databricks-dolly-v2-12b-4",
+    model_kwargs={
+        "temperature": 0.2,
+        "max_tokens": 150,
+        "top_p": 0.8,
+        "frequency_penalty": 0.32,
+        "presence_penalty": 72e-3,
+    },
+)
+save_llm.save("azureml.json")
+loaded_llm = load_llm("azureml.json")
+
+print(loaded_llm)
+```

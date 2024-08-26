@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# ग्रेडिएंट
+
+>[ग्रेडिएंट](https://gradient.ai/) एक सरल वेब API के साथ LLM को फाइन ट्यून और पूर्णता प्राप्त करने की अनुमति देता है।
+
+## इंस्टॉलेशन और सेटअप
+
+- पायथन SDK इंस्टॉल करें:
+
+```bash
+pip install gradientai
+```
+
+एक [ग्रेडिएंट एक्सेस टोकन और कार्यक्षेत्र](https://gradient.ai/) प्राप्त करें और इसे एक पर्यावरण चर (`Gradient_ACCESS_TOKEN`) और (`GRADIENT_WORKSPACE_ID`) के रूप में सेट करें।
+
+## LLM
+
+एक ग्रेडिएंट LLM रैपर मौजूद है, जिसका उपयोग आप कर सकते हैं।
+[उपयोग उदाहरण](/docs/integrations/llms/gradient) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "GradientLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gradient_ai.GradientLLM.html", "title": "Gradient"}]-->
+from langchain_community.llms import GradientLLM
+```
+
+## पाठ एम्बेडिंग मॉडल
+
+एक ग्रेडिएंट एम्बेडिंग मॉडल मौजूद है, जिसका उपयोग आप कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "GradientEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.gradient_ai.GradientEmbeddings.html", "title": "Gradient"}]-->
+from langchain_community.embeddings import GradientEmbeddings
+```
+
+इसके बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/text_embedding/gradient) देखें।

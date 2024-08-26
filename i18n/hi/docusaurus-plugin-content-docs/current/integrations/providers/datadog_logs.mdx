@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# डेटाडॉग लॉग्स
+
+>[डेटाडॉग](https://www.datadoghq.com/) एक मॉनिटरिंग और एनालिटिक्स प्लेटफॉर्म है जो क्लाउड-स्केल एप्लिकेशन के लिए है।
+
+## इंस्टॉलेशन और सेटअप
+
+```bash
+pip install datadog_api_client
+```
+
+हमें लोडर को डेटाडॉग API कुंजी और APP कुंजी के साथ इनिशियलाइज़ करना होगा, और हमें वांछित लॉग्स को एक्सट्रैक्ट करने के लिए क्वेरी सेट करने की आवश्यकता है।
+
+## डॉक्यूमेंट लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/datadog_logs) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DatadogLogsLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.datadog_logs.DatadogLogsLoader.html", "title": "Datadog Logs"}]-->
+from langchain_community.document_loaders import DatadogLogsLoader
+```

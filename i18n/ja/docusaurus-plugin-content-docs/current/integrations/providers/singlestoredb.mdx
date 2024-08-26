@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# SingleStoreDB
+
+>[SingleStoreDB](https://singlestore.com/) は、[クラウド](https://www.singlestore.com/cloud/)およびオンプレミスでの展開をサポートする高性能な分散SQLデータベースです。ベクトルストレージおよび[dot_product](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/dot_product.html)や[euclidean_distance](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/euclidean_distance.html)を含むベクトル関数を提供し、テキスト類似性マッチングを必要とするAIアプリケーションをサポートします。
+
+## インストールとセットアップ
+
+データベースへの[接続](https://singlestoredb-python.labs.singlestore.com/generated/singlestoredb.connect.html)を確立する方法はいくつかあります。環境変数を設定するか、`SingleStoreDB コンストラクタ`に名前付きパラメータを渡すことができます。あるいは、これらのパラメータを`from_documents`および`from_texts`メソッドに提供することもできます。
+
+```bash
+pip install singlestoredb
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/singlestoredb)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.singlestoredb.SingleStoreDB.html", "title": "SingleStoreDB"}]-->
+from langchain_community.vectorstores import SingleStoreDB
+```
+
+## メモリ
+
+[使用例](/docs/integrations/memory/singlestoredb_chat_message_history)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDBChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory.html", "title": "SingleStoreDB"}]-->
+from langchain.memory import SingleStoreDBChatMessageHistory
+```

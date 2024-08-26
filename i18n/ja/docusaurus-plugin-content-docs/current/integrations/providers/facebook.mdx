@@ -1,0 +1,91 @@
+---
+translated: true
+---
+
+# Facebook - Meta
+
+>[Meta Platforms, Inc.](https://www.facebook.com/), 事業を行う `Meta`、以前は `Facebook, Inc.` および `TheFacebook, Inc.` と呼ばれていた、アメリカの多国籍テクノロジー企業です。同社は `Facebook`、`Instagram`、`Threads`、`WhatsApp` などの製品やサービスを所有・運営しています。
+
+## 埋め込みモデル
+
+### LASER
+
+>[LASER](https://github.com/facebookresearch/LASER) は `Meta AI Research` チームが開発したPythonライブラリで、
+> [2024年2月25日時点で147か国以上の言語](https://github.com/facebookresearch/flores/blob/main/flores200/README.md#languages-in-flores-200)の多言語センテンス埋め込みを作成するために使用されています。
+
+```bash
+pip install laser_encoders
+```
+
+[使用例](/docs/integrations/text_embedding/laser)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "LaserEmbeddings", "source": "langchain_community.embeddings.laser", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.laser.LaserEmbeddings.html", "title": "Facebook - Meta"}]-->
+from langchain_community.embeddings.laser import LaserEmbeddings
+```
+
+## ドキュメントローダー
+
+### Facebook Messenger
+
+>[Messenger](https://en.wikipedia.org/wiki/Messenger_(software)) は `Meta Platforms` が開発したインスタントメッセージングアプリおよびプラットフォームです。 2008年に `Facebook Chat` として開発され、2010年に同社がメッセージングサービスを刷新しました。
+
+[使用例](/docs/integrations/document_loaders/facebook_chat)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "FacebookChatLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.facebook_chat.FacebookChatLoader.html", "title": "Facebook - Meta"}]-->
+from langchain_community.document_loaders import FacebookChatLoader
+```
+
+## ベクトルストア
+
+### Facebook Faiss
+
+>[Facebook AI Similarity Search (Faiss)](https://engineering.fb.com/2017/03/29/data-infrastructure/faiss-a-library-for-efficient-similarity-search/)
+> は密な ベクトルの効率的な類似検索とクラスタリングのためのライブラリです。RAMに収まらない大規模なベクトルセットでも検索できるアルゴリズムが含まれており、評価やパラメータチューニングのためのサポートコードも含まれています。
+
+[Faiss ドキュメント](https://faiss.ai/)
+
+`faiss` Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install faiss-gpu # For CUDA 7.5+ supported GPU's.
+```
+
+または
+
+```bash
+pip install faiss-cpu # For CPU Installation
+```
+
+[使用例](/docs/integrations/vectorstores/faiss)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Facebook - Meta"}]-->
+from langchain_community.vectorstores import FAISS
+```
+
+## チャットローダー
+
+### Facebook Messenger
+
+>[Messenger](https://en.wikipedia.org/wiki/Messenger_(software)) は `Meta Platforms` が開発したインスタントメッセージングアプリおよびプラットフォームです。 2008年に `Facebook Chat` として開発され、2010年に同社がメッセージングサービスを刷新しました。
+
+[使用例](/docs/integrations/chat_loaders/facebook)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "FolderFacebookMessengerChatLoader", "source": "langchain_community.chat_loaders.facebook_messenger", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.facebook_messenger.FolderFacebookMessengerChatLoader.html", "title": "Facebook - Meta"}, {"imported": "SingleFileFacebookMessengerChatLoader", "source": "langchain_community.chat_loaders.facebook_messenger", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.facebook_messenger.SingleFileFacebookMessengerChatLoader.html", "title": "Facebook - Meta"}]-->
+from langchain_community.chat_loaders.facebook_messenger import (
+    FolderFacebookMessengerChatLoader,
+    SingleFileFacebookMessengerChatLoader,
+)
+```
+
+### Facebook WhatsApp
+
+[使用例](/docs/integrations/chat_loaders/whatsapp)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "WhatsAppChatLoader", "source": "langchain_community.chat_loaders.whatsapp", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.whatsapp.WhatsAppChatLoader.html", "title": "Facebook - Meta"}]-->
+from langchain_community.chat_loaders.whatsapp import WhatsAppChatLoader
+```

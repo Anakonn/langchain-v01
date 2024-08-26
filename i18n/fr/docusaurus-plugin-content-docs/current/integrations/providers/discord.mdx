@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Discord
+
+>[Discord](https://discord.com/) est une plateforme sociale de VoIP et de messagerie instantanée. Les utilisateurs ont la possibilité de communiquer
+> par des appels vocaux, des appels vidéo, des messages texte, des médias et des fichiers dans des discussions privées ou dans le cadre de communautés appelées
+> "serveurs". Un serveur est un ensemble de salons de discussion et de canaux vocaux persistants auxquels on peut accéder via des liens d'invitation.
+
+## Installation et configuration
+
+```bash
+pip install pandas
+```
+
+Suivez ces étapes pour télécharger vos données `Discord` :
+
+1. Allez dans vos **Paramètres utilisateur**
+2. Puis allez dans **Confidentialité et sécurité**
+3. Rendez-vous sur la section **Demander toutes mes données** et cliquez sur le bouton **Demander les données**
+
+Il peut falloir jusqu'à 30 jours pour recevoir vos données. Vous recevrez un e-mail à l'adresse enregistrée
+avec Discord. Cet e-mail contiendra un bouton de téléchargement à l'aide duquel vous pourrez télécharger vos données personnelles Discord.
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/discord).
+
+**REMARQUE :** Le `DiscordChatLoader` n'est pas le `ChatLoader` mais un `DocumentLoader`.
+Il est utilisé pour charger les données du fichier de données `Discord`.
+Pour le `ChatLoader`, voir la section Chargeur de discussion ci-dessous.
+
+```python
+<!--IMPORTS:[{"imported": "DiscordChatLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.discord.DiscordChatLoader.html", "title": "Discord"}]-->
+from langchain_community.document_loaders import DiscordChatLoader
+```
+
+## Chargeur de discussion
+
+Voir un [exemple d'utilisation](/docs/integrations/chat_loaders/discord).

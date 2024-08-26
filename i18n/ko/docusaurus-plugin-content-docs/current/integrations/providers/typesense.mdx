@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# Typesense
+
+> [Typesense](https://typesense.org)는 오픈 소스 메모리 내 검색 엔진으로, [자체 호스팅](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting)하거나 [Typesense Cloud](https://cloud.typesense.org/)에서 실행할 수 있습니다.
+> `Typesense`는 전체 인덱스를 RAM에 저장(디스크에 백업)하여 성능에 중점을 두며, 사용 가능한 옵션을 단순화하고 기본값을 설정하여 개발자 경험을 개선하는 데 초점을 맞추고 있습니다.
+
+## 설치 및 설정
+
+```bash
+pip install typesense openapi-schema-pydantic
+```
+
+## 벡터 스토어
+
+[사용 예제](/docs/integrations/vectorstores/typesense)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "Typesense", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.typesense.Typesense.html", "title": "Typesense"}]-->
+from langchain_community.vectorstores import Typesense
+```

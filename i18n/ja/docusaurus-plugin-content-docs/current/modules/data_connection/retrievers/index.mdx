@@ -1,0 +1,79 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 4
+title: リトリーバー
+translated: true
+---
+
+# リトリーバー
+
+リトリーバーは、構造化されていないクエリから文書を返す interfaceです。ベクトルストアよりも一般的です。
+リトリーバーは文書を保存する必要はなく、文書を返すだけでよいです。ベクトルストアがリトリーバーの基盤として使用できますが、他のタイプのリトリーバーもあります。
+
+リトリーバーは文字列 `query` を入力として受け取り、`Document` のリストを出力します。
+
+## 高度なリトリーバーの種類
+
+テーブルの列:
+
+- **Name**: リトリーバーアルゴリズムの名称
+- **Index Type**: 依存するインデックスの種類(あれば)
+- **Uses an LLM**: このリトリーバーがLLMを使用するかどうか
+- **When to Use**: このリトリーバーを使用すべき場合についてのコメント
+- **Description**: このリトリーバーアルゴリズムの説明
+
+| Name                      | Index Type                   | Uses an LLM               | When to Use                                                                                                                                   | Description                                                                                                                                                                                                                                                                                       |
+|---------------------------|------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Vectorstore](./vectorstore)               | Vectorstore                  | No                        | 初めて使う場合で、簡単に始められるものが欲しい時                                                                     | これが最も簡単な方法で、始めやすいです。テキストの各部分についてエンベディングを作成します。                                                                                                                                                                        |
+| [ParentDocument](./parent_document_retriever)            | Vectorstore + Document Store | No                        | ページに多くの小さな情報の断片があり、それぞれを個別にインデックス化するのが最適だが、まとめて取得したい場合       | これは各文書の複数のチャンクにインデックスを付けます。次に、エンベディング空間で最も類似したチャンクを見つけ、個別のチャンクではなく、親文書全体を返します。                                                                                    |
+| [Multi Vector](multi_vector)              | Vectorstore + Document Store | Sometimes during indexing | テキスト自体よりも関連性が高いと思われる情報を文書から抽出できる場合                          | これは各文書に対して複数のベクトルを作成します。各ベクトルは様々な方法で作成できます - 例えば、テキストの要約や仮想的な質問など。                                                                                                                            |
+| [Self Query](./self_query)               | Vectorstore                  | Yes                       | ユーザーの質問がテキストの類似性ではなく、メタデータに基づいて文書を取得するのが適切な場合          | これはLLMを使ってユーザーの入力を2つのものに変換します: (1) 意味的に検索する文字列、(2) それに付随するメタデータフィルター。これは、質問がしばしば文書の内容ではなくメタデータについてのものだからです。                                               |
+| [Contextual Compression](./contextual_compression)    | Any                          | Sometimes                 | 取得した文書に関連性の低い情報が多すぎて、LLMを混乱させている場合                         | これは別のリトリーバーの上位に処理を行い、取得した文書から最も関連性の高い情報のみを抽出します。これはエンベディングやLLMを使って行えます。                                                                                                                |
+| [Time-Weighted Vectorstore](./time_weighted_vectorstore) | Vectorstore                  | No                        | 文書にタイムスタンプが関連付けられており、最新のものを取得したい場合                          | これは意味的な類似性(通常のベクトル検索と同様)と最新性(インデックス化された文書のタイムスタンプを見る)の組み合わせに基づいて文書を取得します。                                                                                                                                     |
+| [Multi-Query Retriever](./MultiQueryRetriever)     | Any                          | Yes                       | ユーザーの質問が複雑で、複数の異なる情報が必要な場合                                 | これはLLMを使ってオリジナルの質問から複数のクエリを生成します。これは、オリジナルの質問を適切に回答するためには複数のトピックに関する情報が必要な場合に有用です。複数のクエリを生成することで、それぞれについて文書を取得できます。                              |
+| [Ensemble](./ensemble)                  | Any                          | No                        | 複数のリトリーバー方式があり、それらを組み合わせたい場合                                                                        | これは複数のリトリーバーから文書を取得し、それらを組み合わせます。                                                                                                                                                                                                                    |
+| [Long-Context Reorder](./long_context_reorder)      | Any                          | No                        | 長文脈モデルを使っており、取得した文書の中央部分の情報に注目していないことに気づいた場合 | これは基礎となるリトリーバーから文書を取得し、最も類似したものが先頭と末尾に来るように並び替えます。これは長文脈モデルでは文脈ウィンドウの中央部分の情報に注目しないことが知られているためです。 |
+
+## [サードパーティ製インテグレーション](/docs/integrations/retrievers/)
+
+LangChainには多くのサードパーティのリトリーバーサービスとのインテグレーションがあります。これらの全リストは[こちら](/docs/integrations/retrievers/)をご覧ください。
+
+## LCELでのリトリーバーの使用
+
+リトリーバーは `Runnable` なので、他の `Runnable` オブジェクトと簡単に合成できます:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Retrievers"}, {"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Retrievers"}, {"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Retrievers"}, {"imported": "RunnablePassthrough", "source": "langchain_core.runnables", "docs": "https://api.python.langchain.com/en/latest/runnables/langchain_core.runnables.passthrough.RunnablePassthrough.html", "title": "Retrievers"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+template = """Answer the question based only on the following context:
+
+{context}
+
+Question: {question}
+"""
+prompt = ChatPromptTemplate.from_template(template)
+model = ChatOpenAI()
+
+
+def format_docs(docs):
+    return "\n\n".join([d.page_content for d in docs])
+
+
+chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | model
+    | StrOutputParser()
+)
+
+chain.invoke("What did the president say about technology?")
+
+```
+
+## カスタムリトリーバー
+
+カスタムリトリーバーの実装については、[こちらのドキュメント](/docs/modules/data_connection/retrievers/custom_retriever)をご覧ください。

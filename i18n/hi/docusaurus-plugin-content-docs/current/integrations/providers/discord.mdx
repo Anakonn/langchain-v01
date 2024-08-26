@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# डिस्कॉर्ड
+
+>[डिस्कॉर्ड](https://discord.com/) एक VoIP और तत्काल संदेश सामाजिक मंच है। उपयोगकर्ताओं के पास आवाज कॉल, वीडियो कॉल, पाठ संदेश, मीडिया और निजी चैट या "सर्वर" कहे जाने वाली समुदायों के हिस्से के रूप में फ़ाइलों के साथ संवाद करने की क्षमता है। एक सर्वर आमंत्रण लिंक के माध्यम से पहुंचा जा सकने वाला स्थायी चैट कमरों और आवाज चैनलों का संग्रह है।
+
+## स्थापना और सेटअप
+
+```bash
+pip install pandas
+```
+
+अपना `डिस्कॉर्ड` डेटा डाउनलोड करने के लिए इन चरणों का पालन करें:
+
+1. अपने **उपयोगकर्ता सेटिंग्स** पर जाएं
+2. फिर **गोपनीयता और सुरक्षा** पर जाएं
+3. **मेरा सारा डेटा अनुरोध करें** पर जाएं और **डेटा अनुरोध करें** बटन पर क्लिक करें
+
+आपको अपना डेटा प्राप्त करने में 30 दिन तक का समय लग सकता है। आप जिस ईमेल पते से डिस्कॉर्ड से पंजीकृत हैं, उस पर एक ईमेल प्राप्त करेंगे। उस ईमेल में एक डाउनलोड बटन होगा, जिसका उपयोग करके आप अपना व्यक्तिगत डिस्कॉर्ड डेटा डाउनलोड कर सकते हैं।
+
+## दस्तावेज लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/discord) देखें।
+
+**ध्यान दें:** `DiscordChatLoader` `ChatLoader` नहीं है, बल्कि एक `DocumentLoader` है।
+यह `डिस्कॉर्ड` डेटा डंप से डेटा लोड करने के लिए उपयोग किया जाता है।
+`ChatLoader` के लिए नीचे चैट लोडर अनुभाग देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DiscordChatLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.discord.DiscordChatLoader.html", "title": "Discord"}]-->
+from langchain_community.document_loaders import DiscordChatLoader
+```
+
+## चैट लोडर
+
+[उपयोग उदाहरण](/docs/integrations/chat_loaders/discord) देखें।

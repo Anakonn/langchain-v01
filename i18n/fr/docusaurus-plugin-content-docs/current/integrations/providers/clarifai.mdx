@@ -1,0 +1,63 @@
+---
+translated: true
+---
+
+# Clarifai
+
+>[Clarifai](https://clarifai.com) est l'une des premières plateformes d'apprentissage profond, ayant été fondée en 2013. Clarifai fournit une plateforme IA avec le cycle de vie complet de l'IA pour l'exploration des données, l'étiquetage des données, l'entraînement des modèles, l'évaluation et l'inférence autour des données d'images, de vidéos, de texte et d'audio. Dans l'écosystème LangChain, à notre connaissance, Clarifai est le seul fournisseur qui prend en charge les LLM, les embeddings et un magasin de vecteurs dans une seule plateforme à l'échelle de la production, en faisant un excellent choix pour opérationnaliser vos implémentations LangChain.
+
+## Installation et configuration
+
+- Installez le SDK Python :
+
+```bash
+pip install clarifai
+```
+
+[Inscrivez-vous](https://clarifai.com/signup) à un compte Clarifai, puis obtenez un jeton d'accès personnel pour accéder à l'API Clarifai à partir de vos [paramètres de sécurité](https://clarifai.com/settings/security) et définissez-le comme une variable d'environnement (`CLARIFAI_PAT`).
+
+## Modèles
+
+Clarifai fournit des milliers de modèles IA pour de nombreux cas d'utilisation différents. Vous pouvez les [explorer ici](https://clarifai.com/explore) pour trouver celui qui convient le mieux à votre cas d'utilisation. Ces modèles incluent ceux créés par d'autres fournisseurs tels que OpenAI, Anthropic, Cohere, AI21, etc. ainsi que l'état de l'art de l'open source comme Falcon, InstructorXL, etc. afin que vous intégriez les meilleures IA dans vos produits. Vous les trouverez organisés par l'identifiant utilisateur du créateur et dans des projets que nous appelons des applications, désignées par leur identifiant d'application. Ces identifiants seront nécessaires en plus de l'identifiant du modèle et éventuellement de l'identifiant de la version, donc notez bien tous ces identifiants une fois que vous aurez trouvé le meilleur modèle pour votre cas d'utilisation !
+
+Notez également que compte tenu du grand nombre de modèles pour la compréhension des images, des vidéos, du texte et de l'audio, vous pouvez construire des agents IA intéressants qui utilisent la variété des modèles IA en tant qu'experts pour comprendre ces types de données.
+
+### LLMs
+
+Pour trouver la sélection de LLM sur la plateforme Clarifai, vous pouvez sélectionner le type de modèle de texte à texte [ici](https://clarifai.com/explore/models?filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-to-text%22%5D%7D%5D&page=1&perPage=24).
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.llms import Clarifai
+llm = Clarifai(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+Pour plus de détails, la documentation sur le wrapper LLM de Clarifai fournit un [guide détaillé](/docs/integrations/llms/clarifai).
+
+### Modèles d'embeddings de texte
+
+Pour trouver la sélection de modèles d'embeddings de texte sur la plateforme Clarifai, vous pouvez sélectionner le type de modèle de texte à embedding [ici](https://clarifai.com/explore/models?page=1&perPage=24&filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-embedder%22%5D%7D%5D).
+
+Il existe un modèle d'embedding Clarifai dans LangChain, que vous pouvez accéder avec :
+
+```python
+<!--IMPORTS:[{"imported": "ClarifaiEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.clarifai.ClarifaiEmbeddings.html", "title": "Clarifai"}]-->
+from langchain_community.embeddings import ClarifaiEmbeddings
+embeddings = ClarifaiEmbeddings(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+Pour plus de détails, la documentation sur le wrapper d'embeddings Clarifai fournit un [guide détaillé](/docs/integrations/text_embedding/clarifai).
+
+## Vectorstore
+
+La base de données vectorielle de Clarifai a été lancée en 2016 et a été optimisée pour prendre en charge les requêtes de recherche en direct. Avec les workflows de la plateforme Clarifai, vos données sont automatiquement indexées par un modèle d'embedding et éventuellement d'autres modèles également pour indexer ces informations dans la base de données pour la recherche. Vous pouvez interroger la base de données non seulement via les vecteurs, mais aussi filtrer par correspondances de métadonnées, d'autres concepts prédits par l'IA, et même effectuer une recherche par coordonnées géographiques. Il suffit de créer une application, de sélectionner le workflow de base approprié pour votre type de données et de les télécharger (via l'API comme [documenté ici](https://docs.clarifai.com/api-guide/data/create-get-update-delete) ou les interfaces utilisateur sur clarifai.com).
+
+Vous pouvez également ajouter des données directement depuis LangChain, et l'indexation automatique aura lieu pour vous. Vous remarquerez que c'est un peu différent des autres vectorstores où vous devez fournir un modèle d'embedding dans leur constructeur et faire en sorte que LangChain coordonne l'obtention des embeddings à partir du texte et l'écriture de ces derniers dans l'index. Non seulement c'est plus pratique, mais c'est beaucoup plus évolutif d'utiliser le cloud distribué de Clarifai pour faire tout l'indexage en arrière-plan.
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.vectorstores import Clarifai
+clarifai_vector_db = Clarifai.from_texts(user_id=USER_ID, app_id=APP_ID, texts=texts, pat=CLARIFAI_PAT, number_of_docs=NUMBER_OF_DOCS, metadatas = metadatas)
+```
+
+Pour plus de détails, la documentation sur le magasin de vecteurs Clarifai fournit un [guide détaillé](/docs/integrations/vectorstores/clarifai).

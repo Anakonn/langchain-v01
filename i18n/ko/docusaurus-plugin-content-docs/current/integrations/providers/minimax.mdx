@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# 미니맥스
+
+>[미니맥스](https://api.minimax.chat)는 기업과 개인을 위한 자연어 처리 모델을 제공하는 중국 스타트업입니다.
+
+## 설치 및 설정
+
+[미니맥스 API 키](https://api.minimax.chat/user-center/basic-information/interface-key)를 받아 환경 변수(`MINIMAX_API_KEY`)로 설정하세요.
+[미니맥스 그룹 ID](https://api.minimax.chat/user-center/basic-information)를 받아 환경 변수(`MINIMAX_GROUP_ID`)로 설정하세요.
+
+## LLM
+
+미니맥스 LLM 래퍼가 있으며, 이를 사용할 수 있습니다.
+[사용 예시](/docs/integrations/llms/minimax)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "Minimax", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.minimax.Minimax.html", "title": "Minimax"}]-->
+from langchain_community.llms import Minimax
+```
+
+## 채팅 모델
+
+[사용 예시](/docs/integrations/chat/minimax)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "MiniMaxChat", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.minimax.MiniMaxChat.html", "title": "Minimax"}]-->
+from langchain_community.chat_models import MiniMaxChat
+```
+
+## 텍스트 임베딩 모델
+
+미니맥스 임베딩 모델이 있으며, 이를 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "MiniMaxEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.minimax.MiniMaxEmbeddings.html", "title": "Minimax"}]-->
+from langchain_community.embeddings import MiniMaxEmbeddings
+```

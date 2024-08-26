@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Runhouse
+
+Esta página cubre cómo usar el ecosistema [Runhouse](https://github.com/run-house/runhouse) dentro de LangChain.
+Se divide en tres partes: instalación y configuración, LLMs y Embeddings.
+
+## Instalación y configuración
+
+- Instala el SDK de Python con `pip install runhouse`
+- Si deseas usar un clúster bajo demanda, verifica tus credenciales en la nube con `sky check`
+
+## LLMs autohospedados
+
+Para un LLM autohospedado básico, puedes usar la clase `SelfHostedHuggingFaceLLM`. Para LLMs más
+personalizados, puedes usar la clase padre `SelfHostedPipeline`.
+
+```python
+<!--IMPORTS:[{"imported": "SelfHostedPipeline", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted.SelfHostedPipeline.html", "title": "Runhouse"}, {"imported": "SelfHostedHuggingFaceLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html", "title": "Runhouse"}]-->
+from langchain_community.llms import SelfHostedPipeline, SelfHostedHuggingFaceLLM
+```
+
+Para una guía más detallada de los LLMs autohospedados, consulta [este cuaderno](/docs/integrations/llms/runhouse)
+
+## Embeddings autohospedados
+
+Hay varias formas de usar embeddings autohospedados con LangChain a través de Runhouse.
+
+Para un embedding autohospedado básico a partir de un modelo de Hugging Face Transformers, puedes usar
+la clase `SelfHostedEmbedding`.
+
+```python
+<!--IMPORTS:[{"imported": "SelfHostedPipeline", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted.SelfHostedPipeline.html", "title": "Runhouse"}, {"imported": "SelfHostedHuggingFaceLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html", "title": "Runhouse"}]-->
+from langchain_community.llms import SelfHostedPipeline, SelfHostedHuggingFaceLLM
+```
+
+Para una guía más detallada de los Embeddings autohospedados, consulta [este cuaderno](/docs/integrations/text_embedding/self-hosted)

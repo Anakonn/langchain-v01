@@ -1,0 +1,161 @@
+---
+translated: true
+---
+
+# Hugging Face
+
+[Hugging Face プラットフォーム](https://huggingface.co/)に関連するすべての機能。
+
+## チャットモデル
+
+### Hugging Faceからのモデル
+
+`Hugging Face` LLMクラスを使用するか、`ChatHuggingFace`クラスを直接使用できます。
+
+いくつかのPythonパッケージをインストールする必要があります。
+
+```bash
+pip install huggingface_hub
+pip install transformers
+```
+
+[使用例](/docs/integrations/chat/huggingface)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatHuggingFace", "source": "langchain_community.chat_models.huggingface", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.huggingface.ChatHuggingFace.html", "title": "Hugging Face"}]-->
+from langchain_community.chat_models.huggingface import ChatHuggingFace
+```
+
+## LLM
+
+### Hugging Face ローカルパイプライン
+
+Hugging Faceモデルは、`HuggingFacePipeline`クラスを使ってローカルで実行できます。
+
+`transformers`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install transformers
+```
+
+[使用例](/docs/integrations/llms/huggingface_pipelines)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFacePipeline", "source": "langchain_community.llms.huggingface_pipeline", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.huggingface_pipeline.HuggingFacePipeline.html", "title": "Hugging Face"}]-->
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+```
+
+ローカルパイプラインラッパーでOpenVINOバックエンドを使用するには、optimumライブラリをインストールし、HuggingFacePipelineのバックエンドを`openvino`に設定してください。
+
+```bash
+pip install --upgrade-strategy eager "optimum[openvino,nncf]"
+```
+
+[使用例](/docs/integrations/llms/huggingface_pipelines)を参照してください。
+
+CLIを使ってモデルをOpenVINO IR形式にエクスポートするには:
+
+```bash
+optimum-cli export openvino --model gpt2 ov_model
+```
+
+[重み量子化](https://github.com/huggingface/optimum-intel?tab=readme-ov-file#export)を適用してモデルをエクスポートするには。
+
+## 埋め込みモデル
+
+### Hugging Face Hub
+
+>[Hugging Face Hub](https://huggingface.co/docs/hub/index)は、350,000以上のモデル、75,000以上のデータセット、150,000以上のデモアプリ(Spaces)を持つプラットフォームで、すべてオープンソースで一般に公開されています。Hubは、誰もがMachine Learningを使って探索、実験、共同作業、技術構築ができる中心的な場所として機能します。
+
+`sentence_transformers`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install sentence_transformers
+```
+
+#### HuggingFaceEmbeddings
+
+[使用例](/docs/integrations/text_embedding/huggingfacehub)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceEmbeddings
+```
+
+#### HuggingFaceInstructEmbeddings
+
+[使用例](/docs/integrations/text_embedding/instruct_embeddings)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceInstructEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceInstructEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+```
+
+#### HuggingFaceBgeEmbeddings
+
+>[Hugging FaceのBGEモデル](https://huggingface.co/BAAI/bge-large-en)は[最高のオープンソース埋め込みモデル](https://huggingface.co/spaces/mteb/leaderboard)です。
+>BGEモデルは[北京人工知能研究院(BAAI)](https://en.wikipedia.org/wiki/Beijing_Academy_of_Artificial_Intelligence)によって作成されました。`BAAI`は、AIの研究開発に従事する非営利の民間組織です。
+
+[使用例](/docs/integrations/text_embedding/bge_huggingface)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceBgeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceBgeEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+```
+
+### Hugging Face Text Embeddings Inference (TEI)
+
+>[Hugging Face Text Embeddings Inference (TEI)](https://huggingface.co/docs/text-generation-inference/index)は、オープンソースの文章埋め込みとシーケンス分類モデルを展開およびサービングするためのツールキットです。`TEI`は、`FlagEmbedding`、`Ember`、`GTE`、`E5`を含む最も人気のあるモデルの高性能な抽出を可能にします。
+
+`huggingface-hub`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install huggingface-hub
+```
+
+[使用例](/docs/integrations/text_embedding/text_embeddings_inference)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceHubEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface_hub.HuggingFaceHubEmbeddings.html", "title": "Hugging Face"}]-->
+from langchain_community.embeddings import HuggingFaceHubEmbeddings
+```
+
+## ドキュメントローダー
+
+### Hugging Faceデータセット
+
+>[Hugging Face Hub](https://huggingface.co/docs/hub/index)には100以上の言語で75,000以上の[データセット](https://huggingface.co/docs/hub/index#datasets)が収録されています。
+>これらは、機械翻訳、音声認識、画像分類など、さまざまなタスクに使用できます。
+
+`datasets`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install datasets
+```
+
+[使用例](/docs/integrations/document_loaders/hugging_face_dataset)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "HuggingFaceDatasetLoader", "source": "langchain_community.document_loaders.hugging_face_dataset", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.hugging_face_dataset.HuggingFaceDatasetLoader.html", "title": "Hugging Face"}]-->
+from langchain_community.document_loaders.hugging_face_dataset import HuggingFaceDatasetLoader
+```
+
+## ツール
+
+### Hugging Face Hubツール
+
+>[Hugging Faceツール](https://huggingface.co/docs/transformers/v4.29.0/en/custom_tools)
+>は、`load_huggingface_tool`関数を使ってロードされる、テキストI/Oをサポートしています。
+
+いくつかのPythonパッケージをインストールする必要があります。
+
+```bash
+pip install transformers huggingface_hub
+```
+
+[使用例](/docs/integrations/tools/huggingface_tools)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "load_huggingface_tool", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_huggingface_tool.html", "title": "Hugging Face"}]-->
+from langchain.agents import load_huggingface_tool
+```

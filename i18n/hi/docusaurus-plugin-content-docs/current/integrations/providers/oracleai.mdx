@@ -1,0 +1,73 @@
+---
+translated: true
+---
+
+# ओरेकल एआई वेक्टर सर्च
+
+ओरेकल एआई वेक्टर सर्च कृत्रिम बुद्धिमत्ता (एआई) कार्यभार के लिए डिज़ाइन किया गया है जो आपको डेटा को कीवर्ड के बजाय semantics के आधार पर क्वेरी करने की अनुमति देता है। ओरेकल एआई वेक्टर सर्च के सबसे बड़े लाभों में से एक यह है कि अनरचित डेटा पर semantics सर्च को एक ही सिस्टम में व्यावसायिक डेटा पर रिलेशनल सर्च के साथ जोड़ा जा सकता है।
+यह न केवल शक्तिशाली है, बल्कि महत्वपूर्ण रूप से अधिक प्रभावी भी है क्योंकि आपको एक विशेषज्ञ वेक्टर डेटाबेस जोड़ने की जरूरत नहीं है, जिससे कई सिस्टमों के बीच डेटा टुकड़ों की समस्या समाप्त हो जाती है।
+
+इसके अलावा, क्योंकि ओरेकल ने लंबे समय से डेटाबेस प्रौद्योगिकियों का निर्माण कर रहा है, आपके वेक्टर ओरेकल डेटाबेस की सबसे शक्तिशाली सुविधाओं से लाभ उठा सकते हैं, जैसे:
+
+ * पार्टिशनिंग समर्थन
+ * रियल एप्लिकेशन क्लस्टर स्केलेबिलिटी
+ * Exadata स्मार्ट स्कैन
+ * भौगोलिक रूप से वितरित डेटाबेस पर शार्ड प्रोसेसिंग
+ * लेनदेन
+ * समानांतर SQL
+ * आपदा प्रतिकार
+ * सुरक्षा
+ * ओरेकल मशीन लर्निंग
+ * ओरेकल ग्राफ डेटाबेस
+ * ओरेकल स्पेशल और ग्राफ
+ * ओरेकल ब्लॉकचेन
+ * JSON
+
+## दस्तावेज़ लोडर
+
+कृपया [उपयोग उदाहरण](/docs/integrations/document_loaders/oracleai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OracleDocLoader", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleDocLoader.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleDocLoader
+```
+
+## पाठ स्प्लिटर
+
+कृपया [उपयोग उदाहरण](/docs/integrations/document_loaders/oracleai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OracleTextSplitter", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleTextSplitter.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleTextSplitter
+```
+
+## एम्बेडिंग्स
+
+कृपया [उपयोग उदाहरण](/docs/integrations/text_embedding/oracleai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OracleEmbeddings", "source": "langchain_community.embeddings.oracleai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oracleai.OracleEmbeddings.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+```
+
+## सारांश
+
+कृपया [उपयोग उदाहरण](/docs/integrations/tools/oracleai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OracleSummary", "source": "langchain_community.utilities.oracleai", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.oracleai.OracleSummary.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.utilities.oracleai import OracleSummary
+```
+
+## वेक्टर स्टोर
+
+कृपया [उपयोग उदाहरण](/docs/integrations/vectorstores/oracle) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OracleVS", "source": "langchain_community.vectorstores.oraclevs", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.oraclevs.OracleVS.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.vectorstores.oraclevs import OracleVS
+```
+
+## एंड टू एंड डेमो
+
+कृपया [ओरेकल एआई वेक्टर सर्च एंड-टू-एंड डेमो गाइड](https://github.com/langchain-ai/langchain/blob/master/cookbook/oracleai_demo) देखें।

@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# Vidage MediaWiki
+
+>[Vidages XML MediaWiki](https://www.mediawiki.org/wiki/Manual:Importing_XML_dumps) contiennent le contenu d'un wiki
+> (pages wiki avec toutes leurs révisions), sans les données liées au site. Un vidage XML ne crée pas une sauvegarde complète
+> de la base de données wiki, le vidage ne contient pas les comptes d'utilisateurs, les images, les journaux des modifications, etc.
+
+## Installation et configuration
+
+Nous devons installer plusieurs packages python.
+
+Le `mediawiki-utilities` prend en charge le schéma XML 0.11 dans les branches non fusionnées.
+
+```bash
+pip install -qU git+https://github.com/mediawiki-utilities/python-mwtypes@updates_schema_0.11
+```
+
+Le `mediawiki-utilities mwxml` a un bug, la PR de correction est en attente.
+
+```bash
+pip install -qU git+https://github.com/gdedrouas/python-mwxml@xml_format_0.11
+pip install -qU mwparserfromhell
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/mediawikidump).
+
+```python
+<!--IMPORTS:[{"imported": "MWDumpLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.mediawikidump.MWDumpLoader.html", "title": "MediaWikiDump"}]-->
+from langchain_community.document_loaders import MWDumpLoader
+```

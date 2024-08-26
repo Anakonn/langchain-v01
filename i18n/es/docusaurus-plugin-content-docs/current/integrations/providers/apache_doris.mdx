@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Apache Doris
+
+>[Apache Doris](https://doris.apache.org/) es un almacén de datos moderno para análisis en tiempo real.
+Ofrece análisis ultrarrápidos en datos en tiempo real a escala.
+
+>Generalmente, `Apache Doris` se clasifica como OLAP, y ha demostrado un excelente rendimiento
+> en [ClickBench — una Benchmark para DBMS Analíticos](https://benchmark.clickhouse.com/).
+> Dado que tiene un motor de ejecución vectorizado súper rápido, también se puede usar como un vectordb rápido.
+
+## Instalación y Configuración
+
+```bash
+pip install pymysql
+```
+
+## Vector Store
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/apache_doris).
+
+```python
+<!--IMPORTS:[{"imported": "ApacheDoris", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.apache_doris.ApacheDoris.html", "title": "Apache Doris"}]-->
+from langchain_community.vectorstores import ApacheDoris
+```

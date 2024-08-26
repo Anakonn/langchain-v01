@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Activeloop Deep Lake
+
+>[Activeloop Deep Lake](https://docs.activeloop.ai/) es un lago de datos para aplicaciones de Deep Learning, lo que le permite usarlo
+> como un almacén de vectores.
+
+## ¿Por qué Deep Lake?
+
+- Más que un simple almacén de vectores (multimodal). Más adelante, puede utilizar el conjunto de datos para ajustar sus propios modelos de LLM.
+- No solo almacena incrustaciones, sino también los datos originales con control de versiones automático.
+- Verdaderamente sin servidor. No requiere otro servicio y se puede utilizar con los principales proveedores de nube (`AWS S3`, `GCS`, etc.)
+
+`Activeloop Deep Lake` admite `SelfQuery Retrieval`:
+[Activeloop Deep Lake Self Query Retrieval](/docs/integrations/retrievers/self_query/activeloop_deeplake_self_query)
+
+## Más recursos
+
+1. [Guía definitiva de LangChain y Deep Lake: cree ChatGPT para responder preguntas sobre sus datos financieros](https://www.activeloop.ai/resources/ultimate-guide-to-lang-chain-deep-lake-build-chat-gpt-to-answer-questions-on-your-financial-data/)
+2. [Análisis del código base de Twitter the-algorithm con Deep Lake](https://github.com/langchain-ai/langchain/blob/master/cookbook/twitter-the-algorithm-analysis-deeplake.ipynb)
+3. Aquí está el [whitepaper](https://www.deeplake.ai/whitepaper) y el [artículo académico](https://arxiv.org/pdf/2209.10785.pdf) de Deep Lake
+4. Aquí hay un conjunto de recursos adicionales disponibles para su revisión: [Deep Lake](https://github.com/activeloopai/deeplake), [Primeros pasos](https://docs.activeloop.ai/getting-started) y [Tutoriales](https://docs.activeloop.ai/hub-tutorials)
+
+## Instalación y configuración
+
+Instale el paquete de Python:
+
+```bash
+pip install deeplake
+```
+
+## VectorStore
+
+```python
+<!--IMPORTS:[{"imported": "DeepLake", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.deeplake.DeepLake.html", "title": "Activeloop Deep Lake"}]-->
+from langchain_community.vectorstores import DeepLake
+```
+
+Consulte un [ejemplo de uso](/docs/integrations/vectorstores/activeloop_deeplake).

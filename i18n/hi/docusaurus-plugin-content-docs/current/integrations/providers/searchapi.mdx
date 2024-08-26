@@ -1,0 +1,87 @@
+---
+translated: true
+---
+
+# SearchApi
+
+यह पृष्ठ LangChain में [SearchApi](https://www.searchapi.io/) Google Search API का उपयोग करने के बारे में कवर करता है। SearchApi एक रियल-टाइम SERP API है जो आसान SERP स्क्रैपिंग के लिए है।
+
+## सेटअप
+
+- [https://www.searchapi.io/](https://www.searchapi.io/) पर जाकर एक मुफ्त खाता बनाएं
+- api कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`SEARCHAPI_API_KEY`) के रूप में सेट करें
+
+## रैपर्स
+
+### उपयोगिता
+
+यहां एक SearchApiAPIWrapper उपयोगिता है जो इस API को रैप करता है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "SearchApiAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searchapi.SearchApiAPIWrapper.html", "title": "SearchApi"}]-->
+from langchain_community.utilities import SearchApiAPIWrapper
+```
+
+आप इसका उपयोग Self Ask श्रृंखला के एक हिस्से के रूप में कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "SearchApiAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searchapi.SearchApiAPIWrapper.html", "title": "SearchApi"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "SearchApi"}, {"imported": "initialize_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html", "title": "SearchApi"}, {"imported": "Tool", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.Tool.html", "title": "SearchApi"}, {"imported": "AgentType", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html", "title": "SearchApi"}]-->
+from langchain_community.utilities import SearchApiAPIWrapper
+from langchain_openai import OpenAI
+from langchain.agents import initialize_agent, Tool
+from langchain.agents import AgentType
+
+import os
+
+os.environ["SEARCHAPI_API_KEY"] = ""
+os.environ['OPENAI_API_KEY'] = ""
+
+llm = OpenAI(temperature=0)
+search = SearchApiAPIWrapper()
+tools = [
+    Tool(
+        name="Intermediate Answer",
+        func=search.run,
+        description="useful for when you need to ask with search"
+    )
+]
+
+self_ask_with_search = initialize_agent(tools, llm, agent=AgentType.SELF_ASK_WITH_SEARCH, verbose=True)
+self_ask_with_search.run("Who lived longer: Plato, Socrates, or Aristotle?")
+```
+
+#### आउटपुट
+
+```output
+> Entering new AgentExecutor chain...
+ Yes.
+Follow up: How old was Plato when he died?
+Intermediate answer: eighty
+Follow up: How old was Socrates when he died?
+Intermediate answer: | Socrates |
+| -------- |
+| Born | c. 470 BC Deme Alopece, Athens |
+| Died | 399 BC (aged approximately 71) Athens |
+| Cause of death | Execution by forced suicide by poisoning |
+| Spouse(s) | Xanthippe, Myrto |
+
+Follow up: How old was Aristotle when he died?
+Intermediate answer: 62 years
+So the final answer is: Plato
+
+> Finished chain.
+'Plato'
+```
+
+### उपकरण
+
+आप इस रैपर को आसानी से एक उपकरण के रूप में भी लोड कर सकते हैं (एजेंट के साथ उपयोग करने के लिए)।
+आप इसे निम्नानुसार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "SearchApi"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["searchapi"])
+```
+
+उपकरणों के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

@@ -1,0 +1,109 @@
+---
+translated: true
+---
+
+# Conceptos
+
+El elemento central de cualquier aplicación de modelo de lenguaje es... el modelo. LangChain le brinda los bloques de construcción para interactuar con cualquier modelo de lenguaje. Todo en esta sección se trata de facilitar el trabajo con modelos. Esto implica en gran medida una interfaz clara de lo que es un modelo, utilidades de ayuda para construir entradas a los modelos y utilidades de ayuda para trabajar con las salidas de los modelos.
+
+## Modelos
+
+Hay dos tipos principales de modelos con los que LangChain se integra: LLM y Modelos de Chat. Estos se definen por sus tipos de entrada y salida.
+
+### LLM
+
+Los LLM en LangChain se refieren a modelos de finalización de texto puro.
+Las API que envuelven toman una cadena de texto como entrada y producen una finalización de cadena como salida. El GPT-3 de OpenAI se implementa como un LLM.
+
+### Modelos de Chat
+
+Los modelos de chat a menudo se basan en LLM, pero se sintonizaron específicamente para mantener conversaciones.
+Crucialmente, sus API de proveedores utilizan una interfaz diferente a los modelos de finalización de texto puro. En lugar de una sola cadena,
+toman una lista de mensajes de chat como entrada y devuelven un mensaje de IA como salida. Consulte la sección a continuación para obtener más detalles sobre lo que exactamente consiste un mensaje. El GPT-4 y el Claude-2 de Anthropic se implementan como modelos de chat.
+
+### Consideraciones
+
+Estos dos tipos de API tienen esquemas de entrada y salida bastante diferentes. Esto significa que la mejor manera de interactuar con ellos puede ser bastante diferente. Aunque LangChain hace posible tratarlos de manera intercambiable, eso no significa que **deberías** hacerlo. En particular, las estrategias de creación de consultas para LLM vs ChatModels pueden ser bastante diferentes. Esto significa que deberás asegurarte de que la consulta que estás utilizando esté diseñada para el tipo de modelo con el que estás trabajando.
+
+Además, no todos los modelos son iguales. Diferentes modelos tienen diferentes estrategias de consulta que funcionan mejor para ellos. Por ejemplo, los modelos de Anthropic funcionan mejor con XML, mientras que los de OpenAI funcionan mejor con JSON. Esto significa que la consulta que uses para un modelo puede no transferirse a otros. LangChain proporciona muchas consultas predeterminadas, sin embargo, no se garantiza que funcionen bien con el modelo que estés usando. Históricamente, la mayoría de las consultas funcionan bien con OpenAI, pero no se prueban exhaustivamente en otros modelos. Esto es algo en lo que estamos trabajando, pero es algo que debes tener en cuenta.
+
+## Mensajes
+
+Los ChatModels toman una lista de mensajes como entrada y devuelven un mensaje. Hay varios tipos diferentes de mensajes. Todos los mensajes tienen una propiedad `role` y una propiedad `content`. El `role` describe QUIÉN está diciendo el mensaje. LangChain tiene diferentes clases de mensajes para diferentes roles. La propiedad `content` describe el contenido del mensaje. Esto puede ser varias cosas:
+
+- Una cadena (la mayoría de los modelos son así)
+- Una lista de diccionarios (esto se usa para entrada multimodal, donde el diccionario contiene información sobre ese tipo de entrada y esa ubicación de entrada)
+
+Además, los mensajes tienen una propiedad `additional_kwargs`. Aquí es donde se puede pasar información adicional sobre los mensajes. Esto se usa en gran medida para parámetros de entrada que son *específicos del proveedor* y no generales. El ejemplo más conocido de esto es `function_call` de OpenAI.
+
+### HumanMessage
+
+Esto representa un mensaje del usuario. Generalmente consta solo de contenido.
+
+### AIMessage
+
+Esto representa un mensaje del modelo. Esto puede tener `additional_kwargs` en él, por ejemplo `functional_call` si se usa la llamada de función de OpenAI.
+
+### SystemMessage
+
+Esto representa un mensaje del sistema. Solo algunos modelos admiten esto. Esto le dice al modelo cómo comportarse. Esto generalmente solo consta de contenido.
+
+### FunctionMessage
+
+Esto representa el resultado de una llamada de función. Además de `role` y `content`, este mensaje tiene un parámetro `name` que transmite el nombre de la función que se llamó para producir este resultado.
+
+### ToolMessage
+
+Esto representa el resultado de una llamada a una herramienta. Esto se distingue de un FunctionMessage para coincidir con los tipos de mensajes `function` y `tool` de OpenAI. Además de `role` y `content`, este mensaje tiene un parámetro `tool_call_id` que transmite el id de la llamada a la herramienta que se llamó para producir este resultado.
+
+## Consultas
+
+Las entradas a los modelos de lenguaje a menudo se denominan consultas. A menudo, la entrada del usuario de tu aplicación no es la entrada directa al modelo. Más bien, su entrada se transforma de alguna manera para producir la cadena o lista de mensajes que sí entra en el modelo. Los objetos que toman la entrada del usuario y la transforman en la cadena o mensajes finales se conocen como "Plantillas de consulta". LangChain proporciona varias abstracciones para facilitar el trabajo con consultas.
+
+### PromptValue
+
+Los ChatModels y los LLM tienen diferentes tipos de entrada. PromptValue es una clase diseñada para ser interoperable entre los dos. Expone un método para convertirse en una cadena (para trabajar con LLM) y otro para convertirse en una lista de mensajes (para trabajar con ChatModels).
+
+### PromptTemplate
+
+[Esto](/docs/modules/model_io/prompts/quick_start#prompttemplate) es un ejemplo de una plantilla de consulta. Esto consta de una cadena de plantilla. Esta cadena se formatea luego con las entradas del usuario para producir una cadena final.
+
+### MessagePromptTemplate
+
+Este tipo de plantilla consta de una **plantilla de mensaje**, es decir, un rol específico y un PromptTemplate. Este PromptTemplate se formatea luego con las entradas del usuario para producir una cadena final que se convierte en el `content` de este mensaje.
+
+#### HumanMessagePromptTemplate
+
+Este es un MessagePromptTemplate que produce un HumanMessage.
+
+#### AIMessagePromptTemplate
+
+Este es un MessagePromptTemplate que produce un AIMessage.
+
+#### SystemMessagePromptTemplate
+
+Este es un MessagePromptTemplate que produce un SystemMessage.
+
+### Marcador de posición de mensajes
+
+A menudo, las entradas a los mensajes pueden ser una lista de mensajes. Esto es cuando usarías un `MessagesPlaceholder`. Estos objetos se parametrizan mediante un argumento `variable_name`. La entrada con el mismo valor que este valor `variable_name` debe ser una lista de mensajes.
+
+### ChatPromptTemplate
+
+[Esto](/docs/modules/model_io/prompts/quick_start#chatprompttemplate) es un ejemplo de una plantilla de mensaje. Esto consiste en una lista de `MessagePromptTemplates` o `MessagePlaceholders`. Estos se formatean luego con las entradas del usuario para producir una lista final de mensajes.
+
+## Analizadores de salida
+
+La salida de los modelos son cadenas o un mensaje. A menudo, la cadena o los mensajes contienen información con un formato específico para ser utilizada posteriormente (por ejemplo, una lista separada por comas o un blob JSON). Los analizadores de salida son responsables de tomar la salida de un modelo y transformarla en una forma más utilizable. Generalmente, trabajan sobre el `content` del mensaje de salida, pero ocasionalmente trabajan sobre los valores en el campo `additional_kwargs`.
+
+### StrOutputParser
+
+Este es un analizador de salida simple que simplemente convierte la salida de un modelo de lenguaje (LLM o `ChatModel`) en una cadena. Si el modelo es un LLM (y por lo tanto produce una cadena) simplemente pasa esa cadena. Si la salida es un `ChatModel` (y por lo tanto produce un mensaje) pasa a través del atributo `.content` del mensaje.
+
+### Analizadores de funciones de OpenAI
+
+Hay algunos analizadores dedicados a trabajar con la llamada de funciones de OpenAI. Toman la salida de los parámetros `function_call` y `arguments` (que están dentro de `additional_kwargs`) y trabajan con ellos, ignorando en gran medida el contenido.
+
+### Analizadores de salida de agentes
+
+[Los agentes](/docs/modules/agents/) son sistemas que utilizan modelos de lenguaje para determinar qué pasos tomar. La salida de un modelo de lenguaje, por lo tanto, debe analizarse en un esquema que pueda representar qué acciones (si las hay) se van a tomar. Los `AgentOutputParsers` son responsables de tomar la salida cruda de LLM o `ChatModel` y convertirla a ese esquema. La lógica dentro de estos analizadores de salida puede diferir según el modelo y la estrategia de mensajería que se esté utilizando.

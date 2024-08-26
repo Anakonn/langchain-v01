@@ -1,0 +1,214 @@
+---
+translated: true
+---
+
+# एक वेक्टर स्टोर द्वारा समर्थित
+
+`VectorStoreRetrieverMemory` मेमोरी को एक वेक्टर स्टोर में संग्रहित करता है और हर बार जब इसे कॉल किया जाता है तो सबसे "प्रमुख" दस्तावेजों को क्वेरी करता है।
+
+यह अन्य Memory वर्गों से अलग है क्योंकि यह अंतरक्रियाओं के क्रम को स्पष्ट रूप से नहीं ट्रैक करता है।
+
+इस मामले में, "दस्तावेज" पिछली वार्तालाप स्निपेट हैं। यह पहले की वार्तालाप में AI को बताई गई प्रासंगिक जानकारी के टुकड़ों का संदर्भ लेने के लिए उपयोगी हो सकता है।
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Backed by a Vector Store"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Backed by a Vector Store"}, {"imported": "VectorStoreRetrieverMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.vectorstore.VectorStoreRetrieverMemory.html", "title": "Backed by a Vector Store"}, {"imported": "ConversationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.conversation.base.ConversationChain.html", "title": "Backed by a Vector Store"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Backed by a Vector Store"}]-->
+from datetime import datetime
+from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAI
+from langchain.memory import VectorStoreRetrieverMemory
+from langchain.chains import ConversationChain
+from langchain_core.prompts import PromptTemplate
+```
+
+### अपना वेक्टर स्टोर इनिशियलाइज़ करें
+
+स्टोर का चयन करने पर, यह कदम अलग-अलग दिख सकता है। अधिक जानकारी के लिए संबंधित वेक्टर स्टोर दस्तावेज़ का संदर्भ लें।
+
+```python
+<!--IMPORTS:[{"imported": "InMemoryDocstore", "source": "langchain_community.docstore", "docs": "https://api.python.langchain.com/en/latest/docstore/langchain_community.docstore.in_memory.InMemoryDocstore.html", "title": "Backed by a Vector Store"}, {"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Backed by a Vector Store"}]-->
+import faiss
+
+from langchain_community.docstore import InMemoryDocstore
+from langchain_community.vectorstores import FAISS
+
+
+embedding_size = 1536 # Dimensions of the OpenAIEmbeddings
+index = faiss.IndexFlatL2(embedding_size)
+embedding_fn = OpenAIEmbeddings().embed_query
+vectorstore = FAISS(embedding_fn, index, InMemoryDocstore({}), {})
+```
+
+### अपना `VectorStoreRetrieverMemory` बनाएं
+
+मेमोरी ऑब्जेक्ट किसी भी वेक्टर स्टोर रिट्रीवर से इंस्टैंशिएट किया जाता है।
+
+```python
+# In actual usage, you would set `k` to be a higher value, but we use k=1 to show that
+# the vector lookup still returns the semantically relevant information
+retriever = vectorstore.as_retriever(search_kwargs=dict(k=1))
+memory = VectorStoreRetrieverMemory(retriever=retriever)
+
+# When added to an agent, the memory object can save pertinent information from conversations or used tools
+memory.save_context({"input": "My favorite food is pizza"}, {"output": "that's good to know"})
+memory.save_context({"input": "My favorite sport is soccer"}, {"output": "..."})
+memory.save_context({"input": "I don't the Celtics"}, {"output": "ok"}) #
+```
+
+```python
+print(memory.load_memory_variables({"prompt": "what sport should i watch?"})["history"])
+```
+
+```output
+    input: My favorite sport is soccer
+    output: ...
+```
+
+## श्रृंखला में उपयोग करना
+
+चलो एक उदाहरण देखते हैं, फिर से `verbose=True` सेट करते हैं ताकि हम प्रॉम्प्ट देख सकें।
+
+```python
+llm = OpenAI(temperature=0) # Can be any valid LLM
+_DEFAULT_TEMPLATE = """The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+Relevant pieces of previous conversation:
+{history}
+
+(You do not need to use these pieces of information if not relevant)
+
+Current conversation:
+Human: {input}
+AI:"""
+PROMPT = PromptTemplate(
+    input_variables=["history", "input"], template=_DEFAULT_TEMPLATE
+)
+conversation_with_summary = ConversationChain(
+    llm=llm,
+    prompt=PROMPT,
+    memory=memory,
+    verbose=True
+)
+conversation_with_summary.predict(input="Hi, my name is Perry, what's up?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Relevant pieces of previous conversation:
+    input: My favorite food is pizza
+    output: that's good to know
+
+    (You do not need to use these pieces of information if not relevant)
+
+    Current conversation:
+    Human: Hi, my name is Perry, what's up?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Hi Perry, I'm doing well. How about you?"
+```
+
+```python
+# Here, the basketball related content is surfaced
+conversation_with_summary.predict(input="what's my favorite sport?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Relevant pieces of previous conversation:
+    input: My favorite sport is soccer
+    output: ...
+
+    (You do not need to use these pieces of information if not relevant)
+
+    Current conversation:
+    Human: what's my favorite sport?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    ' You told me earlier that your favorite sport is soccer.'
+```
+
+```python
+# Even though the language model is stateless, since relevant memory is fetched, it can "reason" about the time.
+# Timestamping memories and data is useful in general to let the agent determine temporal relevance
+conversation_with_summary.predict(input="Whats my favorite food")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Relevant pieces of previous conversation:
+    input: My favorite food is pizza
+    output: that's good to know
+
+    (You do not need to use these pieces of information if not relevant)
+
+    Current conversation:
+    Human: Whats my favorite food
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    ' You said your favorite food is pizza.'
+```
+
+```python
+# The memories from the conversation are automatically stored,
+# since this query best matches the introduction chat above,
+# the agent is able to 'remember' the user's name.
+conversation_with_summary.predict(input="What's my name?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Relevant pieces of previous conversation:
+    input: Hi, my name is Perry, what's up?
+    response:  Hi Perry, I'm doing well. How about you?
+
+    (You do not need to use these pieces of information if not relevant)
+
+    Current conversation:
+    Human: What's my name?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    ' Your name is Perry.'
+```

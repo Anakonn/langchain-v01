@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Zilliz
+
+>[Zilliz Cloud](https://zilliz.com/doc/quick_start) は `LF AI Milvus®` のクラウド上の完全管理サービスです。
+
+## インストールとセットアップ
+
+Python SDKをインストールします:
+
+```bash
+pip install pymilvus
+```
+
+## ベクトルストア
+
+Zillizインデックスのラッパーを使用して、セマンティック検索や例の選択などのベクトルストアとして使用できます。
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Zilliz"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+Miluvs ラッパーの詳細なチュートリアルについては、[このノートブック](/docs/integrations/vectorstores/zilliz)を参照してください。

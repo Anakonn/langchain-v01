@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# Streamlit
+
+>[Streamlit](https://streamlit.io/)은 데이터 앱을 빠르게 구축하고 공유할 수 있는 방법입니다.
+>`Streamlit`은 데이터 스크립트를 몇 분 만에 공유 가능한 웹 앱으로 변환합니다. 순수 Python으로 작성되며, 프론트엔드 경험이 필요하지 않습니다.
+>[streamlit.io/generative-ai](https://streamlit.io/generative-ai)에서 더 많은 예제를 확인하세요.
+
+## 설치 및 설정
+
+`streamlit` Python 패키지를 설치해야 합니다:
+
+```bash
+pip install streamlit
+```
+
+## 메모리
+
+[사용 예제](/docs/integrations/memory/streamlit_chat_message_history)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.streamlit.StreamlitChatMessageHistory.html", "title": "Streamlit"}]-->
+from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+```
+
+## 콜백
+
+[사용 예제](/docs/integrations/callbacks/streamlit)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitCallbackHandler", "source": "langchain_community.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.streamlit.StreamlitCallbackHandler.html", "title": "Streamlit"}]-->
+from langchain_community.callbacks import StreamlitCallbackHandler
+```

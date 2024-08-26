@@ -1,0 +1,20 @@
+---
+translated: true
+---
+
+# Infinispan VS
+
+> [Infinispan](https://infinispan.org) Infinispanは、Javaオブジェクトから単なるテキストまで、あらゆるタイプのデータを保持できるキー/値データストアを提供するオープンソースのインメモリデータグリッドです。バージョン15以降、Infinispanはキャッシュ上でベクトル検索をサポートしています。
+
+## インストールとセットアップ
+
+Infinispanサーバーを実行するには[Get Started](https://infinispan.org/get-started/)を参照してください。認証は現在サポートされていないため、無効にすることをお勧めします。
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/infinispanvs)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "InfinispanVS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html", "title": "Infinispan VS"}]-->
+from langchain_community.vectorstores import InfinispanVS
+```

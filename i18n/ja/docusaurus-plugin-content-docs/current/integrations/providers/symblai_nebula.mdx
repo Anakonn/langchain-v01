@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# Nebula
+
+このページでは、[Symbl.ai](https://symbl.ai/)の LLM エコシステムである [Nebula](https://symbl.ai/nebula) の使用方法について説明します。
+このドキュメントは、インストールとセットアップ、そして特定の Nebula ラッパーへの参照の2つの部分で構成されています。
+
+## インストールとセットアップ
+
+- [Nebula API Key](https://info.symbl.ai/Nebula_Private_Beta.html) を取得し、環境変数 `NEBULA_API_KEY` に設定してください
+- 詳細については、[Nebula ドキュメンテーション](https://docs.symbl.ai/docs/nebula-llm)をご覧ください。
+
+### LLM
+
+Nebula LLM ラッパーが用意されており、以下のようにアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "Nebula", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.symblai_nebula.Nebula.html", "title": "Nebula"}]-->
+from langchain_community.llms import Nebula
+llm = Nebula()
+```

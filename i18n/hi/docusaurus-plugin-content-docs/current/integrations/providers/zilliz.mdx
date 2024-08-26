@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# जिल्लिज़
+
+>[जिल्लिज़ क्लाउड](https://zilliz.com/doc/quick_start) एलएफ एआई मिल्व्यूस®के लिए क्लाउड पर पूरी तरह से प्रबंधित सेवा है,
+
+## इंस्टॉलेशन और सेटअप
+
+पायथन एसडीके इंस्टॉल करें:
+
+```bash
+pip install pymilvus
+```
+
+## वेक्टर स्टोर
+
+जिल्लिज़ इंडेक्स के इर्द-गिर्द एक रैपर आपको इसका उपयोग वेक्टर स्टोर के रूप में करने की अनुमति देता है,
+चाहे वह语义搜索के लिए हो या उदाहरण चयन के लिए।
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Zilliz"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+मिल्व्यूस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/zilliz) देखें

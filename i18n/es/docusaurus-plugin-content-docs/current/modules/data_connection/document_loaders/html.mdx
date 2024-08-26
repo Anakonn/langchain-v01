@@ -1,0 +1,128 @@
+---
+translated: true
+---
+
+# HTML
+
+>[El lenguaje de marcado de hipertexto o HTML](https://en.wikipedia.org/wiki/HTML) es el lenguaje de marcado estándar para documentos diseñados para ser mostrados en un navegador web.
+
+Esto cubre cómo cargar documentos `HTML` en un formato de documento que podemos usar posteriormente.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html.UnstructuredHTMLLoader.html", "title": "HTML"}]-->
+from langchain_community.document_loaders import UnstructuredHTMLLoader
+```
+
+```python
+loader = UnstructuredHTMLLoader("example_data/fake-content.html")
+```
+
+```python
+data = loader.load()
+```
+
+```python
+data
+```
+
+```output
+    [Document(page_content='My First Heading\n\nMy first paragraph.', lookup_str='', metadata={'source': 'example_data/fake-content.html'}, lookup_index=0)]
+```
+
+## Cargando HTML con BeautifulSoup4
+
+También podemos usar `BeautifulSoup4` para cargar documentos HTML usando `BSHTMLLoader`. Esto extraerá el texto del HTML en `page_content` y el título de la página como `title` en `metadata`.
+
+```python
+<!--IMPORTS:[{"imported": "BSHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html_bs.BSHTMLLoader.html", "title": "HTML"}]-->
+from langchain_community.document_loaders import BSHTMLLoader
+```
+
+```python
+loader = BSHTMLLoader("example_data/fake-content.html")
+data = loader.load()
+data
+```
+
+```output
+    [Document(page_content='\n\nTest Title\n\n\nMy First Heading\nMy first paragraph.\n\n\n', metadata={'source': 'example_data/fake-content.html', 'title': 'Test Title'})]
+```
+
+## Cargando HTML con SpiderLoader
+
+[Spider](https://spider.cloud/?ref=langchain) es el [más rápido](https://github.com/spider-rs/spider/blob/main/benches/BENCHMARKS.md#benchmark-results) rastreador. Convierte cualquier sitio web en HTML puro, markdown, metadatos o texto, y le permite rastrear con acciones personalizadas utilizando IA.
+
+Spider le permite utilizar proxies de alto rendimiento para evitar la detección, almacenar en caché las acciones de IA, webhooks para el estado del rastreo, programar rastreos, etc.
+
+## Requisito previo
+
+Necesitas tener una clave API de Spider para usar este cargador. Puedes obtener una en [spider.cloud](https://spider.cloud).
+
+```python
+%pip install --upgrade --quiet  langchain langchain-community spider-client
+```
+
+```python
+<!--IMPORTS:[{"imported": "SpiderLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.spider.SpiderLoader.html", "title": "HTML"}]-->
+from langchain_community.document_loaders import SpiderLoader
+
+loader = SpiderLoader(
+    api_key="YOUR_API_KEY", url="https://spider.cloud", mode="crawl"
+)
+
+data = loader.load()
+```
+
+Para guías y documentación, visita [Spider](https://spider.cloud/docs/api)
+
+## Cargando HTML con FireCrawlLoader
+
+[FireCrawl](https://firecrawl.dev/?ref=langchain) rastrea y convierte cualquier sitio web en markdown. Rastrea todas las subpáginas accesibles y le proporciona un markdown limpio y metadatos para cada una.
+
+FireCrawl maneja tareas complejas como proxies inversos, almacenamiento en caché, límites de velocidad y contenido bloqueado por JavaScript.
+
+### Requisito previo
+
+Necesitas tener una clave API de FireCrawl para usar este cargador. Puedes obtener una registrándote en [FireCrawl](https://firecrawl.dev/?ref=langchainpy).
+
+```python
+<!--IMPORTS:[{"imported": "FireCrawlLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.firecrawl.FireCrawlLoader.html", "title": "HTML"}]-->
+%pip install --upgrade --quiet  langchain langchain-community firecrawl-py
+
+from langchain_community.document_loaders import FireCrawlLoader
+
+
+loader = FireCrawlLoader(
+    api_key="YOUR_API_KEY", url="https://firecrawl.dev", mode="crawl"
+)
+
+data = loader.load()
+```
+
+Para más información sobre cómo usar FireCrawl, visita [FireCrawl](https://firecrawl.dev/?ref=langchainpy).
+
+## Cargando HTML con AzureAIDocumentIntelligenceLoader
+
+[Azure AI Document Intelligence](https://aka.ms/doc-intelligence) (anteriormente conocido como `Azure Form Recognizer`) es un servicio basado en aprendizaje automático que extrae textos (incluida la escritura a mano), tablas, estructuras de documentos (por ejemplo, títulos, encabezados de sección, etc.) y pares clave-valor de PDF digitales o escaneados, imágenes, archivos de Office y HTML. Document Intelligence admite `PDF`, `JPEG/JPG`, `PNG`, `BMP`, `TIFF`, `HEIF`, `DOCX`, `XLSX`, `PPTX` y `HTML`.
+
+Esta [implementación actual](https://aka.ms/di-langchain) de un cargador que usa `Document Intelligence` puede incorporar el contenido por página y convertirlo en documentos LangChain. El formato de salida predeterminado es markdown, que se puede encadenar fácilmente con `MarkdownHeaderTextSplitter` para el fragmentado semántico de documentos. También puedes usar `mode="single"` o `mode="page"` para devolver textos puros en una sola página o documento dividido por página.
+
+### Requisito previo
+
+Un recurso de Azure AI Document Intelligence en una de las 3 regiones de vista previa: **Este de EE. UU.**, **Oeste de EE. UU. 2**, **Europa Occidental**: sigue [este documento](https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource?view=doc-intel-4.0.0) para crear uno si no tienes. Pasarás `<endpoint>` y `<key>` como parámetros al cargador.
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDocumentIntelligenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.doc_intelligence.AzureAIDocumentIntelligenceLoader.html", "title": "HTML"}]-->
+%pip install --upgrade --quiet  langchain langchain-community azure-ai-documentintelligence
+
+from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
+
+file_path = "<filepath>"
+endpoint = "<endpoint>"
+key = "<key>"
+loader = AzureAIDocumentIntelligenceLoader(
+    api_endpoint=endpoint, api_key=key, file_path=file_path, api_model="prebuilt-layout"
+)
+
+documents = loader.load()
+```

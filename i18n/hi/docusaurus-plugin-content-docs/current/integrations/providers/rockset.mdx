@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# रॉकसेट
+
+>[रॉकसेट](https://rockset.com/product/) एक रियल-टाइम एनालिटिक्स डेटाबेस सर्विस है जो स्केल पर कम लेटेंसी और उच्च कंकरेंसी एनालिटिकल क्वेरी को सर्व करता है। यह एक कन्वर्ज्ड इंडेक्स™ बनाता है जो संरचित और अर्ध-संरचित डेटा पर काम करता है और वेक्टर एम्बेडिंग के लिए एक कुशल स्टोर प्रदान करता है। स्कीमाहीन डेटा पर SQL चलाने का इसका समर्थन इसे मेटाडेटा फ़िल्टर के साथ वेक्टर सर्च चलाने के लिए एक आदर्श विकल्प बनाता है।
+
+## इंस्टॉलेशन और सेटअप
+
+सुनिश्चित करें कि आपके पास रॉकसेट खाता है और वेब कंसोल पर जाकर API कुंजी प्राप्त करें। विवरण [वेबसाइट](https://rockset.com/docs/rest-api/) पर मिल सकते हैं।
+
+```bash
+pip install rockset
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/rockset) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Rockset", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.rocksetdb.Rockset.html", "title": "Rockset"}]-->
+from langchain_community.vectorstores import Rockset
+```
+
+## डॉक्यूमेंट लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/rockset) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "RocksetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rocksetdb.RocksetLoader.html", "title": "Rockset"}]-->
+from langchain_community.document_loaders import RocksetLoader
+```
+
+## चैट संदेश इतिहास
+
+एक [उपयोग उदाहरण](/docs/integrations/memory/rockset_chat_message_history) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "RocksetChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.rocksetdb.RocksetChatMessageHistory.html", "title": "Rockset"}]-->
+from langchain_community.chat_message_histories import RocksetChatMessageHistory
+```

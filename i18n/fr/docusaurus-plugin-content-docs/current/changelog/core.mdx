@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# langchain-core
+
+## 0.1.7 (5 janvier 2024)
+
+#### Supprimé
+
+Aucune suppression.
+
+#### Déprécié
+
+- Méthodes `__call__`, `call_as_llm`, `predict`, `predict_messages` de `BaseChatModel`. Seront supprimées dans la version 0.2.0. Utilisez `BaseChatModel.invoke` à la place.
+- Méthodes `apredict`, `apredict_messages` de `BaseChatModel`. Seront supprimées dans la version 0.2.0. Utilisez `BaseChatModel.ainvoke` à la place.
+- Méthodes `__call__`, `predict`, `predict_messages` de `BaseLLM`. Seront supprimées dans la version 0.2.0. Utilisez `BaseLLM.invoke` à la place.
+- Méthodes `apredict`, `apredict_messages` de `BaseLLM`. Seront supprimées dans la version 0.2.0. Utilisez `BaseLLM.ainvoke` à la place.
+
+#### Corrigé
+
+- Restreindre le scraping récursif des URL : [#15559](https://github.com/langchain-ai/langchain/pull/15559)
+
+#### Ajouté
+
+Aucun ajout.
+
+#### Bêta
+
+- Marqué `langchain_core.load.load` et `langchain_core.load.loads` comme bêta.
+- Marqué `langchain_core.beta.runnables.context.ContextGet` et `langchain_core.beta.runnables.context.ContextSet` comme bêta.

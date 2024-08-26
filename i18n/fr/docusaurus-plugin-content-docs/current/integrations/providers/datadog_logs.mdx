@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Journaux Datadog
+
+>[Datadog](https://www.datadoghq.com/) est une plateforme de surveillance et d'analyse pour les applications à l'échelle du cloud.
+
+## Installation et configuration
+
+```bash
+pip install datadog_api_client
+```
+
+Nous devons initialiser le chargeur avec la clé API Datadog et la clé APP, et nous devons configurer la requête pour extraire les journaux souhaités.
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/datadog_logs).
+
+```python
+<!--IMPORTS:[{"imported": "DatadogLogsLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.datadog_logs.DatadogLogsLoader.html", "title": "Datadog Logs"}]-->
+from langchain_community.document_loaders import DatadogLogsLoader
+```

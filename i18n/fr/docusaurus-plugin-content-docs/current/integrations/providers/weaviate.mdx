@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Weaviate
+
+>[Weaviate](https://weaviate.io/) est une base de données vectorielle open-source. Elle vous permet de stocker des objets de données et des embeddings vectoriels de
+>vos modèles d'apprentissage automatique préférés, et de passer à l'échelle de manière transparente jusqu'à des milliards d'objets de données.
+
+Qu'est-ce que `Weaviate` ?
+- Weaviate est une base de données open-source de type moteur de recherche vectoriel.
+- Weaviate vous permet de stocker des documents JSON dans un style de propriété de classe tout en attachant des vecteurs d'apprentissage automatique à ces documents pour les représenter dans l'espace vectoriel.
+- Weaviate peut être utilisé de manière autonome (apportez vos propres vecteurs) ou avec une variété de modules qui peuvent effectuer la vectorisation pour vous et étendre les capacités de base.
+- Weaviate a une API GraphQL pour accéder facilement à vos données.
+- Nous visons à amener votre configuration de recherche vectorielle en production pour interroger en quelques millisecondes (consultez nos [benchmarks open-source](https://weaviate.io/developers/weaviate/current/benchmarks/) pour voir si Weaviate correspond à votre cas d'utilisation).
+- Découvrez Weaviate dans le [guide de démarrage de base](https://weaviate.io/developers/weaviate/current/core-knowledge/basics.html) en moins de cinq minutes.
+
+**Weaviate en détail :**
+
+`Weaviate` est un moteur de recherche vectorielle à faible latence avec un support intégré pour différents types de médias (texte, images, etc.). Il offre la recherche sémantique, l'extraction de questions-réponses, la classification, des modèles personnalisables (PyTorch/TensorFlow/Keras), etc. Construit à partir de zéro en Go, Weaviate stocke à la fois des objets et des vecteurs, permettant de combiner la recherche vectorielle avec le filtrage structuré et la tolérance aux pannes d'une base de données cloud-native. Tout est accessible via GraphQL, REST et divers langages de programmation côté client.
+
+## Installation et configuration
+
+Installez le SDK Python :
+
+```bash
+pip install langchain-weaviate
+```
+
+## Stockage vectoriel
+
+Il existe un wrapper autour des index `Weaviate`, vous permettant de l'utiliser comme un stockage vectoriel,
+que ce soit pour la recherche sémantique ou la sélection d'exemples.
+
+Pour importer ce stockage vectoriel :
+
+```python
+from langchain_weaviate import WeaviateVectorStore
+```
+
+Pour un parcours plus détaillé du wrapper Weaviate, voir [ce notebook](/docs/integrations/vectorstores/weaviate)

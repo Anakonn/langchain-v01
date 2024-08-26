@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# 화웨이
+
+>[화웨이 테크놀로지스 Co., Ltd.](https://www.huawei.com/)는 중국의 다국적 디지털 통신 기술 기업입니다.
+>
+>[화웨이 클라우드](https://www.huaweicloud.com/intl/en-us/product/)는 전 세계적인 클라우드 컴퓨팅 서비스를 제공합니다.
+
+## 설치 및 설정
+
+`화웨이 클라우드`에 액세스하려면 액세스 토큰이 필요합니다.
+
+또한 Python 라이브러리를 설치해야 합니다:
+
+```bash
+pip install -U esdk-obs-python
+```
+
+## 문서 로더
+
+### 화웨이 OBS 디렉토리
+
+[사용 예시](/docs/integrations/document_loaders/huawei_obs_directory)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OBSDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.obs_directory.OBSDirectoryLoader.html", "title": "Huawei"}]-->
+from langchain_community.document_loaders import OBSDirectoryLoader
+```
+
+### 화웨이 OBS 파일
+
+[사용 예시](/docs/integrations/document_loaders/huawei_obs_file)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OBSFileLoader", "source": "langchain_community.document_loaders.obs_file", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.obs_file.OBSFileLoader.html", "title": "Huawei"}]-->
+from langchain_community.document_loaders.obs_file import OBSFileLoader
+```

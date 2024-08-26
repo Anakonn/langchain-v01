@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# scikit-learn
+
+>[scikit-learn](https://scikit-learn.org/stable/) एक ओपन-सोर्स मशीन लर्निंग एल्गोरिदम का संग्रह है,
+> जिसमें [k निकटतम पड़ोसी](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html) का कुछ कार्यान्वयन शामिल है। `SKLearnVectorStore` इस कार्यान्वयन को लपेटता है और JSON, BSON (बाइनरी JSON) या Apache Parquet प्रारूप में वेक्टर स्टोर को स्थायी करने की संभावना जोड़ता है।
+
+## स्थापना और सेटअप
+
+- `pip install scikit-learn` के साथ Python पैकेज स्थापित करें
+
+## वेक्टर स्टोर
+
+`SKLearnVectorStore` scikit-learn पैकेज में निकटतम पड़ोसी कार्यान्वयन के इर्द-गिर्द एक सरल रैपर प्रदान करता है, जिससे आप इसका उपयोग एक वेक्टर स्टोर के रूप में कर सकते हैं।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "SKLearnVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sklearn.SKLearnVectorStore.html", "title": "scikit-learn"}]-->
+from langchain_community.vectorstores import SKLearnVectorStore
+```
+
+SKLearnVectorStore रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/sklearn) देखें।

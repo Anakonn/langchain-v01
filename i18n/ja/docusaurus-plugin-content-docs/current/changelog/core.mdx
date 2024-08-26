@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# langchain-core
+
+## 0.1.7 (2024年1月5日)
+
+#### 削除
+
+削除なし。
+
+#### 非推奨
+
+- `BaseChatModel`メソッド`__call__`、`call_as_llm`、`predict`、`predict_messages`。0.2.0で削除されます。代わりに`BaseChatModel.invoke`を使用してください。
+- `BaseChatModel`メソッド`apredict`、`apredict_messages`。0.2.0で削除されます。代わりに`BaseChatModel.ainvoke`を使用してください。
+- `BaseLLM`メソッド`__call__`、`predict`、`predict_messages`。0.2.0で削除されます。代わりに`BaseLLM.invoke`を使用してください。
+- `BaseLLM`メソッド`apredict`、`apredict_messages`。0.2.0で削除されます。代わりに`BaseLLM.ainvoke`を使用してください。
+
+#### 修正
+
+- 再帰的なURLスクレイピングを制限: [#15559](https://github.com/langchain-ai/langchain/pull/15559)
+
+#### 追加
+
+追加なし。
+
+#### ベータ
+
+- `langchain_core.load.load`と`langchain_core.load.loads`をベータとしてマークしました。
+- `langchain_core.beta.runnables.context.ContextGet`と`langchain_core.beta.runnables.context.ContextSet`をベータとしてマークしました。

@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Minimax
+
+>[Minimax](https://api.minimax.chat) est une startup chinoise qui fournit des modèles de traitement du langage naturel
+> pour les entreprises et les particuliers.
+
+## Installation et configuration
+
+Obtenez une [clé d'API Minimax](https://api.minimax.chat/user-center/basic-information/interface-key) et définissez-la comme une variable d'environnement (`MINIMAX_API_KEY`)
+Obtenez un [ID de groupe Minimax](https://api.minimax.chat/user-center/basic-information) et définissez-le comme une variable d'environnement (`MINIMAX_GROUP_ID`)
+
+## LLM
+
+Il existe un wrapper LLM Minimax, que vous pouvez accéder avec
+Voir un [exemple d'utilisation](/docs/integrations/llms/minimax).
+
+```python
+<!--IMPORTS:[{"imported": "Minimax", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.minimax.Minimax.html", "title": "Minimax"}]-->
+from langchain_community.llms import Minimax
+```
+
+## Modèles de chat
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/minimax)
+
+```python
+<!--IMPORTS:[{"imported": "MiniMaxChat", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.minimax.MiniMaxChat.html", "title": "Minimax"}]-->
+from langchain_community.chat_models import MiniMaxChat
+```
+
+## Modèle d'intégration de texte
+
+Il existe un modèle d'intégration Minimax, que vous pouvez accéder avec
+
+```python
+<!--IMPORTS:[{"imported": "MiniMaxEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.minimax.MiniMaxEmbeddings.html", "title": "Minimax"}]-->
+from langchain_community.embeddings import MiniMaxEmbeddings
+```

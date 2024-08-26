@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# Supabase (Postgres)
+
+>[Supabase](https://supabase.com/docs) est une alternative open-source à `Firebase`.
+> `Supabase` est construit sur `PostgreSQL`, qui offre de puissantes capacités de requêtage `SQL`
+> et permet une interface simple avec des outils et des frameworks déjà existants.
+
+>[PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) également connu sous le nom de `Postgres`,
+> est un système de gestion de base de données relationnelle (SGBDR) gratuit et open-source
+> mettant l'accent sur l'extensibilité et la conformité `SQL`.
+
+## Installation et configuration
+
+Nous devons installer le package python `supabase`.
+
+```bash
+pip install supabase
+```
+
+## Magasin vectoriel
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/supabase).
+
+```python
+<!--IMPORTS:[{"imported": "SupabaseVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.supabase.SupabaseVectorStore.html", "title": "Supabase (Postgres)"}]-->
+from langchain_community.vectorstores import SupabaseVectorStore
+```

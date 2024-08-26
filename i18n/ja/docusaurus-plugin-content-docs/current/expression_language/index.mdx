@@ -1,0 +1,34 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# LangChain Expression Language (LCEL)
+
+LangChain Expression Language、または LCEL は、チェーンを簡単に組み合わせるための宣言型の方法です。
+LCEL は、最も単純な "プロンプト + LLM" チェーンから最も複雑なチェーン (100 ステップ以上のチェーンを本番環境で正常に実行しているユーザーがいます) まで、**コードを変更せずにプロトタイプを本番環境に投入できる**ように設計されています。LCEL を使う理由の一部を以下に示します:
+
+[**ストリーミングサポートの第一級市民**](/docs/expression_language/streaming)
+LCEL でチェーンを構築すると、最初のトークンが出力されるまでの時間が最短になります。一部のチェーンでは、LLM から直接ストリーミング出力パーサーにトークンをストリーミングし、LLM プロバイダーが生のトークンを出力するのと同じ速度で、解析された増分チャンクの出力を受け取ることができます。
+
+[**非同期サポート**](/docs/expression_language/interface)
+LCEL で構築されたチェーンは、同期 API (プロトタイピング時の Jupyter ノートブックなど) と非同期 API (LangServe サーバーなど) の両方で呼び出すことができます。これにより、同じコードでプロトタイプと本番環境を使用でき、高パフォーマンスと多数の並行リクエストの処理が可能になります。
+
+[**最適化された並列実行**](/docs/expression_language/primitives/parallel)
+LCEL チェーンのステップが並列に実行できる場合 (複数のリトリーバーからドキュメントを取得するなど)、同期 API と非同期 API の両方で自動的に並列実行されるため、待ち時間が最小限に抑えられます。
+
+[**リトライとフォールバック**](/docs/guides/productionization/fallbacks)
+LCEL チェーンの任意の部分にリトライとフォールバックを設定できます。これにより、スケールアップしても信頼性の高いチェーンを構築できます。現在、ストリーミングサポートを使ってリトライ/フォールバックを追加する作業を進めており、待ち時間を増やすことなく信頼性を高められるようになります。
+
+[**中間結果へのアクセス**](/docs/expression_language/interface#async-stream-events-beta)
+より複雑なチェーンでは、最終出力が生成される前に中間ステップの結果にアクセスできると非常に便利です。これを使って、ユーザーに何かが進行中であることを知らせたり、チェーンをデバッグしたりできます。中間結果をストリーミングできるようになっており、すべての [LangServe](/docs/langserve) サーバーで利用可能です。
+
+[**入力と出力のスキーマ**](/docs/expression_language/interface#input-schema)
+入力と出力のスキーマにより、LCEL チェーンごとに Pydantic と JSONSchema のスキーマが推論されます。これを使って入力と出力の検証ができ、LangServe の重要な部分となっています。
+
+[**シームレスな LangSmith トレーシング**](/docs/langsmith)
+チェーンが複雑になるにつれ、各ステップで何が起こっているかを理解することが重要になってきます。
+LCEL では、**すべての**ステップが自動的に [LangSmith](/docs/langsmith/) にログ記録されるため、最大限の可観測性とデバッグ性が得られます。
+
+[**シームレスな LangServe デプロイ**](/docs/langserve)
+LCEL で作成したチェーンは、[LangServe](/docs/langserve) を使って簡単にデプロイできます。

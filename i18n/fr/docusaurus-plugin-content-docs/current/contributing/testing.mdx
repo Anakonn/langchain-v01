@@ -1,0 +1,146 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# Tests
+
+Tous nos packages ont des tests unitaires et des tests d'intégration, et nous privilégions les tests unitaires par rapport aux tests d'intégration.
+
+Les tests unitaires sont exécutés à chaque pull request, ils doivent donc être rapides et fiables.
+
+Les tests d'intégration sont exécutés une fois par jour, et nécessitent une configuration plus importante, ils doivent donc être réservés à la confirmation des points d'interface avec les services externes.
+
+## Tests unitaires
+
+Les tests unitaires couvrent la logique modulaire qui ne nécessite pas d'appels à des API externes.
+Si vous ajoutez une nouvelle logique, veuillez ajouter un test unitaire.
+
+Pour installer les dépendances pour les tests unitaires :
+
+```bash
+poetry install --with test
+```
+
+Pour exécuter les tests unitaires :
+
+```bash
+make test
+```
+
+Pour exécuter les tests unitaires dans Docker :
+
+```bash
+make docker_tests
+```
+
+Pour exécuter un test spécifique :
+
+```bash
+TEST_FILE=tests/unit_tests/test_imports.py make test
+```
+
+## Tests d'intégration
+
+Les tests d'intégration couvrent la logique qui nécessite de faire des appels à des API externes (souvent une intégration avec d'autres services).
+Si vous ajoutez la prise en charge d'une nouvelle API externe, veuillez ajouter un nouveau test d'intégration.
+
+**Avertissement :** Presque aucun test ne devrait être un test d'intégration.
+
+  Les tests qui nécessitent des connexions réseau rendent difficile pour les autres
+  développeurs de tester le code.
+
+  Privilégiez plutôt de vous appuyer sur la bibliothèque `responses` et/ou `mock.patch` pour simuler
+  les requêtes à l'aide de petits fichiers de test.
+
+Pour installer les dépendances pour les tests d'intégration :
+
+```bash
+poetry install --with test,test_integration
+```
+
+Pour exécuter les tests d'intégration :
+
+```bash
+make integration_tests
+```
+
+### Préparation
+
+Les tests d'intégration utilisent plusieurs moteurs de recherche et bases de données. Les tests
+visent à vérifier le comportement correct des moteurs et des bases de données selon
+leurs spécifications et leurs exigences.
+
+Pour exécuter certains tests d'intégration, comme les tests situés dans
+`tests/integration_tests/vectorstores/`, vous devrez installer les logiciels suivants :
+
+- Docker
+- Python 3.8.1 ou version ultérieure
+
+Toutes les nouvelles dépendances doivent être ajoutées en exécutant :
+
+```bash
+# add package and install it after adding:
+poetry add tiktoken@latest --group "test_integration" && poetry install --with test_integration
+```
+
+Avant d'exécuter les tests, vous devez démarrer un conteneur Docker spécifique qui a toutes les
+dépendances nécessaires installées. Par exemple, nous utilisons le conteneur `elasticsearch.yml`
+pour `test_elasticsearch.py` :
+
+```bash
+cd tests/integration_tests/vectorstores/docker-compose
+docker-compose -f elasticsearch.yml up
+```
+
+Pour les environnements nécessitant une préparation plus complexe, recherchez les fichiers `*.sh`. Par exemple,
+`opensearch.sh` construit une image Docker requise, puis lance opensearch.
+
+### Préparer les variables d'environnement pour les tests locaux :
+
+- copiez `tests/integration_tests/.env.example` vers `tests/integration_tests/.env`
+- définissez les variables dans le fichier `tests/integration_tests/.env`, par exemple `OPENAI_API_KEY`
+
+De plus, il est important de noter que certains tests d'intégration peuvent nécessiter que certaines
+variables d'environnement soient définies, comme `OPENAI_API_KEY`. Assurez-vous de définir toutes les variables
+d'environnement requises avant d'exécuter les tests pour garantir leur bon fonctionnement.
+
+### Enregistrement des interactions HTTP avec pytest-vcr
+
+Certains des tests d'intégration de ce référentiel impliquent de faire des requêtes HTTP vers
+des services externes. Pour empêcher ces requêtes d'être effectuées à chaque fois que les tests sont
+exécutés, nous utilisons pytest-vcr pour enregistrer et rejouer les interactions HTTP.
+
+Lors de l'exécution des tests dans un pipeline CI/CD, vous ne voudrez peut-être pas modifier les cassettes
+existantes. Vous pouvez utiliser l'option de ligne de commande `--vcr-record=none` pour désactiver
+l'enregistrement de nouvelles cassettes. Voici un exemple :
+
+```bash
+pytest --log-cli-level=10 tests/integration_tests/vectorstores/test_pinecone.py --vcr-record=none
+pytest tests/integration_tests/vectorstores/test_elasticsearch.py --vcr-record=none
+
+```
+
+### Exécuter certains tests avec la couverture :
+
+```bash
+pytest tests/integration_tests/vectorstores/test_elasticsearch.py --cov=langchain --cov-report=html
+start "" htmlcov/index.html || open htmlcov/index.html
+
+```
+
+## Couverture
+
+La couverture du code (c'est-à-dire la quantité de code couverte par les tests unitaires) aide à identifier les zones du code qui sont potentiellement plus ou moins fragiles.
+
+La couverture nécessite les dépendances pour les tests d'intégration :
+
+```bash
+poetry install --with test_integration
+```
+
+Pour obtenir un rapport de la couverture actuelle, exécutez la commande suivante :
+
+```bash
+make coverage
+```

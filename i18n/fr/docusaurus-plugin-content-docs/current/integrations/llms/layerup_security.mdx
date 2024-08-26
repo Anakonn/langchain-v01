@@ -1,0 +1,93 @@
+---
+translated: true
+---
+
+# Sécurité Layerup
+
+L'intégration [Sécurité Layerup](https://uselayerup.com) vous permet de sécuriser vos appels à n'importe quel LLM LangChain, chaîne LLM ou agent LLM. L'objet LLM s'enroule autour de tout objet LLM existant, permettant une couche de sécurité entre vos utilisateurs et vos LLM.
+
+Bien que l'objet Sécurité Layerup soit conçu comme un LLM, ce n'est pas en réalité un LLM lui-même, il enveloppe simplement un LLM, lui permettant d'adapter la même fonctionnalité que le LLM sous-jacent.
+
+## Configuration
+
+Tout d'abord, vous aurez besoin d'un compte Sécurité Layerup depuis le [site Web](https://uselayerup.com) de Layerup.
+
+Ensuite, créez un projet via le [tableau de bord](https://dashboard.uselayerup.com) et copiez votre clé API. Nous vous recommandons de placer votre clé API dans l'environnement de votre projet.
+
+Installez le SDK Sécurité Layerup :
+
+```bash
+pip install LayerupSecurity
+```
+
+Et installez LangChain Community :
+
+```bash
+pip install langchain-community
+```
+
+Et maintenant vous êtes prêt à commencer à protéger vos appels LLM avec Sécurité Layerup !
+
+```python
+<!--IMPORTS:[{"imported": "LayerupSecurity", "source": "langchain_community.llms.layerup_security", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.layerup_security.LayerupSecurity.html", "title": "Layerup Security"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Layerup Security"}]-->
+from langchain_community.llms.layerup_security import LayerupSecurity
+from langchain_openai import OpenAI
+
+# Create an instance of your favorite LLM
+openai = OpenAI(
+    model_name="gpt-3.5-turbo",
+    openai_api_key="OPENAI_API_KEY",
+)
+
+# Configure Layerup Security
+layerup_security = LayerupSecurity(
+    # Specify a LLM that Layerup Security will wrap around
+    llm=openai,
+
+    # Layerup API key, from the Layerup dashboard
+    layerup_api_key="LAYERUP_API_KEY",
+
+    # Custom base URL, if self hosting
+    layerup_api_base_url="https://api.uselayerup.com/v1",
+
+    # List of guardrails to run on prompts before the LLM is invoked
+    prompt_guardrails=[],
+
+    # List of guardrails to run on responses from the LLM
+    response_guardrails=["layerup.hallucination"],
+
+    # Whether or not to mask the prompt for PII & sensitive data before it is sent to the LLM
+    mask=False,
+
+    # Metadata for abuse tracking, customer tracking, and scope tracking.
+    metadata={"customer": "example@uselayerup.com"},
+
+    # Handler for guardrail violations on the prompt guardrails
+    handle_prompt_guardrail_violation=(
+        lambda violation: {
+            "role": "assistant",
+            "content": (
+                "There was sensitive data! I cannot respond. "
+                "Here's a dynamic canned response. Current date: {}"
+            ).format(datetime.now())
+        }
+        if violation["offending_guardrail"] == "layerup.sensitive_data"
+        else None
+    ),
+
+    # Handler for guardrail violations on the response guardrails
+    handle_response_guardrail_violation=(
+        lambda violation: {
+            "role": "assistant",
+            "content": (
+                "Custom canned response with dynamic data! "
+                "The violation rule was {}."
+            ).format(violation["offending_guardrail"])
+        }
+    ),
+)
+
+response = layerup_security.invoke(
+    "Summarize this message: my name is Bob Dylan. My SSN is 123-45-6789."
+)
+```

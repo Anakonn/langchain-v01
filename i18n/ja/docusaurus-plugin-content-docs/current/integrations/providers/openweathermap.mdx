@@ -1,0 +1,52 @@
+---
+translated: true
+---
+
+# OpenWeatherMap
+
+>[OpenWeatherMap](https://openweathermap.org/api/)は、特定の場所の必要不可欠な気象データを提供します:
+>- 現在の天気
+>- 1時間先の1分ごとの予報
+>- 48時間先の時間ごとの予報
+>- 8日先の日別予報
+>- 国内の気象警報
+>- 過去40年以上の過去の気象データ
+
+このページでは、LangChainでOpenWeatherMap APIを使う方法を説明します。
+
+## インストールとセットアップ
+
+- 以下のコマンドでライブラリをインストールします
+
+```bash
+pip install pyowm
+```
+
+- OpenWeatherMapにアカウントを作成し、APIキーを取得してください[here](https://openweathermap.org/api/)
+- APIキーを`OPENWEATHERMAP_API_KEY`の環境変数に設定してください
+
+## ラッパー
+
+### ユーティリティ
+
+OpenWeatherMapAPIWrapperユーティリティがこのAPIをラップしています。このユーティリティをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "OpenWeatherMapAPIWrapper", "source": "langchain_community.utilities.openweathermap", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.openweathermap.OpenWeatherMapAPIWrapper.html", "title": "OpenWeatherMap"}]-->
+from langchain_community.utilities.openweathermap import OpenWeatherMapAPIWrapper
+```
+
+このラッパーの詳細な解説は、[このノートブック](/docs/integrations/tools/openweathermap)を参照してください。
+
+### ツール
+
+このラッパーをツールとしても簡単に読み込めます(Agentで使用するため)。
+以下のように行います:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "OpenWeatherMap"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["openweathermap-api"])
+```
+
+ツールの詳細については、[このページ](/docs/modules/tools/)を参照してください。

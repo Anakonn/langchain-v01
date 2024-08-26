@@ -1,0 +1,164 @@
+---
+translated: true
+---
+
+# Oracle AIベクトル検索: エンベディングの生成
+
+Oracle AIベクトル検索は、キーワードではなくセマンティクスに基づいてデータを検索できるAI(人工知能)ワークロード向けに設計されています。Oracle AIベクトル検索の最大の利点の1つは、構造化データに対する関係検索と、非構造化データに対するセマンティック検索を、1つのシステムで組み合わせられることです。これは強力であり、また専用のベクトルデータベースを追加する必要がないため、複数のシステム間でのデータ断片化の問題を解消できるため、大幅に効果的です。
+
+このガイドでは、Oracle AIベクトル検索のエンベディング機能を使用して、OracleEmbeddingsを使ってドキュメントのエンベディングを生成する方法を説明します。
+
+### 前提条件
+
+Oracle Python Clientドライバーをインストールして、Oracle AIベクトル検索とLangchainを使用してください。
+
+```python
+# pip install oracledb
+```
+
+### Oracle Databaseに接続する
+
+次のサンプルコードは、Oracle Databaseに接続する方法を示しています。
+
+```python
+import sys
+
+import oracledb
+
+# please update with your username, password, hostname and service_name
+username = "<username>"
+password = "<password>"
+dsn = "<hostname>/<service_name>"
+
+try:
+    conn = oracledb.connect(user=username, password=password, dsn=dsn)
+    print("Connection successful!")
+except Exception as e:
+    print("Connection failed!")
+    sys.exit(1)
+```
+
+エンベディングには、ユーザーが選択できるデータベース、OCIGENAI、HuggingFace、OpenAIなどの第三者プロバイダーなど、いくつかのプロバイダーオプションがあります。ユーザーが第三者プロバイダーを使用する場合は、対応する認証情報を含む資格情報を作成する必要があります。一方、ユーザーが「データベース」プロバイダーを使用する場合は、エンベディングのためにONNXモデルをOracle Databaseにロードする必要があります。
+
+### ONNXモデルのロード
+
+エンベディングを生成するために、ユーザーはデータベースプロバイダーや、OCIGENAI、HuggingFace などの第三者プロバイダーなど、いくつかのプロバイダーオプションから選択できます。
+
+***注意*** ユーザーがデータベースオプションを選択する場合は、エンベディングのためにONNXモデルをOracle Databaseにロードする必要があります。第三者プロバイダーを使ってエンベディングを生成する場合は、ONNXモデルをOracle Databaseにロードする必要はありません。
+
+ONNXモデルを使用する主な利点の1つは、ユーザーがデータを第三者に転送する必要がないことです。また、ネットワークやREST API呼び出しを必要としないため、パフォーマンスが向上する可能性があります。
+
+ONNXモデルをOracle Databaseにロードするサンプルコードは以下の通りです:
+
+```python
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+
+# please update with your related information
+# make sure that you have onnx file in the system
+onnx_dir = "DEMO_DIR"
+onnx_file = "tinybert.onnx"
+model_name = "demo_model"
+
+try:
+    OracleEmbeddings.load_onnx_model(conn, onnx_dir, onnx_file, model_name)
+    print("ONNX model loaded.")
+except Exception as e:
+    print("ONNX model loading failed!")
+    sys.exit(1)
+```
+
+### 資格情報の作成
+
+一方、ユーザーが第三者プロバイダーを使ってエンベディングを生成する場合は、第三者プロバイダーのエンドポイントにアクセスするための資格情報を作成する必要があります。
+
+***注意:*** ユーザーが「データベース」プロバイダーを使ってエンベディングを生成する場合は、資格情報を作成する必要はありません。ユーザーが第三者プロバイダーを使用する場合は、使用する第三者プロバイダー用の資格情報を作成する必要があります。
+
+サンプル例は以下の通りです:
+
+```python
+try:
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+       declare
+           jo json_object_t;
+       begin
+           -- HuggingFace
+           dbms_vector_chain.drop_credential(credential_name  => 'HF_CRED');
+           jo := json_object_t();
+           jo.put('access_token', '<access_token>');
+           dbms_vector_chain.create_credential(
+               credential_name   =>  'HF_CRED',
+               params            => json(jo.to_string));
+
+           -- OCIGENAI
+           dbms_vector_chain.drop_credential(credential_name  => 'OCI_CRED');
+           jo := json_object_t();
+           jo.put('user_ocid','<user_ocid>');
+           jo.put('tenancy_ocid','<tenancy_ocid>');
+           jo.put('compartment_ocid','<compartment_ocid>');
+           jo.put('private_key','<private_key>');
+           jo.put('fingerprint','<fingerprint>');
+           dbms_vector_chain.create_credential(
+               credential_name   => 'OCI_CRED',
+               params            => json(jo.to_string));
+       end;
+       """
+    )
+    cursor.close()
+    print("Credentials created.")
+except Exception as ex:
+    cursor.close()
+    raise
+```
+
+### エンベディングの生成
+
+Oracle AIベクトル検索には、エンベディングを生成する方法がいくつかあります。ユーザーはOracle Databaseにエンベディングモデルをロードしてそれを使用したり、第三者APIのエンドポイントを使ってエンベディングを生成したりできます。これらのパラメーターの完全な情報については、Oracle AIベクトル検索ガイドブックを参照してください。
+
+***注意:*** ユーザーは、「データベース」プロバイダー(つまりONNXモデルを使用)以外の第三者エンベディング生成プロバイダーを使用する場合、プロキシを設定する必要がある可能性があります。
+
+```python
+# proxy to be used when we instantiate summary and embedder object
+proxy = "<proxy>"
+```
+
+次のサンプルコードは、エンベディングを生成する方法を示しています:
+
+```python
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+from langchain_core.documents import Document
+
+"""
+# using ocigenai
+embedder_params = {
+    "provider": "ocigenai",
+    "credential_name": "OCI_CRED",
+    "url": "https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions/embedText",
+    "model": "cohere.embed-english-light-v3.0",
+}
+
+# using huggingface
+embedder_params = {
+    "provider": "huggingface",
+    "credential_name": "HF_CRED",
+    "url": "https://api-inference.huggingface.co/pipeline/feature-extraction/",
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "wait_for_model": "true"
+}
+"""
+
+# using ONNX model loaded to Oracle Database
+embedder_params = {"provider": "database", "model": "demo_model"}
+
+# Remove proxy if not required
+embedder = OracleEmbeddings(conn=conn, params=embedder_params, proxy=proxy)
+embed = embedder.embed_query("Hello World!")
+
+""" verify """
+print(f"Embedding generated by OracleEmbeddings: {embed}")
+```
+
+### エンドツーエンドのデモ
+
+Oracle AIベクトル検索を使ったエンドツーエンドのRAGパイプラインの構築については、完全なデモガイド[Oracle AI Vector Search End-to-End Demo Guide](https://github.com/langchain-ai/langchain/tree/master/cookbook/oracleai_demo.md)を参照してください。

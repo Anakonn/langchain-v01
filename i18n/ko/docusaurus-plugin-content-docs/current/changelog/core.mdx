@@ -1,0 +1,32 @@
+---
+translated: true
+---
+
+# langchain-core
+
+## 0.1.7 (2024년 1월 5일)
+
+#### 삭제됨
+
+삭제된 항목 없음.
+
+#### 사용 중단 예정
+
+- `BaseChatModel`의 메서드 `__call__`, `call_as_llm`, `predict`, `predict_messages`. 0.2.0에서 제거될 예정입니다. 대신 `BaseChatModel.invoke`를 사용하세요.
+- `BaseChatModel`의 메서드 `apredict`, `apredict_messages`. 0.2.0에서 제거될 예정입니다. 대신 `BaseChatModel.ainvoke`를 사용하세요.
+- `BaseLLM`의 메서드 `__call__`, `predict`, `predict_messages`. 0.2.0에서 제거될 예정입니다. 대신 `BaseLLM.invoke`를 사용하세요.
+- `BaseLLM`의 메서드 `apredict`, `apredict_messages`. 0.2.0에서 제거될 예정입니다. 대신 `BaseLLM.ainvoke`를 사용하세요.
+
+#### 수정됨
+
+- 재귀적인 URL 스크래핑 제한: [#15559](https://github.com/langchain-ai/langchain/pull/15559)
+
+#### 추가됨
+
+추가된 항목 없음.
+
+#### 베타
+
+- `langchain_core.load.load` 및 `langchain_core.load.loads`를 베타로 표시했습니다.
+- `langchain_core.beta.runnables.context.ContextGet` 및 `langchain_core.beta.runnables.context.ContextSet`을 베타로 표시했습니다.
+

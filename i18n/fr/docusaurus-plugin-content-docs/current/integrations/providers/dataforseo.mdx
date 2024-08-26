@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+# DataForSEO
+
+>[DataForSeo](https://dataforseo.com/) fournit des solutions de données complètes pour le référencement naturel (SEO) et le marketing numérique via API.
+
+Cette page fournit des instructions sur la façon d'utiliser les API de recherche DataForSEO dans LangChain.
+
+## Installation et configuration
+
+Obtenez un [identifiant et un mot de passe d'accès à l'API DataForSEO](https://app.dataforseo.com/register), et définissez-les comme variables d'environnement (`DATAFORSEO_LOGIN` et `DATAFORSEO_PASSWORD` respectivement).
+
+```python
+import os
+
+os.environ["DATAFORSEO_LOGIN"] = "your_login"
+os.environ["DATAFORSEO_PASSWORD"] = "your_password"
+```
+
+## Utilitaire
+
+L'utilitaire DataForSEO enveloppe l'API. Pour importer cet utilitaire, utilisez :
+
+```python
+<!--IMPORTS:[{"imported": "DataForSeoAPIWrapper", "source": "langchain_community.utilities.dataforseo_api_search", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dataforseo_api_search.DataForSeoAPIWrapper.html", "title": "DataForSEO"}]-->
+from langchain_community.utilities.dataforseo_api_search import DataForSeoAPIWrapper
+```
+
+Pour une présentation détaillée de cette enveloppe, consultez [ce notebook](/docs/integrations/tools/dataforseo).
+
+## Outil
+
+Vous pouvez également charger cette enveloppe en tant qu'outil à utiliser avec un agent :
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "DataForSEO"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["dataforseo-api-search"])
+```
+
+## Exemple d'utilisation
+
+```python
+dataforseo = DataForSeoAPIWrapper(api_login="your_login", api_password="your_password")
+result = dataforseo.run("Bill Gates")
+print(result)
+```

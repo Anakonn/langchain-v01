@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# TiDB
+
+> [TiDB Cloud](https://tidbcloud.com/) est une solution complète de base de données en tant que service (DBaaS) qui propose des options dédiées et sans serveur. `TiDB Serverless` intègre désormais une recherche vectorielle intégrée dans le paysage MySQL. Avec cette amélioration, vous pouvez développer des applications d'IA en utilisant `TiDB Serverless` sans avoir besoin d'une nouvelle base de données ou de piles techniques supplémentaires. Soyez parmi les premiers à en faire l'expérience en rejoignant la [liste d'attente pour la version bêta privée](https://tidb.cloud/ai).
+
+## Installation et configuration
+
+Vous devez obtenir les détails de connexion pour la base de données TiDB.
+Visitez [TiDB Cloud](https://tidbcloud.com/) pour obtenir les détails de connexion.
+
+## Chargeur de documents
+
+```python
+<!--IMPORTS:[{"imported": "TiDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tidb.TiDBLoader.html", "title": "TiDB"}]-->
+from langchain_community.document_loaders import TiDBLoader
+```
+
+Veuillez consulter les détails [ici](/docs/integrations/document_loaders/tidb).
+
+## Magasin vectoriel
+
+```python
+<!--IMPORTS:[{"imported": "TiDBVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tidb_vector.TiDBVectorStore.html", "title": "TiDB"}]-->
+from langchain_community.vectorstores import TiDBVectorStore
+```
+
+Veuillez consulter les détails [ici](/docs/integrations/vectorstores/tidb_vector).
+
+## Mémoire
+
+```python
+<!--IMPORTS:[{"imported": "TiDBChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.tidb.TiDBChatMessageHistory.html", "title": "TiDB"}]-->
+from langchain_community.chat_message_histories import TiDBChatMessageHistory
+```
+
+Veuillez consulter les détails [ici](/docs/integrations/memory/tidb_chat_message_history).

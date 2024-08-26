@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# एलएलमॉनिटर
+
+>[एलएलमॉनिटर](https://llmonitor.com?utm_source=langchain&utm_medium=py&utm_campaign=docs) एक ओपन-सोर्स अवलोकनीयता प्लेटफ़ॉर्म है जो लागत और उपयोग विश्लेषण, उपयोगकर्ता ट्रैकिंग, ट्रेसिंग और मूल्यांकन उपकरण प्रदान करता है।
+
+## स्थापना और सेटअप
+
+[llmonitor.com](https://llmonitor.com?utm_source=langchain&utm_medium=py&utm_campaign=docs) पर एक खाता बनाएं, फिर अपने नए ऐप का `ट्रैकिंग आईडी` कॉपी करें।
+
+एक बार जब आप इसे प्राप्त कर लेते हैं, तो निम्न कमांड चलाकर इसे एक पर्यावरण चर के रूप में सेट करें:
+
+```bash
+export LLMONITOR_APP_ID="..."
+```
+
+## कॉलबैक
+
+[उपयोग उदाहरण](/docs/integrations/callbacks/llmonitor) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "LLMonitorCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.llmonitor_callback.LLMonitorCallbackHandler.html", "title": "LLMonitor"}]-->
+from langchain.callbacks import LLMonitorCallbackHandler
+```

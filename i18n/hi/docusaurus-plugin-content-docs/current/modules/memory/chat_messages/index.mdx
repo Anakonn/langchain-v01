@@ -1,0 +1,35 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# चैट संदेश
+
+:::info
+[एकीकरण](/docs/integrations/memory/) पर दस्तावेज़ के लिए 3rd-पार्टी डेटाबेस और उपकरणों के साथ बिल्ट-इन मेमोरी एकीकरणों पर जाएं।
+:::
+
+अधिकांश (यदि न सभी) मेमोरी मॉड्यूलों के मूल में एक कोर उपयोगिता वर्ग है `ChatMessageHistory` वर्ग।
+यह एक बहुत ही हल्का रैपर है जो HumanMessages, AIMessages को सहेजने और फिर उन्हें सभी प्राप्त करने के लिए सुविधाजनक विधियां प्रदान करता है।
+
+यदि आप एक श्रृंखला के बाहर मेमोरी का प्रबंधन कर रहे हैं, तो आप इस वर्ग का सीधा उपयोग कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "ChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_core.chat_history.ChatMessageHistory.html", "title": "Chat Messages"}]-->
+from langchain.memory import ChatMessageHistory
+
+history = ChatMessageHistory()
+
+history.add_user_message("hi!")
+
+history.add_ai_message("whats up?")
+```
+
+```python
+history.messages
+```
+
+```output
+    [HumanMessage(content='hi!', additional_kwargs={}),
+     AIMessage(content='whats up?', additional_kwargs={})]
+```

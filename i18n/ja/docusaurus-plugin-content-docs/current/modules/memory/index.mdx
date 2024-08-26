@@ -1,0 +1,233 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 3
+translated: true
+---
+
+# [ベータ版] メモリ
+
+ほとんどのLLMアプリケーションには会話型のインターフェイスがあります。会話の重要な要素の1つは、会話の中で前に紹介された情報を参照できることです。
+最低限、会話システムは過去のメッセージの一部を直接アクセスできる必要があります。
+より複雑なシステムには、エンティティとその関係性に関する情報を維持できるように、常に更新されるワールドモデルが必要になります。
+
+過去の相互作用に関する情報を保存する能力を「メモリ」と呼びます。
+LangChainには、システムにメモリを追加するためのユーティリティが多数用意されています。
+これらのユーティリティは単独で使用したり、シームレスにチェーンに組み込むことができます。
+
+LangChainのメモリ関連の機能の大部分はベータ版としてマークされています。これには2つの理由があります。
+
+1. ほとんどの機能(一部の例外を除く)は本番環境では使用できません
+
+2. ほとんどの機能(一部の例外を除く)は従来のチェーンでのみ動作し、新しいLCEL構文とは統合されていません。
+
+例外は`ChatMessageHistory`機能です。この機能はほぼ本番環境で使用できるようになっており、LCELランナブルとも統合されています。
+
+- [LCELランナブル](/docs/expression_language/how_to/message_history): `ChatMessageHistory`をLCELランナブルで使用する方法の概要については、これらのドキュメントを参照してください。
+
+- [インテグレーション](/docs/integrations/memory): `ChatMessageHistory`インテグレーションの概要については、これらのドキュメントを参照してください。
+
+## 概要
+
+メモリシステムには、読み取りと書き込みの2つの基本的な操作がサポートされている必要があります。
+すべてのチェーンには、特定の入力を期待する中核的な実行ロジックが定義されていることを思い出してください。
+これらの入力の一部はユーザーから直接来ますが、一部はメモリから来ます。
+チェーンは、1回の実行で2回メモリシステムと対話します。
+1. ユーザー入力を受け取った後、コアロジックを実行する前に、チェーンはメモリシステムから読み取り、ユーザー入力を補完します。
+2. コアロジックの実行後、答えを返す前に、チェーンは現在の実行の入力と出力をメモリに書き込み、将来の実行で参照できるようにします。
+
+![会話型インターフェイスのメモリシステムの読み取りと書き込み操作を示す図。](/img/memory_diagram.png "メモリシステムの図")
+
+## システムにメモリを組み込む
+
+メモリシステムの2つの中心的な設計上の決定事項は以下のとおりです。
+- 状態の保存方法
+- 状態の照会方法
+
+### 保存: チャットメッセージのリスト
+
+メモリの基礎となるのは、すべてのチャットのやり取りの履歴です。
+これらがすべて直接使用されるわけではありませんが、何らかの形で保存される必要があります。
+LangChainのメモリモジュールの重要な部分は、メモリ内のリストから永続的なデータベースまで、これらのチャットメッセージの保存に関するさまざまなインテグレーションです。
+
+- [チャットメッセージの保存](/docs/modules/memory/chat_messages/): チャットメッセージの使用方法と、提供されているさまざまなインテグレーション。
+
+### 照会: チャットメッセージ上のデータ構造とアルゴリズム
+
+チャットメッセージのリストを保持するのは比較的簡単です。
+問題なのは、最も有用なメッセージビューを提供するデータ構造とアルゴリズムです。
+
+非常にシンプルなメモリシステムでは、毎回最新のメッセージを返す可能性があります。少し複雑なメモリシステムでは、過去K件のメッセージの簡潔な要約を返す可能性があります。
+さらに洗練されたシステムでは、保存されたメッセージからエンティティを抽出し、現在の実行で参照されているエンティティに関する情報のみを返す可能性があります。
+
+アプリケーションごとに、メモリの照会方法に対する要件が異なる可能性があります。メモリモジュールは、簡単なメモリシステムを使い始めやすくし、必要に応じてカスタムシステムを記述しやすくする必要があります。
+
+- [メモリタイプ](/docs/modules/memory/types/): LangChainがサポートするメモリタイプを構成するさまざまなデータ構造とアルゴリズム
+
+## 始めましょう
+
+LangChainのメモリの実際の使用方法を見ていきましょう。
+ここでは、任意のメモリクラスとの対話の基本を説明します。
+
+`ConversationBufferMemory`の使用方法を見ていきましょう。
+`ConversationBufferMemory`は、チャットメッセージをバッファに保持し、それらをプロンプトテンプレートに渡す、非常にシンプルなメモリの形態です。
+
+```python
+<!--IMPORTS:[{"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "[Beta] Memory"}]-->
+from langchain.memory import ConversationBufferMemory
+
+memory = ConversationBufferMemory()
+memory.chat_memory.add_user_message("hi!")
+memory.chat_memory.add_ai_message("what's up?")
+```
+
+メモリをチェーンで使用する際には、理解しておくべきいくつかの重要な概念があります。
+ここでは、ほとんどのタイプのメモリに共通する一般的な概念を説明します。
+個々のメモリタイプには、理解する必要のある独自のパラメーターや概念がある可能性があります。
+
+### メモリから返される変数
+
+チェーンに入る前に、さまざまな変数がメモリから読み取られます。
+これらには特定の名前があり、チェーンが期待する変数と一致する必要があります。
+これらの変数を確認するには、`memory.load_memory_variables({})`を呼び出します。
+ここで渡す空の辞書は、実際の変数のプレースホルダーにすぎません。
+使用しているメモリタイプが入力変数に依存している場合は、いくつかの変数を渡す必要があるかもしれません。
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': "Human: hi!\nAI: what's up?"}
+```
+
+この場合、`load_memory_variables`は`history`という1つのキーを返すことがわかります。
+これは、チェーン(およびおそらくプロンプト)が`history`という名前の入力を期待することを意味します。
+これらの変数のキーは、メモリクラスのパラメーターを介して制御できます。
+たとえば、メモリ変数を`chat_history`というキーで返したい場合は、次のように行うことができます。
+
+```python
+memory = ConversationBufferMemory(memory_key="chat_history")
+memory.chat_memory.add_user_message("hi!")
+memory.chat_memory.add_ai_message("what's up?")
+```
+
+```output
+    {'chat_history': "Human: hi!\nAI: what's up?"}
+```
+
+これらのキーを制御するパラメーター名は、メモリタイプによって異なる可能性がありますが、(1)これが制御可能であり、(2)その方法を理解することが重要です。
+
+### メモリーが文字列かメッセージのリストかどうか
+
+メモリーの最も一般的なタイプの1つは、チャットメッセージのリストを返すことです。
+これらは単一の文字列として返されるか、すべて連結されて返されます(LLMに渡される場合に便利)
+または、ChatMessagesのリストとして返されます(ChatModelsに渡される場合に便利)。
+
+デフォルトでは、単一の文字列として返されます。
+メッセージのリストとして返すには、`return_messages=True`を設定する必要があります。
+
+```python
+memory = ConversationBufferMemory(return_messages=True)
+memory.chat_memory.add_user_message("hi!")
+memory.chat_memory.add_ai_message("what's up?")
+```
+
+```output
+    {'history': [HumanMessage(content='hi!', additional_kwargs={}, example=False),
+  AIMessage(content='what's up?', additional_kwargs={}, example=False)]}
+```
+
+### どのキーがメモリーに保存されるか
+
+多くの場合、チェーンは複数の入力/出力キーを受け取ったり返したりします。
+この場合、どのキーをチャットメッセージ履歴に保存したいかを知る方法はありますか?
+これは一般的に、メモリータイプの`input_key`と`output_key`パラメーターで制御できます。
+これらはデフォルトで`None`になっており、入力/出力キーが1つしかない場合は、それを使用することが分かっています。
+ただし、複数の入力/出力キーがある場合は、使用するキーの名前を指定する必要があります。
+
+### エンドツーエンドの例
+
+最後に、チェーンでこれを使う方法を見てみましょう。
+`LLMChain`を使用し、LLMとChatModelの両方で動作することを示します。
+
+#### LLMを使用する場合
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "[Beta] Memory"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "[Beta] Memory"}, {"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "[Beta] Memory"}]-->
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+
+
+llm = OpenAI(temperature=0)
+# Notice that "chat_history" is present in the prompt template
+template = """You are a nice chatbot having a conversation with a human.
+
+Previous conversation:
+{chat_history}
+
+New human question: {question}
+Response:"""
+prompt = PromptTemplate.from_template(template)
+# Notice that we need to align the `memory_key`
+memory = ConversationBufferMemory(memory_key="chat_history")
+conversation = LLMChain(
+    llm=llm,
+    prompt=prompt,
+    verbose=True,
+    memory=memory
+)
+```
+
+```python
+# Notice that we just pass in the `question` variables - `chat_history` gets populated by memory
+conversation({"question": "hi"})
+```
+
+#### ChatModelを使用する場合
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "[Beta] Memory"}, {"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "MessagesPlaceholder", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.MessagesPlaceholder.html", "title": "[Beta] Memory"}, {"imported": "SystemMessagePromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.SystemMessagePromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "HumanMessagePromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html", "title": "[Beta] Memory"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "[Beta] Memory"}, {"imported": "ConversationBufferMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer.ConversationBufferMemory.html", "title": "[Beta] Memory"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import (
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+
+
+llm = ChatOpenAI()
+prompt = ChatPromptTemplate(
+    messages=[
+        SystemMessagePromptTemplate.from_template(
+            "You are a nice chatbot having a conversation with a human."
+        ),
+        # The `variable_name` here is what must align with memory
+        MessagesPlaceholder(variable_name="chat_history"),
+        HumanMessagePromptTemplate.from_template("{question}")
+    ]
+)
+# Notice that we `return_messages=True` to fit into the MessagesPlaceholder
+# Notice that `"chat_history"` aligns with the MessagesPlaceholder name.
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+conversation = LLMChain(
+    llm=llm,
+    prompt=prompt,
+    verbose=True,
+    memory=memory
+)
+```
+
+```python
+# Notice that we just pass in the `question` variables - `chat_history` gets populated by memory
+conversation({"question": "hi"})
+```
+
+## 次のステップ
+
+これで基本的な使い方は完了です!
+カスタムメモリ、複数のメモリ、その他の高度なトピックについては、他のセクションを参照してください。

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Clima
+
+>[OpenWeatherMap](https://openweathermap.org/) es un proveedor de servicios meteorológicos de código abierto.
+
+## Instalación y configuración
+
+```bash
+pip install pyowm
+```
+
+Debemos configurar el `token de la API de OpenWeatherMap`.
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/weather).
+
+```python
+<!--IMPORTS:[{"imported": "WeatherDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.weather.WeatherDataLoader.html", "title": "Weather"}]-->
+from langchain_community.document_loaders import WeatherDataLoader
+```

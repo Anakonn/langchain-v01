@@ -1,0 +1,33 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# Psíquico
+
+:::warning
+Este proveedor ya no se mantiene y es posible que no funcione. Úselo con precaución.
+:::
+
+>[Psíquico](https://www.psychic.dev/) es una plataforma para integrarse con herramientas SaaS como `Notion`, `Zendesk`,
+> `Confluence` y `Google Drive` a través de OAuth y sincronizar documentos de estas aplicaciones con su base de datos SQL o de vectores. Puede pensar en él como Plaid para datos no estructurados.
+
+## Instalación y configuración
+
+```bash
+pip install psychicapi
+```
+
+Psíquico es fácil de configurar: importa la biblioteca `react` y lo configuras con tu clave de la API de Sidekick, que obtienes
+del [panel de Psíquico](https://dashboard.psychic.dev/). Cuando conectas las aplicaciones, puedes
+ver estas conexiones desde el panel y recuperar datos utilizando las bibliotecas del lado del servidor.
+
+1. Crea una cuenta en el [panel](https://dashboard.psychic.dev/).
+2. Usa la [biblioteca react](https://docs.psychic.dev/sidekick-link) para agregar el modal de enlace de Psíquico a tu aplicación frontend de react. Lo usarás para conectar las aplicaciones SaaS.
+3. Una vez que hayas creado una conexión, puedes usar el `PsychicLoader` siguiendo el [ejemplo de cuaderno](/docs/integrations/document_loaders/psychic)
+
+## Ventajas frente a otros cargadores de documentos
+
+1.	**API universal:** En lugar de crear flujos de OAuth y aprender las API de cada aplicación SaaS, integras Psíquico una vez y aprovechas nuestra API universal para recuperar datos.
+2.	**Sincronización de datos:** Los datos de las aplicaciones SaaS de tus clientes pueden quedarse obsoletos rápidamente. Con Psíquico, puedes configurar webhooks para mantener tus documentos actualizados a diario o en tiempo real.
+3.	**OAuth simplificado:** Psíquico maneja OAuth de principio a fin para que no tengas que dedicar tiempo a crear clientes de OAuth para cada integración, mantener frescos los tokens de acceso y manejar la lógica de redireccionamiento de OAuth.

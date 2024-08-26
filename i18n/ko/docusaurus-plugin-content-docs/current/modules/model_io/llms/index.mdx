@@ -1,0 +1,30 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 4
+translated: true
+---
+
+# 대규모 언어 모델(LLMs)
+
+대규모 언어 모델(LLMs)은 LangChain의 핵심 구성 요소입니다.
+LangChain은 자체 LLMs를 제공하지 않지만, 다양한 LLMs와 상호 작용하기 위한 표준 인터페이스를 제공합니다. 구체적으로 말하면, 이 인터페이스는 문자열을 입력으로 받아 문자열을 반환합니다.
+
+많은 LLM 제공업체(OpenAI, Cohere, Hugging Face 등)가 있습니다. `LLM` 클래스는 이들 모두에 대한 표준 인터페이스를 제공하도록 설계되었습니다.
+
+## [빠른 시작](./quick_start)
+
+[이 빠른 시작](./quick_start)을 확인하여 LLMs 사용에 대한 개요를 확인하세요. 여기에는 LLMs가 제공하는 다양한 메서드가 포함됩니다.
+
+## [통합](/docs/integrations/llms/)
+
+LangChain이 제공하는 모든 LLM 통합에 대한 전체 목록은 [통합 페이지](/docs/integrations/llms/)를 참조하세요.
+
+## 방법 가이드
+
+LLMs의 고급 사용을 위한 여러 방법 가이드가 있습니다.
+이에는 다음이 포함됩니다:
+
+- [사용자 정의 LLM 클래스 작성하기](./custom_llm)
+- [LLM 응답 캐싱하기](./llm_caching)
+- [LLM에서 응답 스트리밍하기](./streaming_llm)
+- [LLM 호출에서 토큰 사용량 추적하기](./token_usage_tracking)

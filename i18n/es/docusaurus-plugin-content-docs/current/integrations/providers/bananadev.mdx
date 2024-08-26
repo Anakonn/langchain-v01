@@ -1,0 +1,70 @@
+---
+translated: true
+---
+
+# Plátano
+
+>[Plátano](https://www.banana.dev/) proporcionó inferencia de GPU sin servidor para modelos de IA,
+> una canalización de compilación CI/CD y un marco Python simple (`Potassium`) para servir a sus modelos.
+
+Esta página cubre cómo usar el ecosistema [Plátano](https://www.banana.dev) dentro de LangChain.
+
+## Instalación y configuración
+
+- Instala el paquete de python `banana-dev`:
+
+```bash
+pip install banana-dev
+```
+
+- Obtén una clave de la API de Plátano del [panel de control de Banana.dev](https://app.banana.dev) y configúrala como una variable de entorno (`BANANA_API_KEY`)
+- Obtén la clave de tu modelo y la URL slug de la página de detalles del modelo.
+
+## Define tu plantilla de Plátano
+
+Necesitarás configurar un repositorio de Github para tu aplicación Plátano. Puedes comenzar en 5 minutos usando [esta guía](https://docs.banana.dev/banana-docs/).
+
+Alternativamente, para un ejemplo de LLM listo para usar, puedes revisar el repositorio de GitHub de [CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq) de Banana. Solo hazle un fork y despliégalo dentro de Banana.
+
+Hay otros repositorios de inicio disponibles [aquí](https://github.com/orgs/bananaml/repositories?q=demo-&type=all&language=&sort=).
+
+## Construye la aplicación Plátano
+
+Para usar las aplicaciones Plátano dentro de Langchain, debes incluir la clave `outputs` en el json devuelto, y el valor debe ser una cadena.
+
+```python
+# Return the results as a dictionary
+result = {'outputs': result}
+```
+
+Una función de inferencia de ejemplo sería:
+
+```python
+@app.handler("/")
+def handler(context: dict, request: Request) -> Response:
+    """Handle a request to generate code from a prompt."""
+    model = context.get("model")
+    tokenizer = context.get("tokenizer")
+    max_new_tokens = request.json.get("max_new_tokens", 512)
+    temperature = request.json.get("temperature", 0.7)
+    prompt = request.json.get("prompt")
+    prompt_template=f'''[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```:
+    {prompt}
+    [/INST]
+    '''
+    input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
+    output = model.generate(inputs=input_ids, temperature=temperature, max_new_tokens=max_new_tokens)
+    result = tokenizer.decode(output[0])
+    return Response(json={"outputs": result}, status=200)
+```
+
+Este ejemplo es del archivo `app.py` en [CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq).
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Banana", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.bananadev.Banana.html", "title": "Banana"}]-->
+from langchain_community.llms import Banana
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/banana).

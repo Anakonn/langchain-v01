@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# Red de IA
+
+>[Red de IA](https://www.ainetwork.ai/build-on-ain) es una blockchain de capa 1 diseñada para acomodar
+> modelos de IA a gran escala, utilizando una red descentralizada de GPU impulsada por el
+> token [$AIN](https://www.ainetwork.ai/token), enriqueciendo los `NFT` (`AINFTs`) impulsados por IA.
+
+## Instalación y configuración
+
+Necesitas instalar el paquete de Python `ain-py`.
+
+```bash
+pip install ain-py
+```
+
+Necesitas establecer la variable de entorno `AIN_BLOCKCHAIN_ACCOUNT_PRIVATE_KEY` en tu clave privada de la cuenta de la blockchain de AIN.
+
+## Conjunto de herramientas
+
+Consulta un [ejemplo de uso](/docs/integrations/toolkits/ainetwork).
+
+```python
+<!--IMPORTS:[{"imported": "AINetworkToolkit", "source": "langchain_community.agent_toolkits.ainetwork.toolkit", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.ainetwork.toolkit.AINetworkToolkit.html", "title": "AINetwork"}]-->
+from langchain_community.agent_toolkits.ainetwork.toolkit import AINetworkToolkit
+```

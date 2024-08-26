@@ -1,0 +1,68 @@
+---
+translated: true
+---
+
+# OpenLLM
+
+このページでは、LangChainを使用して[OpenLLM](https://github.com/bentoml/OpenLLM)を使用する方法を示します。
+
+`OpenLLM`は、プロダクション環境で大規模言語モデル(LLM)を操作するためのオープンプラットフォームです。開発者は、任意のオープンソースLLMを簡単に推論実行し、クラウドまたはオンプレミスにデプロイし、強力なAIアプリを構築できます。
+
+## インストールとセットアップ
+
+PyPIを介してOpenLLMパッケージをインストールします:
+
+```bash
+pip install openllm
+```
+
+## LLM
+
+OpenLLMは、ユーザーの独自のファインチューニングLLMだけでなく、さまざまなオープンソースLLMもサポートしています。 `openllm model`コマンドを使用して、OpenLLMに最適化されているすべての利用可能なモデルを確認できます。
+
+## ラッパー
+
+OpenLLMラッパーがあり、LLMをインプロセスでロードしたり、リモートのOpenLLMサーバーにアクセスしたりできます:
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+```
+
+### OpenLLMサーバーのラッパー
+
+このラッパーは、HTTPまたはgRPCを介してOpenLLMサーバーに接続することをサポートしています。OpenLLMサーバーはローカルまたはクラウド上で実行できます。
+
+ローカルで試してみるには、OpenLLMサーバーを起動します:
+
+```bash
+openllm start flan-t5
+```
+
+ラッパーの使用方法:
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(server_url='http://localhost:3000')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### ローカル推論のラッパー
+
+OpenLLMラッパーを使用して、現在のPythonプロセスにLLMをロードし、推論を実行することもできます。
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(model_name="dolly-v2", model_id='databricks/dolly-v2-7b')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### 使用方法
+
+OpenLLMラッパーの詳細なウォークスルーについては、[example notebook](/docs/integrations/llms/openllm)を参照してください。

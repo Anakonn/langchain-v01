@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# ArangoDB
+
+>[ArangoDB](https://github.com/arangodb/arangodb) एक स्केलेबल ग्राफ डेटाबेस सिस्टम है जो कनेक्टेड डेटा से तेजी से मूल्य प्राप्त करने में मदद करता है। नेटिव ग्राफ, एकीकृत खोज इंजन और JSON समर्थन, एक ही क्वेरी भाषा के माध्यम से। ArangoDB ऑन-प्रेम, क्लाउड में - कहीं भी चलता है।
+
+## स्थापना और सेटअप
+
+[ArangoDB Python Driver](https://github.com/ArangoDB-Community/python-arango) पैकेज को इंस्टॉल करें
+
+```bash
+pip install python-arango
+```
+
+## ग्राफ QA श्रृंखला
+
+अपने `ArangoDB` डेटाबेस को एक चैट मॉडल से जोड़कर अपने डेटा पर अंतर्दृष्टि प्राप्त करें।
+
+नोटबुक उदाहरण [यहां](/docs/integrations/graphs/arangodb) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ArangoGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.arangodb_graph.ArangoGraph.html", "title": "ArangoDB"}, {"imported": "ArangoGraphQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.arangodb.ArangoGraphQAChain.html", "title": "ArangoDB"}]-->
+from arango import ArangoClient
+
+from langchain_community.graphs import ArangoGraph
+from langchain.chains import ArangoGraphQAChain
+```

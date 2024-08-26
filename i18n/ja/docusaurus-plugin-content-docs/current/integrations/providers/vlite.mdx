@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# vlite
+
+このページでは、LangChain内で[vlite](https://github.com/sdan/vlite)を使用する方法について説明します。vliteは、埋め込みを保存および取得するためのシンプルで高速なベクターデータベースです。
+
+## インストールとセットアップ
+
+vliteをインストールするには、次のコマンドを実行します：
+
+```bash
+pip install vlite
+```
+
+PDF OCRサポートのために、`vlite[ocr]`エクストラをインストールします：
+
+```bash
+pip install vlite[ocr]
+```
+
+## ベクターストア
+
+vliteは、そのベクターデータベースの周りにラッパーを提供しており、セマンティック検索や例の選択のためにベクターストアとして使用することができます。
+
+vliteベクターストアをインポートするには：
+
+```python
+from langchain_community.vectorstores import vlite
+```
+
+### 使用法
+
+vliteラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/vlite)を参照してください。

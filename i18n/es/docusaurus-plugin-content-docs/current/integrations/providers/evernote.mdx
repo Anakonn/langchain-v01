@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# EverNote
+
+>[EverNote](https://evernote.com/) está diseñado para archivar y crear notas en las que se pueden incrustar fotos, audio y contenido web guardado. Las notas se almacenan en "cuadernos" virtuales y se pueden etiquetar, anotar, editar, buscar y exportar.
+
+## Instalación y configuración
+
+Primero, necesitas instalar los paquetes de Python `lxml` y `html2text`.
+
+```bash
+pip install lxml
+pip install html2text
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/evernote).
+
+```python
+<!--IMPORTS:[{"imported": "EverNoteLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.evernote.EverNoteLoader.html", "title": "EverNote"}]-->
+from langchain_community.document_loaders import EverNoteLoader
+```

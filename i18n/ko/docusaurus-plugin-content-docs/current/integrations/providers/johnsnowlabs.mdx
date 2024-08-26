@@ -1,0 +1,92 @@
+---
+translated: true
+---
+
+# 존스노우랩스
+
+[johnsnowlabs](https://www.johnsnowlabs.com/) 생태계의 엔터프라이즈 NLP 라이브러리에 액세스하세요.
+200개 이상의 언어로 21,000개 이상의 엔터프라이즈 NLP 모델을 제공하는 오픈 소스 `johnsnowlabs` 라이브러리를 사용하세요.
+24,000개 이상의 모델 전체를 보려면 [John Snow Labs Model Models Hub](https://nlp.johnsnowlabs.com/models)를 참조하세요.
+
+## 설치 및 설정
+
+```bash
+pip install johnsnowlabs
+```
+
+[엔터프라이즈 기능을 설치](https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick)하려면 다음을 실행하세요:
+
+```python
+# for more details see https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick
+nlp.install()
+```
+
+`gpu`, `cpu`, `apple_silicon`, `aarch` 기반 최적화된 바이너리를 사용하여 쿼리와 문서를 임베딩할 수 있습니다.
+기본적으로 cpu 바이너리가 사용됩니다.
+세션이 시작되면 GPU 또는 CPU 간 전환을 위해 노트북을 다시 시작해야 하며, 그렇지 않으면 변경 사항이 적용되지 않습니다.
+
+## CPU로 쿼리 임베딩:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert')
+output = embedding.embed_query(document)
+```
+
+## GPU로 쿼리 임베딩:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_query(document)
+```
+
+## Apple Silicon (M1, M2 등)으로 쿼리 임베딩:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_query(document)
+```
+
+## AARCH로 쿼리 임베딩:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_query(document)
+```
+
+## CPU로 문서 임베딩:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## GPU로 문서 임베딩:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## Apple Silicon (M1, M2 등)으로 문서 임베딩:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_documents(documents)
+```
+
+## AARCH로 문서 임베딩:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_documents(documents)
+```
+
+모델은 [nlp.load](https://nlp.johnsnowlabs.com/docs/en/jsl/load_api)로 로드되고, spark 세션은 [nlp.start()](https://nlp.johnsnowlabs.com/docs/en/jsl/start-a-sparksession)로 시작됩니다.

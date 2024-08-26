@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# ビーム
+
+>[ビーム](https://www.beam.cloud/)は、GPUを搭載したリモートサーバー上でコードを実行できるクラウドコンピューティングプラットフォームです。
+
+## インストールとセットアップ
+
+- [アカウントを作成する](https://www.beam.cloud/)
+- `curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh`でBeam CLIをインストールする
+- `beam configure`でAPIキーを登録する
+- 環境変数(`BEAM_CLIENT_ID`)と(`BEAM_CLIENT_SECRET`)を設定する
+- Beam SDKをインストールする:
+
+```bash
+pip install beam-sdk
+```
+
+## LLMs
+
+[使用例](/docs/integrations/llms/beam)を参照してください。
+
+[Beam ドキュメント](https://docs.beam.cloud/examples/langchain)の別の例も参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "Beam", "source": "langchain_community.llms.beam", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.beam.Beam.html", "title": "Beam"}]-->
+from langchain_community.llms.beam import Beam
+```

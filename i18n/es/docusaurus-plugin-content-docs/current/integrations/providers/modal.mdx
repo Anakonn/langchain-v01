@@ -1,0 +1,99 @@
+---
+translated: true
+---
+
+# Modal
+
+Esta página cubre cómo usar el ecosistema Modal para ejecutar LangChain LLMs personalizados.
+Se divide en dos partes:
+
+1. Instalación de Modal y despliegue del punto final web
+2. Uso del punto final web desplegado con la clase `LLM` wrapper.
+
+## Instalación y configuración
+
+- Instalar con `pip install modal`
+- Ejecutar `modal token new`
+
+## Define sus funciones y webhooks Modal
+
+Debe incluir un prompt. Hay una estructura de respuesta rígida:
+
+```python
+class Item(BaseModel):
+    prompt: str
+
+@stub.function()
+@modal.web_endpoint(method="POST")
+def get_text(item: Item):
+    return {"prompt": run_gpt2.call(item.prompt)}
+```
+
+El siguiente es un ejemplo con el modelo GPT2:
+
+```python
+from pydantic import BaseModel
+
+import modal
+
+CACHE_PATH = "/root/model_cache"
+
+class Item(BaseModel):
+    prompt: str
+
+stub = modal.Stub(name="example-get-started-with-langchain")
+
+def download_model():
+    from transformers import GPT2Tokenizer, GPT2LMHeadModel
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+    model = GPT2LMHeadModel.from_pretrained('gpt2')
+    tokenizer.save_pretrained(CACHE_PATH)
+    model.save_pretrained(CACHE_PATH)
+
+# Define a container image for the LLM function below, which
+# downloads and stores the GPT-2 model.
+image = modal.Image.debian_slim().pip_install(
+    "tokenizers", "transformers", "torch", "accelerate"
+).run_function(download_model)
+
+@stub.function(
+    gpu="any",
+    image=image,
+    retries=3,
+)
+def run_gpt2(text: str):
+    from transformers import GPT2Tokenizer, GPT2LMHeadModel
+    tokenizer = GPT2Tokenizer.from_pretrained(CACHE_PATH)
+    model = GPT2LMHeadModel.from_pretrained(CACHE_PATH)
+    encoded_input = tokenizer(text, return_tensors='pt').input_ids
+    output = model.generate(encoded_input, max_length=50, do_sample=True)
+    return tokenizer.decode(output[0], skip_special_tokens=True)
+
+@stub.function()
+@modal.web_endpoint(method="POST")
+def get_text(item: Item):
+    return {"prompt": run_gpt2.call(item.prompt)}
+```
+
+### Desplegar el punto final web
+
+Despliegue el punto final web en la nube Modal con el comando CLI [`modal deploy`](https://modal.com/docs/reference/cli/deploy).
+Su punto final web adquirirá una URL persistente bajo el dominio `modal.run`.
+
+## Envoltura LLM alrededor del punto final web Modal
+
+La clase `Modal` LLM wrapper que aceptará la URL del punto final web desplegado.
+
+```python
+<!--IMPORTS:[{"imported": "Modal", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.modal.Modal.html", "title": "Modal"}]-->
+from langchain_community.llms import Modal
+
+endpoint_url = "https://ecorp--custom-llm-endpoint.modal.run"  # REPLACE ME with your deployed Modal web endpoint's URL
+
+llm = Modal(endpoint_url=endpoint_url)
+llm_chain = LLMChain(prompt=prompt, llm=llm)
+
+question = "What NFL team won the Super Bowl in the year Justin Beiber was born?"
+
+llm_chain.run(question)
+```

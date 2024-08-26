@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# लैंटर्न
+
+यह पृष्ठ LangChain में [लैंटर्न](https://github.com/lanterndata/lantern) का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: सेटअप, और फिर विशिष्ट लैंटर्न रैपर्स के संदर्भ।
+
+## सेटअप
+
+1. पहला कदम `लैंटर्न` एक्सटेंशन के साथ एक डेटाबेस बनाना है।
+
+    [लैंटर्न इंस्टॉलेशन गाइड](https://github.com/lanterndata/lantern#-quick-install) पर दिए गए चरणों का पालन करें ताकि डेटाबेस और एक्सटेंशन स्थापित किया जा सके। डॉकर छवि शुरू करने के लिए सबसे आसान तरीका है।
+
+## रैपर्स
+
+### वेक्टर स्टोर
+
+पोस्टग्रेस वेक्टर डेटाबेस के इर्द-गिर्द एक रैपर मौजूद है, जिससे आप इसका उपयोग वेक्टर स्टोर के रूप में कर सकते हैं, चाहे वह语义 खोज के लिए हो या उदाहरण चयन के लिए।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "Lantern", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lantern.Lantern.html", "title": "Lantern"}]-->
+from langchain_community.vectorstores import Lantern
+```
+
+### उपयोग
+
+लैंटर्न रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/lantern) देखें।

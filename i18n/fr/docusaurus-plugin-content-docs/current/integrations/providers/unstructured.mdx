@@ -1,0 +1,265 @@
+---
+translated: true
+---
+
+# Non structuré
+
+>Le package `unstructured` de
+[Unstructured.IO](https://www.unstructured.io/) extrait du texte propre à partir de documents sources bruts comme
+les PDF et les documents Word.
+Cette page couvre comment utiliser l'écosystème [`unstructured`](https://github.com/Unstructured-IO/unstructured)
+dans LangChain.
+
+## Installation et configuration
+
+Si vous utilisez un chargeur qui s'exécute localement, suivez ces étapes pour faire fonctionner `unstructured` et
+ses dépendances localement.
+
+- Installez le SDK Python avec `pip install unstructured`.
+    - Vous pouvez installer des dépendances spécifiques aux documents avec des extras, c'est-à-dire `pip install "unstructured[docx]"`.
+    - Pour installer les dépendances pour tous les types de documents, utilisez `pip install "unstructured[all-docs]"`.
+- Installez les dépendances système suivantes si elles ne sont pas déjà disponibles sur votre système.
+  Selon les types de documents que vous analysez, vous n'aurez peut-être pas besoin de tous ces éléments.
+    - `libmagic-dev` (détection du type de fichier)
+    - `poppler-utils` (images et PDF)
+    - `tesseract-ocr` (images et PDF)
+    - `libreoffice` (documents MS Office)
+    - `pandoc` (EPUB)
+
+Si vous voulez être opérationnel avec moins de configuration, vous pouvez
+simplement exécuter `pip install unstructured` et utiliser `UnstructuredAPIFileLoader` ou
+`UnstructuredAPIFileIOLoader`. Cela traitera votre document à l'aide de l'API hébergée Unstructured.
+
+L'`API Unstructured` nécessite des clés API pour effectuer des requêtes.
+Vous pouvez demander une clé API [ici](https://unstructured.io/api-key-hosted) et commencer à l'utiliser dès aujourd'hui !
+Consultez le README [ici](https://github.com/Unstructured-IO/unstructured-api) pour commencer à faire des appels API.
+Nous serions ravis d'avoir vos commentaires, faites-nous savoir comment cela se passe dans notre [slack communautaire](https://join.slack.com/t/unstructuredw-kbe4326/shared_invite/zt-1x7cgo0pg-PTptXWylzPQF9xZolzCnwQ).
+Et restez à l'écoute pour les améliorations de la qualité et des performances !
+Consultez les instructions
+[ici](https://github.com/Unstructured-IO/unstructured-api#dizzy-instructions-for-using-the-docker-image) si vous souhaitez héberger vous-même l'API Unstructured ou l'exécuter localement.
+
+## Chargeurs de données
+
+L'utilisation principale d'`Unstructured` se fait dans les chargeurs de données.
+
+### UnstructuredAPIFileIOLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/unstructured_file#unstructured-api).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredAPIFileIOLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredAPIFileIOLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredAPIFileIOLoader
+```
+
+### UnstructuredAPIFileLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/unstructured_file#unstructured-api).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredAPIFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredAPIFileLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredAPIFileLoader
+```
+
+### UnstructuredCHMLoader
+
+`CHM` signifie `Microsoft Compiled HTML Help`.
+
+Voir un exemple d'utilisation dans la documentation de l'API.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredCHMLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.chm.UnstructuredCHMLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredCHMLoader
+```
+
+### UnstructuredCSVLoader
+
+Un fichier `comma-separated values` (`CSV`) est un fichier texte délimité qui utilise
+une virgule pour séparer les valeurs. Chaque ligne du fichier est un enregistrement de données.
+Chaque enregistrement se compose d'un ou plusieurs champs, séparés par des virgules.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/csv#unstructuredcsvloader).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredCSVLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.csv_loader.UnstructuredCSVLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredCSVLoader
+```
+
+### UnstructuredEmailLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/email).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredEmailLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.email.UnstructuredEmailLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredEmailLoader
+```
+
+### UnstructuredEPubLoader
+
+[EPUB](https://en.wikipedia.org/wiki/EPUB) est un format de fichier `e-book` qui utilise
+l'extension de fichier ".epub". Le terme est l'abréviation de `electronic publication` et
+est parfois stylisé `ePub`. `EPUB` est pris en charge par de nombreux liseuses électroniques, et un logiciel compatible
+est disponible pour la plupart des smartphones, tablettes et ordinateurs.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/epub).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredEPubLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.epub.UnstructuredEPubLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredEPubLoader
+```
+
+### UnstructuredExcelLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_excel).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredExcelLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.excel.UnstructuredExcelLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredExcelLoader
+```
+
+### UnstructuredFileIOLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/google_drive#passing-in-optional-file-loaders).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredFileIOLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredFileIOLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredFileIOLoader
+```
+
+### UnstructuredFileLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/unstructured_file).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredFileLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredFileLoader
+```
+
+### UnstructuredHTMLLoader
+
+Voir un [exemple d'utilisation](/docs/modules/data_connection/document_loaders/html).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html.UnstructuredHTMLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredHTMLLoader
+```
+
+### UnstructuredImageLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/image).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredImageLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.image.UnstructuredImageLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredImageLoader
+```
+
+### UnstructuredMarkdownLoader
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/starrocks).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredMarkdownLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.markdown.UnstructuredMarkdownLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
+```
+
+### UnstructuredODTLoader
+
+Le `format de document ouvert pour les applications de bureau (ODF)`, également connu sous le nom de `OpenDocument`,
+est un format de fichier ouvert pour les documents de traitement de texte, les feuilles de calcul, les présentations
+et les graphiques, utilisant des fichiers XML compressés au format ZIP. Il a été développé dans le but de
+fournir une spécification de format de fichier ouvert et XML pour les applications de bureau.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/odt).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredODTLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.odt.UnstructuredODTLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredODTLoader
+```
+
+### UnstructuredOrgModeLoader
+
+Un document [Org Mode](https://en.wikipedia.org/wiki/Org-mode) est un mode d'édition, de formatage et d'organisation de documents, conçu pour les notes, la planification et la rédaction dans l'éditeur de texte libre Emacs.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/org_mode).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredOrgModeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.org_mode.UnstructuredOrgModeLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredOrgModeLoader
+```
+
+### UnstructuredPDFLoader
+
+Voir un [exemple d'utilisation](/docs/modules/data_connection/document_loaders/pdf#using-unstructured).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPDFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.pdf.UnstructuredPDFLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredPDFLoader
+```
+
+### Chargeur de présentations PowerPoint non structurées
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_powerpoint).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPowerPointLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.powerpoint.UnstructuredPowerPointLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+```
+
+### Chargeur de fichiers RST non structurés
+
+Un fichier `reStructured Text` (`RST`) est un format de fichier pour les données textuelles
+utilisé principalement dans la communauté du langage de programmation Python pour la documentation technique.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/rst).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredRSTLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rst.UnstructuredRSTLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredRSTLoader
+```
+
+### Chargeur de fichiers RTF non structurés
+
+Voir un exemple d'utilisation dans la documentation de l'API.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredRTFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rtf.UnstructuredRTFLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredRTFLoader
+```
+
+### Chargeur de fichiers TSV non structurés
+
+Un fichier `tab-separated values` (`TSV`) est un format de fichier texte simple pour stocker des données tabulaires.
+Les enregistrements sont séparés par des sauts de ligne, et les valeurs au sein d'un enregistrement sont séparées par des caractères de tabulation.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/tsv).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredTSVLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tsv.UnstructuredTSVLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredTSVLoader
+```
+
+### Chargeur d'URL non structurées
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/url).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredURLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.url.UnstructuredURLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredURLLoader
+```
+
+### Chargeur de documents Word non structurés
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/microsoft_word#using-unstructured).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredWordDocumentLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.word_document.UnstructuredWordDocumentLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+```
+
+### Chargeur de fichiers XML non structurés
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/xml).
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredXMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.xml.UnstructuredXMLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredXMLLoader
+```

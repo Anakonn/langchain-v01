@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Aleph Alpha
+
+>[Aleph Alpha](https://docs.aleph-alpha.com/) 2019 में स्थापित किया गया था, जिसका उद्देश्य मजबूत AI के युग के लिए आधारभूत प्रौद्योगिकी का अनुसंधान और निर्माण करना है। अंतर्राष्ट्रीय वैज्ञानिकों, इंजीनियरों और नवाचारकों की टीम बड़ी भाषा और बहुमोडल मॉडल जैसी परिवर्तनकारी AI का अनुसंधान, विकास और तैनाती करती है और यूरोप का सबसे तेज़ व्यावसायिक AI क्लस्टर चलाती है।
+
+>[The Luminous series](https://docs.aleph-alpha.com/docs/introduction/luminous/) बड़ी भाषा मॉडलों का एक परिवार है।
+
+## स्थापना और सेटअप
+
+```bash
+pip install aleph-alpha-client
+```
+
+आपको एक नया टोकन बनाना होगा। कृपया, [निर्देशों](https://docs.aleph-alpha.com/docs/account/#create-a-new-token) देखें।
+
+```python
+from getpass import getpass
+
+ALEPH_ALPHA_API_KEY = getpass()
+```
+
+## LLM
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/aleph_alpha) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlpha", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.aleph_alpha.AlephAlpha.html", "title": "Aleph Alpha"}]-->
+from langchain_community.llms import AlephAlpha
+```
+
+## पाठ एम्बेडिंग मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/aleph_alpha) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlphaSymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaSymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}, {"imported": "AlephAlphaAsymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaAsymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}]-->
+from langchain_community.embeddings import AlephAlphaSymmetricSemanticEmbedding, AlephAlphaAsymmetricSemanticEmbedding
+```

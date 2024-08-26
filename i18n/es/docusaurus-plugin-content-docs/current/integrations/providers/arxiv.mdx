@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Arxiv
+
+>[arXiv](https://arxiv.org/) es un archivo de acceso abierto para 2 millones de artículos académicos en los campos de la física,
+> matemáticas, ciencias de la computación, biología cuantitativa, finanzas cuantitativas, estadística, ingeniería eléctrica y
+> sistemas científicos, y economía.
+
+## Instalación y configuración
+
+Primero, debes instalar el paquete de Python `arxiv`.
+
+```bash
+pip install arxiv
+```
+
+Segundo, debes instalar el paquete de Python `PyMuPDF` que transforma los archivos PDF descargados del sitio `arxiv.org` en formato de texto.
+
+```bash
+pip install pymupdf
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/arxiv).
+
+```python
+<!--IMPORTS:[{"imported": "ArxivLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arxiv.ArxivLoader.html", "title": "Arxiv"}]-->
+from langchain_community.document_loaders import ArxivLoader
+```
+
+## Recuperador
+
+Consulta un [ejemplo de uso](/docs/integrations/retrievers/arxiv).
+
+```python
+<!--IMPORTS:[{"imported": "ArxivRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.arxiv.ArxivRetriever.html", "title": "Arxiv"}]-->
+from langchain.retrievers import ArxivRetriever
+```

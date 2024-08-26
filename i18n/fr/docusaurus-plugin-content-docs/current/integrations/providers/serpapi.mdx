@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# SerpAPI
+
+Cette page couvre comment utiliser les API de recherche SerpAPI dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références à l'enveloppe SerpAPI spécifique.
+
+## Installation et configuration
+
+- Installez les prérequis avec `pip install google-search-results`
+- Obtenez une clé d'API SerpAPI et définissez-la comme variable d'environnement (`SERPAPI_API_KEY`)
+
+## Enveloppes
+
+### Utilitaire
+
+Il existe un utilitaire SerpAPI qui enveloppe cette API. Pour importer cet utilitaire :
+
+```python
+<!--IMPORTS:[{"imported": "SerpAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.serpapi.SerpAPIWrapper.html", "title": "SerpAPI"}]-->
+from langchain_community.utilities import SerpAPIWrapper
+```
+
+Pour un parcours détaillé de cette enveloppe, voir [ce notebook](/docs/integrations/tools/serpapi).
+
+### Outil
+
+Vous pouvez également charger facilement cette enveloppe en tant qu'Outil (à utiliser avec un Agent).
+Vous pouvez le faire avec :
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "SerpAPI"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["serpapi"])
+```
+
+Pour plus d'informations à ce sujet, voir [cette page](/docs/modules/tools)

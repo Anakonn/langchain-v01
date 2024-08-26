@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# 컨플루언스
+
+>[컨플루언스](https://www.atlassian.com/software/confluence)는 프로젝트 관련 자료를 저장하고 구성하는 위키 협업 플랫폼입니다. `컨플루언스`는 주로 콘텐츠 관리 활동을 처리하는 지식 베이스입니다.
+
+## 설치 및 설정
+
+```bash
+pip install atlassian-python-api
+```
+
+`username/api_key` 또는 `Oauth2 login`을 설정해야 합니다.
+[instructions](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)를 참조하세요.
+
+## 문서 로더
+
+[usage example](/docs/integrations/document_loaders/confluence)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ConfluenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.confluence.ConfluenceLoader.html", "title": "Confluence"}]-->
+from langchain_community.document_loaders import ConfluenceLoader
+```

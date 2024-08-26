@@ -1,0 +1,92 @@
+---
+translated: true
+---
+
+# Johnsnowlabs
+
+[johnsnowlabs](https://www.johnsnowlabs.com/)エコシステムの企業向けNLPライブラリにアクセスできます。
+21,000以上の企業向けNLPモデルを200以上の言語でご利用いただけます。
+24,000以上のモデルについては、[John Snow Labs Model Models Hub](https://nlp.johnsnowlabs.com/models)をご覧ください。
+
+## インストールとセットアップ
+
+```bash
+pip install johnsnowlabs
+```
+
+[企業向け機能をインストールする](https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick)には、次のコマンドを実行してください:
+
+```python
+# for more details see https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick
+nlp.install()
+```
+
+クエリやドキュメントの埋め込みには、`gpu`、`cpu`、`apple_silicon`、`aarch`のいずれかの最適化バイナリを使用できます。
+デフォルトではCPUバイナリが使用されます。
+セッションを開始したら、GPUまたはCPUを切り替えるには、ノートブックを再起動する必要があります。変更が反映されません。
+
+## CPUでクエリを埋め込む:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert')
+output = embedding.embed_query(document)
+```
+
+## GPUでクエリを埋め込む:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_query(document)
+```
+
+## Apple Silicon (M1、M2など)でクエリを埋め込む:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_query(document)
+```
+
+## AARCHでクエリを埋め込む:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_query(document)
+```
+
+## CPUでドキュメントを埋め込む:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## GPUでドキュメントを埋め込む:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## Apple Silicon (M1、M2など)でドキュメントを埋め込む:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_documents(documents)
+```
+
+## AARCHでドキュメントを埋め込む:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_documents(documents)
+```
+
+モデルは[nlp.load](https://nlp.johnsnowlabs.com/docs/en/jsl/load_api)でロードし、[nlp.start()](https://nlp.johnsnowlabs.com/docs/en/jsl/start-a-sparksession)でSparkセッションを開始します。

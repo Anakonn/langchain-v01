@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Typesense
+
+> [Typesense](https://typesense.org) est un moteur de recherche open-source en mémoire vive, que vous pouvez soit
+> [héberger vous-même](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) ou exécuter
+> sur [Typesense Cloud](https://cloud.typesense.org/).
+> `Typesense` se concentre sur les performances en stockant l'intégralité de l'index en RAM (avec une sauvegarde sur disque) et se concentre également
+> sur la fourniture d'une expérience de développeur prête à l'emploi en simplifiant les options disponibles et en définissant de bonnes valeurs par défaut.
+
+## Installation et configuration
+
+```bash
+pip install typesense openapi-schema-pydantic
+```
+
+## Banque de vecteurs
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/typesense).
+
+```python
+<!--IMPORTS:[{"imported": "Typesense", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.typesense.Typesense.html", "title": "Typesense"}]-->
+from langchain_community.vectorstores import Typesense
+```

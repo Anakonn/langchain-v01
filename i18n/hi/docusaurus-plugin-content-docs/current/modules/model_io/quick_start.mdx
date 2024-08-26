@@ -1,0 +1,270 @@
+---
+sidebar_position: 0
+translated: true
+---
+
+# त्वरित शुरुआत
+
+त्वरित शुरुआत भाषा मॉडलों के साथ काम करने के मूलभूत पहलुओं को कवर करेगी। यह दो अलग-अलग प्रकार के मॉडलों - LLM और ChatModel को परिचित कराएगी। इसके बाद यह PromptTemplates का उपयोग करके इन मॉडलों के इनपुट को प्रारूपित करना और Output Parsers का उपयोग करके आउटपुट के साथ काम करना कवर करेगा।
+
+## मॉडल
+
+इस शुरुआती गाइड के लिए, हम कुछ विकल्प प्रदान करेंगे: Anthropic या OpenAI जैसे एक API का उपयोग करना, या Ollama के माध्यम से स्थानीय ओपन सोर्स मॉडल का उपयोग करना।
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+
+सबसे पहले हमें उनके साझेदार पैकेज को स्थापित करना होगा:
+
+```shell
+pip install langchain-openai
+```
+
+एपीआई का उपयोग करने के लिए एक एपीआई कुंजी की आवश्यकता होती है, जिसे आप एक खाता बनाकर और [यहां](https://platform.openai.com/account/api-keys) जाकर प्राप्त कर सकते हैं। एक बार जब हमारे पास कुंजी हो जाती है, तो हमें इसे एक पर्यावरण चर के रूप में सेट करना होगा:
+
+```shell
+export OPENAI_API_KEY="..."
+```
+
+हम फिर मॉडल को प्रारंभ कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAI
+
+llm = OpenAI()
+chat_model = ChatOpenAI(model="gpt-3.5-turbo-0125")
+```
+
+यदि आप पर्यावरण चर सेट करना नहीं चाहते हैं, तो आप OpenAI LLM वर्ग को प्रारंभ करते समय `api_key` नामित पैरामीटर के माध्यम से कुंजी को सीधे पास कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="local" label="स्थानीय (Ollama का उपयोग करके)">
+
+[Ollama](https://ollama.ai/) आपको स्थानीय रूप से ओपन सोर्स बड़े भाषा मॉडल, जैसे Llama 2, चलाने की अनुमति देता है।
+
+सबसे पहले, [इन निर्देशों](https://github.com/jmorganca/ollama) का पालन करें ताकि एक स्थानीय Ollama इंस्टेंस सेट अप और चलाया जा सके:
+
+* [डाउनलोड](https://ollama.ai/download)
+* `ollama pull llama2` के माध्यम से एक मॉडल प्राप्त करें
+
+फिर, सुनिश्चित करें कि Ollama सर्वर चल रहा है। इसके बाद, आप यह कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Quickstart"}, {"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Quickstart"}]-->
+from langchain_community.llms import Ollama
+from langchain_community.chat_models import ChatOllama
+
+llm = Ollama(model="llama2")
+chat_model = ChatOllama()
+```
+
+  </TabItem>
+  <TabItem value="anthropic" label="Anthropic (केवल चैट मॉडल)">
+
+सबसे पहले हमें LangChain x Anthropic पैकेज को आयात करना होगा।
+
+```shell
+pip install langchain-anthropic
+```
+
+एपीआई का उपयोग करने के लिए एक एपीआई कुंजी की आवश्यकता होती है, जिसे आप [यहां](https://claude.ai/login) एक खाता बनाकर प्राप्त कर सकते हैं। एक बार जब हमारे पास कुंजी हो जाती है, तो हमें इसे एक पर्यावरण चर के रूप में सेट करना होगा:
+
+```shell
+export ANTHROPIC_API_KEY="..."
+```
+
+हम फिर मॉडल को प्रारंभ कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnthropic", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html", "title": "Quickstart"}]-->
+from langchain_anthropic import ChatAnthropic
+
+chat_model = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024)
+```
+
+यदि आप पर्यावरण चर सेट करना नहीं चाहते हैं, तो आप Anthropic Chat Model वर्ग को प्रारंभ करते समय `api_key` नामित पैरामीटर के माध्यम से कुंजी को सीधे पास कर सकते हैं:
+
+```python
+chat_model = ChatAnthropic(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+सबसे पहले हमें उनके साझेदार पैकेज को स्थापित करना होगा:
+
+```shell
+pip install langchain-cohere
+```
+
+एपीआई का उपयोग करने के लिए एक एपीआई कुंजी की आवश्यकता होती है, जिसे आप एक खाता बनाकर और [यहां](https://dashboard.cohere.com/api-keys) जाकर प्राप्त कर सकते हैं। एक बार जब हमारे पास कुंजी हो जाती है, तो हमें इसे एक पर्यावरण चर के रूप में सेट करना होगा:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+हम फिर मॉडल को प्रारंभ कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+chat_model = ChatCohere()
+```
+
+यदि आप पर्यावरण चर सेट करना नहीं चाहते हैं, तो आप Cohere LLM वर्ग को प्रारंभ करते समय `cohere_api_key` नामित पैरामीटर के माध्यम से कुंजी को सीधे पास कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+chat_model = ChatCohere(cohere_api_key="...")
+```
+
+  </TabItem>
+</Tabs>
+
+`llm` और `chat_model` दोनों ऐसे ऑब्जेक्ट हैं जो किसी विशिष्ट मॉडल के कॉन्फ़िगरेशन का प्रतिनिधित्व करते हैं।
+आप उन्हें `temperature` और अन्य जैसे पैरामीटरों के साथ प्रारंभ कर सकते हैं, और उन्हें आगे भेज सकते हैं।
+उनके बीच मुख्य अंतर इनपुट और आउटपुट स्कीमा में है।
+LLM ऑब्जेक्ट स्ट्रिंग को इनपुट और आउटपुट के रूप में लेते हैं।
+ChatModel ऑब्जेक्ट संदेशों की एक सूची को इनपुट के रूप में लेते हैं और एक संदेश को आउटपुट के रूप में देते हैं।
+
+जब हम इसे आमंत्रित करते हैं, तो LLM और ChatModel के बीच का अंतर देख सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Quickstart"}]-->
+from langchain_core.messages import HumanMessage
+
+text = "What would be a good company name for a company that makes colorful socks?"
+messages = [HumanMessage(content=text)]
+
+llm.invoke(text)
+# >> Feetful of Fun
+
+chat_model.invoke(messages)
+# >> AIMessage(content="Socks O'Color")
+```
+
+LLM एक स्ट्रिंग लौटाता है, जबकि ChatModel एक संदेश लौटाता है।
+
+## प्रॉम्प्ट टेम्पलेट्स
+
+अधिकांश एलएलएम अनुप्रयोग उपयोगकर्ता इनपुट को सीधे एलएलएम में पास नहीं करते। आमतौर पर वे उपयोगकर्ता इनपुट को एक बड़े टुकड़े के साथ जोड़ेंगे, जिसे प्रॉम्प्ट टेम्पलेट कहा जाता है, जो विशिष्ट कार्य पर अतिरिक्त संदर्भ प्रदान करता है।
+
+पिछले उदाहरण में, हमने मॉडल को कंपनी का नाम उत्पन्न करने के लिए निर्देश दिए थे। हमारे अनुप्रयोग के लिए, यह बहुत अच्छा होगा अगर उपयोगकर्ता केवल कंपनी/उत्पाद का वर्णन प्रदान करे, बिना मॉडल को निर्देश देने की चिंता किए।
+
+PromptTemplates इसके लिए बहुत उपयोगी हैं!
+वे उपयोगकर्ता इनपुट से पूरी तरह से प्रारूपित प्रॉम्प्ट तक जाने के लिए सभी तर्क को बंडल करते हैं।
+यह बहुत सरल हो सकता है - उदाहरण के लिए, उपरोक्त स्ट्रिंग उत्पन्न करने के लिए एक प्रॉम्प्ट केवल:
+
+```python
+<!--IMPORTS:[{"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts import PromptTemplate
+
+prompt = PromptTemplate.from_template("What is a good name for a company that makes {product}?")
+prompt.format(product="colorful socks")
+```
+
+```python
+What is a good name for a company that makes colorful socks?
+```
+
+हालांकि, कच्चे स्ट्रिंग प्रारूपण के उपयोग की तुलना में इनके लाभ कई हैं।
+आप "आंशिक" रूप से चर को प्रारूपित कर सकते हैं - उदाहरण के लिए, आप केवल कुछ चर को प्रारूपित कर सकते हैं।
+आप उन्हें एक साथ जोड़ सकते हैं, विभिन्न टेम्पलेट को आसानी से एक प्रॉम्प्ट में जोड़ सकते हैं।
+इन कार्यक्षमताओं की व्याख्या के लिए, [प्रॉम्प्ट्स पर अनुभाग](/docs/modules/model_io/prompts) देखें।
+
+`PromptTemplate`s संदेशों की एक सूची उत्पन्न करने के लिए भी उपयोग किए जा सकते हैं।
+इस मामले में, प्रॉम्प्ट न केवल सामग्री के बारे में जानकारी, बल्कि प्रत्येक संदेश (उसकी भूमिका, सूची में उसकी स्थिति आदि) के बारे में भी होता है।
+यहां, जो सबसे अक्सर होता है वह है कि `ChatPromptTemplate` `ChatMessageTemplates` की एक सूची है।
+प्रत्येक `ChatMessageTemplate` उस `ChatMessage` को प्रारूपित करने के लिए निर्देश शामिल करता है - उसकी भूमिका, और फिर उसकी सामग्री भी।
+चलो इस पर नज़र डालते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts.chat", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts.chat import ChatPromptTemplate
+
+template = "You are a helpful assistant that translates {input_language} to {output_language}."
+human_template = "{text}"
+
+chat_prompt = ChatPromptTemplate.from_messages([
+    ("system", template),
+    ("human", human_template),
+])
+
+chat_prompt.format_messages(input_language="English", output_language="French", text="I love programming.")
+```
+
+```pycon
+[
+    SystemMessage(content="You are a helpful assistant that translates English to French.", additional_kwargs={}),
+    HumanMessage(content="I love programming.")
+]
+```
+
+ChatPromptTemplates अन्य तरीकों से भी बनाए जा सकते हैं - [प्रॉम्प्ट्स पर अनुभाग](/docs/modules/model_io/prompts) में अधिक जानकारी देखें।
+
+## आउटपुट पार्सर्स
+
+`OutputParser`s भाषा मॉडल के कच्चे आउटपुट को एक ऐसे प्रारूप में परिवर्तित करते हैं जिसका उपयोग डाउनस्ट्रीम में किया जा सकता है।
+कुछ प्रमुख प्रकार के `OutputParser`s हैं, जिनमें शामिल हैं:
+
+- `LLM` से पाठ को संरचित जानकारी (जैसे JSON) में परिवर्तित करना
+- `ChatMessage` को केवल एक स्ट्रिंग में परिवर्तित करना
+- कॉल से प्राप्त अतिरिक्त जानकारी को (जैसे OpenAI फ़ंक्शन इन्वोकेशन) एक स्ट्रिंग में परिवर्तित करना।
+
+इस बारे में पूरी जानकारी के लिए, [आउटपुट पार्सर्स पर अनुभाग](/docs/modules/model_io/output_parsers) देखें।
+
+इस शुरुआती गाइड में, हम एक सरल पार्सर का उपयोग करते हैं जो कॉमा से अलग किए गए मूल्यों की एक सूची पार्स करता है।
+
+```python
+<!--IMPORTS:[{"imported": "CommaSeparatedListOutputParser", "source": "langchain.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.list.CommaSeparatedListOutputParser.html", "title": "Quickstart"}]-->
+from langchain.output_parsers import CommaSeparatedListOutputParser
+
+output_parser = CommaSeparatedListOutputParser()
+output_parser.parse("hi, bye")
+# >> ['hi', 'bye']
+```
+
+## LCEL के साथ संयोजन
+
+अब हम इन सभी को एक श्रृंखला में जोड़ सकते हैं।
+यह श्रृंखला इनपुट चर लेगी, उन्हें एक प्रॉम्प्ट टेम्पलेट में पास करेगी ताकि एक प्रॉम्प्ट बनाया जा सके, प्रॉम्प्ट को भाषा मॉडल में पास करेगी, और फिर (वैकल्पिक) आउटपुट पार्सर के माध्यम से आउटपुट को पास करेगी।
+यह एक मॉड्यूलर टुकड़े के लॉजिक को बंडल करने का एक सुविधाजनक तरीका है।
+चलो इसे कार्य में देखते हैं!
+
+```python
+template = "Generate a list of 5 {text}.\n\n{format_instructions}"
+
+chat_prompt = ChatPromptTemplate.from_template(template)
+chat_prompt = chat_prompt.partial(format_instructions=output_parser.get_format_instructions())
+chain = chat_prompt | chat_model | output_parser
+chain.invoke({"text": "colors"})
+# >> ['red', 'blue', 'green', 'yellow', 'orange']
+```
+
+ध्यान दें कि हम इन घटकों को एक साथ जोड़ने के लिए `|` वाक्यविन्यास का उपयोग कर रहे हैं।
+यह `|` वाक्यविन्यास LangChain Expression Language (LCEL) द्वारा संचालित होता है और सभी इन वस्तुओं द्वारा लागू किए गए सार्वभौमिक `Runnable` इंटरफ़ेस पर निर्भर करता है।
+LCEL के बारे में अधिक जानने के लिए, [यहां](/docs/expression_language/) दस्तावेज़ देखें।
+
+## निष्कर्ष
+
+प्रॉम्प्ट, मॉडल और आउटपुट पार्सर के साथ शुरुआत करने के लिए यही था! यह सिर्फ सीखने के लिए सतह को कवर करता है। अधिक जानकारी के लिए, देखें:
+
+- [प्रॉम्प्ट अनुभाग](/docs/modules/model_io/prompts/) प्रॉम्प्ट टेम्पलेट के साथ काम करने के बारे में जानकारी के लिए
+- [एलएलएम अनुभाग](/docs/modules/model_io/llms/) एलएलएम इंटरफ़ेस के बारे में अधिक जानकारी के लिए
+- [ChatModel अनुभाग](/docs/modules/model_io/chat/) ChatModel इंटरफ़ेस के बारे में अधिक जानकारी के लिए
+- [आउटपुट पार्सर अनुभाग](/docs/modules/model_io/output_parsers/) विभिन्न प्रकार के आउटपुट पार्सर के बारे में जानकारी के लिए।

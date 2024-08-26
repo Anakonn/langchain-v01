@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Doctran
+
+>[Doctran](https://github.com/psychic-api/doctran) एक पायथन पैकेज है। यह एलएलएम और ओपन-सोर्स एनएलपी लाइब्रेरी का उपयोग करता है ताकि कच्चे पाठ को साफ, संरचित और सूचना-घनत्व वाले दस्तावेजों में बदला जा सके जो वेक्टर स्पेस पुनर्प्राप्ति के लिए अनुकूलित हैं। आप `Doctran` को एक काले बक्से के रूप में सोच सकते हैं जहां गंदे स्ट्रिंग जाते हैं और अच्छे, साफ, लेबल वाले स्ट्रिंग बाहर आते हैं।
+
+## स्थापना और सेटअप
+
+```bash
+pip install doctran
+```
+
+## दस्तावेज रूपांतरकर्ता
+
+### दस्तावेज पूछताछकर्ता
+
+[DoctranQATransformer का उपयोग उदाहरण देखें](/docs/integrations/document_transformers/doctran_interrogate_document)।
+
+```python
+from langchain_community.document_loaders import DoctranQATransformer
+```
+
+### गुण निकालने वाला
+
+[DoctranPropertyExtractor का उपयोग उदाहरण देखें](/docs/integrations/document_transformers/doctran_extract_properties)।
+
+```python
+from langchain_community.document_loaders import DoctranPropertyExtractor
+```
+
+### दस्तावेज अनुवादक
+
+[DoctranTextTranslator का उपयोग उदाहरण देखें](/docs/integrations/document_transformers/doctran_translate_document)।
+
+```python
+from langchain_community.document_loaders import DoctranTextTranslator
+```

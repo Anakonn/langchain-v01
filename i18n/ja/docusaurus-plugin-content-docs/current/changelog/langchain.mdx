@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# LangChain
+
+## 0.1.0 (2024年1月5日)
+
+#### 削除
+
+削除はありません。
+
+#### 非推奨
+
+非推奨のクラスとメソッドは0.2.0で削除されます。
+
+| 非推奨                     | 代替                           | 理由                                         |
+|---------------------------------|-----------------------------------|------------------------------------------------|
+| ChatVectorDBChain               | ConversationalRetrievalChain      | すべてのリトリーバーに一般的                 |
+| create_ernie_fn_chain           | create_ernie_fn_runnable          | LCELを使用                                   |
+| created_structured_output_chain | create_structured_output_runnable | LCELを使用                                   |
+| NatBotChain                     |                                   | 使用されていない                              |
+| create_openai_fn_chain          | create_openai_fn_runnable         | LCELを使用                                   |
+| create_structured_output_chain  | create_structured_output_runnable | LCELを使用                                   |
+| load_query_constructor_chain    | load_query_constructor_runnable   | LCELを使用                                   |
+| VectorDBQA                      | RetrievalQA                       | すべてのリトリーバーに一般的                 |
+| Sequential Chain                | LCEL                              | LCELによって置き換えられた                    |
+| SimpleSequentialChain           | LCEL                              | LCELによって置き換えられた                    |
+| TransformChain                  | LCEL/RunnableLambda               | LCELによって置き換えられた                    |
+| create_tagging_chain            | create_structured_output_runnable | LCELを使用                                   |
+| ChatAgent                       | create_react_agent                | クラスよりもLCELビルダーを使用               |
+| ConversationalAgent             | create_react_agent                | クラスよりもLCELビルダーを使用               |
+| ConversationalChatAgent         | create_json_chat_agent            | クラスよりもLCELビルダーを使用               |
+| initialize_agent                | 個別のcreateエージェントメソッド   | 個別のcreateエージェントメソッドがより明確   |
+| ZeroShotAgent                   | create_react_agent                | クラスよりもLCELビルダーを使用               |
+| OpenAIFunctionsAgent            | create_openai_functions_agent     | クラスよりもLCELビルダーを使用               |
+| OpenAIMultiFunctionsAgent       | create_openai_tools_agent         | クラスよりもLCELビルダーを使用               |
+| SelfAskWithSearchAgent          | create_self_ask_with_search       | クラスよりもLCELビルダーを使用               |
+| StructuredChatAgent             | create_structured_chat_agent      | クラスよりもLCELビルダーを使用               |
+| XMLAgent                        | create_xml_agent                  | クラスよりもLCELビルダーを使用               |

@@ -1,0 +1,1052 @@
+---
+translated: true
+---
+
+# Google
+
+Toda la funcionalidad relacionada con [Google Cloud Platform](https://cloud.google.com/) y otros productos de `Google`.
+
+## LLMs
+
+Recomendamos a los desarrolladores individuales comenzar con la API de Gemini (`langchain-google-genai`) y pasar a Vertex AI (`langchain-google-vertexai`) cuando necesiten acceso a soporte comercial y límites de tasa más altos. Si ya estás familiarizado con la nube o eres nativo de la nube, entonces puedes empezar directamente con Vertex AI.
+Por favor, encuentra más información [aquí](https://ai.google.dev/gemini-api/docs/migrate-to-cloud).
+
+### Google Generative AI
+
+Accede a los modelos `Gemini` de GoogleAI como `gemini-pro` y `gemini-pro-vision` a través de la clase `GoogleGenerativeAI`.
+
+Instala el paquete de python.
+
+```bash
+pip install langchain-google-genai
+```
+
+Ve un [ejemplo de uso](/docs/integrations/llms/google_ai).
+
+```python
+from langchain_google_genai import GoogleGenerativeAI
+```
+
+### Vertex AI Model Garden
+
+Accede a `PaLM` y cientos de modelos OSS a través del servicio `Vertex AI Model Garden`.
+
+Necesitamos instalar el paquete de python `langchain-google-vertexai`.
+
+```bash
+pip install langchain-google-vertexai
+```
+
+Ve un [ejemplo de uso](/docs/integrations/llms/google_vertex_ai_palm#vertex-model-garden).
+
+```python
+from langchain_google_vertexai import VertexAIModelGarden
+```
+
+## Modelos de chat
+
+### Google Generative AI
+
+Accede a los modelos `Gemini` de GoogleAI como `gemini-pro` y `gemini-pro-vision` a través de la clase `ChatGoogleGenerativeAI`.
+
+```bash
+pip install -U langchain-google-genai
+```
+
+Configura tu clave API.
+
+```bash
+export GOOGLE_API_KEY=your-api-key
+```
+
+```python
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(model="gemini-pro")
+llm.invoke("Sing a ballad of LangChain.")
+```
+
+El modelo de visión de Gemini admite entradas de imágenes al proporcionar un solo mensaje de chat.
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Google"}]-->
+from langchain_core.messages import HumanMessage
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+
+message = HumanMessage(
+    content=[
+        {
+            "type": "text",
+            "text": "What's in this image?",
+        },  # You can optionally provide text parts
+        {"type": "image_url", "image_url": "https://picsum.photos/seed/picsum/200/300"},
+    ]
+)
+llm.invoke([message])
+```
+
+El valor de image_url puede ser cualquiera de los siguientes:
+
+- Una URL pública de imagen
+- Un archivo gcs (por ejemplo, "gcs://path/to/file.png")
+- Una ruta de archivo local
+- Una imagen codificada en base64 (por ejemplo, data:image/png;base64,abcd124)
+- Una imagen PIL
+
+### Vertex AI
+
+Accede a modelos de chat PaLM como `chat-bison` y `codechat-bison` a través de Google Cloud.
+
+Necesitamos instalar el paquete de python `langchain-google-vertexai`.
+
+```bash
+pip install langchain-google-vertexai
+```
+
+Ve un [ejemplo de uso](/docs/integrations/chat/google_vertex_ai_palm).
+
+```python
+from langchain_google_vertexai import ChatVertexAI
+```
+
+## Modelos de incrustación
+
+### Google Generative AI Embeddings
+
+Ve un [ejemplo de uso](/docs/integrations/text_embedding/google_generative_ai).
+
+```bash
+pip install -U langchain-google-genai
+```
+
+Configura tu clave API.
+
+```bash
+export GOOGLE_API_KEY=your-api-key
+```
+
+```python
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+```
+
+### Vertex AI
+
+Necesitamos instalar el paquete de python `langchain-google-vertexai`.
+
+```bash
+pip install langchain-google-vertexai
+```
+
+Ve un [ejemplo de uso](/docs/integrations/text_embedding/google_vertex_ai_palm).
+
+```python
+from langchain_google_vertexai import VertexAIEmbeddings
+```
+
+## Cargadores de documentos
+
+### AlloyDB para PostgreSQL
+
+> [Google Cloud AlloyDB](https://cloud.google.com/alloydb) es un servicio de base de datos relacional totalmente gestionado que ofrece alto rendimiento, integración perfecta y escalabilidad impresionante en Google Cloud. AlloyDB es 100% compatible con PostgreSQL.
+
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-alloydb-pg
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_alloydb).
+
+```python
+from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBLoader
+```
+
+### BigQuery
+
+> [Google Cloud BigQuery](https://cloud.google.com/bigquery) es un almacén de datos empresarial sin servidor y rentable que funciona en múltiples nubes y escala con tus datos en Google Cloud.
+
+Necesitamos instalar `langchain-google-community` con dependencias de Big Query:
+
+```bash
+pip install langchain-google-community[bigquery]
+```
+
+Ve un [ejemplo de uso](/docs/integrations/document_loaders/google_bigquery).
+
+```python
+from langchain_google_community import BigQueryLoader
+```
+
+### Bigtable
+
+> [Google Cloud Bigtable](https://cloud.google.com/bigtable/docs) es el servicio de base de datos NoSQL de Big Data totalmente gestionado de Google en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-bigtable
+```
+
+Ve [ejemplo de uso de Google Cloud](/docs/integrations/document_loaders/google_bigtable).
+
+```python
+from langchain_google_bigtable import BigtableLoader
+```
+
+### Cloud SQL para MySQL
+
+> [Google Cloud SQL para MySQL](https://cloud.google.com/sql) es un servicio de base de datos totalmente gestionado que te ayuda a configurar, mantener, gestionar y administrar tus bases de datos relacionales MySQL en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-mysql
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_cloud_sql_mysql).
+
+```python
+from langchain_google_cloud_sql_mysql import MySQLEngine, MySQLDocumentLoader
+```
+
+### Cloud SQL para SQL Server
+
+> [Google Cloud SQL para SQL Server](https://cloud.google.com/sql) es un servicio de base de datos totalmente gestionado que te ayuda a configurar, mantener, gestionar y administrar tus bases de datos SQL Server en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-mssql
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_cloud_sql_mssql).
+
+```python
+from langchain_google_cloud_sql_mssql import MSSQLEngine, MSSQLLoader
+```
+
+### Cloud SQL para PostgreSQL
+
+> [Google Cloud SQL para PostgreSQL](https://cloud.google.com/sql) es un servicio de base de datos totalmente gestionado que te ayuda a configurar, mantener, gestionar y administrar tus bases de datos relacionales PostgreSQL en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-pg
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_cloud_sql_pg).
+
+```python
+from langchain_google_cloud_sql_pg import PostgresEngine, PostgresLoader
+```
+
+### Cloud Storage
+
+>[Cloud Storage](https://en.wikipedia.org/wiki/Google_Cloud_Storage) es un servicio gestionado para almacenar datos no estructurados en Google Cloud.
+
+Necesitamos instalar `langchain-google-community` con dependencias de Google Cloud Storage.
+
+```bash
+pip install langchain-google-community[gcs]
+```
+
+Hay dos cargadores para el `Google Cloud Storage`: los cargadores de `Directory` y `File`.
+
+Ve un [ejemplo de uso](/docs/integrations/document_loaders/google_cloud_storage_directory).
+
+```python
+from langchain_google_community import GCSDirectoryLoader
+```
+
+Ve un [ejemplo de uso](/docs/integrations/document_loaders/google_cloud_storage_file).
+
+```python
+from langchain_google_community import GCSFileLoader
+```
+
+### El Carro para cargas de trabajo de Oracle
+
+> El [Operador Oracle de El Carro](https://github.com/GoogleCloudPlatform/elcarro-oracle-operator) de Google ofrece una forma de ejecutar bases de datos Oracle en Kubernetes como un sistema de orquestación de contenedores portátil, de código abierto, impulsado por la comunidad y sin bloqueo de proveedor.
+
+```bash
+pip install langchain-google-el-carro
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_el_carro).
+
+```python
+from langchain_google_el_carro import ElCarroLoader
+```
+
+### Google Drive
+
+>[Google Drive](https://en.wikipedia.org/wiki/Google_Drive) es un servicio de almacenamiento y sincronización de archivos desarrollado por Google.
+
+Actualmente, solo se admiten `Google Docs`.
+
+Necesitamos instalar `langchain-google-community` con dependencias de Google Drive.
+
+```bash
+pip install langchain-google-community[drive]
+```
+
+Ve un [ejemplo de uso e instrucciones de autorización](/docs/integrations/document_loaders/google_drive).
+
+```python
+from langchain_google_community import GoogleDriveLoader
+```
+
+### Firestore (modo nativo)
+
+> [Google Cloud Firestore](https://cloud.google.com/firestore/docs/) es una base de datos de documentos NoSQL diseñada para escalado automático, alto rendimiento y facilidad de desarrollo de aplicaciones.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-firestore
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_firestore).
+
+```python
+from langchain_google_firestore import FirestoreLoader
+```
+
+### Firestore (modo Datastore)
+
+> [Google Cloud Firestore en modo Datastore](https://cloud.google.com/datastore/docs) es una base de datos de documentos NoSQL diseñada para escalado automático, alto rendimiento y facilidad de desarrollo de aplicaciones.
+> Firestore es la versión más nueva de Datastore e introduce varias mejoras sobre Datastore.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-datastore
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_datastore).
+
+```python
+from langchain_google_datastore import DatastoreLoader
+```
+
+### Memorystore para Redis
+
+> [Google Cloud Memorystore para Redis](https://cloud.google.com/memorystore/docs/redis) es un servicio Redis totalmente gestionado para Google Cloud. Las aplicaciones que se ejecutan en Google Cloud pueden lograr un rendimiento extremo aprovechando el servicio Redis altamente escalable, disponible y seguro sin la carga de gestionar implementaciones Redis complejas.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-memorystore-redis
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_memorystore_redis).
+
+```python
+from langchain_google_memorystore_redis import MemorystoreLoader
+```
+
+### Spanner
+
+> [Google Cloud Spanner](https://cloud.google.com/spanner/docs) es un servicio de base de datos relacional totalmente gestionado, crítico para la misión, en Google Cloud que ofrece consistencia transaccional a escala global, replicación automática y sincrónica para alta disponibilidad y soporte para dos dialectos SQL: GoogleSQL (ANSI 2011 con extensiones) y PostgreSQL.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-spanner
+```
+
+Ve [ejemplo de uso](/docs/integrations/document_loaders/google_spanner).
+
+```python
+from langchain_google_spanner import SpannerLoader
+```
+
+### Speech-to-Text
+
+> [Google Cloud Speech-to-Text](https://cloud.google.com/speech-to-text) es una API de transcripción de audio impulsada por los modelos de reconocimiento de voz de Google en Google Cloud.
+
+Este cargador de documentos transcribe archivos de audio y produce los resultados de texto como Documentos.
+
+Primero, necesitamos instalar `langchain-google-community` con dependencias de speech-to-text.
+
+```bash
+pip install langchain-google-community[speech]
+```
+
+Ve un [ejemplo de uso e instrucciones de autorización](/docs/integrations/document_loaders/google_speech_to_text).
+
+```python
+from langchain_google_community import SpeechToTextLoader
+```
+
+## Transformadores de documentos
+
+### Document AI
+
+>[Google Cloud Document AI](https://cloud.google.com/document-ai/docs/overview) es un servicio de Google Cloud que transforma datos no estructurados de documentos en datos estructurados, haciéndolos más fáciles de entender, analizar y consumir.
+
+Necesitamos configurar un [`GCS` bucket y crear tu propio procesador OCR](https://cloud.google.com/document-ai/docs/create-processor). 
+El `GCS_OUTPUT_PATH` debe ser una ruta a una carpeta en GCS (comenzando con `gs://`) y un nombre de procesador debe parecerse a `projects/PROJECT_NUMBER/locations/LOCATION/processors/PROCESSOR_ID`.
+Podemos obtenerlo programáticamente o copiarlo desde la sección `Prediction endpoint` del `Processor details` en la consola de Google Cloud.
+
+```bash
+pip install langchain-google-community[docai]
+```
+
+Ve un [ejemplo de uso](/docs/integrations/document_transformers/google_docai).
+
+```python
+<!--IMPORTS:[{"imported": "Blob", "source": "langchain_core.document_loaders.blob_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_core.document_loaders.blob_loaders.Blob.html", "title": "Google"}]-->
+from langchain_core.document_loaders.blob_loaders import Blob
+from langchain_google_community import DocAIParser
+```
+
+### Google Translate
+
+> [Google Translate](https://translate.google.com/) es un servicio de traducción automática neuronal multilingüe desarrollado por Google para traducir textos, documentos y sitios web de un idioma a otro.
+
+El `GoogleTranslateTransformer` te permite traducir texto y HTML con la [Google Cloud Translation API](https://cloud.google.com/translate).
+
+Primero, necesitamos instalar el `langchain-google-community` con dependencias de traducción.
+
+```bash
+pip install langchain-google-community[translate]
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/document_transformers/google_translate).
+
+```python
+from langchain_google_community import GoogleTranslateTransformer
+```
+
+## Tiendas Vectoriales
+
+### AlloyDB para PostgreSQL
+
+> [Google Cloud AlloyDB](https://cloud.google.com/alloydb) es un servicio de base de datos relacional totalmente gestionado que ofrece alto rendimiento, integración perfecta y escalabilidad impresionante en Google Cloud. AlloyDB es 100% compatible con PostgreSQL.
+
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-alloydb-pg
+```
+
+Vea [ejemplo de uso](/docs/integrations/vectorstores/google_alloydb).
+
+```python
+from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBVectorStore
+```
+
+### BigQuery Vector Search
+
+> [Google Cloud BigQuery](https://cloud.google.com/bigquery),
+> BigQuery es un almacén de datos empresarial sin servidor y rentable en Google Cloud.
+>
+> [Google Cloud BigQuery Vector Search](https://cloud.google.com/bigquery/docs/vector-search-intro)
+> La búsqueda vectorial de BigQuery te permite usar GoogleSQL para hacer búsquedas semánticas, utilizando índices vectoriales para resultados rápidos pero aproximados, o utilizando fuerza bruta para resultados exactos.
+
+> Puede calcular la distancia Euclidiana o Coseno. Con LangChain, por defecto usamos la distancia Euclidiana.
+
+Necesitamos instalar varios paquetes de python.
+
+```bash
+pip install google-cloud-bigquery
+```
+
+Vea un [ejemplo de uso](/docs/integrations/vectorstores/google_bigquery_vector_search).
+
+```python
+from langchain.vectorstores import BigQueryVectorSearch
+```
+
+### Memorystore para Redis
+
+> [Google Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis) es un servicio Redis totalmente gestionado para Google Cloud. Las aplicaciones que se ejecutan en Google Cloud pueden lograr un rendimiento extremo aprovechando el servicio Redis altamente escalable, disponible y seguro sin la carga de gestionar implementaciones Redis complejas.
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-memorystore-redis
+```
+
+Vea [ejemplo de uso](/docs/integrations/vectorstores/google_memorystore_redis).
+
+```python
+from langchain_google_memorystore_redis import RedisVectorStore
+```
+
+### Spanner
+
+> [Google Cloud Spanner](https://cloud.google.com/spanner/docs) es un servicio de base de datos relacional totalmente gestionado y de misión crítica en Google Cloud que ofrece consistencia transaccional a escala global, replicación automática y sincrónica para alta disponibilidad, y soporte para dos dialectos SQL: GoogleSQL (ANSI 2011 con extensiones) y PostgreSQL.
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-spanner
+```
+
+Vea [ejemplo de uso](/docs/integrations/vectorstores/google_spanner).
+
+```python
+from langchain_google_spanner import SpannerVectorStore
+```
+
+### Firestore (Modo Nativo)
+
+> [Google Cloud Firestore](https://cloud.google.com/firestore/docs/) es una base de datos de documentos NoSQL creada para escalado automático, alto rendimiento y facilidad de desarrollo de aplicaciones.
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-firestore
+```
+
+Vea [ejemplo de uso](/docs/integrations/vectorstores/google_firestore).
+
+```python
+from langchain_google_firestore import FirestoreVectorstore
+```
+
+### Cloud SQL para MySQL
+
+> [Google Cloud SQL for MySQL](https://cloud.google.com/sql) es un servicio de base de datos totalmente gestionado que te ayuda a configurar, mantener, gestionar y administrar tus bases de datos relacionales MySQL en Google Cloud.
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-mysql
+```
+
+Vea [ejemplo de uso](/docs/integrations/vectorstores/google_cloud_sql_mysql).
+
+```python
+from langchain_google_cloud_sql_mysql import MySQLEngine, MySQLVectorStore
+```
+
+### Cloud SQL para PostgreSQL
+
+> [Google Cloud SQL for PostgreSQL](https://cloud.google.com/sql) es un servicio de base de datos totalmente gestionado que te ayuda a configurar, mantener, gestionar y administrar tus bases de datos relacionales PostgreSQL en Google Cloud.
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-pg
+```
+
+Vea [ejemplo de uso](/docs/integrations/vectorstores/google_cloud_sql_pg).
+
+```python
+from langchain_google_cloud_sql_pg import PostgresEngine, PostgresVectorStore
+```
+
+### Vertex AI Vector Search
+
+> [Google Cloud Vertex AI Vector Search](https://cloud.google.com/vertex-ai/docs/vector-search/overview) de Google Cloud,
+> anteriormente conocido como `Vertex AI Matching Engine`, proporciona la principal base de datos vectorial de baja latencia y alta escala de la industria. Estas bases de datos vectoriales son comúnmente
+> referidas como coincidencia de similitud vectorial o un servicio de vecino más cercano aproximado (ANN, por sus siglas en inglés).
+
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-vertexai
+```
+
+Vea un [ejemplo de uso](/docs/integrations/vectorstores/google_vertex_ai_vector_search).
+
+```python
+from langchain_google_vertexai import VectorSearchVectorStore
+```
+
+### ScaNN
+
+>[Google ScaNN](https://github.com/google-research/google-research/tree/master/scann)
+> (Scalable Nearest Neighbors) es un paquete de python.
+>
+>`ScaNN` es un método para la búsqueda eficiente de similitud vectorial a escala.
+
+>`ScaNN` incluye poda del espacio de búsqueda y cuantización para la Búsqueda del Producto Interior Máximo y también soporta otras funciones de distancia como
+> la distancia Euclidiana. La implementación está optimizada para procesadores x86
+> con soporte AVX2. Vea su [Google Research github](https://github.com/google-research/google-research/tree/master/scann)
+> para más detalles.
+
+Necesitamos instalar el paquete de python `scann`.
+
+```bash
+pip install scann
+```
+
+Vea un [ejemplo de uso](/docs/integrations/vectorstores/scann).
+
+```python
+<!--IMPORTS:[{"imported": "ScaNN", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.scann.ScaNN.html", "title": "Google"}]-->
+from langchain_community.vectorstores import ScaNN
+```
+
+## Recuperadores
+
+### Google Drive
+
+Necesitamos instalar varios paquetes de python.
+
+```bash
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/retrievers/google_drive).
+
+```python
+from langchain_googledrive.retrievers import GoogleDriveRetriever
+```
+
+### Vertex AI Search
+
+> [Vertex AI Search](https://cloud.google.com/generative-ai-app-builder/docs/introduction)
+> de Google Cloud permite a los desarrolladores construir rápidamente motores de búsqueda potenciados por IA generativa para clientes y empleados.
+
+Necesitamos instalar el paquete de python `google-cloud-discoveryengine`.
+
+```bash
+pip install google-cloud-discoveryengine
+```
+
+Vea un [ejemplo de uso](/docs/integrations/retrievers/google_vertex_ai_search).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleVertexAISearchRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.google_vertex_ai_search.GoogleVertexAISearchRetriever.html", "title": "Google"}]-->
+from langchain.retrievers import GoogleVertexAISearchRetriever
+```
+
+### Document AI Warehouse
+
+> [Document AI Warehouse](https://cloud.google.com/document-ai-warehouse)
+> de Google Cloud permite a las empresas buscar, almacenar, gobernar y gestionar documentos y sus datos y metadatos extraídos por IA en una única plataforma.
+
+```python
+<!--IMPORTS:[{"imported": "GoogleDocumentAIWarehouseRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.google_cloud_documentai_warehouse.GoogleDocumentAIWarehouseRetriever.html", "title": "Google"}]-->
+from langchain.retrievers import GoogleDocumentAIWarehouseRetriever
+docai_wh_retriever = GoogleDocumentAIWarehouseRetriever(
+    project_number=...
+)
+query = ...
+documents = docai_wh_retriever.invoke(
+    query, user_ldap=...
+)
+```
+
+## Herramientas
+
+### Text-to-Speech
+
+>[Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech) es un servicio de Google Cloud que permite a los desarrolladores
+> sintetizar voz natural con más de 100 voces, disponibles en múltiples idiomas y variantes.
+> Aplica la investigación innovadora de DeepMind en WaveNet y las poderosas redes neuronales de Google
+> para ofrecer la mayor fidelidad posible.
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install google-cloud-text-to-speech
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_cloud_texttospeech).
+
+```python
+from langchain_google_community import TextToSpeechTool
+```
+
+### Google Drive
+
+Necesitamos instalar varios paquetes de python.
+
+```bash
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_drive).
+
+```python
+from langchain_community.utilities.google_drive import GoogleDriveAPIWrapper
+from langchain_community.tools.google_drive.tool import GoogleDriveSearchTool
+```
+
+### Google Finance
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install google-search-results
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_finance).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleFinanceQueryRun", "source": "langchain_community.tools.google_finance", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_finance.tool.GoogleFinanceQueryRun.html", "title": "Google"}, {"imported": "GoogleFinanceAPIWrapper", "source": "langchain_community.utilities.google_finance", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_finance.GoogleFinanceAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_finance import GoogleFinanceQueryRun
+from langchain_community.utilities.google_finance import GoogleFinanceAPIWrapper
+```
+
+### Google Jobs
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install google-search-results
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_jobs).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleJobsQueryRun", "source": "langchain_community.tools.google_jobs", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_jobs.tool.GoogleJobsQueryRun.html", "title": "Google"}, {"imported": "GoogleFinanceAPIWrapper", "source": "langchain_community.utilities.google_finance", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_finance.GoogleFinanceAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_jobs import GoogleJobsQueryRun
+from langchain_community.utilities.google_finance import GoogleFinanceAPIWrapper
+```
+
+### Google Lens
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_lens).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleLensQueryRun", "source": "langchain_community.tools.google_lens", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_lens.tool.GoogleLensQueryRun.html", "title": "Google"}, {"imported": "GoogleLensAPIWrapper", "source": "langchain_community.utilities.google_lens", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_lens.GoogleLensAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_lens import GoogleLensQueryRun
+from langchain_community.utilities.google_lens import GoogleLensAPIWrapper
+```
+
+### Google Places
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install googlemaps
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_places).
+
+```python
+<!--IMPORTS:[{"imported": "GooglePlacesTool", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_places.tool.GooglePlacesTool.html", "title": "Google"}]-->
+from langchain.tools import GooglePlacesTool
+```
+
+### Google Scholar
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install google-search-results
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_scholar).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleScholarQueryRun", "source": "langchain_community.tools.google_scholar", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_scholar.tool.GoogleScholarQueryRun.html", "title": "Google"}, {"imported": "GoogleScholarAPIWrapper", "source": "langchain_community.utilities.google_scholar", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_scholar.GoogleScholarAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_scholar import GoogleScholarQueryRun
+from langchain_community.utilities.google_scholar import GoogleScholarAPIWrapper
+```
+
+### Google Search
+
+- Configurar un Motor de Búsqueda Personalizado, siguiendo [estas instrucciones](https://stackoverflow.com/questions/37083058/programmatically-searching-google-in-python-using-custom-search)
+- Obtener una API Key y un ID del Motor de Búsqueda Personalizado del paso anterior, y configurarlos como variables de entorno
+`GOOGLE_API_KEY` y `GOOGLE_CSE_ID` respectivamente.
+
+```python
+from langchain_google_community import GoogleSearchAPIWrapper
+```
+
+Para una guía más detallada de este wrapper, vea [este notebook](/docs/integrations/tools/google_search).
+
+Podemos cargar fácilmente este wrapper como una Herramienta (para usar con un Agente). Podemos hacer esto con:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Google"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["google-search"])
+```
+
+### Google Trends
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install google-search-results
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_trends).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleTrendsQueryRun", "source": "langchain_community.tools.google_trends", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.google_trends.tool.GoogleTrendsQueryRun.html", "title": "Google"}, {"imported": "GoogleTrendsAPIWrapper", "source": "langchain_community.utilities.google_trends", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_trends.GoogleTrendsAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.tools.google_trends import GoogleTrendsQueryRun
+from langchain_community.utilities.google_trends import GoogleTrendsAPIWrapper
+```
+
+## Toolkits
+
+### GMail
+
+> [Google Gmail](https://en.wikipedia.org/wiki/Gmail) es un servicio de correo electrónico gratuito proporcionado por Google.
+Este toolkit funciona con correos electrónicos a través de la `Gmail API`.
+
+Necesitamos instalar `langchain-google-community` con dependencias requeridas:
+
+```bash
+pip install langchain-google-community[gmail]
+```
+
+Vea un [ejemplo de uso e instrucciones de autorización](/docs/integrations/toolkits/gmail).
+
+```python
+from langchain_google_community import GmailToolkit
+```
+
+## Memoria
+
+### AlloyDB para PostgreSQL
+
+> [AlloyDB for PostgreSQL](https://cloud.google.com/alloydb) es un servicio de base de datos relacional totalmente gestionado que ofrece alto rendimiento, integración perfecta y escalabilidad impresionante en Google Cloud. AlloyDB es 100% compatible con PostgreSQL.
+
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-alloydb-pg
+```
+
+Vea [ejemplo de uso](/docs/integrations/memory/google_alloydb).
+
+```python
+from langchain_google_alloydb_pg import AlloyDBEngine, AlloyDBChatMessageHistory
+```
+
+### Cloud SQL para PostgreSQL
+
+> [Cloud SQL for PostgreSQL](https://cloud.google.com/sql) es un servicio de base de datos totalmente gestionado que te ayuda a configurar, mantener, gestionar y administrar tus bases de datos relacionales PostgreSQL en Google Cloud.
+Instalar el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-pg
+```
+
+Vea [ejemplo de uso](/docs/integrations/memory/google_sql_pg).
+
+```python
+from langchain_google_cloud_sql_pg import PostgresEngine, PostgresChatMessageHistory
+```
+
+### Cloud SQL for MySQL
+
+> [Cloud SQL for MySQL](https://cloud.google.com/sql) es un servicio de base de datos completamente gestionado que te ayuda a configurar, mantener, administrar y gestionar tus bases de datos relacionales MySQL en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-mysql
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_sql_mysql).
+
+```python
+from langchain_google_cloud_sql_mysql import MySQLEngine, MySQLChatMessageHistory
+```
+
+### Cloud SQL for SQL Server
+
+> [Cloud SQL for SQL Server](https://cloud.google.com/sql) es un servicio de base de datos completamente gestionado que te ayuda a configurar, mantener, administrar y gestionar tus bases de datos SQL Server en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-cloud-sql-mssql
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_sql_mssql).
+
+```python
+from langchain_google_cloud_sql_mssql import MSSQLEngine, MSSQLChatMessageHistory
+```
+
+### Spanner
+
+> [Google Cloud Spanner](https://cloud.google.com/spanner/docs) es un servicio de base de datos relacional, crítico para la misión, totalmente gestionado en Google Cloud que ofrece consistencia transaccional a escala global, replicación automática y sincrónica para alta disponibilidad, y soporte para dos dialectos SQL: GoogleSQL (ANSI 2011 con extensiones) y PostgreSQL.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-spanner
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_spanner).
+
+```python
+from langchain_google_spanner import SpannerChatMessageHistory
+```
+
+### Memorystore for Redis
+
+> [Google Cloud Memorystore for Redis](https://cloud.google.com/memorystore/docs/redis) es un servicio Redis completamente gestionado para Google Cloud. Las aplicaciones que se ejecutan en Google Cloud pueden lograr un rendimiento extremo aprovechando el servicio Redis altamente escalable, disponible y seguro sin la carga de gestionar implementaciones Redis complejas.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-memorystore-redis
+```
+
+Ver [ejemplo de uso](/docs/integrations/document_loaders/google_memorystore_redis).
+
+```python
+from langchain_google_memorystore_redis import MemorystoreChatMessageHistory
+```
+
+### Bigtable
+
+> [Google Cloud Bigtable](https://cloud.google.com/bigtable/docs) es el servicio de base de datos NoSQL de Big Data completamente gestionado de Google en Google Cloud.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-bigtable
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_bigtable).
+
+```python
+from langchain_google_bigtable import BigtableChatMessageHistory
+```
+
+### Firestore (Native Mode)
+
+> [Google Cloud Firestore](https://cloud.google.com/firestore/docs/) es una base de datos de documentos NoSQL construida para escalado automático, alto rendimiento y facilidad de desarrollo de aplicaciones.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-firestore
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_firestore).
+
+```python
+from langchain_google_firestore import FirestoreChatMessageHistory
+```
+
+### Firestore (Datastore Mode)
+
+> [Google Cloud Firestore en modo Datastore](https://cloud.google.com/datastore/docs) es una base de datos de documentos NoSQL construida para escalado automático, alto rendimiento y facilidad de desarrollo de aplicaciones.
+> Firestore es la versión más reciente de Datastore e introduce varias mejoras sobre Datastore.
+Instala el paquete de python:
+
+```bash
+pip install langchain-google-datastore
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_firestore_datastore).
+
+```python
+from langchain_google_datastore import DatastoreChatMessageHistory
+```
+
+### El Carro: The Oracle Operator for Kubernetes
+
+> Google [El Carro Oracle Operator for Kubernetes](https://github.com/GoogleCloudPlatform/elcarro-oracle-operator)
+ofrece una manera de ejecutar bases de datos `Oracle` en `Kubernetes` como un sistema de orquestación de contenedores portátil, de código abierto, impulsado por la comunidad y sin ataduras a un proveedor.
+
+```bash
+pip install langchain-google-el-carro
+```
+
+Ver [ejemplo de uso](/docs/integrations/memory/google_el_carro).
+
+```python
+from langchain_google_el_carro import ElCarroChatMessageHistory
+```
+
+## Cargadores de Chat
+
+### GMail
+
+> [Gmail](https://en.wikipedia.org/wiki/Gmail) es un servicio de correo electrónico gratuito proporcionado por Google.
+Este cargador trabaja con correos electrónicos a través del `Gmail API`.
+
+Necesitamos instalar `langchain-google-community` con dependencias subyacentes.
+
+```bash
+pip install langchain-google-community[gmail]
+```
+
+Ver un [ejemplo de uso e instrucciones de autorización](/docs/integrations/chat_loaders/gmail).
+
+```python
+from langchain_google_community import GMailLoader
+```
+
+## Integraciones de Terceros
+
+### SearchApi
+
+>[SearchApi](https://www.searchapi.io/) proporciona una API de terceros para acceder a resultados de búsqueda de Google, búsqueda en YouTube y transcripciones, y otros motores relacionados con Google.
+
+Ver [ejemplos de uso e instrucciones de autorización](/docs/integrations/tools/searchapi).
+
+```python
+<!--IMPORTS:[{"imported": "SearchApiAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searchapi.SearchApiAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.utilities import SearchApiAPIWrapper
+```
+
+### SerpApi
+
+>[SerpApi](https://serpapi.com/) proporciona una API de terceros para acceder a resultados de búsqueda de Google.
+
+Ver un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/serpapi).
+
+```python
+<!--IMPORTS:[{"imported": "SerpAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.serpapi.SerpAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.utilities import SerpAPIWrapper
+```
+
+### Serper.dev
+
+Ver un [ejemplo de uso e instrucciones de autorización](/docs/integrations/tools/google_serper).
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Google"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+```
+
+### YouTube
+
+>[YouTube Search](https://github.com/joetats/youtube_search) busca vídeos de `YouTube` evitando usar su API fuertemente limitada en cuanto a la tasa de solicitudes.
+>
+>Utiliza el formulario en la página principal de YouTube y extrae la información de la página resultante.
+
+Necesitamos instalar un paquete de python.
+
+```bash
+pip install youtube_search
+```
+
+Ver un [ejemplo de uso](/docs/integrations/tools/youtube).
+
+```python
+<!--IMPORTS:[{"imported": "YouTubeSearchTool", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.youtube.search.YouTubeSearchTool.html", "title": "Google"}]-->
+from langchain.tools import YouTubeSearchTool
+```
+
+### YouTube audio
+
+>[YouTube](https://www.youtube.com/) es una plataforma en línea para compartir videos y una red social creada por `Google`.
+
+Utiliza `YoutubeAudioLoader` para obtener / descargar los archivos de audio.
+
+Luego, utiliza `OpenAIWhisperParser` para transcribirlos a texto.
+
+Necesitamos instalar varios paquetes de python.
+
+```bash
+pip install yt_dlp pydub librosa
+```
+
+Ver un [ejemplo de uso e instrucciones de autorización](/docs/integrations/document_loaders/youtube_audio).
+
+```python
+<!--IMPORTS:[{"imported": "YoutubeAudioLoader", "source": "langchain_community.document_loaders.blob_loaders.youtube_audio", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.blob_loaders.youtube_audio.YoutubeAudioLoader.html", "title": "Google"}, {"imported": "OpenAIWhisperParser", "source": "langchain_community.document_loaders.parsers", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.parsers.audio.OpenAIWhisperParser.html", "title": "Google"}]-->
+from langchain_community.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader
+from langchain_community.document_loaders.parsers import OpenAIWhisperParser, OpenAIWhisperParserLocal
+```
+
+### YouTube transcripts
+
+>[YouTube](https://www.youtube.com/) es una plataforma en línea para compartir videos y una red social creada por `Google`.
+
+Necesitamos instalar el paquete de python `youtube-transcript-api`.
+
+```bash
+pip install youtube-transcript-api
+```
+
+Ver un [ejemplo de uso](/docs/integrations/document_loaders/youtube_transcript).
+
+```python
+<!--IMPORTS:[{"imported": "YoutubeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.youtube.YoutubeLoader.html", "title": "Google"}]-->
+from langchain_community.document_loaders import YoutubeLoader
+```

@@ -1,0 +1,91 @@
+---
+translated: true
+---
+
+# Xorbits Inference (Xinference) 번역
+
+이 페이지는 LangChain과 함께 [Xinference](https://github.com/xorbitsai/inference)를 사용하는 방법을 보여줍니다.
+
+`Xinference`는 LLM, 음성 인식 모델, 멀티모달 모델을 노트북에서도 쉽게 배포하고 서비스할 수 있도록 설계된 강력하고 다재다능한 라이브러리입니다. Xorbits Inference를 사용하면 단 한 줄의 명령으로 자체 모델 또는 최신 모델을 손쉽게 배포할 수 있습니다.
+
+## 설치 및 설정
+
+Xinference는 PyPI에서 pip를 통해 설치할 수 있습니다:
+
+```bash
+pip install "xinference[all]"
+```
+
+## LLM
+
+Xinference는 chatglm, baichuan, whisper, vicuna, orca 등 GGML 호환 다양한 모델을 지원합니다. 내장 모델을 확인하려면 다음 명령을 실행하세요:
+
+```bash
+xinference list --all
+```
+
+### Xinference 래퍼
+
+Xinference의 로컬 인스턴스를 실행하려면 다음과 같이 하세요:
+
+```bash
+xinference
+```
+
+또한 Xinference를 분산 클러스터에 배포할 수 있습니다. 먼저 서버에서 Xinference 수퍼바이저를 시작하세요:
+
+```bash
+xinference-supervisor -H "${supervisor_host}"
+```
+
+그런 다음 다른 서버에서 Xinference 작업자를 시작하세요:
+
+```bash
+xinference-worker -e "http://${supervisor_host}:9997"
+```
+
+또한 다음과 같이 Xinference의 로컬 인스턴스를 시작할 수 있습니다:
+
+```bash
+xinference
+```
+
+Xinference가 실행되면 CLI 또는 Xinference 클라이언트를 통해 모델 관리를 위한 엔드포인트에 액세스할 수 있습니다.
+
+로컬 배포의 경우 엔드포인트는 http://localhost:9997 이 됩니다.
+
+클러스터 배포의 경우 엔드포인트는 http://$\{supervisor_host}:9997이 됩니다.
+
+그런 다음 모델을 실행해야 합니다. 모델 이름과 model_size_in_billions, quantization 등의 다른 속성을 지정할 수 있습니다. CLI를 사용하여 이를 수행할 수 있습니다. 예를 들어,
+
+```bash
+xinference launch -n orca -s 3 -q q4_0
+```
+
+모델 uid가 반환됩니다.
+
+사용 예:
+
+```python
+<!--IMPORTS:[{"imported": "Xinference", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.xinference.Xinference.html", "title": "Xorbits Inference (Xinference)"}]-->
+from langchain_community.llms import Xinference
+
+llm = Xinference(
+    server_url="http://0.0.0.0:9997",
+    model_uid = {model_uid} # replace model_uid with the model UID return from launching the model
+)
+
+llm(
+    prompt="Q: where can we visit in the capital of France? A:",
+    generate_config={"max_tokens": 1024, "stream": True},
+)
+
+```
+
+### 사용법
+
+자세한 정보와 예제는 [xinference LLM 예제](/docs/integrations/llms/xinference)를 참조하세요.
+
+### 임베딩
+
+Xinference는 임베딩 쿼리와 문서도 지원합니다. [xinference 임베딩 예제](/docs/integrations/text_embedding/xinference)를 참조하세요.

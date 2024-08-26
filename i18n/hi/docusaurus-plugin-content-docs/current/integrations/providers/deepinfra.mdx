@@ -1,0 +1,55 @@
+---
+translated: true
+---
+
+# DeepInfra
+
+>[DeepInfra](https://deepinfra.com/docs) हमें [नवीनतम मशीन लर्निंग मॉडल](https://deepinfra.com/models) को आसानी से चलाने में मदद करता है।
+> DeepInfra मॉडल को चलाने, स्केल करने और मॉनिटर करने से जुड़े सभी कठिन कार्यों को संभालता है। उपयोगकर्ता अपने एप्लिकेशन पर ध्यान केंद्रित कर सकते हैं और सरल REST API कॉल के माध्यम से मॉडल को एकीकृत कर सकते हैं।
+
+>DeepInfra LangChain के साथ एकीकरण के [उदाहरण](https://deepinfra.com/docs/advanced/langchain) प्रदान करता है।
+
+यह पृष्ठ `LangChain` के भीतर `DeepInfra` पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट DeepInfra रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- यहां से अपना DeepInfra api कुंजी प्राप्त करें [यहां](https://deepinfra.com/)।
+- एक DeepInfra api कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`DEEPINFRA_API_TOKEN`) के रूप में सेट करें
+
+## उपलब्ध मॉडल
+
+DeepInfra तैनाती के लिए तैयार ओपन सोर्स एलएलएम का एक श्रृंखला प्रदान करता है।
+
+आप [पाठ-जनन](https://deepinfra.com/models?type=text-generation) और [एम्बेडिंग](https://deepinfra.com/models?type=embeddings) के लिए समर्थित मॉडल देख सकते हैं।
+
+आप [अनुरोध और प्रतिक्रिया पैरामीटरों की एक सूची](https://deepinfra.com/meta-llama/Llama-2-70b-chat-hf/api) देख सकते हैं।
+
+चैट मॉडल [openai api का पालन करते हैं](https://deepinfra.com/meta-llama/Llama-2-70b-chat-hf/api?example=openai-http)
+
+## एलएलएम
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/deepinfra) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DeepInfra", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.deepinfra.DeepInfra.html", "title": "DeepInfra"}]-->
+from langchain_community.llms import DeepInfra
+```
+
+## एम्बेडिंग
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/deepinfra) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DeepInfraEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.deepinfra.DeepInfraEmbeddings.html", "title": "DeepInfra"}]-->
+from langchain_community.embeddings import DeepInfraEmbeddings
+```
+
+## चैट मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/chat/deepinfra) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatDeepInfra", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.deepinfra.ChatDeepInfra.html", "title": "DeepInfra"}]-->
+from langchain_community.chat_models import ChatDeepInfra
+```

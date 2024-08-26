@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# GitHub
+
+>[GitHub](https://github.com/)은 개발자가 코드를 생성, 저장, 관리 및 공유할 수 있는 개발자 플랫폼입니다. `Git` 소프트웨어를 사용하여 Git의 분산 버전 제어와 액세스 제어, 버그 추적, 소프트웨어 기능 요청, 작업 관리, 지속적인 통합 및 모든 프로젝트에 대한 위키를 제공합니다.
+
+## 설치 및 설정
+
+GitHub API에 액세스하려면 [개인 액세스 토큰](https://github.com/settings/tokens)이 필요합니다.
+
+## 문서 로더
+
+GitHub에 사용할 수 있는 두 가지 문서 로더가 있습니다.
+
+사용 예제는 [/docs/integrations/document_loaders/github](/docs/integrations/document_loaders/github)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "GitHubIssuesLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.github.GitHubIssuesLoader.html", "title": "GitHub"}, {"imported": "GithubFileLoader", "source": "langchain.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.github.GithubFileLoader.html", "title": "GitHub"}]-->
+from langchain_community.document_loaders import GitHubIssuesLoader
+from langchain.document_loaders import GithubFileLoader
+```

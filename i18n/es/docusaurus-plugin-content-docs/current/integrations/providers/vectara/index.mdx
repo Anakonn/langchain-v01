@@ -1,0 +1,97 @@
+---
+translated: true
+---
+
+# Vectara
+
+>[Vectara](https://vectara.com/) es la plataforma de confianza de GenAI para desarrolladores. Proporciona una API sencilla para construir aplicaciones GenAI
+> para búsqueda semántica o RAG (generación aumentada por recuperación).
+
+**Resumen de Vectara:**
+- `Vectara` es una plataforma de API orientada al desarrollador para construir aplicaciones de confianza de GenAI.
+- Para usar Vectara, primero [regístrate](https://vectara.com/integrations/langchain) y crea una cuenta. Luego crea un corpus y una clave API para indexar y buscar.
+- Puedes usar la [API de indexación](https://docs.vectara.com/docs/indexing-apis/indexing) de Vectara para agregar documentos al índice de Vectara
+- Puedes usar la [API de búsqueda](https://docs.vectara.com/docs/search-apis/search) de Vectara para consultar el índice de Vectara (que también admite búsqueda híbrida de forma implícita).
+
+## Instalación y configuración
+
+Para usar `Vectara` con LangChain no se requieren pasos de instalación especiales.
+Para comenzar, [regístrate](https://vectara.com/integrations/langchain) y sigue nuestra [guía de inicio rápido](https://docs.vectara.com/docs/quickstart) para crear un corpus y una clave API.
+Una vez que tengas estos, puedes proporcionarlos como argumentos al vectorstore de Vectara, o puedes establecerlos como variables de entorno.
+
+- exportar `VECTARA_CUSTOMER_ID`="tu_id_de_cliente"
+- exportar `VECTARA_CORPUS_ID`="tu_id_de_corpus"
+- exportar `VECTARA_API_KEY`="tu-clave-api-de-vectara"
+
+## Vectara como un Vector Store
+
+Existe un wrapper alrededor de la plataforma Vectara, lo que te permite usarla como un vectorstore, ya sea para búsqueda semántica o selección de ejemplos.
+
+Para importar este vectorstore:
+
+```python
+<!--IMPORTS:[{"imported": "Vectara", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vectara.Vectara.html", "title": "Vectara"}]-->
+from langchain_community.vectorstores import Vectara
+```
+
+Para crear una instancia del vectorstore de Vectara:
+
+```python
+vectara = Vectara(
+    vectara_customer_id=customer_id,
+    vectara_corpus_id=corpus_id,
+    vectara_api_key=api_key
+)
+```
+
+El customer_id, corpus_id y api_key son opcionales, y si no se proporcionan, se leerán de las variables de entorno `VECTARA_CUSTOMER_ID`, `VECTARA_CORPUS_ID` y `VECTARA_API_KEY`, respectivamente.
+
+Después de tener el vectorstore, puedes `add_texts` o `add_documents` según la interfaz estándar de `VectorStore`, por ejemplo:
+
+```python
+vectara.add_texts(["to be or not to be", "that is the question"])
+```
+
+Dado que Vectara admite la carga de archivos, también agregamos la capacidad de cargar archivos (PDF, TXT, HTML, PPT, DOC, etc.) directamente como archivo. Al usar este método, el archivo se carga directamente en el backend de Vectara, se procesa y se divide en fragmentos de manera óptima allí, por lo que no tienes que usar el cargador de documentos de LangChain o el mecanismo de división.
+
+Como ejemplo:
+
+```python
+vectara.add_files(["path/to/file1.pdf", "path/to/file2.pdf",...])
+```
+
+Para consultar el vectorstore, puedes usar el método `similarity_search` (o `similarity_search_with_score`), que toma una cadena de consulta y devuelve una lista de resultados:
+
+```python
+results = vectara.similarity_score("what is LangChain?")
+```
+
+Los resultados se devuelven como una lista de documentos relevantes y una puntuación de relevancia de cada documento.
+
+En este caso, usamos los parámetros de recuperación predeterminados, pero también puedes especificar los siguientes argumentos adicionales en `similarity_search` o `similarity_search_with_score`:
+- `k`: número de resultados a devolver (predeterminado a 5)
+- `lambda_val`: el factor de [coincidencia léxica](https://docs.vectara.com/docs/api-reference/search-apis/lexical-matching) para la búsqueda híbrida (predeterminado a 0.025)
+- `filter`: un [filtro](https://docs.vectara.com/docs/common-use-cases/filtering-by-metadata/filter-overview) para aplicar a los resultados (predeterminado a None)
+- `n_sentence_context`: número de oraciones a incluir antes/después del segmento de coincidencia real al devolver los resultados. Esto se establece en 2 de forma predeterminada.
+- `mmr_config`: se puede usar para especificar el modo MMR en la consulta.
+   - `is_enabled`: Verdadero o Falso
+   - `mmr_k`: número de resultados a usar para el reordenamiento de MMR
+   - `diversity_bias`: 0 = sin diversidad, 1 = diversidad completa. Este es el parámetro lambda en la fórmula de MMR y está en el rango 0...1
+
+## Vectara para Retrieval Augmented Generation (RAG)
+
+Vectara proporciona una pipeline completa de RAG, incluida la generación de resúmenes.
+Para usar esta pipeline, puedes especificar el argumento `summary_config` en `similarity_search` o `similarity_search_with_score` de la siguiente manera:
+
+- `summary_config`: se puede usar para solicitar un resumen de LLM en RAG
+   - `is_enabled`: Verdadero o Falso
+   - `max_results`: número de resultados a usar para la generación de resúmenes
+   - `response_lang`: idioma del resumen de respuesta, en formato ISO 639-2 (por ejemplo, 'en', 'fr', 'de', etc.)
+
+## Cuadernos de ejemplo
+
+Para ver ejemplos más detallados del uso de Vectara, consulta los siguientes ejemplos:
+* [este cuaderno](/docs/integrations/vectorstores/vectara) muestra cómo usar Vectara como un vectorstore para búsqueda semántica
+* [este cuaderno](/docs/integrations/providers/vectara/vectara_chat) muestra cómo construir un chatbot con Langchain y Vectara
+* [este cuaderno](/docs/integrations/providers/vectara/vectara_summary) muestra cómo usar la pipeline completa de Vectara RAG, incluida la generación de resúmenes
+* [este cuaderno](/docs/integrations/retrievers/self_query/vectara_self_query) muestra la capacidad de autoconsula con Vectara.

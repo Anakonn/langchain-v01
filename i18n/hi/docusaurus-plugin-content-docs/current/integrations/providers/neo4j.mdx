@@ -1,0 +1,65 @@
+---
+translated: true
+---
+
+# Neo4j
+
+>`Neo4j` क्या है?
+
+>- Neo4j एक `ओपन-सोर्स डेटाबेस मैनेजमेंट सिस्टम` है जो ग्राफ़ डेटाबेस प्रौद्योगिकी में विशेषज्ञ है।
+>- Neo4j आपको नोड और एज में डेटा को प्रतिनिधित्व और संग्रहित करने की अनुमति देता है, जो कनेक्टेड डेटा और संबंधों को संभालने के लिए उपयुक्त है।
+>- Neo4j एक `Cypher क्वेरी भाषा` प्रदान करता है, जो आपके ग्राफ़ डेटा के साथ बातचीत करने और उसकी खोज करने में आसान बनाता है।
+>- Neo4j के साथ, आप उच्च-प्रदर्शन `ग्राफ़ ट्रावर्सल और क्वेरी` प्राप्त कर सकते हैं, जो उत्पादन-स्तर के सिस्टमों के लिए उपयुक्त हैं।
+
+>Neo4j के बारे में अधिक जानने के लिए [उनकी वेबसाइट](https://neo4j.com/) पर जाएं।
+
+## स्थापना और सेटअप
+
+- `pip install neo4j` के साथ Python SDK स्थापित करें
+
+## VectorStore
+
+Neo4j वेक्टर इंडेक्स को वेक्टर स्टोर के रूप में उपयोग किया जाता है,
+चाहे वह语义搜索के लिए हो या उदाहरण चयन के लिए।
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jVector", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.neo4j_vector.Neo4jVector.html", "title": "Neo4j"}]-->
+from langchain_community.vectorstores import Neo4jVector
+```
+
+[उपयोग उदाहरण](/docs/integrations/vectorstores/neo4jvector) देखें
+
+## GraphCypherQAChain
+
+Neo4j ग्राफ़ डेटाबेस के इर्द-गिर्द एक रैपर मौजूद है जो उपयोगकर्ता इनपुट के आधार पर Cypher बयान उत्पन्न करने और उन्हें डेटाबेस से प्रासंगिक जानकारी प्राप्त करने के लिए उपयोग करने की अनुमति देता है।
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html", "title": "Neo4j"}, {"imported": "GraphCypherQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.cypher.GraphCypherQAChain.html", "title": "Neo4j"}]-->
+from langchain_community.graphs import Neo4jGraph
+from langchain.chains import GraphCypherQAChain
+```
+
+[उपयोग उदाहरण](/docs/integrations/graphs/neo4j_cypher) देखें
+
+## पाठ से ज्ञान ग्राफ़ का निर्माण
+
+पाठ डेटा में अक्सर समृद्ध संबंध और अंतर्दृष्टि होती हैं जो विभिन्न विश्लेषण, अनुशंसा इंजन या ज्ञान प्रबंधन अनुप्रयोगों के लिए उपयोगी हो सकती हैं।
+Diffbot का NLP API अव्यवस्थित पाठ डेटा से इकाइयों, संबंधों और अर्थपूर्ण अर्थ का निष्कर्षण करने की अनुमति देता है।
+Diffbot के NLP API को Neo4j, एक ग्राफ़ डेटाबेस, के साथ जोड़कर, आप पाठ से निकाले गए जानकारी के आधार पर शक्तिशाली, गतिशील ग्राफ़ संरचनाएं बना सकते हैं।
+ये ग्राफ़ संरचनाएं पूरी तरह से क्वेरी योग्य हैं और विभिन्न अनुप्रयोगों में एकीकृत की जा सकती हैं।
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html", "title": "Neo4j"}, {"imported": "DiffbotGraphTransformer", "source": "langchain_experimental.graph_transformers.diffbot", "docs": "https://api.python.langchain.com/en/latest/graph_transformers/langchain_experimental.graph_transformers.diffbot.DiffbotGraphTransformer.html", "title": "Neo4j"}]-->
+from langchain_community.graphs import Neo4jGraph
+from langchain_experimental.graph_transformers.diffbot import DiffbotGraphTransformer
+```
+
+[उपयोग उदाहरण](/docs/integrations/graphs/diffbot) देखें
+
+## मेमोरी
+
+[उपयोग उदाहरण](/docs/integrations/memory/neo4j_chat_message_history) देखें।
+
+```python
+from langchain.memory import Neo4jChatMessageHistory
+```

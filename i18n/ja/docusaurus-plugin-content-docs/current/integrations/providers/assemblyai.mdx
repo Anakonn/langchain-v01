@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# AssemblyAI
+
+>[AssemblyAI](https://www.assemblyai.com/) は、音声認識、話者分離、音声要約など、さまざまなタスクのための `Speech AI` モデルを構築しています。
+>`AssemblyAI's` Speech AIモデルには、通話、バーチャルミーティング、ポッドキャストなどの音声データに対する正確な音声認識、話者検出、感情分析、章検出、個人情報保護などの機能が含まれています。
+
+## インストールとセットアップ
+
+[API キー](https://www.assemblyai.com/dashboard/signup)を取得してください。
+
+`assemblyai` パッケージをインストールします。
+
+```bash
+pip install -U assemblyai
+```
+
+## ドキュメントローダー
+
+### AssemblyAI 音声トランスクリプト
+
+`AssemblyAIAudioTranscriptLoader` は、`AssemblyAI API` を使って音声ファイルをトランスクリプトし、その文字起こしテキストをドキュメントにロードします。
+
+[使用例](/docs/integrations/document_loaders/assemblyai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "AssemblyAIAudioTranscriptLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.assemblyai.AssemblyAIAudioTranscriptLoader.html", "title": "AssemblyAI"}]-->
+from langchain_community.document_loaders import AssemblyAIAudioTranscriptLoader
+```

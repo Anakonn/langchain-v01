@@ -1,0 +1,132 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 2
+translated: true
+---
+
+# 텍스트 임베딩 모델
+
+:::info
+[통합](/docs/integrations/text_embedding/)에 대한 문서를 확인하세요.
+:::
+
+Embeddings 클래스는 텍스트 임베딩 모델과 인터페이스하기 위해 설계된 클래스입니다. 많은 임베딩 모델 제공업체(OpenAI, Cohere, Hugging Face 등)가 있으며, 이 클래스는 이들 모두에 대한 표준 인터페이스를 제공하도록 설계되었습니다.
+
+Embeddings는 텍스트의 벡터 표현을 생성합니다. 이는 텍스트를 벡터 공간에서 생각할 수 있게 하며, 벡터 공간에서 가장 유사한 텍스트 조각을 찾는 의미론적 검색과 같은 작업을 수행할 수 있게 합니다.
+
+LangChain의 기본 Embeddings 클래스는 문서 임베딩과 쿼리 임베딩의 두 가지 메서드를 제공합니다. 전자는 여러 텍스트를 입력으로 받고, 후자는 단일 텍스트를 입력으로 받습니다. 이 두 가지 메서드를 별도로 제공하는 이유는 일부 임베딩 제공업체가 검색 대상 문서와 검색 쿼리 자체에 대해 다른 임베딩 방법을 사용하기 때문입니다.
+
+## 시작하기
+
+### 설정
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+OpenAI 파트너 패키지를 설치해야 합니다:
+
+```bash
+pip install langchain-openai
+```
+
+API 액세스를 위해서는 API 키가 필요합니다. 계정을 만들고 [여기](https://platform.openai.com/account/api-keys)에서 키를 얻을 수 있습니다. 키를 환경 변수로 설정하려면 다음을 실행하세요:
+
+```bash
+export OPENAI_API_KEY="..."
+```
+
+환경 변수를 설정하고 싶지 않다면 OpenAI LLM 클래스를 초기화할 때 `api_key` 매개변수로 직접 전달할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings(api_key="...")
+```
+
+그렇지 않으면 매개변수 없이 초기화할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings()
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+Cohere SDK 패키지를 설치해야 합니다:
+
+```bash
+pip install langchain-cohere
+```
+
+API 액세스를 위해서는 API 키가 필요합니다. 계정을 만들고 [여기](https://dashboard.cohere.com/api-keys)에서 키를 얻을 수 있습니다. 키를 환경 변수로 설정하려면 다음을 실행하세요:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+환경 변수를 설정하고 싶지 않다면 Cohere LLM 클래스를 초기화할 때 `cohere_api_key` 매개변수로 직접 전달할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings(cohere_api_key="...")
+```
+
+그렇지 않으면 매개변수 없이 초기화할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings()
+```
+
+  </TabItem>
+</Tabs>
+
+### `embed_documents`
+
+#### 텍스트 목록 임베딩
+
+```python
+embeddings = embeddings_model.embed_documents(
+    [
+        "Hi there!",
+        "Oh, hello!",
+        "What's your name?",
+        "My friends call me World",
+        "Hello World!"
+    ]
+)
+len(embeddings), len(embeddings[0])
+```
+
+```output
+(5, 1536)
+```
+
+### `embed_query`
+
+#### 단일 쿼리 임베딩
+
+다른 임베딩된 텍스트와 비교할 목적으로 단일 텍스트를 임베딩합니다.
+
+```python
+embedded_query = embeddings_model.embed_query("What was the name mentioned in the conversation?")
+embedded_query[:5]
+```
+
+```output
+[0.0053587136790156364,
+ -0.0004999046213924885,
+ 0.038883671164512634,
+ -0.003001077566295862,
+ -0.00900818221271038]
+```

@@ -1,0 +1,110 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 0
+translated: true
+---
+
+# 概要
+
+**LangChain** は、大規模言語モデル (LLM) を活用したアプリケーションの開発を支援するフレームワークです。
+
+LangChainは、LLMアプリケーションのライフサイクルの各段階を簡素化します:
+- **開発**: LangChainの[オープンソースのビルディングブロック](/docs/expression_language/)と[コンポーネント](/docs/modules/)を使ってアプリケーションを構築します。[サードパーティのインテグレーション](/docs/integrations/platforms/)と[テンプレート](/docs/templates)を使って素早くスタートできます。
+- **本番運用**: [LangSmith](/docs/langsmith/)を使ってチェーンを検査、監視、評価し、継続的に最適化して自信を持って展開できます。
+- **デプロイ**: [LangServe](/docs/langserve)を使ってチェーンをAPIに変換できます。
+
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<ThemedImage
+  alt="LangChainフレームワークの階層的な構造を示す図。複数のレイヤーにわたる相互接続された部品が表示されています。"
+  sources={{
+    light: useBaseUrl('/svg/langchain_stack.svg'),
+    dark: useBaseUrl('/svg/langchain_stack_dark.svg'),
+  }}
+  title="LangChainフレームワークの概要"
+/>
+
+具体的には、このフレームワークは以下のオープンソースライブラリで構成されています:
+
+- **`langchain-core`**: 基本的な抽象化とLangChain Expression Language。
+- **`langchain-community`**: サードパーティのインテグレーション。
+  - パートナーパッケージ (例: **`langchain-openai`**, **`langchain-anthropic`** など): 一部のインテグレーションは **`langchain-core`** にのみ依存する軽量パッケージに分割されています。
+- **`langchain`**: アプリケーションの認知アーキテクチャを構成するチェーン、エージェント、検索戦略。
+- **[langgraph](/docs/langgraph)**: LLMを使ってロバストで状態を持つマルチアクターアプリケーションを構築するためのグラフモデル。
+- **[langserve](/docs/langserve)**: LangChainチェーンをRESTAPIとしてデプロイする。
+
+より広範なエコシステムには以下が含まれます:
+
+- **[LangSmith](/docs/langsmith)**: LLMアプリケーションのデバッグ、テスト、評価、監視を行い、LangChainと統合されたデベロッパープラットフォーム。
+
+## はじめに
+
+[クイックスタート](/docs/get_started/quickstart)ガイドに従って、LangChainフレームワークを使ってあなたの最初のアプリケーションを構築することをお勧めします。
+
+[こちら](/docs/get_started/installation)に、LangChainのインストール方法、環境設定、開発の手順が記載されています。
+
+:::note
+
+このドキュメントはPythonのLangChainライブラリに焦点を当てています。JavaScriptのLangChainライブラリのドキュメントは[こちら](https://js.langchain.com)にあります。
+
+:::
+
+## ユースケース
+
+特定のものを構築したい場合や、より実践的な学習者である場合は、[ユースケース](/docs/use_cases)をチェックしてください。
+そこには、以下のような一般的なエンドツーエンドタスクのウォークスルーと手法が掲載されています:
+
+- [RAGによる質問応答](/docs/use_cases/question_answering/)
+- [構造化出力の抽出](/docs/use_cases/extraction/)
+- [チャットボット](/docs/use_cases/chatbots/)
+- その他多数!
+
+## Expression Language
+
+LangChain Expression Language (LCEL)は、LangChainの多くのコンポーネントの基礎をなすもので、宣言的な方法でチェーンを構成できます。LCELは、最も単純な "プロンプト + LLM" チェーンから最も複雑なチェーンまで、プロトタイプから本番運用まで、コードを変更せずに対応できるように設計されています。
+
+- **[はじめに](/docs/expression_language/)**: LCELとその利点
+- **[実行可能なインターフェース](/docs/expression_language/interface)**: LCELオブジェクトの標準インターフェース
+- **[プリミティブ](/docs/expression_language/primitives)**: LCELが含むプリミティブについてさらに詳しく
+- その他
+
+## エコシステム
+
+### [🦜🛠️ LangSmith](/docs/langsmith)
+
+言語モデルアプリケーションとインテリジェントエージェントを追跡および評価して、プロトタイプから本番運用への移行を支援します。
+
+### [🦜🕸️ LangGraph](/docs/langgraph)
+
+LLMを使ったステートフルなマルチアクターアプリケーションを構築します。LangChainプリミティブの上に構築され、それと共に使うことを意図しています。
+
+### [🦜🏓 LangServe](/docs/langserve)
+
+LangChainの実行可能オブジェクトやチェーンをRESTAPIとしてデプロイします。
+
+## [セキュリティ](/docs/security)
+
+LangChainを安全に開発するための[セキュリティ](/docs/security)のベストプラクティスを確認してください。
+
+## その他のリソース
+
+### [コンポーネント](/docs/modules/)
+
+LangChainは、多様なコンポーネントのための標準的で拡張可能なインターフェースとインテグレーションを提供しています。
+
+### [インテグレーション](/docs/integrations/providers/)
+
+LangChainは、フレームワークと連携し、それを基に構築されるツールの豊富なエコシステムの一部です。[インテグレーション](/docs/integrations/providers/)の一覧をチェックしてください。
+
+### [ガイド](/docs/guides/)
+
+LangChainを使った開発のベストプラクティス。
+
+### [APIリファレンス](https://api.python.langchain.com)
+
+LangChainとLangChain Experimentalのすべてのクラスとメソッドの完全なドキュメントは、リファレンスセクションにあります。
+
+### [貢献](/docs/contributing)
+
+開発者ガイドには、貢献するためのガイドラインと開発環境のセットアップ方法が記載されています。

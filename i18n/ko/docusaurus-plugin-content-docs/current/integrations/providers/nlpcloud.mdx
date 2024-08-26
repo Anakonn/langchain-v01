@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# NLPCloud
+
+>[NLP Cloud](https://docs.nlpcloud.com/#introduction)는 가장 진보된 AI 엔진을 사용할 수 있게 해주는 인공 지능 플랫폼이며, 자신의 데이터로 자신만의 엔진을 학습시킬 수도 있습니다.
+
+## 설치 및 설정
+
+- `nlpcloud` 패키지를 설치하세요.
+
+```bash
+pip install nlpcloud
+```
+
+- NLPCloud API 키를 받아 환경 변수(`NLPCLOUD_API_KEY`)로 설정하세요.
+
+## LLM
+
+[사용 예시](/docs/integrations/llms/nlpcloud)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloud", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.nlpcloud.NLPCloud.html", "title": "NLPCloud"}]-->
+from langchain_community.llms import NLPCloud
+```
+
+## 텍스트 임베딩 모델
+
+[사용 예시](/docs/integrations/text_embedding/nlp_cloud)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloudEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.nlpcloud.NLPCloudEmbeddings.html", "title": "NLPCloud"}]-->
+from langchain_community.embeddings import NLPCloudEmbeddings
+```

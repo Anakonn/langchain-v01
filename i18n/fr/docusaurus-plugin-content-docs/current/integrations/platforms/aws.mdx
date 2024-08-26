@@ -1,0 +1,302 @@
+---
+translated: true
+---
+
+# AWS
+
+Les intégrations `LangChain` liées à la plateforme [Amazon AWS](https://aws.amazon.com/).
+
+Les intégrations AWS de première partie sont disponibles dans le package `langchain_aws`.
+
+```bash
+pip install langchain-aws
+```
+
+Il existe également des intégrations communautaires disponibles dans le package `langchain_community` avec la dépendance facultative `boto3`.
+
+```bash
+pip install langchain-community boto3
+```
+
+## Modèles de chat
+
+### Bedrock Chat
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/bedrock).
+
+```python
+from langchain_aws import ChatBedrock
+```
+
+## LLMs
+
+### Bedrock
+
+>[Amazon Bedrock](https://aws.amazon.com/bedrock/) est un service entièrement géré qui offre un choix de modèles de base (FMs) à hautes performances provenant de sociétés d'IA de premier plan comme `AI21 Labs`, `Anthropic`, `Cohere`, `Meta`, `Stability AI` et `Amazon` via une seule API, ainsi qu'un large éventail de fonctionnalités dont vous avez besoin pour construire des applications d'IA générative avec sécurité, confidentialité et IA responsable. En utilisant `Amazon Bedrock`, vous pouvez facilement expérimenter et évaluer les principaux FMs pour votre cas d'utilisation, les personnaliser de manière privée avec vos données en utilisant des techniques telles que le fine-tuning et la `Retrieval Augmented Generation` (`RAG`), et construire des agents qui exécutent des tâches en utilisant vos systèmes et sources de données d'entreprise. Étant donné que `Amazon Bedrock` est serverless, vous n'avez pas à gérer d'infrastructure, et vous pouvez intégrer et déployer de manière sécurisée des capacités d'IA générative dans vos applications en utilisant les services AWS que vous connaissez déjà.
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/bedrock).
+
+```python
+from langchain_aws import BedrockLLM
+```
+
+### Amazon API Gateway
+
+>[Amazon API Gateway](https://aws.amazon.com/api-gateway/) est un service entièrement géré qui facilite grandement la création, la publication, la maintenance, la surveillance et la sécurisation des API à n'importe quelle échelle. Les API agissent comme la "porte d'entrée" pour que les applications accèdent aux données, à la logique métier ou aux fonctionnalités de vos services back-end. En utilisant `API Gateway`, vous pouvez créer des API RESTful et des API WebSocket qui permettent des applications de communication bidirectionnelle en temps réel. `API Gateway` prend en charge les charges de travail conteneurisées et serverless, ainsi que les applications web.
+
+`API Gateway` gère toutes les tâches impliquées dans l'acceptation et le traitement de jusqu'à des centaines de milliers d'appels d'API simultanés, y compris la gestion du trafic, le support CORS, l'autorisation et le contrôle d'accès, la limitation, la surveillance et la gestion des versions d'API. `API Gateway` n'a pas de frais minimum ou de frais de démarrage. Vous payez pour les appels d'API que vous recevez et la quantité de données transférées, et avec le modèle de tarification par paliers d'`API Gateway`, vous pouvez réduire vos coûts à mesure que votre utilisation des API augmente.
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/amazon_api_gateway).
+
+```python
+<!--IMPORTS:[{"imported": "AmazonAPIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.amazon_api_gateway.AmazonAPIGateway.html", "title": "AWS"}]-->
+from langchain_community.llms import AmazonAPIGateway
+```
+
+### Endpoint SageMaker
+
+>[Amazon SageMaker](https://aws.amazon.com/sagemaker/) est un système qui peut construire, former et déployer des modèles d'apprentissage automatique (ML) avec une infrastructure, des outils et des workflows entièrement gérés.
+
+Nous utilisons `SageMaker` pour héberger notre modèle et l'exposer en tant qu'`Endpoint SageMaker`.
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/sagemaker).
+
+```python
+from langchain_aws import SagemakerEndpoint
+```
+
+## Modèles d'intégration
+
+### Bedrock
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/bedrock).
+
+```python
+<!--IMPORTS:[{"imported": "BedrockEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.bedrock.BedrockEmbeddings.html", "title": "AWS"}]-->
+from langchain_community.embeddings import BedrockEmbeddings
+```
+
+### Endpoint SageMaker
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/sagemaker-endpoint).
+
+```python
+<!--IMPORTS:[{"imported": "SagemakerEndpointEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.sagemaker_endpoint.SagemakerEndpointEmbeddings.html", "title": "AWS"}, {"imported": "ContentHandlerBase", "source": "langchain_community.llms.sagemaker_endpoint", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.sagemaker_endpoint.ContentHandlerBase.html", "title": "AWS"}]-->
+from langchain_community.embeddings import SagemakerEndpointEmbeddings
+from langchain_community.llms.sagemaker_endpoint import ContentHandlerBase
+```
+
+## Chargeurs de documents
+
+### Répertoire et fichier AWS S3
+
+>[Amazon Simple Storage Service (Amazon S3)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-folders.html)
+> est un service de stockage d'objets.
+>[Répertoire AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-folders.html)
+>[Seaux AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingBucket.html)
+
+Voir un [exemple d'utilisation pour S3DirectoryLoader](/docs/integrations/document_loaders/aws_s3_directory).
+
+Voir un [exemple d'utilisation pour S3FileLoader](/docs/integrations/document_loaders/aws_s3_file).
+
+```python
+<!--IMPORTS:[{"imported": "S3DirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.s3_directory.S3DirectoryLoader.html", "title": "AWS"}, {"imported": "S3FileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.s3_file.S3FileLoader.html", "title": "AWS"}]-->
+from langchain_community.document_loaders import S3DirectoryLoader, S3FileLoader
+```
+
+### Amazon Textract
+
+>[Amazon Textract](https://docs.aws.amazon.com/managedservices/latest/userguide/textract.html) est un service d'apprentissage
+> automatique (ML) qui extrait automatiquement le texte, l'écriture manuscrite et les données des documents numérisés.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/amazon_textract).
+
+```python
+<!--IMPORTS:[{"imported": "AmazonTextractPDFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.pdf.AmazonTextractPDFLoader.html", "title": "AWS"}]-->
+from langchain_community.document_loaders import AmazonTextractPDFLoader
+```
+
+### Amazon Athena
+
+>[Amazon Athena](https://aws.amazon.com/athena/) est un service d'analyse interactif serverless, basé sur des frameworks open source, prenant en charge les formats de table et de fichiers ouverts.
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/athena).
+
+```python
+<!--IMPORTS:[{"imported": "AthenaLoader", "source": "langchain_community.document_loaders.athena", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.athena.AthenaLoader.html", "title": "AWS"}]-->
+from langchain_community.document_loaders.athena import AthenaLoader
+```
+
+## Magasins de vecteurs
+
+### Service Amazon OpenSearch
+
+> [Amazon OpenSearch Service](https://aws.amazon.com/opensearch-service/) effectue
+> des analyses de journaux interactives, la surveillance en temps réel des applications, la recherche sur les sites web et bien plus encore. `OpenSearch` est
+> une suite de recherche et d'analyse open source et distribuée dérivée d'`Elasticsearch`. `Amazon OpenSearch Service` propose les
+> dernières versions d'`OpenSearch`, le support de nombreuses versions d'`Elasticsearch`, ainsi que
+> des capacités de visualisation alimentées par `OpenSearch Dashboards` et `Kibana`.
+
+Nous devons installer plusieurs bibliothèques Python.
+
+```bash
+pip install boto3 requests requests-aws4auth
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/opensearch#using-aos-amazon-opensearch-service).
+
+```python
+<!--IMPORTS:[{"imported": "OpenSearchVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.opensearch_vector_search.OpenSearchVectorSearch.html", "title": "AWS"}]-->
+from langchain_community.vectorstores import OpenSearchVectorSearch
+```
+
+### Recherche vectorielle Amazon DocumentDB
+
+>[Amazon DocumentDB (avec compatibilité MongoDB)](https://docs.aws.amazon.com/documentdb/) facilite la configuration, l'exploitation et la mise à l'échelle des bases de données compatibles MongoDB dans le cloud.
+> Avec Amazon DocumentDB, vous pouvez exécuter le même code d'application et utiliser les mêmes pilotes et outils que vous utilisez avec MongoDB.
+> La recherche vectorielle pour Amazon DocumentDB combine la flexibilité et la riche capacité de requête d'une base de données de documents basée sur JSON avec la puissance de la recherche vectorielle.
+
+#### Installation et configuration
+
+Voir les [instructions de configuration détaillées](/docs/integrations/vectorstores/documentdb).
+
+Nous devons installer le package python `pymongo`.
+
+```bash
+pip install pymongo
+```
+
+#### Déployer DocumentDB sur AWS
+
+[Amazon DocumentDB (avec compatibilité MongoDB)](https://docs.aws.amazon.com/documentdb/) est un service de base de données fiable, rapide et entièrement géré. Amazon DocumentDB facilite la configuration, l'exploitation et la mise à l'échelle des bases de données compatibles MongoDB dans le cloud.
+
+AWS propose des services pour l'informatique, les bases de données, le stockage, l'analyse et d'autres fonctionnalités. Pour un aperçu de tous les services AWS, voir [Cloud Computing avec Amazon Web Services](https://aws.amazon.com/what-is-aws/).
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/documentdb).
+
+```python
+from langchain.vectorstores import DocumentDBVectorSearch
+```
+
+## Récupérateurs
+
+### Amazon Kendra
+
+> [Amazon Kendra](https://docs.aws.amazon.com/kendra/latest/dg/what-is-kendra.html) est un service de recherche intelligent
+> fourni par `Amazon Web Services` (`AWS`). Il utilise des algorithmes avancés de traitement du langage naturel (NLP) et d'apprentissage automatique pour permettre des capacités de recherche puissantes dans diverses sources de données au sein d'une organisation.
+> `Kendra` est conçu pour aider les utilisateurs à trouver rapidement et avec précision les informations dont ils ont besoin, améliorant ainsi la productivité et la prise de décision.
+
+> Avec `Kendra`, nous pouvons rechercher dans une large gamme de types de contenu, notamment des documents, des FAQ, des bases de connaissances, des manuels et des sites Web. Il prend en charge plusieurs langues et peut comprendre des requêtes complexes, des synonymes et des significations contextuelles pour fournir des résultats de recherche très pertinents.
+
+Nous devons installer la bibliothèque `langchain-aws`.
+
+```bash
+pip install langchain-aws
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/retrievers/amazon_kendra_retriever).
+
+```python
+from langchain_aws import AmazonKendraRetriever
+```
+
+### Amazon Bedrock (Bases de connaissances)
+
+> [Bases de connaissances pour Amazon Bedrock](https://aws.amazon.com/bedrock/knowledge-bases/) est une
+> offre d'`Amazon Web Services` (`AWS`) qui vous permet de construire rapidement des applications RAG en utilisant vos
+> données privées pour personnaliser la réponse du modèle de base.
+
+Nous devons installer la bibliothèque `langchain-aws`.
+
+```bash
+pip install langchain-aws
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/retrievers/bedrock).
+
+```python
+from langchain_aws import AmazonKnowledgeBasesRetriever
+```
+
+## Outils
+
+### AWS Lambda
+
+>[`Amazon AWS Lambda`](https://aws.amazon.com/pm/lambda/) est un service de calcul sans serveur fourni par
+> `Amazon Web Services` (`AWS`). Il aide les développeurs à créer et exécuter des applications et des services sans
+> provisionner ni gérer de serveurs. Cette architecture sans serveur vous permet de vous concentrer sur l'écriture et le
+> déploiement du code, tandis qu'AWS se charge automatiquement de la mise à l'échelle, du correctif et de la gestion de
+> l'infrastructure nécessaire à l'exécution de vos applications.
+
+Nous devons installer la bibliothèque python `boto3`.
+
+```bash
+pip install boto3
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/tools/awslambda).
+
+## Mémoire
+
+### AWS DynamoDB
+
+>[AWS DynamoDB](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/index.html)
+> est un service de base de données NoSQL entièrement géré qui offre des performances rapides et prévisibles avec une mise à l'échelle transparente.
+
+Nous devons configurer l'[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
+
+Nous devons installer la bibliothèque `boto3`.
+
+```bash
+pip install boto3
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/memory/aws_dynamodb).
+
+```python
+<!--IMPORTS:[{"imported": "DynamoDBChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.dynamodb.DynamoDBChatMessageHistory.html", "title": "AWS"}]-->
+from langchain.memory import DynamoDBChatMessageHistory
+```
+
+## Rappels
+
+### Suivi SageMaker
+
+>[Amazon SageMaker](https://aws.amazon.com/sagemaker/) est un service entièrement géré qui permet de créer, d'entraîner et de déployer rapidement et facilement des modèles d'apprentissage automatique (ML).
+
+>[Amazon SageMaker Experiments](https://docs.aws.amazon.com/sagemaker/latest/dg/experiments.html) est une fonctionnalité
+> d'`Amazon SageMaker` qui vous permet d'organiser, de suivre,
+> de comparer et d'évaluer les expériences ML et les versions de modèles.
+
+Nous devons installer plusieurs bibliothèques python.
+
+```bash
+pip install google-search-results sagemaker
+```
+
+Voir un [exemple d'utilisation](/docs/integrations/callbacks/sagemaker_tracking).
+
+```python
+<!--IMPORTS:[{"imported": "SageMakerCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.sagemaker_callback.SageMakerCallbackHandler.html", "title": "AWS"}]-->
+from langchain.callbacks import SageMakerCallbackHandler
+```
+
+## Chaînes
+
+### Chaîne de modération Amazon Comprehend
+
+>[Amazon Comprehend](https://aws.amazon.com/comprehend/) est un service de traitement du langage naturel (NLP) qui
+> utilise l'apprentissage automatique pour découvrir des informations et des connexions précieuses dans le texte.
+
+Nous devons installer les bibliothèques `boto3` et `nltk`.
+
+```bash
+pip install boto3 nltk
+```
+
+Voir un [exemple d'utilisation](/docs/guides/productionization/safety/amazon_comprehend_chain).
+
+```python
+<!--IMPORTS:[{"imported": "AmazonComprehendModerationChain", "source": "langchain_experimental.comprehend_moderation", "docs": "https://api.python.langchain.com/en/latest/comprehend_moderation/langchain_experimental.comprehend_moderation.amazon_comprehend_moderation.AmazonComprehendModerationChain.html", "title": "AWS"}]-->
+from langchain_experimental.comprehend_moderation import AmazonComprehendModerationChain
+```

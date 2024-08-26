@@ -1,0 +1,139 @@
+---
+sidebar_label: Guía de estilo
+translated: true
+---
+
+# Guía de estilo de documentación de LangChain
+
+## Introducción
+
+A medida que LangChain continúa creciendo, el área de superficie de la documentación requerida para cubrirlo también sigue creciendo.
+Esta página proporciona pautas para cualquiera que escriba documentación para LangChain, así como algunas de nuestras filosofías sobre
+organización y estructura.
+
+## Filosofía
+
+La documentación de LangChain aspira a seguir el marco de trabajo [Diataxis](https://diataxis.fr).
+Bajo este marco, toda la documentación se divide en una de las cuatro categorías:
+
+- **Tutoriales**: Lecciones que guían al lector de la mano a través de una serie de pasos conceptuales para completar un proyecto.
+  - Un ejemplo de esto es nuestra [guía de streaming LCEL](/docs/expression_language/streaming).
+  - Nuestras guías sobre [componentes personalizados](/docs/modules/model_io/chat/custom_chat_model) son otro ejemplo.
+- **Guías prácticas**: Guías que guían al lector a través de los pasos necesarios para resolver un problema del mundo real.
+  - Los ejemplos más claros de esto son nuestras páginas de inicio rápido [Casos de uso](/docs/use_cases/).
+- **Referencia**: Descripciones técnicas de la maquinaria y cómo operarla.
+  - Nuestra página de [interfaz Runnable](/docs/expression_language/interface) es un ejemplo de esto.
+  - Las [páginas de referencia de la API](https://api.python.langchain.com/) son otro ejemplo.
+- **Explicación**: Explicaciones que aclaran e iluminan un tema en particular.
+  - Las páginas [primitivos LCEL](/docs/expression_language/primitives/sequence) son un ejemplo de esto.
+
+Cada categoría sirve a un propósito distinto y requiere un enfoque específico para escribir y estructurar el contenido.
+
+## Taxonomía
+
+Teniendo en cuenta lo anterior, hemos clasificado la documentación de LangChain en categorías. Es útil pensar en estos términos
+al contribuir con nueva documentación:
+
+### Primeros pasos
+
+La sección [primeros pasos](/docs/get_started/introduction) incluye una introducción de alto nivel a LangChain, un inicio rápido que
+recorre las diversas características de LangChain y las instrucciones logísticas sobre la instalación y la configuración del proyecto.
+
+Contiene elementos de **Guías prácticas** y **Explicaciones**.
+
+### Casos de uso
+
+[Casos de uso](/docs/use_cases/) son guías que tienen como objetivo mostrar cómo usar LangChain para lograr una tarea específica (RAG, extracción de información, etc.).
+Los inicios rápidos deben ser buenos puntos de entrada para los desarrolladores de LangChain por primera vez que prefieren aprender obteniendo un prototipo práctico,
+luego desarmando las piezas retrospectivamente. Estos deben reflejar en lo que LangChain es bueno.
+
+Las páginas de inicio rápido aquí deben encajar en la categoría de **Guías prácticas**, con las otras páginas destinadas a ser **Explicaciones** de conceptos y estrategias más
+en profundidad que acompañan a los principales caminos felices.
+
+:::note
+Las siguientes secciones se enumeran aproximadamente en orden de mayor nivel de abstracción.
+:::
+
+### Lenguaje de expresión
+
+[Lenguaje de expresión de LangChain (LCEL)](/docs/expression_language/) es la forma fundamental en que se ajustan la mayoría de los componentes de LangChain, y esta sección está diseñada para enseñar
+a los desarrolladores cómo usarlo para construir efectivamente con los primitivos de LangChain.
+
+Esta sección debe contener **Tutoriales** que enseñen cómo transmitir y usar los primitivos LCEL para tareas más abstractas, **Explicaciones** de comportamientos específicos,
+y algunas **Referencias** sobre cómo usar diferentes métodos en la interfaz Runnable.
+
+### Componentes
+
+La sección [componentes](/docs/modules) cubre conceptos un nivel de abstracción más alto que LCEL.
+Las clases base abstractas como `BaseChatModel` y `BaseRetriever` deben cubrirse aquí, así como las implementaciones principales de estas clases base,
+como `ChatPromptTemplate` y `RecursiveCharacterTextSplitter`. Las guías de personalización también pertenecen aquí.
+
+Esta sección debe contener principalmente **Tutoriales** conceptuales, **Referencias** y **Explicaciones** de los componentes que cubren.
+
+:::note
+Como regla general, todo lo cubierto en las secciones `Lenguaje de expresión` y `Componentes` (con la excepción de la sección `Composición` de componentes) debe
+cubrir solo componentes que existen en `langchain_core`.
+:::
+
+### Integraciones
+
+Las [integraciones](/docs/integrations/platforms/) son implementaciones específicas de componentes. A menudo involucran API y servicios de terceros.
+Si este es el caso, como regla general, estos son mantenidos por el socio de terceros.
+
+Esta sección debe contener principalmente **Explicaciones** y **Referencias**, aunque el contenido real aquí es más flexible que otras secciones y más a
+discreción del proveedor de terceros.
+
+:::note
+Los conceptos cubiertos en `Integraciones` deben existir generalmente en `langchain_community` o en paquetes específicos de socios.
+:::
+
+### Guías y ecosistema
+
+Las secciones [Guías](/docs/guides) y [Ecosistema](/docs/langsmith/) deben contener guías que aborden problemas de nivel más alto que las secciones anteriores.
+Esto incluye, entre otros, consideraciones sobre la puesta en producción y los flujos de trabajo de desarrollo.
+
+Estos deben contener principalmente **Guías prácticas**, **Explicaciones** y **Tutoriales**.
+
+### Referencias de la API
+
+Referencias de la API de LangChain. Debe actuar como **Referencias** (como el nombre lo indica) con algo de contenido enfocado en **Explicación** también.
+
+## Muestra del recorrido del desarrollador
+
+Hemos configurado nuestra documentación para ayudar a un nuevo desarrollador de LangChain. Recorramos el camino previsto:
+
+- El desarrollador llega a https://python.langchain.com y lee la introducción y el diagrama.
+- Si solo tienen curiosidad, pueden ser atraídos por el [Inicio rápido](/docs/get_started/quickstart) para obtener un recorrido general de lo que contiene LangChain.
+- Si tienen una tarea específica que quieren realizar, serán atraídos por la sección Casos de uso. El caso de uso debe proporcionar un buen gancho concreto que muestre el valor que LangChain puede brindarles y ser un buen punto de entrada al marco de trabajo.
+- Luego pueden aprender más sobre los fundamentos de LangChain a través de las secciones de Lenguaje de expresión.
+- A continuación, pueden aprender sobre los diversos componentes e integraciones de LangChain.
+- Finalmente, pueden obtener conocimientos adicionales a través de las Guías.
+
+Esto es solo un ideal, por supuesto: las secciones inevitablemente harán referencia a conceptos de nivel más bajo o más alto que se documentan en otras secciones.
+
+## Pautas
+
+Aquí hay algunas otras pautas que debes tener en cuenta al escribir y organizar la documentación.
+
+### Enlazar a otras secciones
+
+Debido a que las secciones de la documentación no existen en un vacío, es importante enlazar a otras secciones siempre que sea posible
+para permitir que un desarrollador aprenda más sobre un tema desconocido en línea.
+
+¡Esto incluye enlaces a las referencias de la API, así como a las secciones conceptuales!
+
+### Concisión
+
+En general, adopte un enfoque de menos es más. Si ya existe una sección con una buena explicación de un concepto, debe enlazar a ella en lugar de
+volver a explicarlo, a menos que el concepto que está documentando presente alguna nueva arruga.
+
+Sea conciso, incluyendo en los ejemplos de código.
+
+### Estilo general
+
+- Utilice voz activa y tiempo presente siempre que sea posible.
+- Utilice ejemplos y fragmentos de código para ilustrar conceptos y usos.
+- Utilice los niveles de encabezado apropiados (`#`, `##`, `###`, etc.) para organizar el contenido jerárquicamente.
+- Utilice viñetas y listas numeradas para dividir la información en trozos fáciles de digerir.
+- Utilice tablas (especialmente para las secciones de **Referencia**) y diagramas a menudo para presentar la información de manera visual.
+- Incluya la tabla de contenido para las páginas de documentación más largas para ayudar a los lectores a navegar por el contenido, pero ocúltela para las páginas más cortas.

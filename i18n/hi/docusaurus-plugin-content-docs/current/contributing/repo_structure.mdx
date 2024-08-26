@@ -1,0 +1,54 @@
+---
+sidebar_position: 0.5
+translated: true
+---
+
+# भंडार संरचना
+
+यदि आप LangChain कोड या प्रलेखन में योगदान करने की योजना बना रहे हैं, तो भंडार की उच्च स्तरीय संरचना को समझना उपयोगी हो सकता है।
+
+LangChain को एक [मोनोरेप](https://en.wikipedia.org/wiki/Monorepo) के रूप में संगठित किया गया है जो कई पैकेज शामिल करता है।
+
+यह संरचना एक पेड़ के रूप में दृश्यमान है:
+
+```text
+.
+├── cookbook # Tutorials and examples
+├── docs # Contains content for the documentation here: https://python.langchain.com/
+├── libs
+│   ├── langchain # Main package
+│   │   ├── tests/unit_tests # Unit tests (present in each package not shown for brevity)
+│   │   ├── tests/integration_tests # Integration tests (present in each package not shown for brevity)
+│   ├── langchain-community # Third-party integrations
+│   ├── langchain-core # Base interfaces for key abstractions
+│   ├── langchain-experimental # Experimental components and chains
+│   ├── partners
+│       ├── langchain-partner-1
+│       ├── langchain-partner-2
+│       ├── ...
+│
+├── templates # A collection of easily deployable reference architectures for a wide variety of tasks.
+```
+
+रूट निर्देशिका में निम्नलिखित फ़ाइलें भी हैं:
+
+* `pyproject.toml`: दस्तावेज़ और लिंट दस्तावेज़, कुकबुक बनाने के लिए निर्भरताएं।
+* `Makefile`: बनाने, लिंट करने और दस्तावेज़ और कुकबुक के लिए शॉर्टकट वाली एक फ़ाइल।
+
+रूट निर्देशिका स्तर पर अन्य फ़ाइलें भी हैं, लेकिन उनकी उपस्थिति स्वयं स्पष्ट होनी चाहिए। आप इधर-उधर ब्राउज़ करने में स्वतंत्र हैं!
+
+## प्रलेखन
+
+`/docs` निर्देशिका में https://python.langchain.com/ पर दिखाए जाने वाले प्रलेखन और संबंधित API संदर्भ https://api.python.langchain.com/en/latest/langchain_api_reference.html के लिए सामग्री शामिल है।
+
+प्रलेखन में योगदान करने के लिए [प्रलेखन](/docs/contributing/documentation/style_guide) दिशानिर्देशों को देखें।
+
+## कोड
+
+`/libs` निर्देशिका में LangChain पैकेज के लिए कोड शामिल है।
+
+कोड में योगदान करने के बारे में अधिक जानने के लिए निम्नलिखित दिशानिर्देशों को देखें:
+
+- [कोड](./code.mdx) LangChain कोडबेस में कैसे विकसित करें।
+- [एकीकरण](./integrations.mdx) langchain-community या एक नया साझेदार पैकेज शुरू करने के लिए।
+- [परीक्षण](./testing.mdx) पैकेज के लिए परीक्षण कैसे लिखें।

@@ -1,0 +1,36 @@
+---
+translated: true
+---
+
+# PGVector
+
+Esta página cubre cómo usar el ecosistema [PGVector](https://github.com/pgvector/pgvector) de Postgres dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envoltorios específicos de PGVector.
+
+## Instalación
+
+- Instala el paquete de Python con `pip install pgvector`
+
+## Configuración
+
+1. El primer paso es crear una base de datos con la extensión `pgvector` instalada.
+
+    Sigue los pasos en [Pasos de instalación de PGVector](https://github.com/pgvector/pgvector#installation) para instalar la base de datos y la extensión. La imagen de Docker es la forma más fácil de comenzar.
+
+## Envoltorios
+
+### VectorStore
+
+Existe un envoltorio alrededor de las bases de datos de vectores de Postgres, lo que te permite usarla como un almacén de vectores,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+Para importar este almacén de vectores:
+
+```python
+<!--IMPORTS:[{"imported": "PGVector", "source": "langchain_community.vectorstores.pgvector", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.pgvector.PGVector.html", "title": "PGVector"}]-->
+from langchain_community.vectorstores.pgvector import PGVector
+```
+
+### Uso
+
+Para un recorrido más detallado del Envoltorio PGVector, consulta [este cuaderno](/docs/integrations/vectorstores/pgvector)

@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# Búsqueda de usuario (USearch)
+
+>[Búsqueda de usuario (USearch)](https://unum-cloud.github.io/usearch/) es un motor de búsqueda de vectores más pequeño y más rápido de un solo archivo.
+
+>`La funcionalidad base de USearch` es idéntica a `FAISS`, y la interfaz debería parecer
+> familiar si alguna vez has investigado la búsqueda de vecinos aproximados más cercanos.
+> `USearch` y `FAISS` ambos emplean el algoritmo `HNSW`, pero difieren significativamente
+> en sus principios de diseño. `USearch` es compacto y ampliamente compatible con FAISS sin
+> sacrificar el rendimiento, con un enfoque principal en las métricas definidas por el usuario y menos dependencias.
+
+## Instalación y configuración
+
+Necesitamos instalar el paquete de python `usearch`.
+
+```bash
+pip install usearch
+```
+
+## Almacén de vectores
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/usearch).
+
+```python
+<!--IMPORTS:[{"imported": "USearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.usearch.USearch.html", "title": "USearch"}]-->
+from langchain_community.vectorstores import USearch
+```

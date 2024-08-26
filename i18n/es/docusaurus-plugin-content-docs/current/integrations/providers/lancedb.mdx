@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# LanceDB
+
+Esta página cubre cómo usar [LanceDB](https://github.com/lancedb/lancedb) dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envoltorios LanceDB específicos.
+
+## Instalación y configuración
+
+- Instala el SDK de Python con `pip install lancedb`
+
+## Envoltorios
+
+### VectorStore
+
+Existe un envoltorio alrededor de las bases de datos LanceDB, lo que le permite usarla como un almacén de vectores,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+Para importar este almacén de vectores:
+
+```python
+<!--IMPORTS:[{"imported": "LanceDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lancedb.LanceDB.html", "title": "LanceDB"}]-->
+from langchain_community.vectorstores import LanceDB
+```
+
+Para una guía más detallada del envoltorio LanceDB, consulta [este cuaderno](/docs/integrations/vectorstores/lancedb)

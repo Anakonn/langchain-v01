@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# सोना
+
+>[सोना](https://golden.com) गोल्डन नॉलेज ग्राफ का उपयोग करके प्राकृतिक भाषा एपीआई प्रदान करता है जैसे कि: `OpenAI से उत्पाद`, `सीरीज ए फंडिंग के साथ जनरेटिव एआई कंपनियां`, और `निवेश करने वाले रैपर्स` जैसे प्रश्नों का उपयोग करके संबंधित इकाइयों के बारे में संरचित डेटा प्राप्त किया जा सकता है।
+>
+>`golden-query` langchain टूल [गोल्डन क्वेरी एपीआई](https://docs.golden.com/reference/query-api) पर एक रैपर है जो इन परिणामों तक प्रोग्रामेटिक पहुंच प्रदान करता है।
+>[गोल्डन क्वेरी एपीआई दस्तावेज़](https://docs.golden.com/reference/query-api) के लिए अधिक जानकारी देखें।
+
+## इंस्टॉलेशन और सेटअप
+
+- [गोल्डन एपीआई दस्तावेज़](https://docs.golden.com/) पर जाकर गोल्डन एपीआई के बारे में अवलोकन प्राप्त करें।
+- [गोल्डन एपीआई सेटिंग्स](https://golden.com/settings/api) पृष्ठ से अपना एपीआई कुंजी प्राप्त करें।
+- अपना एपीआई कुंजी GOLDEN_API_KEY env متغير में सहेजें
+
+## रैपर्स
+
+### उपयोगिता
+
+एक GoldenQueryAPIWrapper उपयोगिता मौजूद है जो इस एपीआई को रैप करता है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "GoldenQueryAPIWrapper", "source": "langchain_community.utilities.golden_query", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.golden_query.GoldenQueryAPIWrapper.html", "title": "Golden"}]-->
+from langchain_community.utilities.golden_query import GoldenQueryAPIWrapper
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/tools/golden_query) देखें।
+
+### टूल
+
+आप इस रैपर को आसानी से एक टूल के रूप में भी लोड कर सकते हैं (एजेंट के साथ उपयोग करने के लिए)।
+आप इसे निम्नानुसार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Golden"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["golden-query"])
+```
+
+टूल्स के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

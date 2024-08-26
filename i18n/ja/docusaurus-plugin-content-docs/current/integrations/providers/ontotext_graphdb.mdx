@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Ontotext GraphDB
+
+>[Ontotext GraphDB](https://graphdb.ontotext.com/)は、RDFおよびSPARQLに準拠したグラフデータベースおよび知識発見ツールです。
+
+## 依存関係
+
+[rdflib](https://github.com/RDFLib/rdflib)パッケージをインストールします。
+
+```bash
+pip install rdflib==7.0.0
+```
+
+## Graph QA Chain
+
+チャットモデルにGraphDBデータベースを接続して、データに関する洞察を得ます。
+
+ノートブックの例は[こちら](/docs/integrations/graphs/ontotext)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "OntotextGraphDBGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph.html", "title": "Ontotext GraphDB"}, {"imported": "OntotextGraphDBQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.ontotext_graphdb.OntotextGraphDBQAChain.html", "title": "Ontotext GraphDB"}]-->
+from langchain_community.graphs import OntotextGraphDBGraph
+from langchain.chains import OntotextGraphDBQAChain
+```

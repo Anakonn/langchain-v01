@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# GitHub
+
+>[GitHub](https://github.com/) एक डेवलपर प्लेटफॉर्म है जो डेवलपर्स को अपना कोड बनाने, संग्रहित करने, प्रबंधित करने और साझा करने की अनुमति देता है। यह `Git` सॉफ़्टवेयर का उपयोग करता है, जो Git के वितरित संस्करण नियंत्रण के साथ-साथ एक्सेस नियंत्रण, बग ट्रैकिंग, सॉफ़्टवेयर सुविधा अनुरोध, कार्य प्रबंधन, निरंतर एकीकरण और हर परियोजना के लिए विकि प्रदान करता है।
+
+## स्थापना और सेटअप
+
+GitHub API का उपयोग करने के लिए, आपको एक [व्यक्तिगत एक्सेस टोकन](https://github.com/settings/tokens) की आवश्यकता है।
+
+## दस्तावेज़ लोडर
+
+GitHub के लिए दो दस्तावेज़ लोडर उपलब्ध हैं।
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/github) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "GitHubIssuesLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.github.GitHubIssuesLoader.html", "title": "GitHub"}, {"imported": "GithubFileLoader", "source": "langchain.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.github.GithubFileLoader.html", "title": "GitHub"}]-->
+from langchain_community.document_loaders import GitHubIssuesLoader
+from langchain.document_loaders import GithubFileLoader
+```

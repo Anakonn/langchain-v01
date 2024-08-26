@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Llama.cpp
+
+이 페이지에서는 LangChain 내에서 [llama.cpp](https://github.com/ggerganov/llama.cpp)를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 특정 Llama-cpp 래퍼에 대한 참조로 구성됩니다.
+
+## 설치 및 설정
+
+- `pip install llama-cpp-python`으로 Python 패키지를 설치합니다.
+- [지원되는 모델](https://github.com/ggerganov/llama.cpp#description) 중 하나를 다운로드하고 [instructions](https://github.com/ggerganov/llama.cpp)에 따라 llama.cpp 형식으로 변환합니다.
+
+## 래퍼
+
+### LLM
+
+LlamaCpp LLM 래퍼가 존재하며, 다음과 같이 액세스할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCpp", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.llamacpp.LlamaCpp.html", "title": "Llama.cpp"}]-->
+from langchain_community.llms import LlamaCpp
+```
+
+이에 대한 자세한 내용은 [이 노트북](/docs/integrations/llms/llamacpp)을 참조하세요.
+
+### Embeddings
+
+LlamaCpp Embeddings 래퍼가 존재하며, 다음과 같이 액세스할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCppEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.llamacpp.LlamaCppEmbeddings.html", "title": "Llama.cpp"}]-->
+from langchain_community.embeddings import LlamaCppEmbeddings
+```
+
+이에 대한 자세한 내용은 [이 노트북](/docs/integrations/text_embedding/llamacpp)을 참조하세요.

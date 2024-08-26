@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# ArcGIS
+
+>[ArcGIS](https://www.esri.com/en-us/arcgis/about-arcgis/overview)は、[Esri](https://www.esri.com/)が開発・管理しているクライアント、サーバー、オンラインの地理情報システムソフトウェアのファミリーです。
+
+>`ArcGISLoader`は`arcgis`パッケージを使用します。
+>`arcgis`は、ベクトルおよびラスター解析、ジオコーディング、地図作成、ルーティングおよび方向性のためのPythonライブラリです。
+>ユーザー、グループ、情報アイテムを管理、整理、管理します。
+>Esriや他の信頼できるソースからの使い勝手の良い地図やキュレーションされた地理データにアクセスでき、独自のデータとも連携できます。
+
+## インストールとセットアップ
+
+`arcgis`パッケージをインストールする必要があります。
+
+```bash
+pip install -U arcgis
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/arcgis)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ArcGISLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arcgis_loader.ArcGISLoader.html", "title": "ArcGIS"}]-->
+from langchain_community.document_loaders import ArcGISLoader
+```

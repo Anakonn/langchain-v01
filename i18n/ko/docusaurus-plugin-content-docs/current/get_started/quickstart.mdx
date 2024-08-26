@@ -1,0 +1,719 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# 빠른 시작
+
+이 빠른 시작 가이드에서는 다음을 설명합니다:
+
+- LangChain, LangSmith 및 LangServe 설정
+- LangChain의 가장 기본적이고 일반적인 구성 요소 사용: 프롬프트 템플릿, 모델 및 출력 파서
+- LangChain Expression Language 사용, 이는 LangChain의 기반이 되는 프로토콜로 구성 요소 체이닝을 용이하게 합니다.
+- LangChain으로 간단한 애플리케이션 구축
+- LangSmith로 애플리케이션 추적
+- LangServe로 애플리케이션 제공
+
+다룰 내용이 많습니다! 시작해봅시다.
+
+## 설정
+
+### 주피터 노트북
+
+이 가이드(및 문서의 대부분의 다른 가이드)는 [주피터 노트북](https://jupyter.org/)을 사용하며 독자도 이를 사용한다고 가정합니다. 주피터 노트북은 LLM 시스템 작업을 배우기에 매우 적합합니다. 종종 예상치 못한 출력이나 API 다운 등으로 인해 문제가 발생할 수 있기 때문에 인터랙티브 환경에서 가이드를 진행하는 것이 이를 이해하는 좋은 방법입니다.
+
+주피터 노트북을 꼭 사용해야 하는 것은 아니지만 권장됩니다. 설치 방법은 [여기](https://jupyter.org/install)에서 확인할 수 있습니다.
+
+### 설치
+
+LangChain을 설치하려면 다음 명령을 실행하세요:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+<Tabs>
+  <TabItem value='pip' label='Pip' default>
+    <CodeBlock language='bash'>pip install langchain</CodeBlock>
+  </TabItem>
+  <TabItem value='conda' label='Conda'>
+    <CodeBlock language='bash'>conda install langchain -c conda-forge</CodeBlock>
+  </TabItem>
+</Tabs>
+
+자세한 내용은 [설치 가이드](/docs/get_started/installation)를 참조하세요.
+
+### LangSmith
+
+LangChain을 사용하여 만든 많은 애플리케이션에는 여러 단계와 여러 번의 LLM 호출이 포함됩니다.
+이러한 애플리케이션이 점점 더 복잡해지면 체인 또는 에이전트 내부에서 정확히 무슨 일이 일어나고 있는지 검사할 수 있는 능력이 매우 중요해집니다.
+이를 가장 잘 수행하는 방법은 [LangSmith](https://smith.langchain.com)를 사용하는 것입니다.
+
+LangSmith가 필수는 아니지만 유용합니다.
+사용하고자 한다면 위 링크에서 회원가입 후 환경 변수를 설정하여 추적을 시작하세요:
+
+```shell
+export LANGCHAIN_TRACING_V2="true"
+export LANGCHAIN_API_KEY="..."
+```
+
+## LangChain으로 애플리케이션 구축
+
+LangChain은 LLM과 외부 데이터 및 계산 소스를 연결하는 애플리케이션을 구축할 수 있게 해줍니다.
+이 빠른 시작 가이드에서는 몇 가지 다른 방법을 설명합니다.
+먼저, 프롬프트 템플릿의 정보만을 사용하여 응답하는 간단한 LLM 체인을 만듭니다.
+그 다음, 별도의 데이터베이스에서 데이터를 가져와 프롬프트 템플릿에 전달하는 검색 체인을 구축합니다.
+그 후, 채팅 기록을 추가하여 대화형 검색 체인을 만듭니다. 이를 통해 LLM과 대화 형식으로 상호작용하고 이전 질문을 기억할 수 있습니다.
+마지막으로, 데이터를 가져올 필요가 있는지 여부를 결정하는 LLM을 사용하는 에이전트를 구축합니다.
+이들 모두를 높은 수준에서 다루겠지만, 많은 세부 사항이 있습니다!
+관련 문서로 링크를 연결할 것입니다.
+
+## LLM 체인
+
+API를 통해 사용할 수 있는 모델(OpenAI 등)과 Ollama와 같은 통합을 사용하여 로컬 오픈 소스 모델을 사용하는 방법을 보여드리겠습니다.
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+
+먼저 LangChain x OpenAI 통합 패키지를 가져와야 합니다.
+
+```shell
+pip install langchain-openai
+```
+
+API에 액세스하려면 API 키가 필요하며, 계정을 생성하고 [여기](https://platform.openai.com/account/api-keys)에서 키를 얻을 수 있습니다. 키를 얻은 후 환경 변수로 설정하세요:
+
+```shell
+export OPENAI_API_KEY="..."
+```
+
+그런 다음 모델을 초기화합니다:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI()
+```
+
+환경 변수를 설정하지 않으려면 OpenAI LLM 클래스를 초기화할 때 `api_key`라는 명명된 매개변수로 키를 직접 전달할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="local" label="로컬 (Ollama 사용)">
+
+[Ollama](https://ollama.ai/)는 Llama 2와 같은 오픈 소스 대형 언어 모델을 로컬에서 실행할 수 있게 해줍니다.
+
+먼저 [이 지침](https://github.com/jmorganca/ollama)에 따라 로컬 Ollama 인스턴스를 설정하고 실행하세요:
+
+- [다운로드](https://ollama.ai/download)
+- `ollama pull llama2`를 통해 모델 가져오기
+
+그런 다음 Ollama 서버가 실행 중인지 확인하세요. 그런 다음 다음을 수행할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Quickstart"}]-->
+from langchain_community.llms import Ollama
+llm = Ollama(model="llama2")
+```
+
+  </TabItem>
+  <TabItem value="anthropic" label="Anthropic">
+
+먼저 LangChain x Anthropic 패키지를 가져와야 합니다.
+
+```shell
+pip install langchain-anthropic
+```
+
+API에 액세스하려면 API 키가 필요하며, 계정을 생성하고 [여기](https://claude.ai/login)에서 키를 얻을 수 있습니다. 키를 얻은 후 환경 변수로 설정하세요:
+
+```shell
+export ANTHROPIC_API_KEY="..."
+```
+
+그런 다음 모델을 초기화합니다:
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnthropic", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html", "title": "Quickstart"}]-->
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024)
+```
+
+환경 변수를 설정하지 않으려면 Anthropic 채팅 모델 클래스를 초기화할 때 `api_key`라는 명명된 매개변수로 키를 직접 전달할 수 있습니다:
+
+```python
+llm = ChatAnthropic(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+먼저 Cohere SDK 패키지를 가져와야 합니다.
+
+```shell
+pip install langchain-cohere
+```
+
+API에 액세스하려면 API 키가 필요하며, 계정을 생성하고 [여기](https://dashboard.cohere.com/api-keys)에서 키를 얻을 수 있습니다. 키를 얻은 후 환경 변수로 설정하세요:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+그런 다음 모델을 초기화합니다:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+llm = ChatCohere()
+```
+
+환경 변수를 설정하지 않으려면 Cohere LLM 클래스를 초기화할 때 `cohere_api_key`라는 명명된 매개변수로 키를 직접 전달할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+llm = ChatCohere(cohere_api_key="...")
+```
+
+  </TabItem>
+</Tabs>
+
+선택한 LLM을 설치하고 초기화한 후에는 이를 사용해 볼 수 있습니다!
+LangSmith가 무엇인지 물어보겠습니다. 이는 학습 데이터에 없던 내용이므로 좋은 응답을 기대하기 어렵습니다.
+
+```python
+llm.invoke("how can langsmith help with testing?")
+```
+
+프롬프트 템플릿을 사용하여 응답을 유도할 수도 있습니다.
+프롬프트 템플릿은 원시 사용자 입력을 LLM에 더 나은 입력으로 변환합니다.
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts import ChatPromptTemplate
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "당신은 세계 최고 수준의 기술 문서 작성자입니다."),
+    ("user", "{input}")
+])
+```
+
+이제 이를 간단한 LLM 체인으로 결합할 수 있습니다:
+
+```python
+chain = prompt | llm
+```
+
+이를 호출하여 같은 질문을 할 수 있습니다. 여전히 답을 모를 것이지만, 기술 문서 작성자의 톤으로 응답할 것입니다!
+
+```python
+chain.invoke({"input": "how can langsmith help with testing?"})
+```
+
+ChatModel의 출력(따라서 이 체인의 출력)도 메시지입니다. 그러나 문자열로 작업하는 것이 훨씬 더 편리합니다. 채팅 메시지를 문자열로 변환하는 간단한 출력 파서를 추가해 보겠습니다.
+
+```python
+<!--IMPORTS:[{"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Quickstart"}]-->
+from langchain_core.output_parsers import StrOutputParser
+
+output_parser = StrOutputParser()
+```
+
+이를 이전 체인에 추가할 수 있습니다:
+
+```python
+chain = prompt | llm | output_parser
+```
+
+이제 이를 호출하여 같은 질문을 할 수 있습니다. 이제 응답은 문자열(채팅 메시지가 아닌)이 될 것입니다.
+
+```python
+chain.invoke({"input": "how can langsmith help with testing?"})
+```
+
+### 더 깊이 들어가기
+
+우리는 이제 기본적인 LLM 체인을 설정했습니다. 프롬프트, 모델 및 출력 파서의 기본만 다루었으므로, 여기 언급된 모든 것에 대한 더 깊은 내용은 [이 문서 섹션](/docs/modules/model_io)을 참조하세요.
+
+## 검색 체인
+
+원래 질문("Langsmith가 테스트에 어떻게 도움이 될 수 있나요?")에 제대로 답하려면 LLM에 추가 컨텍스트를 제공해야 합니다.
+이를 검색을 통해 할 수 있습니다.
+검색은 **너무 많은 데이터**를 LLM에 직접 전달할 수 없을 때 유용합니다.
+이 경우 검색기를 사용하여 가장 관련성 높은 항목만 가져와 전달할 수 있습니다.
+
+이 과정에서 우리는 *검색기*에서 관련 문서를 검색하고 이를 프롬프트와 함께 전달할 것입니다.
+검색기는 SQL 테이블, 인터넷 등 무엇이든 지원할 수 있지만, 여기서는 벡터 저장소를 채워 검색기로 사용할 것입니다. 벡터 저장소에 대한 자세한 내용은 [이 문서](/docs/modules/data_connection/vectorstores)를 참조하세요.
+
+먼저, 색인화할 데이터를 로드해야 합니다. 이를 위해 WebBaseLoader를 사용할 것입니다. 이는 [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) 설치가 필요합니다:
+
+```shell
+pip install beautifulsoup4
+```
+
+그 후 WebBaseLoader를 가져와 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "WebBaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html", "title": "Quickstart"}]-->
+from langchain_community.document_loaders import WebBaseLoader
+loader = WebBaseLoader("https://docs.smith.langchain.com/user_guide")
+
+docs = loader.load()
+```
+
+다음으로, 이를 벡터 저장소에 색인화해야 합니다. 이를 위해 몇 가지 구성 요소, 즉 [임베딩 모델](/docs/modules/data_connection/text_embedding)과 [벡터 저장소](/docs/modules/data_connection/vectorstores)가 필요합니다.
+
+임베딩 모델의 경우, 다시 API를 통해 접근하거나 로컬 모델을 실행하는 예를 제공합니다.
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI (API)" default>
+  
+`langchain_openai` 패키지를 설치하고 적절한 환경 변수를 설정했는지 확인하세요(이들은 LLM에 필요한 것과 동일합니다).
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings()
+```
+
+</TabItem>
+<TabItem value="local" label="로컬 (Ollama 사용)">
+
+Ollama가 실행 중인지 확인하세요(LLM과 동일한 설정).
+
+```python
+<!--IMPORTS:[{"imported": "OllamaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.ollama.OllamaEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_community.embeddings import OllamaEmbeddings
+
+embeddings = OllamaEmbeddings()
+```
+
+  </TabItem>
+<TabItem value="cohere" label="Cohere (API)" default>
+
+`cohere` 패키지를 설치하고 적절한 환경 변수를 설정했는지 확인하세요(이들은 LLM에 필요한 것과 동일합니다).
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_cohere.embeddings import CohereEmbeddings
+
+embeddings = CohereEmbeddings()
+```
+
+</TabItem>
+</Tabs>
+
+이제 이 임베딩 모델을 사용하여 문서를 벡터 저장소에 넣을 수 있습니다.
+단순함을 위해 로컬 벡터 저장소인 [FAISS](/docs/integrations/vectorstores/faiss)를 사용할 것입니다.
+
+먼저 필요한 패키지를 설치해야 합니다:
+
+```shell
+pip install faiss-cpu
+```
+
+그런 다음 색인을 생성할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Quickstart"}, {"imported": "RecursiveCharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html", "title": "Quickstart"}]-->
+from langchain_community.vectorstores import FAISS
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+
+text_splitter = RecursiveCharacterTextSplitter()
+documents = text_splitter.split_documents(docs)
+vector = FAISS.from_documents(documents, embeddings)
+```
+
+이 데이터를 벡터 저장소에 색인화했으므로 검색 체인을 생성할 것입니다.
+이 체인은 들어오는 질문을 받아 관련 문서를 검색한 다음, 원래 질문과 함께 해당 문서를 LLM에 전달하여 질문에 대한 답변을 생성합니다.
+
+먼저, 질문과 검색된 문서를 받아 답변을 생성하는 체인을 설정해 보겠습니다.
+
+```python
+<!--IMPORTS:[{"imported": "create_stuff_documents_chain", "source": "langchain.chains.combine_documents", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.combine_documents.stuff.create_stuff_documents_chain.html", "title": "Quickstart"}]-->
+from langchain.chains.combine_documents import create_stuff_documents_chain
+
+prompt = ChatPromptTemplate.from_template("""제공된 컨텍스트를 기반으로 다음 질문에 답변하세요:
+
+<context>
+{context}
+</context>
+
+질문: {input}""")
+
+document_chain = create_stuff_documents_chain(llm, prompt)
+```
+
+원한다면 문서를 직접 전달하여 이를 실행할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "Document", "source": "langchain_core.documents", "docs": "https://api.python.langchain.com/en/latest/documents/langchain_core.documents.base.Document.html", "title": "Quickstart"}]-->
+from langchain_core.documents import Document
+
+document_chain.invoke({
+    "input": "how can langsmith help with testing?",
+    "context": [Document(page_content="langsmith can let you visualize test results")]
+})
+```
+
+그러나, 먼저 설정한 검색기에서 문서를 가져오기를 원합니다.
+이렇게 하면 검색기를 사용하여 특정 질문에 가장 관련성 높은 문서를 동적으로 선택하고 이를 전달할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "create_retrieval_chain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.retrieval.create_retrieval_chain.html", "title": "Quickstart"}]-->
+from langchain.chains import create_retrieval_chain
+
+retriever = vector.as_retriever()
+retrieval_chain = create_retrieval_chain(retriever, document_chain)
+```
+
+이제 이 체인을 호출할 수 있습니다. 이는 딕셔너리를 반환하며, LLM의 응답은 `answer` 키에 있습니다.
+
+```python
+response = retrieval_chain.invoke({"input": "how can langsmith help with testing?"})
+print(response["answer"])
+
+# LangSmith는 테스트 결과를 시각화할 수 있는 여러 기능을 제공합니다:...
+
+```
+
+이 답변은 훨씬 더 정확할 것입니다!
+
+### 더 깊이 들어가기
+
+우리는 이제 기본적인 검색 체인을 설정했습니다. 검색의 기본만 다루었으므로, 여기 언급된 모든 것에 대한 더 깊은 내용은 [이 문서 섹션](/docs/modules/data_connection)을 참조하세요.
+
+## 대화 검색 체인
+
+지금까지 만든 체인은 단일 질문에만 답할 수 있습니다. 사람들이 많이 만드는 LLM 애플리케이션 유형 중 하나는 채팅 봇입니다. 그렇다면 이 체인을 어떻게 후속 질문에 답할 수 있는 체인으로 바꿀 수 있을까요?
+
+우리는 `create_retrieval_chain` 함수를 계속 사용할 수 있지만, 두 가지를 변경해야 합니다:
+
+1. 검색 방법은 이제 가장 최근 입력만 처리하는 것이 아니라 전체 기록을 고려해야 합니다.
+2. 최종 LLM 체인도 마찬가지로 전체 기록을 고려해야 합니다.
+
+**검색 업데이트**
+
+검색을 업데이트하기 위해 새로운 체인을 만들 것입니다. 이 체인은 가장 최근 입력(`input`)과 대화 기록(`chat_history`)을 받아서 LLM을 사용하여 검색 쿼리를 생성합니다.
+
+```python
+<!--IMPORTS:[{"imported": "create_history_aware_retriever", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.history_aware_retriever.create_history_aware_retriever.html", "title": "Quickstart"}, {"imported": "MessagesPlaceholder", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.MessagesPlaceholder.html", "title": "Quickstart"}]-->
+from langchain.chains import create_history_aware_retriever
+from langchain_core.prompts import MessagesPlaceholder
+
+# 먼저 LLM에 전달할 프롬프트가 필요합니다.
+
+prompt = ChatPromptTemplate.from_messages([
+    MessagesPlaceholder(variable_name="chat_history"),
+    ("user", "{input}"),
+    ("user", "위 대화를 고려하여, 대화와 관련된 정보를 검색하기 위한 쿼리를 생성하세요")
+])
+retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
+```
+
+사용자가 후속 질문을 하는 인스턴스를 전달하여 이를 테스트할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Quickstart"}, {"imported": "AIMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.ai.AIMessage.html", "title": "Quickstart"}]-->
+from langchain_core.messages import HumanMessage, AIMessage
+
+chat_history = [HumanMessage(content="LangSmith가 내 LLM 애플리케이션을 테스트하는 데 도움이 될 수 있나요?"), AIMessage(content="네!")]
+retriever_chain.invoke({
+    "chat_history": chat_history,
+    "input": "어떻게 도울 수 있는지 알려주세요"
+})
+```
+
+이렇게 하면 LangSmith에서 테스트에 대한 문서를 반환하는 것을 볼 수 있습니다. 이는 LLM이 대화 기록과 후속 질문을 결합하여 새로운 쿼리를 생성했기 때문입니다.
+
+이 새로운 검색기를 얻었으므로, 이 검색된 문서를 고려하여 대화를 계속하기 위한 새로운 체인을 만들 수 있습니다.
+
+```python
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "아래 컨텍스트를 기반으로 사용자의 질문에 답변하세요:\n\n{context}"),
+    MessagesPlaceholder(variable_name="chat_history"),
+    ("user", "{input}"),
+])
+document_chain = create_stuff_documents_chain(llm, prompt)
+
+retrieval_chain = create_retrieval_chain(retriever_chain, document_chain)
+```
+
+이제 끝에서 끝까지 테스트할 수 있습니다:
+
+```python
+chat_history = [HumanMessage(content="LangSmith가 내 LLM 애플리케이션을 테스트하는 데 도움이 될 수 있나요?"), AIMessage(content="네!")]
+retrieval_chain.invoke({
+    "chat_history": chat_history,
+    "input": "어떻게 도울 수 있는지 알려주세요"
+})
+```
+
+이렇게 하면 일관된 답변이 제공됩니다. 우리는 성공적으로 검색 체인을 채팅 봇으로 변환했습니다!
+
+## 에이전트
+
+지금까지 각 단계가 미리 정해진 체인의 예를 만들었습니다.
+마지막으로 만들 것은 에이전트입니다. 에이전트는 LLM이 어떤 단계를 수행할지 결정합니다.
+
+**참고: 이 예제에서는 로컬 모델이 아직 신뢰할 수 없기 때문에 OpenAI 모델을 사용하여 에이전트를 만드는 방법만을 보여줍니다.**
+
+에이전트를 구축할 때 가장 먼저 해야 할 일 중 하나는 액세스할 도구를 결정하는 것입니다.
+이 예제에서는 에이전트에게 두 가지 도구에 대한 액세스를 부여합니다:
+
+1. 방금 만든 검색기. 이를 통해 LangSmith에 대한 질문을 쉽게 답할 수 있습니다.
+2. 검색 도구. 이를 통해 최신 정보가 필요한 질문을 쉽게 답할 수 있습니다.
+
+먼저, 방금 만든 검색기에 대한 도구를 설정해 보겠습니다:
+
+```python
+<!--IMPORTS:[{"imported": "create_retriever_tool", "source": "langchain.tools.retriever", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.create_retriever_tool.html", "title": "Quickstart"}]-->
+from langchain.tools.retriever import create_retriever_tool
+
+retriever_tool = create_retriever_tool(
+    retriever,
+    "langsmith_search",
+    "LangSmith에 대한 정보를 검색합니다. LangSmith에 대한 질문이 있으면 이 도구를 사용해야 합니다!",
+)
+```
+
+우리가 사용할 검색 도구는 [Tavily](/docs/integrations/retrievers/tavily)입니다. 이 도구를 사용하려면 API 키가 필요합니다(관대한 무료 티어를 제공합니다). 그들의 플랫폼에서 생성한 후 환경 변수로 설정해야 합니다:
+
+```shell
+export TAVILY_API_KEY=...
+```
+
+API 키를 설정하고 싶지 않다면 이 도구 생성을 건너뛸 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "TavilySearchResults", "source": "langchain_community.tools.tavily_search", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.tavily_search.tool.TavilySearchResults.html", "title": "Quickstart"}]-->
+from langchain_community.tools.tavily_search import TavilySearchResults
+
+search = TavilySearchResults()
+```
+
+이제 사용할 도구 목록을 만들 수 있습니다:
+
+```python
+tools = [retriever_tool, search]
+```
+
+이제 도구가 준비되었으므로 이를 사용할 에이전트를 만들 수 있습니다. 빠르게 진행하겠습니다. 정확히 어떤 일이 일어나는지 자세히 알아보려면 [에이전트 시작하기 문서](/docs/modules/agents)를 확인하세요.
+
+먼저 langchainhub을 설치하세요:
+
+```bash
+pip install langchainhub
+```
+
+langchain-openai 패키지를 설치하세요:
+OpenAI와 상호작용하려면 OpenAI SDK와 연결하는 langchain-openai가 필요합니다. [https://github.com/langchain-ai/langchain/tree/master/libs/partners/openai]
+
+```bash
+pip install langchain-openai
+```
+
+이제 미리 정의된 프롬프트를 가져와 사용할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}, {"imported": "create_openai_functions_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html", "title": "Quickstart"}, {"imported": "AgentExecutor", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+from langchain import hub
+from langchain.agents import create_openai_functions_agent
+from langchain.agents import AgentExecutor
+
+# 사용할 프롬프트를 가져옵니다 - 수정할 수 있습니다!
+
+prompt = hub.pull("hwchase17/openai-functions-agent")
+
+# OPENAI_API_KEY 환경 변수를 설정하거나 `api_key` 인수로 전달해야 합니다.
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+agent = create_openai_functions_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+```
+
+이제 에이전트를 호출하고 어떻게 응답하는지 볼 수 있습니다! LangSmith에 대한 질문을 해보겠습니다:
+
+```python
+agent_executor.invoke({"input": "LangSmith가 테스트에 어떻게 도움이 될 수 있나요?"})
+```
+
+날씨에 대해 물어볼 수 있습니다:
+
+```python
+agent_executor.invoke({"input": "샌프란시스코의 날씨는 어때요?"})
+```
+
+대화를 할 수 있습니다:
+
+```python
+chat_history = [HumanMessage(content="LangSmith가 내 LLM 애플리케이션을 테스트하는 데 도움이 될 수 있나요?"), AIMessage(content="네!")]
+agent_executor.invoke({
+    "chat_history": chat_history,
+    "input": "어떻게 도울 수 있는지 알려주세요"
+})
+```
+
+### 더 깊이 들어가기
+
+우리는 이제 기본적인 에이전트를 설정했습니다. 에이전트의 기본만 다루었으므로, 여기 언급된 모든 것에 대한 더 깊은 내용은 [이 문서 섹션](/docs/modules/agents)을 참조하세요.
+
+## LangServe를 사용한 배포
+
+이제 애플리케이션을 만들었으므로 이를 배포해야 합니다. 여기서 LangServe가 필요합니다.
+LangServe는 개발자가 LangChain 체인을 REST API로 배포하는 데 도움을 줍니다. LangChain을 사용하기 위해 LangServe를 사용할 필요는 없지만, 이 가이드에서는 LangServe로 애플리케이션을 배포하는 방법을 보여줍니다.
+
+가이드의 첫 번째 부분은 주피터 노트북에서 실행되도록 설계되었지만, 이제부터는 이를 벗어나 Python 파일을 만들고 명령줄에서 상호작용할 것입니다.
+
+설치는 다음과 같이 합니다:
+
+```bash
+pip install "langserve[all]"
+```
+
+### 서버
+
+애플리케이션을 위한 서버를 만들기 위해 `serve.py` 파일을 만들 것입니다. 이는 애플리케이션을 제공하기 위한 논리를 포함합니다. 세 가지로 구성됩니다:
+
+1. 위에서 만든 체인의 정의
+2. FastAPI 앱
+3. 체인을 제공할 경로 정의, `langserve.add_routes`로 수행됩니다.
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Quickstart"}, {"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}, {"imported": "WebBaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html", "title": "Quickstart"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Quickstart"}, {"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Quickstart"}, {"imported": "RecursiveCharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html", "title": "Quickstart"}, {"imported": "create_retriever_tool", "source": "langchain.tools.retriever", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.create_retriever_tool.html", "title": "Quickstart"}, {"imported": "TavilySearchResults", "source": "langchain_community.tools.tavily_search", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.tavily_search.tool.TavilySearchResults.html", "title": "Quickstart"}, {"imported": "create_openai_functions_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html", "title": "Quickstart"}, {"imported": "AgentExecutor", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html", "title": "Quickstart"}, {"imported": "BaseMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.base.BaseMessage.html", "title": "Quickstart"}]-->
+#!/usr/bin/env python
+from typing import List
+
+from fastapi import FastAPI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.tools.retriever import create_retriever_tool
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain import hub
+from langchain.agents import create_openai_functions_agent
+from langchain.agents import AgentExecutor
+from langchain.pydantic_v1 import BaseModel, Field
+from langchain_core.messages import BaseMessage
+from langserve import add_routes
+
+# 1. 검색기 로드
+
+loader = WebBaseLoader("https://docs.smith.langchain.com/user_guide")
+docs = loader.load()
+text_splitter = RecursiveCharacterTextSplitter()
+documents = text_splitter.split_documents(docs)
+embeddings = OpenAIEmbeddings()
+vector = FAISS.from_documents(documents, embeddings)
+retriever = vector.as_retriever()
+
+# 2. 도구 생성
+
+retriever_tool = create_retriever_tool(
+    retriever,
+    "langsmith_search",
+    "LangSmith에 대한 정보를 검색합니다. LangSmith에 대한 질문이 있으면 이 도구를 사용해야 합니다!",
+)
+search = TavilySearchResults()
+tools = [retriever_tool, search]
+
+# 3. 에이전트 생성
+
+prompt = hub.pull("hwchase17/openai-functions-agent")
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+agent = create_openai_functions_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+# 4. 앱 정의
+
+app = FastAPI(
+  title="LangChain 서버",
+  version="1.0",
+  description="LangChain의 Runnable 인터페이스를 사용한 간단한 API 서버",
+)
+
+# 5. 체인 경로 추가
+
+# 현재 AgentExecutor에는 스키마가 없으므로 입력/출력 스키마를 추가해야 합니다.
+
+class Input(BaseModel):
+    input: str
+    chat_history: List[BaseMessage] = Field(
+        ...,
+        extra={"widget": {"type": "chat", "input": "location"}},
+    )
+
+class Output(BaseModel):
+    output: str
+
+add_routes(
+    app,
+    agent_executor.with_types(input_type=Input, output_type=Output),
+    path="/agent",
+)
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="localhost", port=8000)
+```
+
+이제 완료되었습니다! 이 파일을 실행하면:
+
+```bash
+python serve.py
+```
+
+localhost:8000에서 체인이 제공되는 것을 볼 수 있습니다.
+
+### 플레이그라운드
+
+모든 LangServe 서비스에는 스트리밍 출력 및 중간 단계 가시성으로 애플리케이션을 구성하고 호출할 수 있는 간단한 내장 UI가 제공됩니다.
+http://localhost:8000/agent/playground/로 이동하여 확인해보세요! 이전과 동일한 질문 - "LangSmith가 테스트에 어떻게 도움이 될 수 있나요?" -을 입력하면 이전과 동일한 응답을 받을 수 있습니다.
+
+### 클라이언트
+
+이제 서비스를 프로그램적으로 상호작용할 수 있는 클라이언트를 설정해 보겠습니다. `[langserve.RemoteRunnable](/docs/langserve#client)`를 사용하여 쉽게 할 수 있습니다.
+이를 사용하여 클라이언트 측에서 실행되는 것처럼 제공된 체인과 상호작용할 수 있습니다.
+
+```python
+from langserve import RemoteRunnable
+
+remote_chain = RemoteRunnable("http://localhost:8000/agent/")
+remote_chain.invoke({
+    "input": "LangSmith가 테스트에 어떻게 도움이 될 수 있나요?",
+    "chat_history": []  # 첫 번째 호출이므로 빈 리스트를 제공합니다.
+})
+```
+
+LangServe의 많은 다른 기능에 대해 더 알아보려면 [여기](/docs/langserve)를 참조하세요.
+
+## 다음 단계
+
+우리는 LangChain으로 애플리케이션을 구축하고, LangSmith로 추적하며, LangServe로 배포하는 방법을 다루었습니다.
+여기서 다룰 수 없는 더 많은 기능이 있습니다.
+여정을 계속하려면 다음을 읽어보는 것이 좋습니다(순서대로):
+
+- 이러한 모든 기능은 [LangChain Expression Language (LCEL)](/docs/expression_language)에 의해 지원됩니다. 이 구성 요소를 연결하는 방법을 더 잘 이해하려면 해당 문서를 확인하세요.
+- [Model IO](/docs/modules/model_io)는 프롬프트, LLM 및 출력 파서의 세부 사항을 다룹니다.
+- [Retrieval](/docs/modules/data_connection)은 검색과 관련된 모든 것의 세부 사항을 다룹니다.
+- [Agents](/docs/modules/agents)는 에이전트와 관련된 모든 세부 사항을 다룹니다.
+- 일반적인 [엔드투엔드 사용 사례](/docs/use_cases/) 및 [템플릿 애플리케이션](/docs/templates)을 탐색하세요.
+- [LangSmith](/docs/langsmith/)에 대해 읽어보세요. 이는 디버깅, 테스트, 모니터링 등을 위한 플랫폼입니다.
+- [LangServe](/docs/langserve)를 사용하여 애플리케이션을 제공하는 방법에 대해 자세히 알아보세요.

@@ -1,0 +1,26 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/cube
+translated: false
+---
+
+# Cube
+
+>[Cube](https://cube.dev/) is the Semantic Layer for building data apps. It helps
+> data engineers and application developers access data from modern data stores,
+> organize it into consistent definitions, and deliver it to every application.
+
+## Installation and Setup
+
+We have to get the API key and the URL of the Cube instance. See
+[these instructions](https://cube.dev/docs/product/apis-integrations/rest-api#configuration-base-path).
+
+## Document loader
+
+### Cube Semantic Layer
+
+See a [usage example](/docs/integrations/document_loaders/cube_semantic).
+
+```python
+<!--IMPORTS:[{"imported": "CubeSemanticLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.cube_semantic.CubeSemanticLoader.html", "title": "Cube"}]-->
+from langchain_community.document_loaders import CubeSemanticLoader
+```

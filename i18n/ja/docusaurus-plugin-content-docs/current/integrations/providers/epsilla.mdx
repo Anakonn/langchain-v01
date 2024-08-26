@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# エプシラ
+
+このページでは、LangChain内で[Epsilla](https://github.com/epsilla-cloud/vectordb)を使用する方法を説明します。
+インストールとセットアップ、そして特定のEpsillaラッパーへの参照の2つの部分に分かれています。
+
+## インストールとセットアップ
+
+- Python SDKをインストールするには、`pip/pip3 install pyepsilla`を使用します。
+
+## ラッパー
+
+### VectorStore
+
+Epsillaベクターデータベースをラップするラッパーが存在し、これをベクターストアとして使用することができます。セマンティック検索や例の選択に使用できます。
+
+このベクターストアをインポートするには：
+
+```python
+<!--IMPORTS:[{"imported": "Epsilla", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.epsilla.Epsilla.html", "title": "Epsilla"}]-->
+from langchain_community.vectorstores import Epsilla
+```
+
+Epsillaラッパーの詳細な説明については、[このノートブック](/docs/integrations/vectorstores/epsilla)を参照してください。

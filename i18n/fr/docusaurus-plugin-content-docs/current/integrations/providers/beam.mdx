@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Faisceau
+
+>[Faisceau](https://www.beam.cloud/) est une plateforme de calcul dans le cloud qui vous permet d'exécuter votre code
+> sur des serveurs distants avec des GPU.
+
+## Installation et configuration
+
+- [Créer un compte](https://www.beam.cloud/)
+- Installer l'interface en ligne de commande Beam avec `curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh`
+- Enregistrer les clés d'API avec `beam configure`
+- Définir les variables d'environnement (`BEAM_CLIENT_ID`) et (`BEAM_CLIENT_SECRET`)
+- Installer le SDK Beam :
+
+```bash
+pip install beam-sdk
+```
+
+## LLM
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/beam).
+
+Voir un autre exemple dans la [documentation Beam](https://docs.beam.cloud/examples/langchain).
+
+```python
+<!--IMPORTS:[{"imported": "Beam", "source": "langchain_community.llms.beam", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.beam.Beam.html", "title": "Beam"}]-->
+from langchain_community.llms.beam import Beam
+```

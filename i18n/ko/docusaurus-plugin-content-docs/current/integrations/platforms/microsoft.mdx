@@ -1,0 +1,355 @@
+---
+translated: true
+---
+
+# 마이크로소프트
+
+`Microsoft Azure` 및 기타 `Microsoft` 제품과 관련된 모든 기능.
+
+## LLMs
+
+### Azure ML
+
+[사용 예시](/docs/integrations/llms/azure_ml)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureMLOnlineEndpoint", "source": "langchain_community.llms.azureml_endpoint", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.azureml_endpoint.AzureMLOnlineEndpoint.html", "title": "Microsoft"}]-->
+from langchain_community.llms.azureml_endpoint import AzureMLOnlineEndpoint
+```
+
+### Azure OpenAI
+
+[사용 예시](/docs/integrations/llms/azure_openai)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.azure.AzureOpenAI.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureOpenAI
+```
+
+## 채팅 모델
+
+### Azure OpenAI
+
+>[Microsoft Azure](https://en.wikipedia.org/wiki/Microsoft_Azure)는 `Microsoft`가 운영하는 클라우드 컴퓨팅 플랫폼으로, 전 세계 데이터 센터를 통해 애플리케이션 및 서비스에 대한 액세스, 관리 및 개발을 제공합니다. 소프트웨어 서비스(SaaS), 플랫폼 서비스(PaaS), 인프라 서비스(IaaS) 등 다양한 기능을 제공합니다. `Microsoft Azure`는 Microsoft 고유 및 타사 소프트웨어와 시스템을 포함한 다양한 프로그래밍 언어, 도구 및 프레임워크를 지원합니다.
+
+>[Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/)는 `Azure` 서비스로, `GPT-3`, `Codex` 및 `Embeddings model` 시리즈를 포함한 `OpenAI`의 강력한 언어 모델을 제공하여 콘텐츠 생성, 요약, 의미 검색 및 자연어에서 코드 변환 등을 지원합니다.
+
+```bash
+pip install langchain-openai
+```
+
+`Azure OpenAI` 서비스에 액세스하려면 환경 변수를 설정해야 합니다.
+
+```python
+import os
+
+os.environ["AZURE_OPENAI_ENDPOINT"] = "https://<your-endpoint.openai.azure.com/"
+os.environ["AZURE_OPENAI_API_KEY"] = "your AzureOpenAI key"
+```
+
+[사용 예시](/docs/integrations/chat/azure_chat_openai)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureChatOpenAI
+```
+
+## 임베딩 모델
+
+### Azure OpenAI
+
+[사용 예시](/docs/integrations/text_embedding/azureopenai)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.azure.AzureOpenAIEmbeddings.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureOpenAIEmbeddings
+```
+
+## 문서 로더
+
+### Azure AI Data
+
+>[Azure AI Studio](https://ai.azure.com/)는 클라우드 스토리지에 데이터 자산을 업로드하고 다음 소스에서 기존 데이터 자산을 등록할 수 있는 기능을 제공합니다:
+>
+>- `Microsoft OneLake`
+>- `Azure Blob Storage`
+>- `Azure Data Lake gen 2`
+
+먼저 몇 가지 Python 패키지를 설치해야 합니다.
+
+```bash
+pip install azureml-fsspec, azure-ai-generative
+```
+
+[사용 예시](/docs/integrations/document_loaders/azure_ai_data)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDataLoader", "source": "langchain.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_ai_data.AzureAIDataLoader.html", "title": "Microsoft"}]-->
+from langchain.document_loaders import AzureAIDataLoader
+```
+
+### Azure AI Document Intelligence
+
+>[Azure AI Document Intelligence](https://aka.ms/doc-intelligence)(이전 `Azure Form Recognizer`)는 기계 학습 기반 서비스로, 디지털 또는 스캔된 PDF, 이미지, Office 및 HTML 파일에서 텍스트(필기 포함), 테이블, 문서 구조 및 키-값 쌍을 추출합니다.
+>
+>Document Intelligence는 `PDF`, `JPEG/JPG`, `PNG`, `BMP`, `TIFF`, `HEIF`, `DOCX`, `XLSX`, `PPTX` 및 `HTML`을 지원합니다.
+
+먼저 Python 패키지를 설치해야 합니다.
+
+```bash
+pip install azure-ai-documentintelligence
+```
+
+[사용 예시](/docs/integrations/document_loaders/azure_document_intelligence)를 참고하세요.
+
+```python
+from langchain.document_loaders import AzureAIDocumentIntelligenceLoader
+```
+
+### Azure Blob Storage
+
+>[Azure Blob Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction)는 Microsoft의 클라우드 객체 스토리지 솔루션입니다. Blob Storage는 대량의 비정형 데이터 저장에 최적화되어 있습니다. 비정형 데이터는 특정 데이터 모델이나 정의를 따르지 않는 텍스트 또는 이진 데이터입니다.
+
+>[Azure Files](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction)는 업계 표준 Server Message Block(`SMB`) 프로토콜, Network File System(`NFS`) 프로토콜 및 `Azure Files REST API`를 통해 액세스할 수 있는 완전 관리형 클라우드 파일 공유를 제공합니다. `Azure Files`는 `Azure Blob Storage`를 기반으로 합니다.
+
+`Azure Blob Storage`는 다음과 같은 용도로 설계되었습니다:
+- 브라우저에 직접 이미지 또는 문서 제공
+- 분산 액세스를 위한 파일 저장
+- 비디오 및 오디오 스트리밍
+- 로그 파일 작성
+- 백업, 재해 복구 및 보관을 위한 데이터 저장
+- 온-프레미스 또는 Azure 호스팅 서비스에 의한 데이터 분석
+
+```bash
+pip install azure-storage-blob
+```
+
+[Azure Blob Storage에 대한 사용 예시](/docs/integrations/document_loaders/azure_blob_storage_container)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureBlobStorageContainerLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_blob_storage_container.AzureBlobStorageContainerLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import AzureBlobStorageContainerLoader
+```
+
+[Azure Files에 대한 사용 예시](/docs/integrations/document_loaders/azure_blob_storage_file)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureBlobStorageFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_blob_storage_file.AzureBlobStorageFileLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import AzureBlobStorageFileLoader
+```
+
+### Microsoft OneDrive
+
+>[Microsoft OneDrive](https://en.wikipedia.org/wiki/OneDrive)(이전 `SkyDrive`)는 Microsoft가 운영하는 파일 호스팅 서비스입니다.
+
+먼저 Python 패키지를 설치해야 합니다.
+
+```bash
+pip install o365
+```
+
+[사용 예시](/docs/integrations/document_loaders/microsoft_onedrive)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OneDriveLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.onedrive.OneDriveLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import OneDriveLoader
+```
+
+### Microsoft Word
+
+>[Microsoft Word](https://www.microsoft.com/en-us/microsoft-365/word)는 Microsoft가 개발한 워드 프로세서입니다.
+
+[사용 예시](/docs/integrations/document_loaders/microsoft_word)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredWordDocumentLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.word_document.UnstructuredWordDocumentLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+```
+
+### Microsoft Excel
+
+>[Microsoft Excel](https://en.wikipedia.org/wiki/Microsoft_Excel)은 Microsoft가 Windows, macOS, Android, iOS 및 iPadOS용으로 개발한 스프레드시트 편집기입니다. 계산 또는 계산 기능, 그래프 도구, 피벗 테이블 및 Visual Basic for Applications(VBA)라는 매크로 프로그래밍 언어를 특징으로 합니다. Excel은 Microsoft 365 소프트웨어 제품군의 일부입니다.
+
+`UnstructuredExcelLoader`은 `Microsoft Excel` 파일을 로드하는 데 사용됩니다. 이 로더는 `.xlsx` 및 `.xls` 파일에서 작동합니다.
+페이지 내용은 Excel 파일의 원시 텍스트가 됩니다. 로더를 `"elements"` 모드로 사용하는 경우 문서 메타데이터의 `text_as_html` 키에 Excel 파일의 HTML 표현이 제공됩니다.
+
+[사용 예제](/docs/integrations/document_loaders/microsoft_excel)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredExcelLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.excel.UnstructuredExcelLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredExcelLoader
+```
+
+### Microsoft SharePoint
+
+>[Microsoft SharePoint](https://en.wikipedia.org/wiki/SharePoint)는 Microsoft에서 개발한 웹 기반 협업 시스템으로, 워크플로 애플리케이션, "목록" 데이터베이스 및 기타 웹 파트와 보안 기능을 사용하여 비즈니스 팀이 함께 작업할 수 있습니다.
+
+[사용 예제](/docs/integrations/document_loaders/microsoft_sharepoint)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SharePointLoader", "source": "langchain_community.document_loaders.sharepoint", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.sharepoint.SharePointLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders.sharepoint import SharePointLoader
+```
+
+### Microsoft PowerPoint
+
+>[Microsoft PowerPoint](https://en.wikipedia.org/wiki/Microsoft_PowerPoint)는 Microsoft의 프레젠테이션 프로그램입니다.
+
+[사용 예제](/docs/integrations/document_loaders/microsoft_powerpoint)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPowerPointLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.powerpoint.UnstructuredPowerPointLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+```
+
+### Microsoft OneNote
+
+먼저 종속성을 설치해야 합니다:
+
+```bash
+pip install bs4 msal
+```
+
+[사용 예제](/docs/integrations/document_loaders/microsoft_onenote)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OneNoteLoader", "source": "langchain_community.document_loaders.onenote", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.onenote.OneNoteLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders.onenote import OneNoteLoader
+```
+
+## 벡터 스토어
+
+### Azure Cosmos DB
+
+>[Azure Cosmos DB for MongoDB vCore](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/)를 사용하면 MongoDB 네이티브 지원이 완전한 데이터베이스를 쉽게 만들 수 있습니다.
+> MongoDB 드라이버, SDK 및 도구를 사용하여 애플리케이션을 API for MongoDB vCore 계정의 연결 문자열에 연결하여 기존 MongoDB 경험을 계속 활용할 수 있습니다.
+> Azure Cosmos DB for MongoDB vCore의 벡터 검색을 사용하여 AI 기반 애플리케이션을 Azure Cosmos DB에 저장된 데이터와 seamlessly 통합할 수 있습니다.
+
+#### 설치 및 설정
+
+[자세한 구성 지침](/docs/integrations/vectorstores/azure_cosmos_db)을 참조하세요.
+
+`pymongo` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install pymongo
+```
+
+#### Microsoft Azure에 Azure Cosmos DB 배포
+
+Azure Cosmos DB for MongoDB vCore는 개발자에게 완전히 관리되는 MongoDB 호환 데이터베이스 서비스를 제공하여 익숙한 아키텍처로 현대 애플리케이션을 구축할 수 있습니다.
+
+Cosmos DB for MongoDB vCore를 사용하면 개발자는 네이티브 Azure 통합, 낮은 총 소유 비용(TCO) 및 기존 애플리케이션 마이그레이션 또는 새로운 애플리케이션 구축 시 익숙한 vCore 아키텍처의 이점을 누릴 수 있습니다.
+
+[무료로 가입](https://azure.microsoft.com/en-us/free/)하여 오늘 시작하세요.
+
+[사용 예제](/docs/integrations/vectorstores/azure_cosmos_db)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureCosmosDBVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.azure_cosmos_db.AzureCosmosDBVectorSearch.html", "title": "Microsoft"}]-->
+from langchain_community.vectorstores import AzureCosmosDBVectorSearch
+```
+
+## 리트리버
+
+### Azure AI Search
+
+>[Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search)(이전에는 `Azure Search` 또는 `Azure Cognitive Search`라고 함)는 웹, 모바일 및 엔터프라이즈 애플리케이션의 사용자에게 텍스트를 표시하는 모든 앱에 기본적인 검색 기능을 제공하는 클라우드 검색 서비스입니다.
+
+>검색은 카탈로그 또는 문서 검색, 온라인 소매 애플리케이션 또는 독점 콘텐츠에 대한 데이터 탐색과 같은 일반적인 시나리오에 필수적입니다. 검색 서비스를 만들 때 다음과 같은 기능을 사용할 수 있습니다:
+>- 사용자 소유 콘텐츠에 대한 전체 텍스트 검색을 위한 검색 엔진
+>- 어휘 분석 및 선택적 AI 강화를 통한 풍부한 인덱싱, 콘텐츠 추출 및 변환
+>- 텍스트 검색, 퍼지 검색, 자동 완성, 지오 검색 등을 위한 풍부한 쿼리 구문
+>- Azure SDK의 REST API 및 클라이언트 라이브러리를 통한 프로그래밍 기능
+>- 데이터 계층, 기계 학습 계층 및 AI(AI 서비스)에서의 Azure 통합
+
+[설정 지침](https://learn.microsoft.com/en-us/azure/search/search-create-service-portal)을 참조하세요.
+
+[사용 예제](/docs/integrations/retrievers/azure_ai_search)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AzureAISearchRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.azure_ai_search.AzureAISearchRetriever.html", "title": "Microsoft"}]-->
+from langchain.retrievers import AzureAISearchRetriever
+```
+
+## 툴킷
+
+### Azure AI 서비스
+
+몇 가지 Python 패키지를 설치해야 합니다.
+
+```bash
+pip install azure-ai-formrecognizer azure-cognitiveservices-speech azure-ai-vision-imageanalysis
+```
+
+[사용 예제](/docs/integrations/toolkits/azure_ai_services)를 참조하세요.
+
+```python
+from langchain_community.agent_toolkits import azure_ai_services
+```
+
+### Microsoft Office 365 이메일 및 캘린더
+
+`O365` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install O365
+```
+
+[사용 예제](/docs/integrations/toolkits/office365)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "O365Toolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.office365.toolkit.O365Toolkit.html", "title": "Microsoft"}]-->
+from langchain_community.agent_toolkits import O365Toolkit
+```
+
+### Microsoft Azure PowerBI
+
+`azure-identity` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install azure-identity
+```
+
+[사용 예제](/docs/integrations/toolkits/powerbi)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "PowerBIToolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.powerbi.toolkit.PowerBIToolkit.html", "title": "Microsoft"}, {"imported": "PowerBIDataset", "source": "langchain_community.utilities.powerbi", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.powerbi.PowerBIDataset.html", "title": "Microsoft"}]-->
+from langchain_community.agent_toolkits import PowerBIToolkit
+from langchain_community.utilities.powerbi import PowerBIDataset
+```
+
+## 유틸리티
+
+### Bing Search API
+
+>[Microsoft Bing](https://www.bing.com/), 일반적으로 `Bing` 또는 `Bing Search`라고 불리는 것은 `Microsoft`가 소유하고 운영하는 웹 검색 엔진입니다.
+
+[사용 예제](/docs/integrations/tools/bing_search)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "BingSearchAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.bing_search.BingSearchAPIWrapper.html", "title": "Microsoft"}]-->
+from langchain_community.utilities import BingSearchAPIWrapper
+```
+
+## 더 보기
+
+### Microsoft Presidio
+
+>[Presidio](https://microsoft.github.io/presidio/)(라틴어 praesidium 'protection, garrison'에서 유래)는 민감한 데이터가 적절하게 관리되고 관리되도록 돕습니다. 신용카드 번호, 이름, 위치, 사회 보장 번호, 비트코인 지갑, 미국 전화번호, 금융 데이터 등과 같은 개인 정보를 텍스트와 이미지에서 빠르게 식별하고 익명화할 수 있는 모듈을 제공합니다.
+
+먼저 몇 가지 Python 패키지를 설치하고 `SpaCy` 모델을 다운로드해야 합니다.
+
+```bash
+pip install langchain-experimental openai presidio-analyzer presidio-anonymizer spacy Faker
+python -m spacy download en_core_web_lg
+```
+
+다음은 문서의 일부분을 한국어로 번역한 것입니다:
+
+[사용 예시](/docs/guides/productionization/safety/presidio_data_anonymization/)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "PresidioAnonymizer", "source": "langchain_experimental.data_anonymizer", "docs": "https://api.python.langchain.com/en/latest/data_anonymizer/langchain_experimental.data_anonymizer.presidio.PresidioAnonymizer.html", "title": "Microsoft"}, {"imported": "PresidioReversibleAnonymizer", "source": "langchain_experimental.data_anonymizer", "docs": "https://api.python.langchain.com/en/latest/data_anonymizer/langchain_experimental.data_anonymizer.presidio.PresidioReversibleAnonymizer.html", "title": "Microsoft"}]-->
+from langchain_experimental.data_anonymizer import PresidioAnonymizer, PresidioReversibleAnonymizer
+```

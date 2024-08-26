@@ -1,0 +1,128 @@
+---
+translated: true
+---
+
+# CnosDB
+
+> [CnosDB](https://github.com/cnosdb/cnosdb) est une base de données de séries chronologiques distribuée open-source avec des performances élevées, un taux de compression élevé et une grande facilité d'utilisation.
+
+## Installation et configuration
+
+```python
+pip install cnos-connector
+```
+
+## Connexion à CnosDB
+
+Vous pouvez vous connecter à CnosDB en utilisant la méthode `SQLDatabase.from_cnosdb()`.
+
+### Syntaxe
+
+```python
+def SQLDatabase.from_cnosdb(url: str = "127.0.0.1:8902",
+                              user: str = "root",
+                              password: str = "",
+                              tenant: str = "cnosdb",
+                              database: str = "public")
+```
+
+Args :
+1. url (str) : Le nom d'hôte et le numéro de port de la connexion HTTP du service CnosDB, sans "http://" ou "https://", avec une valeur par défaut de "127.0.0.1:8902".
+2. user (str) : Le nom d'utilisateur utilisé pour se connecter au service CnosDB, avec une valeur par défaut de "root".
+3. password (str) : Le mot de passe de l'utilisateur se connectant au service CnosDB, avec une valeur par défaut de "".
+4. tenant (str) : Le nom du tenant utilisé pour se connecter au service CnosDB, avec une valeur par défaut de "cnosdb".
+5. database (str) : Le nom de la base de données dans le tenant CnosDB.
+
+## Exemples
+
+```python
+<!--IMPORTS:[{"imported": "SQLDatabase", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.sql_database.SQLDatabase.html", "title": "CnosDB"}]-->
+# Connecting to CnosDB with SQLDatabase Wrapper
+from langchain_community.utilities import SQLDatabase
+
+db = SQLDatabase.from_cnosdb()
+```
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "CnosDB"}]-->
+# Creating a OpenAI Chat LLM Wrapper
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+```
+
+### Chaîne de base de données SQL
+
+Cet exemple montre l'utilisation de la chaîne SQL pour répondre à une question sur un CnosDB.
+
+```python
+from langchain_community.utilities import SQLDatabaseChain
+
+db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+
+db_chain.run(
+    "What is the average temperature of air at station XiaoMaiDao between October 19, 2022 and Occtober 20, 2022?"
+)
+```
+
+```shell
+> Entering new  chain...
+What is the average temperature of air at station XiaoMaiDao between October 19, 2022 and Occtober 20, 2022?
+SQLQuery:SELECT AVG(temperature) FROM air WHERE station = 'XiaoMaiDao' AND time >= '2022-10-19' AND time < '2022-10-20'
+SQLResult: [(68.0,)]
+Answer:The average temperature of air at station XiaoMaiDao between October 19, 2022 and October 20, 2022 is 68.0.
+> Finished chain.
+```
+
+### Agent de base de données SQL
+
+Cet exemple montre l'utilisation de l'agent de base de données SQL pour répondre à des questions sur un CnosDB.
+
+```python
+<!--IMPORTS:[{"imported": "create_sql_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.sql.base.create_sql_agent.html", "title": "CnosDB"}, {"imported": "SQLDatabaseToolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.sql.toolkit.SQLDatabaseToolkit.html", "title": "CnosDB"}]-->
+from langchain.agents import create_sql_agent
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+
+toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+agent = create_sql_agent(llm=llm, toolkit=toolkit, verbose=True)
+```
+
+```python
+agent.run(
+    "What is the average temperature of air at station XiaoMaiDao between October 19, 2022 and Occtober 20, 2022?"
+)
+```
+
+```shell
+> Entering new  chain...
+Action: sql_db_list_tables
+Action Input: ""
+Observation: air
+Thought:The "air" table seems relevant to the question. I should query the schema of the "air" table to see what columns are available.
+Action: sql_db_schema
+Action Input: "air"
+Observation:
+CREATE TABLE air (
+	pressure FLOAT,
+	station STRING,
+	temperature FLOAT,
+	time TIMESTAMP,
+	visibility FLOAT
+)
+
+/*
+3 rows from air table:
+pressure	station	temperature	time	visibility
+75.0	XiaoMaiDao	67.0	2022-10-19T03:40:00	54.0
+77.0	XiaoMaiDao	69.0	2022-10-19T04:40:00	56.0
+76.0	XiaoMaiDao	68.0	2022-10-19T05:40:00	55.0
+*/
+Thought:The "temperature" column in the "air" table is relevant to the question. I can query the average temperature between the specified dates.
+Action: sql_db_query
+Action Input: "SELECT AVG(temperature) FROM air WHERE station = 'XiaoMaiDao' AND time >= '2022-10-19' AND time <= '2022-10-20'"
+Observation: [(68.0,)]
+Thought:The average temperature of air at station XiaoMaiDao between October 19, 2022 and October 20, 2022 is 68.0.
+Final Answer: 68.0
+
+> Finished chain.
+```

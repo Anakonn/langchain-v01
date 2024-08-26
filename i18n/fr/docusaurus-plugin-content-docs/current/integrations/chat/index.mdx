@@ -1,0 +1,75 @@
+---
+keywords:
+- compatibilité
+- bind_tools
+- appel d'outils
+- appel de fonction
+- sortie structurée
+- with_structured_output
+sidebar_class_name: hidden
+sidebar_position: 0
+translated: true
+---
+
+# Modèles de discussion
+
+## Fonctionnalités (prises en charge nativement)
+
+Tous les ChatModels implémentent l'interface Runnable, qui comprend des implémentations par défaut de toutes les méthodes, c'est-à-dire `ainvoke`, `batch`, `abatch`, `stream`, `astream`. Cela donne à tous les ChatModels un support de base pour l'asynchrone, le streaming et le batch, qui par défaut est implémenté comme suit :
+- Le support *Asynchrone* se résume à appeler la méthode synchrone respective dans l'exécuteur de thread par défaut d'asyncio. Cela permet à d'autres fonctions asynchrones de votre application de progresser pendant que le ChatModel est en cours d'exécution, en déplaçant cet appel dans un thread d'arrière-plan.
+- Le support *Streaming* se résume à renvoyer un `Iterator` (ou `AsyncIterator` dans le cas du streaming asynchrone) d'une seule valeur, le résultat final renvoyé par le fournisseur de ChatModel sous-jacent. Cela ne vous donne évidemment pas de streaming token par token, ce qui nécessite un support natif du fournisseur de ChatModel, mais garantit que votre code qui s'attend à un itérateur de tokens peut fonctionner pour n'importe laquelle de nos intégrations de ChatModel.
+- Le support *Batch* se résume à appeler le ChatModel sous-jacent en parallèle pour chaque entrée en utilisant un exécuteur de pool de threads (dans le cas du batch synchrone) ou `asyncio.gather` (dans le cas du batch asynchrone). La concurrence peut être contrôlée avec la clé `max_concurrency` dans `RunnableConfig`.
+
+Chaque intégration de ChatModel peut éventuellement fournir des implémentations natives pour vraiment activer l'asynchrone ou le streaming.
+Le tableau montre, pour chaque intégration, quelles fonctionnalités ont été implémentées avec un support natif.
+
+Modèle|Invoquer|Invoquer de manière asynchrone|Flux|Flux asynchrone|[Appel d'outil](/docs/modules/model_io/chat/function_calling/)|[Sortie structurée](/docs/modules/model_io/chat/structured_output/)|Package Python
+:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:
+AzureChatOpenAI|✅|❌|❌|❌|✅|✅|langchain-openai
+BedrockChat|✅|❌|✅|❌|❌|❌|langchain-community
+ChatAnthropic|✅|❌|❌|❌|✅|✅|langchain-anthropic
+ChatAnyscale|✅|✅|✅|✅|❌|❌|langchain-community
+ChatBaichuan|✅|❌|✅|❌|❌|❌|langchain-community
+ChatCohere|✅|❌|❌|❌|✅|✅|langchain-cohere
+ChatCoze|✅|❌|✅|❌|❌|❌|langchain-community
+ChatDatabricks|✅|❌|✅|❌|❌|❌|langchain-community
+ChatDeepInfra|✅|✅|✅|✅|❌|❌|langchain-community
+ChatEverlyAI|✅|✅|✅|✅|❌|❌|langchain-community
+ChatFireworks|✅|❌|❌|❌|✅|✅|langchain-fireworks
+ChatFriendli|✅|✅|✅|✅|❌|❌|langchain-community
+ChatGooglePalm|✅|✅|❌|❌|❌|❌|langchain-community
+ChatGroq|✅|❌|❌|❌|✅|✅|langchain-groq
+ChatHuggingFace|✅|✅|✅|✅|❌|❌|langchain-community
+ChatHunyuan|✅|❌|✅|❌|❌|❌|langchain-community
+ChatJavelinAIGateway|✅|✅|❌|❌|❌|❌|langchain-community
+ChatKinetica|✅|❌|❌|❌|❌|❌|langchain-community
+ChatKonko|✅|❌|❌|❌|❌|❌|langchain-community
+ChatLiteLLM|✅|✅|✅|✅|❌|❌|langchain-community
+ChatLiteLLMRouter|✅|✅|✅|✅|❌|❌|langchain-community
+ChatMLX|✅|✅|✅|❌|❌|❌|langchain-community
+ChatMLflowAIGateway|✅|❌|❌|❌|❌|❌|langchain-community
+ChatMaritalk|✅|✅|✅|✅|❌|❌|langchain-community
+ChatMistralAI|✅|❌|❌|❌|✅|✅|langchain-mistralai
+ChatMlflow|✅|❌|✅|❌|❌|❌|langchain-community
+ChatOctoAI|✅|✅|✅|✅|❌|❌|langchain-community
+ChatOllama|✅|✅|✅|✅|❌|❌|langchain-community
+ChatOpenAI|✅|❌|❌|❌|✅|✅|langchain-openai
+ChatPerplexity|✅|❌|✅|❌|❌|❌|langchain-community
+ChatPremAI|✅|❌|✅|❌|❌|❌|langchain-community
+ChatSparkLLM|✅|❌|✅|❌|❌|❌|langchain-community
+ChatTongyi|✅|✅|✅|✅|❌|❌|langchain-community
+ChatVertexAI|✅|❌|❌|❌|✅|✅|langchain-google-vertexai
+ChatYandexGPT|✅|✅|❌|❌|❌|❌|langchain-community
+ChatYuan2|✅|✅|✅|✅|❌|❌|langchain-community
+ChatZhipuAI|✅|✅|✅|✅|❌|❌|langchain-community
+ErnieBotChat|✅|❌|❌|❌|❌|❌|langchain-community
+GPTRouter|✅|✅|✅|✅|❌|❌|langchain-community
+GigaChat|✅|✅|✅|✅|❌|❌|langchain-community
+JinaChat|✅|✅|✅|✅|❌|❌|langchain-community
+LlamaEdgeChatService|✅|❌|✅|❌|❌|❌|langchain-community
+MiniMaxChat|✅|✅|❌|❌|❌|❌|langchain-community
+PaiEasChatEndpoint|✅|❌|❌|✅|❌|❌|langchain-community
+PromptLayerChatOpenAI|✅|❌|❌|❌|❌|❌|langchain-community
+QianfanChatEndpoint|✅|✅|✅|✅|❌|❌|langchain-community
+SolarChat|✅|✅|✅|✅|❌|❌|langchain-community
+VolcEngineMaasChat|✅|❌|✅|❌|❌|❌|langchain-community

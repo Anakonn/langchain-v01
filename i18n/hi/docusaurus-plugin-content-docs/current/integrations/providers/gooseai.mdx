@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# GooseAI
+
+यह पृष्ठ LangChain में GooseAI पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट GooseAI रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `pip install openai` के साथ Python SDK स्थापित करें
+- यहां से अपना GooseAI api कुंजी प्राप्त करें [यहां](https://goose.ai/)।
+- पर्यावरण चर (`GOOSEAI_API_KEY`) सेट करें।
+
+```python
+import os
+os.environ["GOOSEAI_API_KEY"] = "YOUR_API_KEY"
+```
+
+## रैपर्स
+
+### LLM
+
+GooseAI LLM रैपर मौजूद है, जिसका उपयोग आप इस प्रकार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "GooseAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gooseai.GooseAI.html", "title": "GooseAI"}]-->
+from langchain_community.llms import GooseAI
+```

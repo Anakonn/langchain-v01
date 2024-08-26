@@ -1,0 +1,208 @@
+---
+translated: true
+---
+
+# OpenAI Functions
+
+これらの出力パーサーは、OpenAI関数呼び出しを使用して出力を構造化します。これは、関数呼び出をサポートするモデルでのみ使用できることを意味します。いくつかの異なるバリアントがあります:
+
+- [JsonOutputFunctionsParser](https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.openai_functions.JsonOutputFunctionsParser.html#langchain_core.output_parsers.openai_functions.JsonOutputFunctionsParser): 関数呼び出しの引数をJSONとして返します
+- [PydanticOutputFunctionsParser](https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.openai_functions.PydanticOutputFunctionsParser.html#langchain_core.output_parsers.openai_functions.PydanticOutputFunctionsParser): 関数呼び出しの引数をPydantic Modelとして返します
+- [JsonKeyOutputFunctionsParser](https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.openai_functions.JsonKeyOutputFunctionsParser.html#langchain_core.output_parsers.openai_functions.JsonKeyOutputFunctionsParser): 関数呼び出しの特定のキーの値をJSONとして返します
+- [PydanticAttrOutputFunctionsParser](https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.openai_functions.PydanticAttrOutputFunctionsParser.html#langchain_core.output_parsers.openai_functions.PydanticAttrOutputFunctionsParser): 関数呼び出しの特定のキーの値をPydantic Modelとして返します
+
+```python
+from langchain_community.utils.openai_functions import (
+    convert_pydantic_to_openai_function,
+)
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.pydantic_v1 import BaseModel, Field, validator
+from langchain_openai import ChatOpenAI
+```
+
+```python
+class Joke(BaseModel):
+    """Joke to tell user."""
+
+    setup: str = Field(description="question to set up a joke")
+    punchline: str = Field(description="answer to resolve the joke")
+
+
+openai_functions = [convert_pydantic_to_openai_function(Joke)]
+```
+
+```python
+model = ChatOpenAI(temperature=0)
+```
+
+```python
+prompt = ChatPromptTemplate.from_messages(
+    [("system", "You are helpful assistant"), ("user", "{input}")]
+)
+```
+
+## JsonOutputFunctionsParser
+
+```python
+from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser
+```
+
+```python
+parser = JsonOutputFunctionsParser()
+```
+
+```python
+chain = prompt | model.bind(functions=openai_functions) | parser
+```
+
+```python
+chain.invoke({"input": "tell me a joke"})
+```
+
+```output
+{'setup': "Why don't scientists trust atoms?",
+ 'punchline': 'Because they make up everything!'}
+```
+
+```python
+for s in chain.stream({"input": "tell me a joke"}):
+    print(s)
+```
+
+```output
+{}
+{'setup': ''}
+{'setup': 'Why'}
+{'setup': 'Why don'}
+{'setup': "Why don't"}
+{'setup': "Why don't scientists"}
+{'setup': "Why don't scientists trust"}
+{'setup': "Why don't scientists trust atoms"}
+{'setup': "Why don't scientists trust atoms?", 'punchline': ''}
+{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because'}
+{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they'}
+{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make'}
+{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up'}
+{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything'}
+{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}
+```
+
+## JsonKeyOutputFunctionsParser
+
+これは、返された応答から単一のキーを抽出するだけです。これは、リストのものを返したい場合に便利です。
+
+```python
+from typing import List
+
+from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
+```
+
+```python
+class Jokes(BaseModel):
+    """Jokes to tell user."""
+
+    joke: List[Joke]
+    funniness_level: int
+```
+
+```python
+parser = JsonKeyOutputFunctionsParser(key_name="joke")
+```
+
+```python
+openai_functions = [convert_pydantic_to_openai_function(Jokes)]
+chain = prompt | model.bind(functions=openai_functions) | parser
+```
+
+```python
+chain.invoke({"input": "tell me two jokes"})
+```
+
+```output
+[{'setup': "Why don't scientists trust atoms?",
+  'punchline': 'Because they make up everything!'},
+ {'setup': 'Why did the scarecrow win an award?',
+  'punchline': 'Because he was outstanding in his field!'}]
+```
+
+```python
+for s in chain.stream({"input": "tell me two jokes"}):
+    print(s)
+```
+
+```output
+[]
+[{}]
+[{'setup': ''}]
+[{'setup': 'Why'}]
+[{'setup': 'Why don'}]
+[{'setup': "Why don't"}]
+[{'setup': "Why don't scientists"}]
+[{'setup': "Why don't scientists trust"}]
+[{'setup': "Why don't scientists trust atoms"}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': ''}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': ''}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scare'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': ''}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he was'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he was outstanding'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he was outstanding in'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he was outstanding in his'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he was outstanding in his field'}]
+[{'setup': "Why don't scientists trust atoms?", 'punchline': 'Because they make up everything!'}, {'setup': 'Why did the scarecrow win an award?', 'punchline': 'Because he was outstanding in his field!'}]
+```
+
+## PydanticOutputFunctionsParser
+
+これは `JsonOutputFunctionsParser` の上に構築されていますが、結果をPydantic Modelに渡します。これにより、必要に応じてさらに検証を行うことができます。
+
+```python
+from langchain.output_parsers.openai_functions import PydanticOutputFunctionsParser
+```
+
+```python
+class Joke(BaseModel):
+    """Joke to tell user."""
+
+    setup: str = Field(description="question to set up a joke")
+    punchline: str = Field(description="answer to resolve the joke")
+
+    # You can add custom validation logic easily with Pydantic.
+    @validator("setup")
+    def question_ends_with_question_mark(cls, field):
+        if field[-1] != "?":
+            raise ValueError("Badly formed question!")
+        return field
+
+
+parser = PydanticOutputFunctionsParser(pydantic_schema=Joke)
+```
+
+```python
+openai_functions = [convert_pydantic_to_openai_function(Joke)]
+chain = prompt | model.bind(functions=openai_functions) | parser
+```
+
+```python
+chain.invoke({"input": "tell me a joke"})
+```
+
+```output
+Joke(setup="Why don't scientists trust atoms?", punchline='Because they make up everything!')
+```

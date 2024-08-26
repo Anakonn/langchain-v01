@@ -1,0 +1,23 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/browserless
+translated: false
+---
+
+# Browserless
+
+>[Browserless](https://www.browserless.io/docs/start) is a service that allows you to
+> run headless Chrome instances in the cloud. It’s a great way to run browser-based
+> automation at scale without having to worry about managing your own infrastructure.
+
+## Installation and Setup
+
+We have to get the API key [here](https://www.browserless.io/pricing/).
+
+## Document loader
+
+See a [usage example](/docs/integrations/document_loaders/browserless).
+
+```python
+<!--IMPORTS:[{"imported": "BrowserlessLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.browserless.BrowserlessLoader.html", "title": "Browserless"}]-->
+from langchain_community.document_loaders import BrowserlessLoader
+```

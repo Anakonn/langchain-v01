@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Meilisearch
+
+> [Meilisearch](https://meilisearch.com)は、オープンソースの高速で関連性の高い検索エンジンです。
+> 開発者がスムーズな検索体験を構築するのに役立つデフォルトが用意されています。
+>
+> [Meilisearchをセルフホスト](https://www.meilisearch.com/docs/learn/getting_started/installation#local-installation)するか、[Meilisearch Cloud](https://www.meilisearch.com/pricing)で実行することができます。
+>
+>`Meilisearch v1.3`はベクトル検索をサポートしています。
+
+## インストールとセットアップ
+
+詳細な設定手順については、[使用例](/docs/integrations/vectorstores/meilisearch)を参照してください。
+
+`meilisearch`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install meilisearch
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/meilisearch)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "Meilisearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.meilisearch.Meilisearch.html", "title": "Meilisearch"}]-->
+from langchain_community.vectorstores import Meilisearch
+```

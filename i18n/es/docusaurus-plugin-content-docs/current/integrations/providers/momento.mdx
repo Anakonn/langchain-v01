@@ -1,0 +1,72 @@
+---
+translated: true
+---
+
+# Momento
+
+> [Momento Cache](https://docs.momentohq.com/) es el primer servicio de almacenamiento en caché verdaderamente sin servidor del mundo, que ofrece elasticidad instantánea, capacidad de escalado a cero y un rendimiento ultrarrápido.
+>
+> [Momento Vector Index](https://docs.momentohq.com/vector-index) se destaca como el índice de vectores más productivo, fácil de usar y completamente sin servidor.
+>
+> Para ambos servicios, simplemente tome el SDK, obtenga una clave API, ingrese algunas líneas en su código y estará listo para comenzar. Juntos, proporcionan una solución integral para sus necesidades de datos de LLM.
+
+Esta página cubre cómo usar el ecosistema [Momento](https://gomomento.com) dentro de LangChain.
+
+## Instalación y configuración
+
+- Regístrese para obtener una cuenta gratuita [aquí](https://console.gomomento.com/) para obtener una clave API
+- Instale el SDK de Python de Momento con `pip install momento`
+
+## Cache
+
+Use Momento como una caché distribuida, de baja latencia y sin servidor para los mensajes y respuestas de LLM. La caché estándar es el caso de uso principal para los usuarios de Momento en cualquier entorno.
+
+Para integrar Momento Cache en su aplicación:
+
+```python
+<!--IMPORTS:[{"imported": "MomentoCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.MomentoCache.html", "title": "Momento"}]-->
+from langchain.cache import MomentoCache
+```
+
+Luego, configúrelo con el siguiente código:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Momento"}]-->
+from datetime import timedelta
+from momento import CacheClient, Configurations, CredentialProvider
+from langchain.globals import set_llm_cache
+
+# Instantiate the Momento client
+cache_client = CacheClient(
+    Configurations.Laptop.v1(),
+    CredentialProvider.from_environment_variable("MOMENTO_API_KEY"),
+    default_ttl=timedelta(days=1))
+
+# Choose a Momento cache name of your choice
+cache_name = "langchain"
+
+# Instantiate the LLM cache
+set_llm_cache(MomentoCache(cache_client, cache_name))
+```
+
+## Memory
+
+Momento se puede usar como un almacén de memoria distribuida para LLM.
+
+Consulte [este cuaderno](/docs/integrations/memory/momento_chat_message_history) para obtener un tutorial sobre cómo usar Momento como un almacén de memoria para el historial de mensajes de chat.
+
+```python
+<!--IMPORTS:[{"imported": "MomentoChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.momento.MomentoChatMessageHistory.html", "title": "Momento"}]-->
+from langchain.memory import MomentoChatMessageHistory
+```
+
+## Vector Store
+
+Momento Vector Index (MVI) se puede usar como un almacén de vectores.
+
+Consulte [este cuaderno](/docs/integrations/vectorstores/momento_vector_index) para obtener un tutorial sobre cómo usar MVI como un almacén de vectores.
+
+```python
+<!--IMPORTS:[{"imported": "MomentoVectorIndex", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.momento_vector_index.MomentoVectorIndex.html", "title": "Momento"}]-->
+from langchain_community.vectorstores import MomentoVectorIndex
+```

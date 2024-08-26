@@ -1,0 +1,45 @@
+---
+translated: true
+---
+
+# AI21 Labs
+
+>[AI21 Labs](https://www.ai21.com/about) est une entreprise spécialisée dans le traitement du langage naturel (NLP), qui développe des systèmes d'IA capables de comprendre et de générer du langage naturel.
+
+Cette page couvre comment utiliser l'écosystème `AI21` dans `LangChain`.
+
+## Installation et configuration
+
+- Obtenez une clé d'API AI21 et définissez-la comme une variable d'environnement (`AI21_API_KEY`)
+- Installez le package Python :
+
+```bash
+pip install langchain-ai21
+```
+
+## LLMs
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/ai21).
+
+```python
+<!--IMPORTS:[{"imported": "AI21", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ai21.AI21.html", "title": "AI21 Labs"}]-->
+from langchain_community.llms import AI21
+```
+
+## Modèles de chat
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/ai21).
+
+```python
+<!--IMPORTS:[{"imported": "ChatAI21", "source": "langchain_ai21", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_ai21.chat_models.ChatAI21.html", "title": "AI21 Labs"}]-->
+from langchain_ai21 import ChatAI21
+```
+
+## Modèles d'intégration
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/ai21).
+
+```python
+<!--IMPORTS:[{"imported": "AI21Embeddings", "source": "langchain_ai21", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_ai21.embeddings.AI21Embeddings.html", "title": "AI21 Labs"}]-->
+from langchain_ai21 import AI21Embeddings
+```

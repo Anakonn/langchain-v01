@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# CTranslate2
+
+>[CTranslate2](https://opennmt.net/CTranslate2/quickstart.html) एक C++ और Python लाइब्रेरी है
+> जो Transformer मॉडल्स के कुशल अनुमान के लिए है।
+>
+>इस प्रोजेक्ट में एक कस्टम रनटाइम को लागू किया गया है जो वजन क्वांटीकरण, परत संगठन, बैच पुनर्व्यवस्था आदि जैसी कई प्रदर्शन अनुकूलन तकनीकों को लागू करता है,
+> ताकि CPU और GPU पर Transformer मॉडल्स का उपयोग तेज और मेमोरी का उपयोग कम किया जा सके।
+>
+>[प्रोजेक्ट के रिपॉजिटरी](https://opennmt.net/CTranslate2/guides/transformers.html) में सुविधाओं और समर्थित मॉडल्स की पूरी सूची शामिल है।
+> शुरू करने के लिए, कृपया आधिकारिक [त्वरित शुरुआत गाइड](https://opennmt.net/CTranslate2/quickstart.html) देखें।
+
+## स्थापना और सेटअप
+
+Python पैकेज स्थापित करें:
+
+```bash
+pip install ctranslate2
+```
+
+## LLMs
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/ctranslate2) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "CTranslate2", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ctranslate2.CTranslate2.html", "title": "CTranslate2"}]-->
+from langchain_community.llms import CTranslate2
+```

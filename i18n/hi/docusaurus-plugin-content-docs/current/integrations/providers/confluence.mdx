@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# कॉन्फ़्लुएंस
+
+>[कॉन्फ़्लुएंस](https://www.atlassian.com/software/confluence) एक विकि सहयोग प्लेटफ़ॉर्म है जो सभी परियोजना-संबंधित सामग्री को सहेजता और संगठित करता है। `कॉन्फ़्लुएंस` एक नॉलेज बेस है जो मुख्य रूप से सामग्री प्रबंधन गतिविधियों को संभालता है।
+
+## स्थापना और सेटअप
+
+```bash
+pip install atlassian-python-api
+```
+
+हमें `username/api_key` या `Oauth2 लॉगिन` सेट करना होगा।
+[निर्देशों](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) देखें।
+
+## दस्तावेज़ लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/confluence) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ConfluenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.confluence.ConfluenceLoader.html", "title": "Confluence"}]-->
+from langchain_community.document_loaders import ConfluenceLoader
+```

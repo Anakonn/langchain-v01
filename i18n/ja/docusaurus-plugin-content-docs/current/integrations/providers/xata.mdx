@@ -1,0 +1,36 @@
+---
+translated: true
+---
+
+# Xata
+
+> [Xata](https://xata.io)は、`PostgreSQL`に基づいたサーバーレスのデータプラットフォームです。
+> Pythonのソフトウェア開発キットを提供し、データの管理にUIを使用できます。
+> `Xata`には、任意のテーブルに追加できるネイティブのベクトル型があり、類似検索をサポートしています。
+> LangChainは、ベクトルを直接`Xata`に挿入し、与えられたベクトルの最近傍を検索するため、
+> LangChainのEmbeddingsインテグレーションをすべて`Xata`で使用できます。
+
+## インストールとセットアップ
+
+`xata`のPythonパッケージをインストールする必要があります。
+
+```bash
+pip install xata==1.0.0a7
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/xata)を参照してください。
+
+```python
+from langchain_community.vectorstores import XataVectorStore
+```
+
+## メモリ
+
+[使用例](/docs/integrations/memory/xata_chat_message_history)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "XataChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.xata.XataChatMessageHistory.html", "title": "Xata"}]-->
+from langchain_community.chat_message_histories import XataChatMessageHistory
+```

@@ -1,0 +1,347 @@
+---
+translated: true
+---
+
+# JSON
+
+>[JSON (JavaScript Object Notation)](https://en.wikipedia.org/wiki/JSON) एक खुला मानक फ़ाइल प्रारूप और डेटा आदान-प्रदान प्रारूप है जो मानव-पठनीय पाठ का उपयोग करके गुण-मान युग्मों और सरणियों (या अन्य सीरियलाइज़ योग्य मूल्यों) से बने डेटा वस्तुओं को संग्रहीत और प्रेषित करता है।
+
+>[JSON Lines](https://jsonlines.org/) एक फ़ाइल प्रारूप है जहां प्रत्येक पंक्ति एक मान्य JSON मूल्य है।
+
+>`JSONLoader` एक निर्दिष्ट [jq स्कीमा](https://en.wikipedia.org/wiki/Jq_(programming_language)) का उपयोग करके JSON फ़ाइलों को पार्स करता है। यह `jq` पायथन पैकेज का उपयोग करता है।
+`jq` वाक्यविन्यास के विस्तृत प्रलेखन के लिए इस [मैनुअल](https://stedolan.github.io/jq/manual/#Basicfilters) की जाँच करें।
+
+```python
+#!pip install jq
+```
+
+```python
+<!--IMPORTS:[{"imported": "JSONLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.json_loader.JSONLoader.html", "title": "JSON"}]-->
+from langchain_community.document_loaders import JSONLoader
+```
+
+```python
+import json
+from pathlib import Path
+from pprint import pprint
+
+
+file_path='./example_data/facebook_chat.json'
+data = json.loads(Path(file_path).read_text())
+```
+
+```python
+pprint(data)
+```
+
+```output
+    {'image': {'creation_timestamp': 1675549016, 'uri': 'image_of_the_chat.jpg'},
+     'is_still_participant': True,
+     'joinable_mode': {'link': '', 'mode': 1},
+     'magic_words': [],
+     'messages': [{'content': 'Bye!',
+                   'sender_name': 'User 2',
+                   'timestamp_ms': 1675597571851},
+                  {'content': 'Oh no worries! Bye',
+                   'sender_name': 'User 1',
+                   'timestamp_ms': 1675597435669},
+                  {'content': 'No Im sorry it was my mistake, the blue one is not '
+                              'for sale',
+                   'sender_name': 'User 2',
+                   'timestamp_ms': 1675596277579},
+                  {'content': 'I thought you were selling the blue one!',
+                   'sender_name': 'User 1',
+                   'timestamp_ms': 1675595140251},
+                  {'content': 'Im not interested in this bag. Im interested in the '
+                              'blue one!',
+                   'sender_name': 'User 1',
+                   'timestamp_ms': 1675595109305},
+                  {'content': 'Here is $129',
+                   'sender_name': 'User 2',
+                   'timestamp_ms': 1675595068468},
+                  {'photos': [{'creation_timestamp': 1675595059,
+                               'uri': 'url_of_some_picture.jpg'}],
+                   'sender_name': 'User 2',
+                   'timestamp_ms': 1675595060730},
+                  {'content': 'Online is at least $100',
+                   'sender_name': 'User 2',
+                   'timestamp_ms': 1675595045152},
+                  {'content': 'How much do you want?',
+                   'sender_name': 'User 1',
+                   'timestamp_ms': 1675594799696},
+                  {'content': 'Goodmorning! $50 is too low.',
+                   'sender_name': 'User 2',
+                   'timestamp_ms': 1675577876645},
+                  {'content': 'Hi! Im interested in your bag. Im offering $50. Let '
+                              'me know if you are interested. Thanks!',
+                   'sender_name': 'User 1',
+                   'timestamp_ms': 1675549022673}],
+     'participants': [{'name': 'User 1'}, {'name': 'User 2'}],
+     'thread_path': 'inbox/User 1 and User 2 chat',
+     'title': 'User 1 and User 2 chat'}
+```
+
+## `JSONLoader` का उपयोग करना
+
+मान लीजिए हम JSON डेटा में `messages` कुंजी के तहत `content` फ़ील्ड के मूल्यों को निकालने में रुचि रखते हैं। यह `JSONLoader` के माध्यम से आसानी से किया जा सकता है, जैसा कि नीचे दिखाया गया है।
+
+### JSON फ़ाइल
+
+```python
+loader = JSONLoader(
+    file_path='./example_data/facebook_chat.json',
+    jq_schema='.messages[].content',
+    text_content=False)
+
+data = loader.load()
+```
+
+```python
+pprint(data)
+```
+
+```output
+    [Document(page_content='Bye!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 1}),
+     Document(page_content='Oh no worries! Bye', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 2}),
+     Document(page_content='No Im sorry it was my mistake, the blue one is not for sale', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 3}),
+     Document(page_content='I thought you were selling the blue one!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 4}),
+     Document(page_content='Im not interested in this bag. Im interested in the blue one!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 5}),
+     Document(page_content='Here is $129', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 6}),
+     Document(page_content='', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 7}),
+     Document(page_content='Online is at least $100', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 8}),
+     Document(page_content='How much do you want?', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 9}),
+     Document(page_content='Goodmorning! $50 is too low.', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 10}),
+     Document(page_content='Hi! Im interested in your bag. Im offering $50. Let me know if you are interested. Thanks!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 11})]
+```
+
+### JSON Lines फ़ाइल
+
+यदि आप JSON Lines फ़ाइल से दस्तावेज़ लोड करना चाहते हैं, तो आप `json_lines=True` पास करते हैं
+और एकल JSON वस्तु से `page_content` को निकालने के लिए `jq_schema` निर्दिष्ट करते हैं।
+
+```python
+file_path = './example_data/facebook_chat_messages.jsonl'
+pprint(Path(file_path).read_text())
+```
+
+```output
+    ('{"sender_name": "User 2", "timestamp_ms": 1675597571851, "content": "Bye!"}\n'
+     '{"sender_name": "User 1", "timestamp_ms": 1675597435669, "content": "Oh no '
+     'worries! Bye"}\n'
+     '{"sender_name": "User 2", "timestamp_ms": 1675596277579, "content": "No Im '
+     'sorry it was my mistake, the blue one is not for sale"}\n')
+```
+
+```python
+loader = JSONLoader(
+    file_path='./example_data/facebook_chat_messages.jsonl',
+    jq_schema='.content',
+    text_content=False,
+    json_lines=True)
+
+data = loader.load()
+```
+
+```python
+pprint(data)
+```
+
+```output
+    [Document(page_content='Bye!', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat_messages.jsonl', 'seq_num': 1}),
+     Document(page_content='Oh no worries! Bye', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat_messages.jsonl', 'seq_num': 2}),
+     Document(page_content='No Im sorry it was my mistake, the blue one is not for sale', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat_messages.jsonl', 'seq_num': 3})]
+```
+
+एक और विकल्प है `jq_schema='.'` सेट करना और `content_key` प्रदान करना:
+
+```python
+loader = JSONLoader(
+    file_path='./example_data/facebook_chat_messages.jsonl',
+    jq_schema='.',
+    content_key='sender_name',
+    json_lines=True)
+
+data = loader.load()
+```
+
+```python
+pprint(data)
+```
+
+```output
+    [Document(page_content='User 2', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat_messages.jsonl', 'seq_num': 1}),
+     Document(page_content='User 1', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat_messages.jsonl', 'seq_num': 2}),
+     Document(page_content='User 2', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat_messages.jsonl', 'seq_num': 3})]
+```
+
+### `content_key` के साथ JSON फ़ाइल jq स्कीमा
+
+JSON फ़ाइल से दस्तावेज़ लोड करने के लिए `content_key` का उपयोग करते हुए jq स्कीमा सेट करें, `is_content_key_jq_parsable=True` सेट करें।
+सुनिश्चित करें कि `content_key` संगत है और jq स्कीमा का उपयोग करके पार्स किया जा सकता है।
+
+```python
+file_path = './sample.json'
+pprint(Path(file_path).read_text())
+```
+
+```json
+    {"data": [
+        {"attributes": {
+            "message": "message1",
+            "tags": [
+            "tag1"]},
+        "id": "1"},
+        {"attributes": {
+            "message": "message2",
+            "tags": [
+            "tag2"]},
+        "id": "2"}]}
+```
+
+```python
+loader = JSONLoader(
+    file_path=file_path,
+    jq_schema=".data[]",
+    content_key=".attributes.message",
+    is_content_key_jq_parsable=True,
+)
+
+data = loader.load()
+```
+
+```python
+pprint(data)
+```
+
+```output
+    [Document(page_content='message1', metadata={'source': '/path/to/sample.json', 'seq_num': 1}),
+     Document(page_content='message2', metadata={'source': '/path/to/sample.json', 'seq_num': 2})]
+```
+
+## मेटाडेटा का निकालना
+
+आमतौर पर, हम JSON फ़ाइल में उपलब्ध मेटाडेटा को उन दस्तावेजों में शामिल करना चाहते हैं जो हम सामग्री से बनाते हैं।
+
+निम्नलिखित उदाहरण में यह दिखाया गया है कि `JSONLoader` का उपयोग करके मेटाडेटा कैसे निकाला जा सकता है।
+
+कुछ प्रमुख बदलाव ध्यान में रखने योग्य हैं। पिछले उदाहरण में जहां हमने मेटाडेटा एकत्र नहीं किया था, हम `page_content` के लिए मूल्य को निकालने के लिए सीधे स्कीमा में निर्दिष्ट कर सके।
+
+```python
+.messages[].content
+```
+
+वर्तमान उदाहरण में, हमें लोडर को `messages` फ़ील्ड में रिकॉर्ड्स (डिक्शनरी) पर इटरेट करने के लिए कहना होगा। jq_schema को फिर:
+
+```python
+.messages[]
+```
+
+इससे हमें `metadata_func` में रिकॉर्ड्स (डिक्शनरी) पास करने में मदद मिलती है। `metadata_func` उस जानकारी को पहचानने के लिए जिम्मेदार है जिसे रिकॉर्ड से अंतिम `Document` वस्तु में शामिल किया जाना चाहिए।
+
+इसके अलावा, अब हमें लोडर में, `content_key` तर्क के माध्यम से, उस कुंजी को स्पष्ट रूप से निर्दिष्ट करना होगा जहां से `page_content` के लिए मूल्य निकाला जाना चाहिए।
+
+```python
+# Define the metadata extraction function.
+def metadata_func(record: dict, metadata: dict) -> dict:
+
+    metadata["sender_name"] = record.get("sender_name")
+    metadata["timestamp_ms"] = record.get("timestamp_ms")
+
+    return metadata
+
+
+loader = JSONLoader(
+    file_path='./example_data/facebook_chat.json',
+    jq_schema='.messages[]',
+    content_key="content",
+    metadata_func=metadata_func
+)
+
+data = loader.load()
+```
+
+```python
+pprint(data)
+```
+
+```output
+    [Document(page_content='Bye!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 1, 'sender_name': 'User 2', 'timestamp_ms': 1675597571851}),
+     Document(page_content='Oh no worries! Bye', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 2, 'sender_name': 'User 1', 'timestamp_ms': 1675597435669}),
+     Document(page_content='No Im sorry it was my mistake, the blue one is not for sale', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 3, 'sender_name': 'User 2', 'timestamp_ms': 1675596277579}),
+     Document(page_content='I thought you were selling the blue one!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 4, 'sender_name': 'User 1', 'timestamp_ms': 1675595140251}),
+     Document(page_content='Im not interested in this bag. Im interested in the blue one!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 5, 'sender_name': 'User 1', 'timestamp_ms': 1675595109305}),
+     Document(page_content='Here is $129', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 6, 'sender_name': 'User 2', 'timestamp_ms': 1675595068468}),
+     Document(page_content='', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 7, 'sender_name': 'User 2', 'timestamp_ms': 1675595060730}),
+     Document(page_content='Online is at least $100', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 8, 'sender_name': 'User 2', 'timestamp_ms': 1675595045152}),
+     Document(page_content='How much do you want?', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 9, 'sender_name': 'User 1', 'timestamp_ms': 1675594799696}),
+     Document(page_content='Goodmorning! $50 is too low.', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 10, 'sender_name': 'User 2', 'timestamp_ms': 1675577876645}),
+     Document(page_content='Hi! Im interested in your bag. Im offering $50. Let me know if you are interested. Thanks!', metadata={'source': '/Users/avsolatorio/WBG/langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 11, 'sender_name': 'User 1', 'timestamp_ms': 1675549022673})]
+```
+
+अब, आप देखेंगे कि दस्तावेज़ों में निकाली गई सामग्री से संबंधित मेटाडेटा शामिल है।
+
+## `metadata_func`
+
+ऊपर दिखाए गए तरीके से, `metadata_func` `JSONLoader` द्वारा उत्पन्न डिफ़ॉल्ट मेटाडेटा को स्वीकार करता है। यह उपयोगकर्ता को मेटाडेटा को प्रारूपित करने के संबंध में पूर्ण नियंत्रण प्रदान करता है।
+
+उदाहरण के लिए, डिफ़ॉल्ट मेटाडेटा में `source` और `seq_num` कुंजियां शामिल हैं। हालांकि, संभव है कि JSON डेटा में भी ये कुंजियां मौजूद हों। उपयोगकर्ता फिर `metadata_func` का उपयोग करके डिफ़ॉल्ट कुंजियों का नाम बदल सकता है और JSON डेटा से उन्हें उपयोग कर सकता है।
+
+नीचे दिया गया उदाहरण दिखाता है कि हम `source` को केवल `langchain` निर्देशिका के संबंध में फ़ाइल स्रोत की जानकारी तक सीमित कैसे कर सकते हैं।
+
+```python
+# Define the metadata extraction function.
+def metadata_func(record: dict, metadata: dict) -> dict:
+
+    metadata["sender_name"] = record.get("sender_name")
+    metadata["timestamp_ms"] = record.get("timestamp_ms")
+
+    if "source" in metadata:
+        source = metadata["source"].split("/")
+        source = source[source.index("langchain"):]
+        metadata["source"] = "/".join(source)
+
+    return metadata
+
+
+loader = JSONLoader(
+    file_path='./example_data/facebook_chat.json',
+    jq_schema='.messages[]',
+    content_key="content",
+    metadata_func=metadata_func
+)
+
+data = loader.load()
+```
+
+```python
+pprint(data)
+```
+
+```output
+    [Document(page_content='Bye!', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 1, 'sender_name': 'User 2', 'timestamp_ms': 1675597571851}),
+     Document(page_content='Oh no worries! Bye', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 2, 'sender_name': 'User 1', 'timestamp_ms': 1675597435669}),
+     Document(page_content='No Im sorry it was my mistake, the blue one is not for sale', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 3, 'sender_name': 'User 2', 'timestamp_ms': 1675596277579}),
+     Document(page_content='I thought you were selling the blue one!', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 4, 'sender_name': 'User 1', 'timestamp_ms': 1675595140251}),
+     Document(page_content='Im not interested in this bag. Im interested in the blue one!', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 5, 'sender_name': 'User 1', 'timestamp_ms': 1675595109305}),
+     Document(page_content='Here is $129', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 6, 'sender_name': 'User 2', 'timestamp_ms': 1675595068468}),
+     Document(page_content='', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 7, 'sender_name': 'User 2', 'timestamp_ms': 1675595060730}),
+     Document(page_content='Online is at least $100', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 8, 'sender_name': 'User 2', 'timestamp_ms': 1675595045152}),
+     Document(page_content='How much do you want?', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 9, 'sender_name': 'User 1', 'timestamp_ms': 1675594799696}),
+     Document(page_content='Goodmorning! $50 is too low.', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 10, 'sender_name': 'User 2', 'timestamp_ms': 1675577876645}),
+     Document(page_content='Hi! Im interested in your bag. Im offering $50. Let me know if you are interested. Thanks!', metadata={'source': 'langchain/docs/modules/indexes/document_loaders/examples/example_data/facebook_chat.json', 'seq_num': 11, 'sender_name': 'User 1', 'timestamp_ms': 1675549022673})]
+```
+
+## jq स्कीमा के साथ सामान्य JSON संरचनाएं
+
+नीचे दी गई सूची उन संभावित `jq_schema` का संदर्भ प्रदान करती है जिनका उपयोग उपयोगकर्ता JSON डेटा से सामग्री निकालने के लिए कर सकता है, निर्भर करते हुए कि संरचना कैसी है।
+
+```output
+JSON        -> [{"text": ...}, {"text": ...}, {"text": ...}]
+jq_schema   -> ".[].text"
+
+JSON        -> {"key": [{"text": ...}, {"text": ...}, {"text": ...}]}
+jq_schema   -> ".key[].text"
+
+JSON        -> ["...", "...", "..."]
+jq_schema   -> ".[]"
+```

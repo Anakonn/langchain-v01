@@ -1,0 +1,110 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# Conceptos
+
+La idea central de los agentes es usar un modelo de lenguaje para elegir una secuencia de acciones a realizar.
+En las cadenas, una secuencia de acciones se codifica previamente (en código).
+En los agentes, se usa un modelo de lenguaje como motor de razonamiento para determinar qué acciones tomar y en qué orden.
+
+Aquí hay varios componentes clave:
+
+## Esquema
+
+LangChain tiene varias abstracciones para facilitar el trabajo con agentes.
+
+### AgentAction
+
+Esta es una clase de datos que representa la acción que debe realizar un agente.
+Tiene una propiedad `tool` (que es el nombre de la herramienta que debe invocarse) y una propiedad `tool_input` (la entrada para esa herramienta)
+
+### AgentFinish
+
+Esto representa el resultado final de un agente, cuando está listo para devolver al usuario.
+Contiene un mapeo de clave-valor `return_values`, que contiene la salida final del agente.
+Normalmente, esto contiene una clave `output` que contiene una cadena que es la respuesta del agente.
+
+### Pasos intermedios
+
+Estos representan las acciones y salidas anteriores del agente, correspondientes a esta ejecución ACTUAL del agente.
+Estos son importantes para pasarlos a la iteración futura, para que el agente sepa qué trabajo ya ha realizado.
+Esto se escribe como `List[Tuple[AgentAction, Any]]`.
+Tenga en cuenta que la observación se deja actualmente como tipo `Any` para ser lo más flexible posible.
+En la práctica, a menudo se trata de una cadena.
+
+## Agente
+
+Esta es la cadena responsable de decidir qué paso dar a continuación.
+Generalmente, está impulsado por un modelo de lenguaje, un mensaje y un analizador de salida.
+
+Los diferentes agentes tienen diferentes estilos de mensajería para el razonamiento, diferentes formas de codificar las entradas y diferentes formas de analizar la salida.
+Para obtener una lista completa de los agentes incorporados, consulte [tipos de agentes](/docs/modules/agents/agent_types/).
+También puedes **construir fácilmente agentes personalizados**, si necesitas un mayor control.
+
+### Entradas del agente
+
+Las entradas de un agente son un mapeo de clave-valor.
+Solo hay una clave obligatoria: `intermediate_steps`, que corresponde a `Pasos intermedios` como se describió anteriormente.
+
+En general, la PromptTemplate se encarga de transformar estos pares en un formato que se pueda pasar mejor al LLM.
+
+### Salidas del agente
+
+La salida es la siguiente acción(es) a tomar o la respuesta final a enviar al usuario (`AgentAction`s o `AgentFinish`).
+Concretamente, esto se puede escribir como `Union[AgentAction, List[AgentAction], AgentFinish]`.
+
+El analizador de salida es el responsable de tomar la salida cruda del LLM y transformarla en uno de estos tres tipos.
+
+## AgentExecutor
+
+El ejecutor de agentes es el entorno de ejecución de un agente.
+Esto es lo que realmente llama al agente, ejecuta las acciones que elige, pasa las salidas de las acciones de vuelta al agente y repite.
+En pseudocódigo, esto se ve más o menos así:
+
+```python
+next_action = agent.get_action(...)
+while next_action != AgentFinish:
+    observation = run(next_action)
+    next_action = agent.get_action(..., next_action, observation)
+return next_action
+```
+
+Si bien esto puede parecer simple, el entorno de ejecución maneja varias complejidades, incluyendo:
+
+1. Manejar casos en los que el agente selecciona una herramienta que no existe
+2. Manejar casos en los que la herramienta genera un error
+3. Manejar casos en los que el agente produce una salida que no se puede analizar en una invocación de herramienta
+4. Registro y observabilidad en todos los niveles (decisiones del agente, llamadas a herramientas) en stdout y/o en [LangSmith](/docs/langsmith).
+
+## Herramientas
+
+Las herramientas son funciones que un agente puede invocar.
+La abstracción `Tool` consta de dos componentes:
+
+1. El esquema de entrada para la herramienta. Esto le dice al LLM qué parámetros se necesitan para llamar a la herramienta. Sin esto, no sabrá cuáles son las entradas correctas. Estos parámetros deben tener nombres y descripciones razonables.
+2. La función a ejecutar. Esto generalmente es solo una función de Python que se invoca.
+
+### Consideraciones
+
+Hay dos consideraciones de diseño importantes en torno a las herramientas:
+
+1. Dar al agente acceso a las herramientas correctas
+2. Describir las herramientas de la manera más útil para el agente
+
+Sin pensar en ambos, no podrás construir un agente que funcione.
+Si no le das al agente acceso a un conjunto correcto de herramientas, nunca podrá cumplir con los objetivos que le des.
+Si no describes bien las herramientas, el agente no sabrá cómo usarlas correctamente.
+
+LangChain proporciona un amplio conjunto de herramientas incorporadas, pero también facilita la definición de las propias (incluyendo descripciones personalizadas).
+Para obtener una lista completa de las herramientas incorporadas, consulte la sección [integraciones de herramientas](/docs/integrations/tools/)
+
+## Toolkits
+
+Para muchas tareas comunes, un agente necesitará un conjunto de herramientas relacionadas.
+Para esto, LangChain proporciona el concepto de toolkits: grupos de aproximadamente 3 a 5 herramientas necesarias para lograr objetivos específicos.
+Por ejemplo, el toolkit de GitHub tiene una herramienta para buscar a través de los problemas de GitHub, una herramienta para leer un archivo, una herramienta para comentar, etc.
+
+LangChain proporciona un amplio conjunto de toolkits para empezar.
+Para obtener una lista completa de los toolkits incorporados, consulte la sección [integraciones de toolkits](/docs/integrations/toolkits/)

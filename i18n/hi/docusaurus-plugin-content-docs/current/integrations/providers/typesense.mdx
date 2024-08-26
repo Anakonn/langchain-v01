@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# टाइपसेंस
+
+> [टाइपसेंस](https://typesense.org) एक ओपन-सोर्स, मेमोरी में चलने वाला सर्च इंजन है, जिसे आप या तो [खुद होस्ट](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) कर सकते हैं या [टाइपसेंस क्लाउड](https://cloud.typesense.org/) पर चला सकते हैं।
+> `टाइपसेंस` प्रदर्शन पर ध्यान केंद्रित करता है क्योंकि यह पूरा इंडेक्स RAM में स्टोर करता है (डिस्क पर बैकअप के साथ) और डेवलपर अनुभव को सरल बनाने पर भी ध्यान केंद्रित करता है क्योंकि यह उपलब्ध विकल्पों को सरल बनाता है और अच्छे डिफ़ॉल्ट सेट करता है।
+
+## इंस्टॉलेशन और सेटअप
+
+```bash
+pip install typesense openapi-schema-pydantic
+```
+
+## वेक्टर स्टोर
+
+[उपयोग उदाहरण](/docs/integrations/vectorstores/typesense) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Typesense", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.typesense.Typesense.html", "title": "Typesense"}]-->
+from langchain_community.vectorstores import Typesense
+```

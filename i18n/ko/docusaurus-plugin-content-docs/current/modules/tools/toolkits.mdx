@@ -1,0 +1,23 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# 도구 키트
+
+도구 키트는 특정 작업을 위해 함께 사용하도록 설계된 도구 모음입니다. 편리한 로딩 방법이 있습니다.
+사용 가능한 준비된 도구 키트의 전체 목록은 [Integrations](/docs/integrations/toolkits/)를 방문하세요.
+
+모든 도구 키트는 도구 목록을 반환하는 `get_tools` 메서드를 노출합니다.
+따라서 다음과 같이 할 수 있습니다:
+
+```python
+# Initialize a toolkit
+toolkit = ExampleTookit(...)
+
+# Get list of tools
+tools = toolkit.get_tools()
+
+# Create agent
+agent = create_agent_method(llm, tools, prompt)
+```

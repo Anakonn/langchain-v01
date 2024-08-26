@@ -1,0 +1,70 @@
+---
+translated: true
+---
+
+# Recuperación
+
+Muchas aplicaciones de LLM requieren datos específicos del usuario que no forman parte del conjunto de entrenamiento del modelo.
+La forma principal de lograr esto es a través de la Generación Aumentada por Recuperación (RAG).
+En este proceso, se *recuperan* datos externos y luego se pasan al LLM cuando se realiza el paso de *generación*.
+
+LangChain proporciona todos los bloques de construcción para aplicaciones RAG, desde simples hasta complejas.
+Esta sección de la documentación cubre todo lo relacionado con el paso de *recuperación*, es decir, la obtención de los datos.
+Aunque esto parece simple, puede ser sutilmente complejo.
+Esto abarca varios módulos clave.
+
+![Diagrama ilustrativo que muestra el proceso de conexión de datos con los pasos: Fuente, Cargar, Transformar, Incrustar, Almacenar y Recuperar.](/img/data_connection.jpg "Diagrama del proceso de conexión de datos")
+
+## [Cargadores de documentos](/docs/modules/data_connection/document_loaders/)
+
+Los **cargadores de documentos** cargan documentos de muchas fuentes diferentes.
+LangChain proporciona más de 100 cargadores de documentos diferentes, así como integraciones con otros proveedores importantes en el espacio,
+como AirByte y Unstructured.
+LangChain proporciona integraciones para cargar todo tipo de documentos (HTML, PDF, código) desde todo tipo de ubicaciones (buckets privados de S3, sitios web públicos).
+
+## [División de texto](/docs/modules/data_connection/document_transformers/)
+
+Una parte clave de la recuperación es obtener solo las partes relevantes de los documentos.
+Esto implica varios pasos de transformación para preparar los documentos para la recuperación.
+Uno de los principales aquí es dividir (o dividir en fragmentos) un documento grande en fragmentos más pequeños.
+LangChain proporciona varios algoritmos de transformación para hacer esto, así como lógica optimizada para tipos de documentos específicos (código, markdown, etc.).
+
+## [Modelos de incrustación de texto](/docs/modules/data_connection/text_embedding/)
+
+Otra parte clave de la recuperación es crear incrustaciones para los documentos.
+Las incrustaciones capturan el significado semántico del texto, lo que le permite encontrar rápida y eficientemente otras piezas de un texto que son similares.
+LangChain proporciona integraciones con más de 25 proveedores y métodos de incrustación diferentes,
+desde de código abierto hasta API propietarias,
+lo que le permite elegir el que mejor se adapte a sus necesidades.
+LangChain proporciona una interfaz estándar, lo que le permite cambiar fácilmente entre modelos.
+
+## [Tiendas de vectores](/docs/modules/data_connection/vectorstores/)
+
+Con el auge de las incrustaciones, ha surgido la necesidad de bases de datos que admitan el almacenamiento y la búsqueda eficientes de estas incrustaciones.
+LangChain proporciona integraciones con más de 50 tiendas de vectores diferentes, desde locales de código abierto hasta propietarias alojadas en la nube,
+lo que le permite elegir la que mejor se adapte a sus necesidades.
+LangChain expone una interfaz estándar, lo que le permite cambiar fácilmente entre tiendas de vectores.
+
+## [Recuperadores](/docs/modules/data_connection/retrievers/)
+
+Una vez que los datos están en la base de datos, aún necesita recuperarlos.
+LangChain admite muchos algoritmos de recuperación diferentes y es uno de los lugares donde agregamos más valor.
+LangChain admite métodos básicos que son fáciles de comenzar, a saber, la búsqueda semántica simple.
+Sin embargo, también hemos agregado una colección de algoritmos sobre esto para aumentar el rendimiento.
+Estos incluyen:
+
+- [Recuperador de documento principal](/docs/modules/data_connection/retrievers/parent_document_retriever): Esto le permite crear múltiples incrustaciones por documento principal, lo que le permite buscar fragmentos más pequeños pero devolver un contexto más amplio.
+- [Recuperador de autoconsula](/docs/modules/data_connection/retrievers/self_query): Las preguntas de los usuarios a menudo contienen una referencia a algo que no es solo semántico, sino que más bien expresa una lógica que se puede representar mejor como un filtro de metadatos. La autoconsula le permite analizar la parte *semántica* de una consulta de otras *filtros de metadatos* presentes en la consulta.
+- [Recuperador de conjunto](/docs/modules/data_connection/retrievers/ensemble): A veces, es posible que desee recuperar documentos de múltiples fuentes diferentes o utilizando múltiples algoritmos diferentes. El recuperador de conjunto le permite hacer esto fácilmente.
+- ¡Y más!
+
+## [Indexación](/docs/modules/data_connection/indexing)
+
+La **API de indexación** de LangChain sincroniza sus datos de cualquier fuente en una tienda de vectores,
+ayudándolo a:
+
+- Evitar escribir contenido duplicado en la tienda de vectores
+- Evitar volver a escribir el contenido sin cambios
+- Evitar volver a calcular las incrustaciones sobre el contenido sin cambios
+
+Todo lo cual debería ahorrarle tiempo y dinero, además de mejorar los resultados de su búsqueda vectorial.

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# scikit-learn
+
+>[scikit-learn](https://scikit-learn.org/stable/)は機械学習アルゴリズムのオープンソースコレクションで、[k nearest neighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html)の実装も含まれています。 `SKLearnVectorStore`はこの実装をラップし、ベクトルストアをjson、bson(バイナリjson)、またはApache Parquetフォーマットで永続化する機能を追加しています。
+
+## インストールとセットアップ
+
+- `pip install scikit-learn`でPythonパッケージをインストールします
+
+## ベクトルストア
+
+`SKLearnVectorStore`は、scikit-learnパッケージの最近傍実装に対する簡単なラッパーを提供し、ベクトルストアとして使用できるようにします。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "SKLearnVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sklearn.SKLearnVectorStore.html", "title": "scikit-learn"}]-->
+from langchain_community.vectorstores import SKLearnVectorStore
+```
+
+SKLearnVectorStoreラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/sklearn)を参照してください。

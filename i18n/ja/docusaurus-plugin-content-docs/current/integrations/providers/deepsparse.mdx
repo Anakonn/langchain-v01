@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# DeepSparse
+
+このページでは、LangChain 内の [DeepSparse](https://github.com/neuralmagic/deepsparse) 推論ランタイムの使用方法について説明します。
+インストールとセットアップ、DeepSparse の使用例の 2 つの部分に分かれています。
+
+## インストールとセットアップ
+
+- `pip install deepsparse` でPythonパッケージをインストールします
+- [SparseZoo モデル](https://sparsezoo.neuralmagic.com/?useCase=text_generation)を選択するか、[Optimum を使用](https://github.com/neuralmagic/notebooks/blob/main/notebooks/opt-text-generation-deepsparse-quickstart/OPT_Text_Generation_DeepSparse_Quickstart.ipynb)してサポートされているモデルをONNXにエクスポートします
+
+## LLMs
+
+DeepSparse LLMラッパーが用意されており、以下のようにアクセスできます:
+
+```python
+<!--IMPORTS:[{"imported": "DeepSparse", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.deepsparse.DeepSparse.html", "title": "DeepSparse"}]-->
+from langchain_community.llms import DeepSparse
+```
+
+すべてのモデルに対して統一されたインターフェイスを提供します:
+
+```python
+llm = DeepSparse(model='zoo:nlg/text_generation/codegen_mono-350m/pytorch/huggingface/bigpython_bigquery_thepile/base-none')
+
+print(llm.invoke('def fib():'))
+```
+
+追加のパラメーターは `config` パラメーターを使用して渡すことができます:
+
+```python
+config = {'max_generated_tokens': 256}
+
+llm = DeepSparse(model='zoo:nlg/text_generation/codegen_mono-350m/pytorch/huggingface/bigpython_bigquery_thepile/base-none', config=config)
+```

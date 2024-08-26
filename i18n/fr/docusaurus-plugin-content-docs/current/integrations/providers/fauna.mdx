@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# Faune
+
+>[Faune](https://fauna.com/) est une base de données de documents relationnels distribuée
+> qui combine la flexibilité des documents avec la puissance d'une base de données
+> relationnelle, conforme à l'ACID, qui s'étend sur plusieurs régions, clouds ou le globe.
+
+## Installation et configuration
+
+Nous devons obtenir la clé secrète.
+Voir le [guide](https://docs.fauna.com/fauna/current/learn/security_model/) détaillé.
+
+Nous devons installer le package `fauna`.
+
+```bash
+pip install -U fauna
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/fauna).
+
+```python
+<!--IMPORTS:[{"imported": "FaunaLoader", "source": "langchain_community.document_loaders.fauna", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.fauna.FaunaLoader.html", "title": "Fauna"}]-->
+from langchain_community.document_loaders.fauna import FaunaLoader
+```

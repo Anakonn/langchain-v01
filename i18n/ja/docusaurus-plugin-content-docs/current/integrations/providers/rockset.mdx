@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# Rockset
+
+>[Rockset](https://rockset.com/product/)は、大規模な低レイテンシーと高コンカレンシーの分析クエリを提供するリアルタイム分析データベースサービスです。構造化データと半構造化データに対して Converged Index™ を構築し、ベクトル埋め込みの効率的なストアをサポートしています。スキーマレスデータに対するSQLの実行をサポートしているため、メタデータフィルターを使ったベクトル検索に最適です。
+
+## インストールとセットアップ
+
+Rocksetアカウントを持っていることを確認し、WebコンソールにアクセスしてAPIキーを取得してください。詳細は[ウェブサイト](https://rockset.com/docs/rest-api/)をご覧ください。
+
+```bash
+pip install rockset
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/rockset)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "Rockset", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.rocksetdb.Rockset.html", "title": "Rockset"}]-->
+from langchain_community.vectorstores import Rockset
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/rockset)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "RocksetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rocksetdb.RocksetLoader.html", "title": "Rockset"}]-->
+from langchain_community.document_loaders import RocksetLoader
+```
+
+## チャットメッセージ履歴
+
+[使用例](/docs/integrations/memory/rockset_chat_message_history)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "RocksetChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.rocksetdb.RocksetChatMessageHistory.html", "title": "Rockset"}]-->
+from langchain_community.chat_message_histories import RocksetChatMessageHistory
+```

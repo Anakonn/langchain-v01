@@ -1,0 +1,52 @@
+---
+translated: true
+---
+
+# PromptLayer
+
+>[PromptLayer](https://docs.promptlayer.com/introduction) est une plateforme pour l'ingénierie des invites.
+> Elle aide également à l'observabilité des LLM pour visualiser les requêtes, les versions d'invites et suivre l'utilisation.
+>
+>Bien que `PromptLayer` ait des LLM qui s'intègrent directement à LangChain (par exemple,
+> [`PromptLayerOpenAI`](https://docs.promptlayer.com/languages/langchain)),
+> l'utilisation d'un rappel est le moyen recommandé pour intégrer `PromptLayer` à LangChain.
+
+## Installation et configuration
+
+Pour travailler avec `PromptLayer`, nous devons :
+- Créer un compte `PromptLayer`
+- Créer un jeton d'API et le définir comme variable d'environnement (`PROMPTLAYER_API_KEY`)
+
+Installer un package Python :
+
+```bash
+pip install promptlayer
+```
+
+## Rappel
+
+Voir un [exemple d'utilisation](/docs/integrations/callbacks/promptlayer).
+
+```python
+<!--IMPORTS:[{"imported": "PromptLayerCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.promptlayer_callback.PromptLayerCallbackHandler.html", "title": "PromptLayer"}]-->
+import promptlayer  # Don't forget this import!
+from langchain.callbacks import PromptLayerCallbackHandler
+```
+
+## LLM
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/promptlayer_openai).
+
+```python
+<!--IMPORTS:[{"imported": "PromptLayerOpenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.promptlayer_openai.PromptLayerOpenAI.html", "title": "PromptLayer"}]-->
+from langchain_community.llms import PromptLayerOpenAI
+```
+
+## Modèles de discussion
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/promptlayer_chatopenai).
+
+```python
+<!--IMPORTS:[{"imported": "PromptLayerChatOpenAI", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.promptlayer_openai.PromptLayerChatOpenAI.html", "title": "PromptLayer"}]-->
+from langchain_community.chat_models import PromptLayerChatOpenAI
+```

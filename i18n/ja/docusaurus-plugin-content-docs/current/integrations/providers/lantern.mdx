@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# ランタン
+
+このページでは、LangChain内の[ランタン](https://github.com/lanterndata/lantern)の使用方法について説明します。
+設定と、特定のランタンラッパーへの参照の2つの部分に分かれています。
+
+## 設定
+
+1. 最初のステップは、`lantern`拡張機能がインストールされたデータベースを作成することです。
+
+    [ランタン インストールガイド](https://github.com/lanterndata/lantern#-quick-install)の手順に従って、データベースと拡張機能をインストールしてください。Dockerイメージが始めるのに最も簡単な方法です。
+
+## ラッパー
+
+### VectorStore
+
+Postgresのベクトルデータベースのラッパーが存在し、セマンティック検索や例の選択のためのベクトルストアとして使用できます。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "Lantern", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lantern.Lantern.html", "title": "Lantern"}]-->
+from langchain_community.vectorstores import Lantern
+```
+
+### 使用方法
+
+ランタンラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/lantern)を参照してください。

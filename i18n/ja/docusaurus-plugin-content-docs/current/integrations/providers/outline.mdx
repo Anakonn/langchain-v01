@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# アウトライン
+
+> [アウトライン](https://www.getoutline.com/)は、チームの情報共有のために設計されたオープンソースのコラボレーティブナレッジベースプラットフォームです。
+
+## セットアップ
+
+まず、Outlineインスタンスの[APIキーを作成](https://www.getoutline.com/developers#section/Authentication)する必要があります。次に、以下の環境変数を設定する必要があります:
+
+```python
+import os
+
+os.environ["OUTLINE_API_KEY"] = "xxx"
+os.environ["OUTLINE_INSTANCE_URL"] = "https://app.getoutline.com"
+```
+
+## Retriever
+
+[使用例](/docs/integrations/retrievers/outline)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OutlineRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.outline.OutlineRetriever.html", "title": "Outline"}]-->
+from langchain.retrievers import OutlineRetriever
+```

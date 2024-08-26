@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# Diffbot
+
+>[Diffbot](https://docs.diffbot.com/docs)は、Webページを読み取るサービスです。従来のWebスクレイピングツールとは異なり、
+>`Diffbot`はページの内容を読み取るためのルールを必要としません。
+>コンピュータービジョンから始まり、ページを20種類の可能なタイプの1つに分類します。その後、ページのタイプに基づいて主要な属性を識別するように訓練されたマシンラーニングモデルによって、コンテンツが解釈されます。
+>その結果、Webサイトがアプリケーションで使用できるきれいな構造化データ(JSONやCSVなど)に変換されます。
+
+## インストールと設定
+
+Diffbot APIトークンを取得する[手順](https://docs.diffbot.com/reference/authentication)を読んでください。
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/diffbot)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "DiffbotLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.diffbot.DiffbotLoader.html", "title": "Diffbot"}]-->
+from langchain_community.document_loaders import DiffbotLoader
+```

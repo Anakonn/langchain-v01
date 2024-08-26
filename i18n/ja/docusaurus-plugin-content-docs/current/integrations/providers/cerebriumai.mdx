@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# CerebriumAI
+
+>[Cerebrium](https://docs.cerebrium.ai/cerebrium/getting-started/introduction)は、サーバーレスのGPUインフラストラクチャプロバイダーです。
+> 複数のLLMモデルへのAPIアクセスを提供しています。
+
+[CerebriumAI ドキュメント](https://docs.cerebrium.ai/examples/langchain)の例をご覧ください。
+
+## インストールとセットアップ
+
+- Pythonパッケージをインストールします:
+
+```bash
+pip install cerebrium
+```
+
+- [CerebriumAIのAPIキーを取得](https://docs.cerebrium.ai/cerebrium/getting-started/installation)し、環境変数(`CEREBRIUMAI_API_KEY`)に設定します。
+
+## LLMs
+
+[使用例](/docs/integrations/llms/cerebriumai)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "CerebriumAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.cerebriumai.CerebriumAI.html", "title": "CerebriumAI"}]-->
+from langchain_community.llms import CerebriumAI
+```

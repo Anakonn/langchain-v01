@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# 위키백과
+
+>[위키백과](https://wikipedia.org/)는 자원봉사자들인 위키피디언들이 공동 작업과 미디어위키 기반 편집 시스템을 통해 작성하고 관리하는 다국어 무료 온라인 백과사전입니다. 위키백과는 역사상 가장 큰 규모이자 가장 많이 읽히는 참고 자료입니다.
+
+## 설치 및 설정
+
+```bash
+pip install wikipedia
+```
+
+## 문서 로더
+
+[사용 예시](/docs/integrations/document_loaders/wikipedia)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "WikipediaLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.wikipedia.WikipediaLoader.html", "title": "Wikipedia"}]-->
+from langchain_community.document_loaders import WikipediaLoader
+```
+
+## 리트리버
+
+[사용 예시](/docs/integrations/retrievers/wikipedia)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "WikipediaRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.wikipedia.WikipediaRetriever.html", "title": "Wikipedia"}]-->
+from langchain.retrievers import WikipediaRetriever
+```

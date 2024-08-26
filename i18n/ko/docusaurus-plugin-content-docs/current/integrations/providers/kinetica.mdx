@@ -1,0 +1,46 @@
+---
+translated: true
+---
+
+# 키네티카
+
+[키네티카](https://www.kinetica.com/)는 시계열 및 공간 데이터에 대한 분석 및 생성 AI를 가능하게 하기 위해 특별히 설계된 실시간 데이터베이스입니다.
+
+## 채팅 모델
+
+키네티카 LLM 래퍼는 [키네티카 SqlAssist LLM](https://docs.kinetica.com/7.2/sql-gpt/concepts/)을 사용하여 자연어를 SQL로 변환하여 데이터 검색 프로세스를 간소화합니다.
+
+사용법은 [키네티카 SqlAssist LLM 데모](/docs/integrations/chat/kinetica)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ChatKinetica", "source": "langchain_community.chat_models.kinetica", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.kinetica.ChatKinetica.html", "title": "Kinetica"}]-->
+from langchain_community.chat_models.kinetica import ChatKinetica
+```
+
+## 벡터 스토어
+
+키네티카 벡터스토어 래퍼는 키네티카의 [벡터 유사성 검색](https://docs.kinetica.com/7.2/vector_search/) 기능을 활용합니다.
+
+사용법은 [키네티카 벡터스토어 API](/docs/integrations/vectorstores/kinetica)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "Kinetica", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.kinetica.Kinetica.html", "title": "Kinetica"}]-->
+from langchain_community.vectorstores import Kinetica
+```
+
+## 문서 로더
+
+키네티카 문서 로더를 사용하여 키네티카 데이터베이스에서 LangChain 문서를 로드할 수 있습니다.
+
+사용법은 [키네티카 문서 로더](/docs/integrations/document_loaders/kinetica)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "KineticaLoader", "source": "langchain_community.document_loaders.kinetica_loader", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.kinetica_loader.KineticaLoader.html", "title": "Kinetica"}]-->
+from langchain_community.document_loaders.kinetica_loader import KineticaLoader
+```
+
+## 리트리버
+
+키네티카 리트리버는 구조화되지 않은 쿼리에 대한 문서를 반환할 수 있습니다.
+
+사용법은 [키네티카 벡터스토어 기반 리트리버](/docs/integrations/retrievers/kinetica)를 참조하세요.

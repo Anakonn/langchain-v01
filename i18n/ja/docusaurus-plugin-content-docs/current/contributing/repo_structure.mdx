@@ -1,0 +1,54 @@
+---
+sidebar_position: 0.5
+translated: true
+---
+
+# リポジトリ構造
+
+LangChainのコードやドキュメントに貢献する予定の場合は、リポジトリの高レベルの構造を理解するのが役立つかもしれません。
+
+LangChainは[monorep](https://en.wikipedia.org/wiki/Monorepo)として編成されており、複数のパッケージを含んでいます。
+
+以下のようなツリー構造で表現できます:
+
+```text
+.
+├── cookbook # Tutorials and examples
+├── docs # Contains content for the documentation here: https://python.langchain.com/
+├── libs
+│   ├── langchain # Main package
+│   │   ├── tests/unit_tests # Unit tests (present in each package not shown for brevity)
+│   │   ├── tests/integration_tests # Integration tests (present in each package not shown for brevity)
+│   ├── langchain-community # Third-party integrations
+│   ├── langchain-core # Base interfaces for key abstractions
+│   ├── langchain-experimental # Experimental components and chains
+│   ├── partners
+│       ├── langchain-partner-1
+│       ├── langchain-partner-2
+│       ├── ...
+│
+├── templates # A collection of easily deployable reference architectures for a wide variety of tasks.
+```
+
+ルートディレクトリには以下のファイルも含まれています:
+
+* `pyproject.toml`: ドキュメントとクックブックのビルドとリンティングの依存関係。
+* `Makefile`: ビルド、リンティング、ドキュメントとクックブックの作成のためのショートカットが含まれています。
+
+ルートディレクトリにはその他のファイルもありますが、それらの存在は自明です。自由に探索してみてください!
+
+## ドキュメンテーション
+
+`/docs`ディレクトリには、https://python.langchain.com/とそれに関連するAPIリファレンスhttps://api.python.langchain.com/en/latest/langchain_api_reference.htmlに表示されるドキュメントのコンテンツが含まれています。
+
+ドキュメントへの貢献方法については、[ドキュメンテーション](/docs/contributing/documentation/style_guide)ガイドラインを参照してください。
+
+## コード
+
+`/libs`ディレクトリにはLangChainパッケージのコードが含まれています。
+
+コードへの貢献方法については、以下のガイドラインを参照してください:
+
+- [コード](./code.mdx) LangChainコードベースの開発方法を学びます。
+- [インテグレーション](./integrations.mdx) langchain-communityへの貢献方法や新しいパートナーパッケージの開始方法を学びます。
+- [テスト](./testing.mdx) パッケージのテスト方法を学びます。

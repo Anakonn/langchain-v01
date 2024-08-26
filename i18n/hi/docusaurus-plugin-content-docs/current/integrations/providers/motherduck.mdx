@@ -1,0 +1,54 @@
+---
+translated: true
+---
+
+# मदरडक
+
+>[मदरडक](https://motherduck.com/) एक प्रबंधित DuckDB-इन-द-क्लाउड सेवा है।
+
+## स्थापना और सेटअप
+
+पहले, आपको `duckdb` पायथन पैकेज स्थापित करना होगा।
+
+```bash
+pip install duckdb
+```
+
+आपको [मदरडक](https://motherduck.com/) पर एक खाता भी खोलना होगा।
+
+इसके बाद, आपको एक कनेक्शन स्ट्रिंग सेट करना चाहिए - हम अधिकांश मदरडक के साथ SQLAlchemy के माध्यम से एकीकृत होते हैं।
+कनेक्शन स्ट्रिंग संभवतः इस प्रकार होगी:
+
+```python
+token="..."
+
+conn_str = f"duckdb:///md:{token}@my_db"
+```
+
+## SQLChain
+
+आप SQLChain का उपयोग कर सकते हैं ताकि आप अपने मदरडक इंस्टेंस में प्राकृतिक भाषा में डेटा का प्रश्न कर सकें।
+
+```python
+from langchain_openai import OpenAI
+from langchain_community.utilities import SQLDatabase
+from langchain_experimental.sql import SQLDatabaseChain
+db = SQLDatabase.from_uri(conn_str)
+db_chain = SQLDatabaseChain.from_llm(OpenAI(temperature=0), db, verbose=True)
+```
+
+यहां से, [SQL Chain](/docs/use_cases/sql/) प्रलेखन देखें कि इसका उपयोग कैसे करें।
+
+## LLMCache
+
+आप मदरडक का उपयोग LLM अनुरोधों को कैश करने के लिए भी आसानी से कर सकते हैं।
+एक बार फिर, यह SQLAlchemy रैपर के माध्यम से किया जाता है।
+
+```python
+import sqlalchemy
+from langchain.globals import set_llm_cache
+eng = sqlalchemy.create_engine(conn_str)
+set_llm_cache(SQLAlchemyCache(engine=eng))
+```
+
+यहां से, [LLM कैशिंग](/docs/integrations/llms/llm_caching) प्रलेखन देखें कि इसका उपयोग कैसे करें।

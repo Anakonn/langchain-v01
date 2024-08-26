@@ -1,0 +1,63 @@
+---
+translated: true
+---
+
+# Clarifai
+
+>[Clarifai](https://clarifai.com) es una de las primeras plataformas de aprendizaje profundo que se fundó en 2013. Clarifai proporciona una plataforma de IA con todo el ciclo de vida de IA para la exploración de datos, el etiquetado de datos, el entrenamiento de modelos, la evaluación y la inferencia en torno a datos de imágenes, video, texto y audio. En el ecosistema de LangChain, hasta donde sabemos, Clarifai es el único proveedor que admite LLM, incrustaciones y un almacén de vectores en una plataforma a escala de producción, lo que lo convierte en una excelente opción para operacionalizar sus implementaciones de LangChain.
+
+## Instalación y configuración
+
+- Instala el SDK de Python:
+
+```bash
+pip install clarifai
+```
+
+[Regístrate](https://clarifai.com/signup) en una cuenta de Clarifai, luego obtén un token de acceso personal para acceder a la API de Clarifai desde tu [configuración de seguridad](https://clarifai.com/settings/security) y establécelo como una variable de entorno (`CLARIFAI_PAT`).
+
+## Modelos
+
+Clarifai proporciona miles de modelos de IA para muchos casos de uso diferentes. Puedes [explorarlos aquí](https://clarifai.com/explore) para encontrar el más adecuado para tu caso de uso. Estos modelos incluyen los creados por otros proveedores como OpenAI, Anthropic, Cohere, AI21, etc., así como el estado del arte de código abierto como Falcon, InstructorXL, etc., para que puedas incorporar lo mejor de la IA en tus productos. Los encontrarás organizados por el `user_id` del creador y en proyectos que llamamos aplicaciones, denotadas por su `app_id`. Esos ID serán necesarios además del `model_id` y, opcionalmente, del `version_id`, ¡así que anota todos estos ID una vez que hayas encontrado el mejor modelo para tu caso de uso!
+
+También ten en cuenta que, dado que hay muchos modelos para la comprensión de imágenes, video, texto y audio, puedes construir algunos agentes de IA interesantes que utilicen la variedad de modelos de IA como expertos para comprender esos tipos de datos.
+
+### LLMs
+
+Para encontrar la selección de LLM en la plataforma Clarifai, puedes seleccionar el tipo de modelo de texto a texto [aquí](https://clarifai.com/explore/models?filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-to-text%22%5D%7D%5D&page=1&perPage=24).
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.llms import Clarifai
+llm = Clarifai(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+Para más detalles, la documentación sobre el wrapper de LLM de Clarifai proporciona un [recorrido detallado](/docs/integrations/llms/clarifai).
+
+### Modelos de incrustación de texto
+
+Para encontrar la selección de modelos de incrustación de texto en la plataforma Clarifai, puedes seleccionar el tipo de modelo de texto a incrustación [aquí](https://clarifai.com/explore/models?page=1&perPage=24&filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-embedder%22%5D%7D%5D).
+
+Hay un modelo de incrustación de Clarifai en LangChain, al que puedes acceder con:
+
+```python
+<!--IMPORTS:[{"imported": "ClarifaiEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.clarifai.ClarifaiEmbeddings.html", "title": "Clarifai"}]-->
+from langchain_community.embeddings import ClarifaiEmbeddings
+embeddings = ClarifaiEmbeddings(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+Para más detalles, la documentación sobre el wrapper de incrustaciones de Clarifai proporciona un [recorrido detallado](/docs/integrations/text_embedding/clarifai).
+
+## Vectorstore
+
+La base de datos de vectores de Clarifai se lanzó en 2016 y se ha optimizado para admitir consultas de búsqueda en vivo. Con los flujos de trabajo en la plataforma Clarifai, tus datos se indexan automáticamente por un modelo de incrustación y, opcionalmente, por otros modelos también para indexar esa información en la base de datos para la búsqueda. Puedes consultar la base de datos no solo a través de los vectores, sino también filtrar por coincidencias de metadatos, otros conceptos predichos por IA e incluso realizar búsquedas de coordenadas geográficas. Simplemente crea una aplicación, selecciona el flujo de trabajo base apropiado para tu tipo de datos y cárgalo (a través de la API como [se documenta aquí](https://docs.clarifai.com/api-guide/data/create-get-update-delete) o las IU en clarifai.com).
+
+También puedes agregar datos directamente desde LangChain, y el indexado automático se realizará por ti. Notarás que esto es un poco diferente a otras tiendas de vectores donde necesitas proporcionar un modelo de incrustación en su constructor y hacer que LangChain coordine la obtención de las incrustaciones del texto y la escritura de esas en el índice. No solo es más conveniente, sino que es mucho más escalable usar la nube distribuida de Clarifai para hacer todo el indexado en segundo plano.
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.vectorstores import Clarifai
+clarifai_vector_db = Clarifai.from_texts(user_id=USER_ID, app_id=APP_ID, texts=texts, pat=CLARIFAI_PAT, number_of_docs=NUMBER_OF_DOCS, metadatas = metadatas)
+```
+
+Para más detalles, la documentación sobre la tienda de vectores de Clarifai proporciona un [recorrido detallado](/docs/integrations/vectorstores/clarifai).

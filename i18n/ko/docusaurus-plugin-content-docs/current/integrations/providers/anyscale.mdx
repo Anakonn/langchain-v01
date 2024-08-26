@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Anyscale
+
+>[Anyscale](https://www.anyscale.com)는 생산 준비된 API를 통해 LLM을 실행, 미세 조정 및 확장하는 플랫폼입니다.
+> [Anyscale Endpoints](https://docs.anyscale.com/endpoints/overview)는 비용 효율적인 방식으로 많은 오픈 소스 모델을 제공합니다.
+
+`Anyscale`은 또한 고급 채팅 에이전트를 위해 `LangChain`과 `Anyscale`을 설정하는 [예제](https://docs.anyscale.com/endpoints/model-serving/examples/langchain-integration)를 제공합니다.
+
+## 설치 및 설정
+
+- `ANYSCALE_SERVICE_URL`, `ANYSCALE_SERVICE_ROUTE`, `ANYSCALE_SERVICE_TOKEN`과 같은 환경 변수로 Anyscale 서비스 URL, 경로 및 API 키를 설정하세요.
+- 자세한 내용은 [Anyscale 문서](https://www.anyscale.com/get-started)를 참조하세요.
+
+`openai` 패키지를 설치해야 합니다:
+
+```bash
+pip install openai
+```
+
+## LLM
+
+[사용 예제](/docs/integrations/llms/anyscale)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "Anyscale", "source": "langchain_community.llms.anyscale", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.anyscale.Anyscale.html", "title": "Anyscale"}]-->
+from langchain_community.llms.anyscale import Anyscale
+```
+
+## Chat Models
+
+[사용 예제](/docs/integrations/chat/anyscale)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnyscale", "source": "langchain_community.chat_models.anyscale", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.anyscale.ChatAnyscale.html", "title": "Anyscale"}]-->
+from langchain_community.chat_models.anyscale import ChatAnyscale
+```
+
+## Embeddings
+
+[사용 예제](/docs/integrations/text_embedding/anyscale)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "AnyscaleEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.anyscale.AnyscaleEmbeddings.html", "title": "Anyscale"}]-->
+from langchain_community.embeddings import AnyscaleEmbeddings
+```

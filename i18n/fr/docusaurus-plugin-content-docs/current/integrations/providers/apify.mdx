@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# Apify
+
+>[Apify](https://apify.com) est une plateforme cloud pour le web scraping et l'extraction de données,
+>qui fournit un [écosystème](https://apify.com/store) de plus d'un millier
+>d'applications prêtes à l'emploi appelées *Actors* pour divers cas d'utilisation de scraping, de crawling et d'extraction.
+
+[![Acteurs Apify](/img/ApifyActors.png)](https://apify.com/store)
+
+Cette intégration vous permet d'exécuter des Actors sur la plateforme `Apify` et de charger leurs résultats dans LangChain pour alimenter vos index vectoriels avec des documents et des données du web, par exemple pour générer des réponses à partir de sites Web avec de la documentation,
+des blogs ou des bases de connaissances.
+
+## Installation et configuration
+
+- Installez le client API Apify pour Python avec `pip install apify-client`
+- Obtenez votre [jeton API Apify](https://console.apify.com/account/integrations) et définissez-le soit comme
+  une variable d'environnement (`APIFY_API_TOKEN`) soit transmettez-le à `ApifyWrapper` comme `apify_api_token` dans le constructeur.
+
+## Utilitaire
+
+Vous pouvez utiliser `ApifyWrapper` pour exécuter des Actors sur la plateforme Apify.
+
+```python
+<!--IMPORTS:[{"imported": "ApifyWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.apify.ApifyWrapper.html", "title": "Apify"}]-->
+from langchain_community.utilities import ApifyWrapper
+```
+
+Pour un parcours détaillé de ce wrapper, voir [ce notebook](/docs/integrations/tools/apify).
+
+## Chargeur de documents
+
+Vous pouvez également utiliser notre `ApifyDatasetLoader` pour récupérer des données à partir du dataset Apify.
+
+```python
+<!--IMPORTS:[{"imported": "ApifyDatasetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.apify_dataset.ApifyDatasetLoader.html", "title": "Apify"}]-->
+from langchain_community.document_loaders import ApifyDatasetLoader
+```
+
+Pour un parcours détaillé de ce chargeur, voir [ce notebook](/docs/integrations/document_loaders/apify_dataset).

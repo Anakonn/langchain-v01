@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# SQLite
+
+>[SQLite](https://en.wikipedia.org/wiki/SQLite)は、C言語で書かれたデータベースエンジンです。単独のアプリではなく、ソフトウェア開発者がアプリに組み込むライブラリです。そのため、組み込みデータベースのファミリーに属しています。最も広く展開されているデータベースエンジンで、主要なウェブブラウザ、オペレーティングシステム、携帯電話、その他の組み込みシステムで使用されています。
+
+## インストールとセットアップ
+
+`SQLAlchemy`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install SQLAlchemy
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/sqlitevss)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SQLiteVSS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sqlitevss.SQLiteVSS.html", "title": "SQLite"}]-->
+from langchain_community.vectorstores import SQLiteVSS
+```
+
+## メモリ
+
+[使用例](/docs/integrations/memory/sqlite)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SQLChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.sql.SQLChatMessageHistory.html", "title": "SQLite"}]-->
+from langchain_community.chat_message_histories import SQLChatMessageHistory
+```

@@ -1,0 +1,52 @@
+---
+translated: true
+---
+
+# OpenWeatherMap
+
+>[OpenWeatherMap](https://openweathermap.org/api/) प्रदान करता है एक विशिष्ट स्थान के लिए सभी आवश्यक मौसम संबंधी डेटा:
+>- वर्तमान मौसम
+>- 1 घंटे के लिए मिनट पूर्वानुमान
+>- 48 घंटों के लिए घंटेवार पूर्वानुमान
+>- 8 दिनों के लिए दैनिक पूर्वानुमान
+>- राष्ट्रीय मौसम चेतावनियां
+>- पिछले 40+ वर्षों का इतिहासिक मौसम डेटा
+
+यह पृष्ठ कवर करता है कि LangChain में `OpenWeatherMap API` का उपयोग कैसे किया जाए।
+
+## स्थापना और सेटअप
+
+- आवश्यकताओं को इंस्टॉल करें
+
+```bash
+pip install pyowm
+```
+
+- OpenWeatherMap पर जाएं और अपना खाता बनाएं और अपना API कुंजी प्राप्त करें [यहां](https://openweathermap.org/api/)
+- अपना API कुंजी को `OPENWEATHERMAP_API_KEY` पर्यावरण चर के रूप में सेट करें
+
+## रैपर्स
+
+### उपयोगिता
+
+एक OpenWeatherMapAPIWrapper उपयोगिता मौजूद है जो इस API को रैप करता है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "OpenWeatherMapAPIWrapper", "source": "langchain_community.utilities.openweathermap", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.openweathermap.OpenWeatherMapAPIWrapper.html", "title": "OpenWeatherMap"}]-->
+from langchain_community.utilities.openweathermap import OpenWeatherMapAPIWrapper
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/tools/openweathermap) देखें।
+
+### उपकरण
+
+आप इस रैपर को आसानी से एक उपकरण के रूप में भी लोड कर सकते हैं (एजेंट के साथ उपयोग करने के लिए)।
+आप इसे इस तरह कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "OpenWeatherMap"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["openweathermap-api"])
+```
+
+उपकरणों के बारे में अधिक जानकारी के लिए, [इस पृष्ठ](/docs/modules/tools/) देखें।

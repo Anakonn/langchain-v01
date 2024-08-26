@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# Infino
+
+>[Infino](https://github.com/infinohq/infino) est une plateforme d'observabilité open-source qui stocke à la fois les métriques et les journaux d'application.
+
+Les principales fonctionnalités d'`Infino` incluent :
+- **Suivi des métriques** : Capturer le temps pris par le modèle LLM pour gérer la demande, les erreurs, le nombre de jetons et l'indication de coût pour le LLM particulier.
+- **Suivi des données** : Journaliser et stocker les données de l'invite, de la demande et de la réponse pour chaque interaction LangChain.
+- **Visualisation graphique** : Générer des graphiques de base au fil du temps, représentant des métriques telles que la durée de la demande, les occurrences d'erreurs, le nombre de jetons et le coût.
+
+## Installation et configuration
+
+Tout d'abord, vous devrez installer le package Python `infinopy` comme suit :
+
+```bash
+pip install infinopy
+```
+
+Si vous avez déjà un serveur `Infino` en cours d'exécution, alors vous êtes prêt ; mais si
+ce n'est pas le cas, suivez les étapes suivantes pour le démarrer :
+
+- Assurez-vous d'avoir Docker installé
+- Exécutez la commande suivante dans votre terminal :
+    ```
+    docker run --rm --detach --name infino-example -p 3000:3000 infinohq/infino:latest
+    ```
+
+## Utilisation d'Infino
+
+Voir un [exemple d'utilisation de `InfinoCallbackHandler`](/docs/integrations/callbacks/infino).
+
+```python
+<!--IMPORTS:[{"imported": "InfinoCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.infino_callback.InfinoCallbackHandler.html", "title": "Infino"}]-->
+from langchain.callbacks import InfinoCallbackHandler
+```

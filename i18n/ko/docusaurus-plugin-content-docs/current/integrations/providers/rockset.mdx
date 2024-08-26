@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# Rockset
+
+>[Rockset](https://rockset.com/product/)은 대규모 저지연 고동시성 분석 쿼리를 제공하는 실시간 분석 데이터베이스 서비스입니다. Converged Index™를 사용하여 구조화 및 반구조화 데이터와 벡터 임베딩 효율적인 저장소를 구축합니다. 스키마 없는 데이터에서 SQL을 실행할 수 있는 기능은 메타데이터 필터와 함께 벡터 검색을 실행하는 데 완벽한 선택이 됩니다.
+
+## 설치 및 설정
+
+Rockset 계정이 있는지 확인하고 웹 콘솔로 이동하여 API 키를 가져오세요. 자세한 내용은 [웹사이트](https://rockset.com/docs/rest-api/)에서 확인할 수 있습니다.
+
+```bash
+pip install rockset
+```
+
+## 벡터 저장소
+
+[사용 예제](/docs/integrations/vectorstores/rockset)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "Rockset", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.rocksetdb.Rockset.html", "title": "Rockset"}]-->
+from langchain_community.vectorstores import Rockset
+```
+
+## 문서 로더
+
+[사용 예제](/docs/integrations/document_loaders/rockset)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "RocksetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rocksetdb.RocksetLoader.html", "title": "Rockset"}]-->
+from langchain_community.document_loaders import RocksetLoader
+```
+
+## 채팅 메시지 기록
+
+[사용 예제](/docs/integrations/memory/rockset_chat_message_history)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "RocksetChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.rocksetdb.RocksetChatMessageHistory.html", "title": "Rockset"}]-->
+from langchain_community.chat_message_histories import RocksetChatMessageHistory
+```

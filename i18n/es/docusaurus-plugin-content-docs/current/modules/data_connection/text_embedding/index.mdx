@@ -1,0 +1,132 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 2
+translated: true
+---
+
+# Modelos de incrustación de texto
+
+:::info
+Dirígete a [Integraciones](/docs/integrations/text_embedding/) para obtener documentación sobre las integraciones incorporadas con proveedores de modelos de incrustación de texto.
+:::
+
+La clase Embeddings es una clase diseñada para interactuar con modelos de incrustación de texto. Hay muchos proveedores de modelos de incrustación (OpenAI, Cohere, Hugging Face, etc.) - esta clase está diseñada para proporcionar una interfaz estándar para todos ellos.
+
+Las incrustaciones crean una representación vectorial de un fragmento de texto. Esto es útil porque significa que podemos pensar en el texto en el espacio vectorial y hacer cosas como búsqueda semántica, donde buscamos fragmentos de texto que son más similares en el espacio vectorial.
+
+La clase base Embeddings en LangChain proporciona dos métodos: uno para incrustar documentos y otro para incrustar una consulta. El primero toma como entrada múltiples textos, mientras que el último toma un solo texto. La razón de tener estos como dos métodos separados es que algunos proveedores de incrustación tienen diferentes métodos de incrustación para documentos (a ser buscados) frente a consultas (la propia consulta de búsqueda).
+
+## Empezar
+
+### Configuración
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+Para comenzar, necesitaremos instalar el paquete asociado a OpenAI:
+
+```bash
+pip install langchain-openai
+```
+
+Acceder a la API requiere una clave API, que puede obtener creando una cuenta y dirigiéndose [aquí](https://platform.openai.com/account/api-keys). Una vez que tengamos una clave, la estableceremos como una variable de entorno ejecutando:
+
+```bash
+export OPENAI_API_KEY="..."
+```
+
+Si prefiere no establecer una variable de entorno, puede pasar la clave directamente a través del parámetro con nombre `api_key` al inicializar la clase LLM de OpenAI:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings(api_key="...")
+```
+
+De lo contrario, puede inicializar sin ningún parámetro:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings()
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+Para comenzar, necesitaremos instalar el paquete SDK de Cohere:
+
+```bash
+pip install langchain-cohere
+```
+
+Acceder a la API requiere una clave API, que puede obtener creando una cuenta y dirigiéndose [aquí](https://dashboard.cohere.com/api-keys). Una vez que tengamos una clave, la estableceremos como una variable de entorno ejecutando:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+Si prefiere no establecer una variable de entorno, puede pasar la clave directamente a través del parámetro con nombre `cohere_api_key` al inicializar la clase LLM de Cohere:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings(cohere_api_key="...")
+```
+
+De lo contrario, puede inicializar sin ningún parámetro:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings()
+```
+
+  </TabItem>
+</Tabs>
+
+### `embed_documents`
+
+#### Incrustar una lista de textos
+
+```python
+embeddings = embeddings_model.embed_documents(
+    [
+        "Hi there!",
+        "Oh, hello!",
+        "What's your name?",
+        "My friends call me World",
+        "Hello World!"
+    ]
+)
+len(embeddings), len(embeddings[0])
+```
+
+```output
+(5, 1536)
+```
+
+### `embed_query`
+
+#### Incrustar una sola consulta
+
+Incrustar un solo fragmento de texto con el propósito de compararlo con otros fragmentos de texto incrustados.
+
+```python
+embedded_query = embeddings_model.embed_query("What was the name mentioned in the conversation?")
+embedded_query[:5]
+```
+
+```output
+[0.0053587136790156364,
+ -0.0004999046213924885,
+ 0.038883671164512634,
+ -0.003001077566295862,
+ -0.00900818221271038]
+```

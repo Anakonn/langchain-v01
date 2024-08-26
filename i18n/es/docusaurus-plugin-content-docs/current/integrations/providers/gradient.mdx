@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# Gradiente
+
+>[Gradiente](https://gradient.ai/) permite ajustar y obtener completaciones en LLM con una API web sencilla.
+
+## Instalación y configuración
+
+- Instala el SDK de Python:
+
+```bash
+pip install gradientai
+```
+
+Obtén un [token de acceso y un espacio de trabajo de Gradiente](https://gradient.ai/) y configúralos como variables de entorno (`Gradient_ACCESS_TOKEN`) y (`GRADIENT_WORKSPACE_ID`)
+
+## LLM
+
+Existe un wrapper de LLM de Gradiente, al que puedes acceder con
+Consulta un [ejemplo de uso](/docs/integrations/llms/gradient).
+
+```python
+<!--IMPORTS:[{"imported": "GradientLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gradient_ai.GradientLLM.html", "title": "Gradient"}]-->
+from langchain_community.llms import GradientLLM
+```
+
+## Modelo de incrustación de texto
+
+Existe un modelo de incrustación de Gradiente, al que puedes acceder con
+
+```python
+<!--IMPORTS:[{"imported": "GradientEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.gradient_ai.GradientEmbeddings.html", "title": "Gradient"}]-->
+from langchain_community.embeddings import GradientEmbeddings
+```
+
+Para obtener una guía más detallada de esto, consulta [este cuaderno](/docs/integrations/text_embedding/gradient)

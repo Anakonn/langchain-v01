@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# ライター
+
+このページでは、LangChainのライターエコシステムの使用方法について説明します。
+2つの部分に分かれています: インストールとセットアップ、そして特定のライターラッパーへの参照。
+
+## インストールとセットアップ
+
+- ライターのAPIキーを取得し、環境変数(`WRITER_API_KEY`)に設定します。
+
+## ラッパー
+
+### LLM
+
+ライターLLMラッパーが存在し、これにアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "Writer", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.writer.Writer.html", "title": "Writer"}]-->
+from langchain_community.llms import Writer
+```

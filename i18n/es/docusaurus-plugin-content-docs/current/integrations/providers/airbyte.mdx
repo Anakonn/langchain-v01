@@ -1,0 +1,36 @@
+---
+translated: true
+---
+
+# Airbyte
+
+>[Airbyte](https://github.com/airbytehq/airbyte) es una plataforma de integración de datos para tuberías ELT desde API,
+> bases de datos y archivos a almacenes de datos y lagos. Tiene el catálogo más grande de conectores ELT a almacenes de datos y bases de datos.
+
+## Instalación y configuración
+
+```bash
+pip install -U langchain-airbyte
+```
+
+:::note
+
+Actualmente, la biblioteca `langchain-airbyte` no admite Pydantic v2.
+Por favor, degradar a Pydantic v1 para usar este paquete.
+
+Este paquete también requiere actualmente Python 3.10+.
+
+:::
+
+El paquete de integración no requiere ninguna variable de entorno global que deba ser
+establecida, pero algunas integraciones (por ejemplo, `source-github`) pueden necesitar que se pasen las credenciales.
+
+## Cargador de documentos
+
+### AirbyteLoader
+
+Ver un [ejemplo de uso](/docs/integrations/document_loaders/airbyte).
+
+```python
+from langchain_airbyte import AirbyteLoader
+```

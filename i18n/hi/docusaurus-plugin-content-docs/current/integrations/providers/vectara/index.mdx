@@ -1,0 +1,96 @@
+---
+translated: true
+---
+
+# वेक्टारा
+
+>[वेक्टारा](https://vectara.com/) डेवलपर्स के लिए विश्वसनीय GenAI प्लेटफॉर्म है। यह सेमेंटिक सर्च या RAG (रिट्रीवल ऑग्मेंटेड जनरेशन) के लिए GenAI एप्लिकेशन बनाने के लिए एक सरल API प्रदान करता है।
+
+**वेक्टारा अवलोकन:**
+- `वेक्टारा` विश्वसनीय GenAI एप्लिकेशन बनाने के लिए डेवलपर-प्रथम API प्लेटफॉर्म है।
+- वेक्टारा का उपयोग करने के लिए - पहले [साइन अप](https://vectara.com/integrations/langchain) करें और एक खाता बनाएं। फिर इंडेक्सिंग और खोजने के लिए एक कॉर्पस और एक API कुंजी बनाएं।
+- आप वेक्टारा के [इंडेक्सिंग API](https://docs.vectara.com/docs/indexing-apis/indexing) का उपयोग कर सकते हैं ताकि दस्तावेज़ों को वेक्टारा के इंडेक्स में जोड़ा जा सके
+- आप वेक्टारा के [सर्च API](https://docs.vectara.com/docs/search-apis/search) का उपयोग कर सकते हैं ताकि वेक्टारा के इंडेक्स को क्वेरी किया जा सके (जो अंतर्निहित रूप से हाइब्रिड सर्च का समर्थन भी करता है)।
+
+## इंस्टॉलेशन और सेटअप
+
+`वेक्टारा` का LangChain के साथ उपयोग करने के लिए कोई विशेष इंस्टॉलेशन कदम आवश्यक नहीं हैं।
+शुरू करने के लिए, [साइन अप](https://vectara.com/integrations/langchain) करें और एक कॉर्पस और एक API कुंजी बनाने के लिए हमारे [त्वरित शुरुआत](https://docs.vectara.com/docs/quickstart) गाइड का पालन करें।
+एक बार आप इन्हें प्राप्त कर लेते हैं, तो आप उन्हें वेक्टारा वेक्टरस्टोर के तर्क के रूप में प्रदान कर सकते हैं, या आप उन्हें वातावरण चर के रूप में सेट कर सकते हैं।
+
+- निर्यात `VECTARA_CUSTOMER_ID`="your_customer_id"
+- निर्यात `VECTARA_CORPUS_ID`="your_corpus_id"
+- निर्यात `VECTARA_API_KEY`="your-vectara-api-key"
+
+## वेक्टारा एक वेक्टर स्टोर के रूप में
+
+वेक्टारा प्लेटफॉर्म के इर्द-गिर्द एक रैपर मौजूद है, जो आपको इसका उपयोग एक वेक्टरस्टोर के रूप में करने की अनुमति देता है, चाहे वह सेमेंटिक सर्च या उदाहरण चयन के लिए हो।
+
+इस वेक्टरस्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "Vectara", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vectara.Vectara.html", "title": "Vectara"}]-->
+from langchain_community.vectorstores import Vectara
+```
+
+वेक्टारा वेक्टरस्टोर का एक उदाहरण बनाने के लिए:
+
+```python
+vectara = Vectara(
+    vectara_customer_id=customer_id,
+    vectara_corpus_id=corpus_id,
+    vectara_api_key=api_key
+)
+```
+
+customer_id, corpus_id और api_key वैकल्पिक हैं, और यदि वे प्रदान नहीं किए जाते हैं तो वे क्रमशः `VECTARA_CUSTOMER_ID`, `VECTARA_CORPUS_ID` और `VECTARA_API_KEY` वातावरण चरों से पढ़े जाएंगे।
+
+एक बार आप वेक्टरस्टोर प्राप्त कर लेते हैं, तो आप मानक `VectorStore` इंटरफ़ेस के अनुसार `add_texts` या `add_documents` कर सकते हैं, उदाहरण के लिए:
+
+```python
+vectara.add_texts(["to be or not to be", "that is the question"])
+```
+
+चूंकि वेक्टारा फ़ाइल-अपलोड का समर्थन करता है, हमने सीधे फ़ाइलों (PDF, TXT, HTML, PPT, DOC आदि) को फ़ाइल के रूप में अपलोड करने की क्षमता भी जोड़ी है। इस विधि का उपयोग करते समय, फ़ाइल सीधे वेक्टारा बैकएंड में अपलोड की जाती है, वहां प्रोसेस और चंक किया जाता है, इसलिए आपको LangChain दस्तावेज़ लोडर या चंकिंग तंत्र का उपयोग नहीं करना पड़ता।
+
+उदाहरण के लिए:
+
+```python
+vectara.add_files(["path/to/file1.pdf", "path/to/file2.pdf",...])
+```
+
+वेक्टरस्टोर को क्वेरी करने के लिए, आप `similarity_search` विधि (या `similarity_search_with_score`) का उपयोग कर सकते हैं, जो एक क्वेरी स्ट्रिंग लेता है और प्रासंगिक दस्तावेजों की एक सूची लौटाता है:
+
+```python
+results = vectara.similarity_score("what is LangChain?")
+```
+
+परिणाम प्रासंगिक दस्तावेजों की एक सूची के रूप में लौटाए जाते हैं, और प्रत्येक दस्तावेज़ की प्रासंगिकता स्कोर।
+
+इस मामले में, हमने डिफ़ॉल्ट पुनर्प्राप्ति पैरामीटर का उपयोग किया, लेकिन आप `similarity_search` या `similarity_search_with_score` में निम्नलिखित अतिरिक्त तर्क भी निर्दिष्ट कर सकते हैं:
+- `k`: लौटाए जाने वाले परिणामों की संख्या (डिफ़ॉल्ट 5 है)
+- `lambda_val`: हाइब्रिड सर्च के लिए [लेक्सिकल मैचिंग](https://docs.vectara.com/docs/api-reference/search-apis/lexical-matching) कारक (डिफ़ॉल्ट 0.025 है)
+- `filter`: परिणामों पर लागू करने के लिए एक [फ़िल्टर](https://docs.vectara.com/docs/common-use-cases/filtering-by-metadata/filter-overview) (डिफ़ॉल्ट None है)
+- `n_sentence_context`: वास्तविक मैचिंग सेगमेंट से पहले/बाद में शामिल करने के लिए वाक्यों की संख्या। यह डिफ़ॉल्ट रूप से 2 है।
+- `mmr_config`: क्वेरी में MMR मोड निर्दिष्ट करने के लिए उपयोग किया जा सकता है।
+   - `is_enabled`: True या False
+   - `mmr_k`: MMR पुनः क्रमण के लिए उपयोग किए जाने वाले परिणामों की संख्या
+   - `diversity_bias`: 0 = कोई विविधता नहीं, 1 = पूर्ण विविधता। यह MMR फॉर्मूले में लैम्बडा पैरामीटर है और 0...1 के दायरे में है
+
+## रिट्रीवल ऑग्मेंटेड जनरेशन (RAG) के लिए वेक्टारा
+
+वेक्टारा पूर्ण RAG पाइपलाइन, जनरेटिव सारांशीकरण सहित, प्रदान करता है।
+इस पाइपलाइन का उपयोग करने के लिए, आप `similarity_search` या `similarity_search_with_score` में `summary_config` तर्क निर्दिष्ट कर सकते हैं:
+
+- `summary_config`: RAG में एक LLM सारांश अनुरोधित करने के लिए उपयोग किया जा सकता है
+   - `is_enabled`: True या False
+   - `max_results`: सारांश जनरेशन के लिए उपयोग किए जाने वाले परिणामों की संख्या
+   - `response_lang`: प्रतिक्रिया सारांश की भाषा, ISO 639-2 प्रारूप में (उदा. 'en', 'fr', 'de' आदि)
+
+## उदाहरण नोटबुक
+
+वेक्टारा का उपयोग करने के अधिक विस्तृत उदाहरणों के लिए, निम्नलिखित उदाहरण देखें:
+* [यह नोटबुक](/docs/integrations/vectorstores/vectara) सेमेंटिक सर्च के लिए वेक्टारा को एक वेक्टरस्टोर के रूप में उपयोग करने का प्रदर्शन करता है
+* [यह नोटबुक](/docs/integrations/providers/vectara/vectara_chat) Langchain और वेक्टारा के साथ एक चैटबॉट बनाने का प्रदर्शन करता है
+* [यह नोटबुक](/docs/integrations/providers/vectara/vectara_summary) पूर्ण वेक्टारा RAG पाइपलाइन का उपयोग करने का प्रदर्शन करता है, जनरेटिव सारांशीकरण सहित
+* [यह नोटबुक](/docs/integrations/retrievers/self_query/vectara_self_query) वेक्टारा के साथ स्वयं-क्वेरी क्षमता का प्रदर्शन करता है।

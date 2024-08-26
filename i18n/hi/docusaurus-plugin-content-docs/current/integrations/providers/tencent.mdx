@@ -1,0 +1,99 @@
+---
+translated: true
+---
+
+# टेंसेंट
+
+>[टेंसेंट होल्डिंग्स लिमिटेड (विकिपीडिया)](https://en.wikipedia.org/wiki/Tencent) (चीनी: 腾讯; पिनयिन: Téngxùn)
+> एक चीनी बहुराष्ट्रीय प्रौद्योगिकी कंग्लोमरेट और होल्डिंग कंपनी है जिसका मुख्यालय
+> शेंज़ेन में है। `टेंसेंट` दुनिया भर में राजस्व के आधार पर सबसे अधिक कमाई करने वाली मल्टीमीडिया कंपनियों में से एक है
+> यह दुनिया का सबसे बड़ा वीडियो गेम उद्योग कंपनी भी है
+> अपने इक्विटी निवेशों के आधार पर।
+
+## चैट मॉडल
+
+>[टेंसेंट का हाइब्रिड मॉडल एपीआई](https://cloud.tencent.com/document/product/1729) (`Hunyuan API`)
+> संवाद संचार, सामग्री उत्पादन,
+> विश्लेषण और समझ को लागू करता है, और इसका उपयोग बुद्धिमान
+> ग्राहक सेवा, बुद्धिमान विपणन, भूमिका निभाना, विज्ञापन, कॉपीराइटिंग, उत्पाद विवरण,
+> स्क्रिप्ट निर्माण, रिज़्यूमे उत्पादन, लेख लेखन, कोड उत्पादन, डेटा विश्लेषण, और सामग्री
+> विश्लेषण जैसे विभिन्न परिदृश्यों में किया जा सकता है।
+
+अधिक जानकारी के लिए, [इस नोटबुक](/docs/integrations/chat/tencent_hunyuan) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatHunyuan", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.hunyuan.ChatHunyuan.html", "title": "Tencent"}]-->
+from langchain_community.chat_models import ChatHunyuan
+```
+
+## दस्तावेज़ लोडर
+
+### टेंसेंट COS
+
+>[टेंसेंट क्लाउड ऑब्जेक्ट स्टोरेज (COS)](https://www.tencentcloud.com/products/cos) एक वितरित
+> संग्रहण सेवा है जो आपको HTTP/HTTPS प्रोटोकॉल के माध्यम से कहीं से भी किसी भी मात्रा में डेटा संग्रहित करने में सक्षम बनाती है।
+> `COS` में डेटा संरचना या प्रारूप पर कोई प्रतिबंध नहीं है। इसमें बकेट आकार सीमा और
+> पार्टिशन प्रबंधन भी नहीं है, जिससे यह लगभग किसी भी उपयोग मामले के लिए उपयुक्त है, जैसे डेटा वितरण,
+> डेटा प्रोसेसिंग, और डेटा झीलें। COS एक वेब-आधारित कंसोल, बहु-भाषा एसडीके और एपीआई,
+> कमांड लाइन टूल, और ग्राफिकल टूल प्रदान करता है। यह अमेज़न एस3 एपीआई के साथ अच्छी तरह काम करता है, जिससे आप जल्दी
+> समुदाय उपकरणों और प्लगइन तक पहुंच सकते हैं।
+
+पायथन एसडीके इंस्टॉल करें:
+
+```bash
+pip install cos-python-sdk-v5
+```
+
+#### टेंसेंट COS डायरेक्टरी
+
+अधिक जानकारी के लिए, [इस नोटबुक](/docs/integrations/document_loaders/tencent_cos_directory) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "TencentCOSDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tencent_cos_directory.TencentCOSDirectoryLoader.html", "title": "Tencent"}]-->
+from langchain_community.document_loaders import TencentCOSDirectoryLoader
+from qcloud_cos import CosConfig
+```
+
+#### टेंसेंट COS फ़ाइल
+
+अधिक जानकारी के लिए, [इस नोटबुक](/docs/integrations/document_loaders/tencent_cos_file) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "TencentCOSFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tencent_cos_file.TencentCOSFileLoader.html", "title": "Tencent"}]-->
+from langchain_community.document_loaders import TencentCOSFileLoader
+from qcloud_cos import CosConfig
+```
+
+## वेक्टर स्टोर
+
+### टेंसेंट VectorDB
+
+>[टेंसेंट क्लाउड VectorDB](https://www.tencentcloud.com/products/vdb) एक पूरी तरह से प्रबंधित,
+> स्वयं विकसित उद्यम-स्तरीय वितरित डेटाबेस सेवा है
+>बहुआयामी वेक्टर डेटा को संग्रहीत करने, पुनर्प्राप्त करने और विश्लेषण करने के लिए समर्पित। डेटाबेस कई प्रकार के सूचकांक
+>और समानता गणना विधियों का समर्थन करता है, और एक सूचकांक 1 अरब वेक्टरों, लाखों क्यूपीएस और
+>मिलीसेकंड क्वेरी लेटेंसी का समर्थन करता है। `टेंसेंट क्लाउड वेक्टर डेटाबेस` न केवल बड़े
+>मॉडलों के लिए एक बाहरी ज्ञान आधार प्रदान कर सकता है और बड़े मॉडलों के उत्तरों की सटीकता में सुधार कर सकता है, बल्कि
+>अनुशंसा प्रणाली, एनएलपी सेवाएं, कंप्यूटर दृश्य, और बुद्धिमान ग्राहक सेवा जैसे एआई क्षेत्रों में भी व्यापक रूप से उपयोग किया जा सकता है।
+
+पायथन एसडीके इंस्टॉल करें:
+
+```bash
+pip install tcvectordb
+```
+
+अधिक जानकारी के लिए, [इस नोटबुक](/docs/integrations/vectorstores/tencentvectordb) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "TencentVectorDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tencentvectordb.TencentVectorDB.html", "title": "Tencent"}]-->
+from langchain_community.vectorstores import TencentVectorDB
+```
+
+## चैट लोडर
+
+### WeChat
+
+>[WeChat](https://www.wechat.com/) या `Weixin` चीनी में एक चीनी
+> तत्काल संदेश, सोशल मीडिया, और मोबाइल भुगतान ऐप है जिसे `टेंसेंट` द्वारा विकसित किया गया है।
+
+[उपयोग उदाहरण](/docs/integrations/chat_loaders/wechat) देखें।

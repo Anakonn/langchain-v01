@@ -1,0 +1,85 @@
+---
+translated: true
+---
+
+# TruLens
+
+>[TruLens](https://trulens.org) は、大規模言語モデル (LLM) ベースのアプリケーションのための計測および評価ツールを提供する [オープンソース](https://github.com/truera/trulens) パッケージです。
+
+このページでは、langchain 上に構築された LLM アプリを評価および追跡するための [TruLens](https://trulens.org) の使用方法について説明します。
+
+## インストールとセットアップ
+
+`trulens-eval` Python パッケージをインストールします。
+
+```bash
+pip install trulens-eval
+```
+
+## クイックスタート
+
+[TruLens ドキュメント](https://www.trulens.org/trulens_eval/getting_started/quickstarts/langchain_quickstart/) の統合の詳細を参照してください。
+
+### トラッキング
+
+LLM チェーンを作成したら、TruLens を使用して評価と追跡を行うことができます。
+TruLens には多くの [すぐに使えるフィードバック機能](https://www.trulens.org/trulens_eval/evaluation/feedback_functions/) があり、
+LLM 評価のための拡張可能なフレームワークでもあります。
+
+フィードバック機能を作成します：
+
+```python
+from trulens_eval.feedback import Feedback, Huggingface,
+
+# Initialize HuggingFace-based feedback function collection class:
+hugs = Huggingface()
+openai = OpenAI()
+
+# Define a language match feedback function using HuggingFace.
+lang_match = Feedback(hugs.language_match).on_input_output()
+# By default this will check language match on the main app input and main app
+# output.
+
+# Question/answer relevance between overall question and answer.
+qa_relevance = Feedback(openai.relevance).on_input_output()
+# By default this will evaluate feedback on main app input and main app output.
+
+# Toxicity of input
+toxicity = Feedback(openai.toxicity).on_input()
+```
+
+### チェーン
+
+LLM を評価するフィードバック機能をセットアップした後、TruChain でアプリケーションをラップして、
+LLM アプリの詳細なトレース、ログ、および評価を取得できます。
+
+注: `chain` の作成に関するコードは
+[TruLens ドキュメント](https://www.trulens.org/trulens_eval/getting_started/quickstarts/langchain_quickstart/) にあります。
+
+```python
+from trulens_eval import TruChain
+
+# wrap your chain with TruChain
+truchain = TruChain(
+    chain,
+    app_id='Chain1_ChatApplication',
+    feedbacks=[lang_match, qa_relevance, toxicity]
+)
+# Note: any `feedbacks` specified here will be evaluated and logged whenever the chain is used.
+truchain("que hora es?")
+```
+
+### 評価
+
+これで LLM ベースのアプリケーションを探索できます！
+
+こうすることで、LLM アプリケーションのパフォーマンスを一目で理解するのに役立ちます。LLM アプリケーションの新しいバージョンを繰り返す際に、設定したさまざまな品質指標に基づいてパフォーマンスを比較することができます。また、各レコードの評価をレコードレベルで表示し、チェーンメタデータを探索することもできます。
+
+```python
+from trulens_eval import Tru
+
+tru = Tru()
+tru.run_dashboard() # open a Streamlit app to explore
+```
+
+TruLens に関する詳細は [trulens.org](https://www.trulens.org/) をご覧ください。

@@ -1,0 +1,74 @@
+---
+translated: true
+---
+
+# Cassandra
+
+> [Apache Cassandra®](https://cassandra.apache.org/)는 NoSQL, 행 지향적, 고확장성 및 고가용성 데이터베이스입니다.
+> 5.0 버전부터 데이터베이스에 [벡터 검색 기능](https://cassandra.apache.org/doc/trunk/cassandra/vector-search/overview.html)이 포함되어 있습니다.
+
+이 페이지에 설명된 통합은 `Cassandra`뿐만 아니라 `Cassandra Query Language` 프로토콜을 사용하는 다른 CQL 호환 데이터베이스에서도 사용할 수 있습니다.
+
+## 설치 및 설정
+
+다음 Python 패키지를 설치하세요:
+
+```bash
+pip install "cassio>=0.1.6"
+```
+
+## 벡터 스토어
+
+```python
+<!--IMPORTS:[{"imported": "Cassandra", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.cassandra.Cassandra.html", "title": "Cassandra"}]-->
+from langchain_community.vectorstores import Cassandra
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/vectorstores/cassandra)을 참조하세요.
+
+## 채팅 메시지 기록
+
+```python
+<!--IMPORTS:[{"imported": "CassandraChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.cassandra.CassandraChatMessageHistory.html", "title": "Cassandra"}]-->
+from langchain_community.chat_message_histories import CassandraChatMessageHistory
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/memory/cassandra_chat_message_history)을 참조하세요.
+
+## LLM 캐시
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraCache
+set_llm_cache(CassandraCache())
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/llms/llm_caching#cassandra-caches)의 Cassandra 섹션을 참조하세요.
+
+## 의미론적 LLM 캐시
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraSemanticCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraSemanticCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraSemanticCache
+set_llm_cache(CassandraSemanticCache(
+    embedding=my_embedding,
+    table_name="my_store",
+))
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/llms/llm_caching#cassandra-caches)의 해당 섹션을 참조하세요.
+
+## 문서 로더
+
+```python
+<!--IMPORTS:[{"imported": "CassandraLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.cassandra.CassandraLoader.html", "title": "Cassandra"}]-->
+from langchain_community.document_loaders import CassandraLoader
+```
+
+자세한 내용은 [예제 노트북](/docs/integrations/document_loaders/cassandra)을 참조하세요.
+
+#### 귀속 명세
+
+> Apache Cassandra, Cassandra 및 Apache는 [Apache Software Foundation](http://www.apache.org/)이 미국 및/또는 기타 국가에서 등록한 상표 또는 상표입니다.

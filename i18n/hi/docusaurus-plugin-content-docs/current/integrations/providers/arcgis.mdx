@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# ArcGIS
+
+>[ArcGIS](https://www.esri.com/en-us/arcgis/about-arcgis/overview) एक परिवार है क्लाइंट, सर्वर और ऑनलाइन भौगोलिक सूचना प्रणाली सॉफ़्टवेयर का जिसका विकास और रखरखाव [Esri](https://www.esri.com/) द्वारा किया जाता है।
+
+>`ArcGISLoader` का उपयोग `arcgis` पैकेज करता है।
+> `arcgis` एक पायथन लाइब्रेरी है वेक्टर और रास्टर विश्लेषण, भू-कोडिंग, मानचित्र बनाने,
+> रूटिंग और दिशाओं के लिए। यह प्रशासित करता है, संगठित करता है और उपयोगकर्ताओं को प्रबंधित करता है,
+> आपके GIS में समूह और सूचना मद।
+>यह `Esri` और अन्य प्राधिकृत स्रोतों से तैयार-उपयोग के मानचित्रों और क्यूरेटेड भौगोलिक डेटा तक पहुंच प्रदान करता है, और आपके खुद के डेटा के साथ भी काम करता है।
+
+## स्थापना और सेटअप
+
+हमें `arcgis` पैकेज स्थापित करना होगा।
+
+```bash
+pip install -U arcgis
+```
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/arcgis) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ArcGISLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arcgis_loader.ArcGISLoader.html", "title": "ArcGIS"}]-->
+from langchain_community.document_loaders import ArcGISLoader
+```

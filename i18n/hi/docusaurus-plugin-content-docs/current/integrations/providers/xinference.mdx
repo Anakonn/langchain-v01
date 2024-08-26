@@ -1,0 +1,91 @@
+---
+translated: true
+---
+
+# Xorbits Inference (Xinference)
+
+यह पृष्ठ [Xinference](https://github.com/xorbitsai/inference) का LangChain के साथ उपयोग करने का प्रदर्शन करता है।
+
+`Xinference` एक शक्तिशाली और बहुमुखी लाइब्रेरी है जो LLM, स्पीच रिकग्निशन मॉडल और मल्टीमोडल मॉडल को भी आपके लैपटॉप पर सेवा देने के लिए डिज़ाइन की गई है। Xorbits Inference के साथ, आप केवल एक कमांड का उपयोग करके अपने या स्टेट-ऑफ-द-आर्ट बिल्ट-इन मॉडल को आसानी से तैनात और सर्व कर सकते हैं।
+
+## इंस्टॉलेशन और सेटअप
+
+Xinference को PyPI से pip के माध्यम से इंस्टॉल किया जा सकता है:
+
+```bash
+pip install "xinference[all]"
+```
+
+## LLM
+
+Xinference GGML के साथ संगत विभिन्न मॉडल का समर्थन करता है, जिसमें chatglm, baichuan, whisper, vicuna और orca शामिल हैं। बिल्टइन मॉडल देखने के लिए, कमांड चलाएं:
+
+```bash
+xinference list --all
+```
+
+### Xinference के लिए रैपर
+
+आप निम्न कमांड चलाकर Xinference का स्थानीय इंस्टांस शुरू कर सकते हैं:
+
+```bash
+xinference
+```
+
+आप Xinference को एक वितरित क्लस्टर में भी तैनात कर सकते हैं। ऐसा करने के लिए, पहले सर्वर पर Xinference पर्यवेक्षक शुरू करें जहां आप इसे चलाना चाहते हैं:
+
+```bash
+xinference-supervisor -H "${supervisor_host}"
+```
+
+फिर, अन्य सर्वरों पर जहां आप इन्हें चलाना चाहते हैं, Xinference वर्कर शुरू करें:
+
+```bash
+xinference-worker -e "http://${supervisor_host}:9997"
+```
+
+आप निम्न कमांड चलाकर भी Xinference का स्थानीय इंस्टांस शुरू कर सकते हैं:
+
+```bash
+xinference
+```
+
+एक बार Xinference चालू हो जाने पर, CLI या Xinference क्लाइंट के माध्यम से मॉडल प्रबंधन के लिए एक एंडपॉइंट उपलब्ध होगा।
+
+स्थानीय तैनाती के लिए, एंडपॉइंट http://localhost:9997 होगा।
+
+क्लस्टर तैनाती के लिए, एंडपॉइंट http://$\{supervisor_host}:9997 होगा।
+
+फिर, आपको एक मॉडल लॉन्च करना होगा। आप मॉडल नाम और अन्य गुणों जैसे model_size_in_billions और क्वांटीकरण निर्दिष्ट कर सकते हैं। आप इसे कमांड लाइन इंटरफ़ेस (CLI) का उपयोग करके कर सकते हैं। उदाहरण के लिए,
+
+```bash
+xinference launch -n orca -s 3 -q q4_0
+```
+
+एक मॉडल uid वापस मिलेगा।
+
+उदाहरण उपयोग:
+
+```python
+<!--IMPORTS:[{"imported": "Xinference", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.xinference.Xinference.html", "title": "Xorbits Inference (Xinference)"}]-->
+from langchain_community.llms import Xinference
+
+llm = Xinference(
+    server_url="http://0.0.0.0:9997",
+    model_uid = {model_uid} # replace model_uid with the model UID return from launching the model
+)
+
+llm(
+    prompt="Q: where can we visit in the capital of France? A:",
+    generate_config={"max_tokens": 1024, "stream": True},
+)
+
+```
+
+### उपयोग
+
+अधिक जानकारी और विस्तृत उदाहरणों के लिए, [xinference LLMs के लिए उदाहरण](/docs/integrations/llms/xinference) देखें।
+
+### एम्बेडिंग
+
+Xinference एम्बेडिंग क्वेरी और दस्तावेजों का भी समर्थन करता है। [xinference एम्बेडिंग के लिए उदाहरण](/docs/integrations/text_embedding/xinference) देखें।

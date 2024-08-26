@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# PipelineAI
+
+Esta página cubre cómo usar el ecosistema de PipelineAI dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envolturas específicas de PipelineAI.
+
+## Instalación y configuración
+
+- Instalar con `pip install pipeline-ai`
+- Obtener una clave de API de Pipeline Cloud y establecerla como una variable de entorno (`PIPELINE_API_KEY`)
+
+## Envolturas
+
+### LLM
+
+Existe una envoltura de LLM de PipelineAI, a la que se puede acceder con
+
+```python
+<!--IMPORTS:[{"imported": "PipelineAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.pipelineai.PipelineAI.html", "title": "PipelineAI"}]-->
+from langchain_community.llms import PipelineAI
+```

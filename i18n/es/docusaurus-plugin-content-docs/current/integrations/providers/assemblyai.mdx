@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# AssemblyAI
+
+>[AssemblyAI](https://www.assemblyai.com/) construye modelos de `Speech AI` para tareas como
+transcripción de voz a texto, diarización de altavoces, resumen de discursos y más.
+> Los modelos de `Speech AI` de `AssemblyAI` incluyen una precisa transcripción de voz a texto para datos de voz
+> (como llamadas, reuniones virtuales y podcasts), detección de altavoces, análisis de sentimiento,
+> detección de capítulos, enmascaramiento de información personal.
+
+## Instalación y configuración
+
+Obtén tu [clave API](https://www.assemblyai.com/dashboard/signup).
+
+Instala el paquete `assemblyai`.
+
+```bash
+pip install -U assemblyai
+```
+
+## Cargador de documentos
+
+###  Transcripción de audio de AssemblyAI
+
+El `AssemblyAIAudioTranscriptLoader` transcribe archivos de audio con la `API de AssemblyAI`
+y carga el texto transcrito en los documentos.
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/assemblyai).
+
+```python
+<!--IMPORTS:[{"imported": "AssemblyAIAudioTranscriptLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.assemblyai.AssemblyAIAudioTranscriptLoader.html", "title": "AssemblyAI"}]-->
+from langchain_community.document_loaders import AssemblyAIAudioTranscriptLoader
+```

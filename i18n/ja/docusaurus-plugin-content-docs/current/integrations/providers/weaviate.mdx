@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Weaviate
+
+>[Weaviate](https://weaviate.io/)は、オープンソースのベクトルデータベースです。機械学習モデルから生成されたデータオブジェクトやベクトル埋め込みを保存し、数十億規模のデータオブジェクトにスケーラブルに対応できます。
+
+`Weaviate`とは何ですか?
+- Weviateは、オープンソースのベクトル検索エンジンタイプのデータベースです。
+- Weviateでは、クラスプロパティのようなJSONドキュメントを保存でき、それらのドキュメントをベクトル空間で表現するためのマシンラーニングベクトルを付加できます。
+- Weviateは、単独で使用したり(ベクトルを自分で用意する)、ベクトル化を行ったり、コア機能を拡張するさまざまなモジュールと組み合わせて使用したりできます。
+- Weviateには、データにアクセスしやすいGraphQL APIがあります。
+- 数ミリ秒以内にクエリを実行できるよう、本番環境でのベクトル検索セットアップを目指しています([オープンソースのベンチマーク](https://weaviate.io/developers/weaviate/current/benchmarks/)をご確認ください)。
+- [基本的な使い始めのガイド](https://weaviate.io/developers/weaviate/current/core-knowledge/basics.html)で5分以内にWeviateの使い方を学べます。
+
+**Weviateの詳細:**
+
+`Weaviate`は、テキスト、画像などさまざまなメディアタイプに対応した低レイテンシーのベクトル検索エンジンです。セマンティック検索、質問応答抽出、分類、カスタマイズ可能なモデル(PyTorch/TensorFlow/Keras)などの機能を提供しています。Goから一から構築されたWeviateは、オブジェクトとベクトルの両方を保存でき、ベクトル検索と構造化フィルタリング、クラウドネイティブデータベースの耐障害性を組み合わせています。これらの機能はGraphQL、REST、さまざまなクライアントサイドプログラミング言語から利用できます。
+
+## インストールとセットアップ
+
+PythonのSDKをインストールします:
+
+```bash
+pip install langchain-weaviate
+```
+
+## ベクトルストア
+
+`Weaviate`インデックスをラップするラッパーが用意されており、セマンティック検索や例の選択などでベクトルストアとして使用できます。
+
+このベクトルストアをインポートするには:
+
+```python
+from langchain_weaviate import WeaviateVectorStore
+```
+
+Weviateラッパーの詳細な使用方法については、[このノートブック](/docs/integrations/vectorstores/weaviate)をご覧ください。

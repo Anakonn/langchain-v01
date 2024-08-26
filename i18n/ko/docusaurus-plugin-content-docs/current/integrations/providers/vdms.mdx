@@ -1,0 +1,63 @@
+---
+translated: true
+---
+
+# VDMS
+
+> [VDMS](https://github.com/IntelLabs/vdms/blob/master/README.md)는 관련 시각 데이터를 그래프로 저장된 시각 메타데이터를 통해 검색하고 시각 데이터에 대한 기계 친화적인 향상을 통해 더 빠른 액세스를 가능하게 하는 대규모 시각 데이터에 대한 효율적인 액세스를 위한 저장 솔루션입니다.
+
+## 설치 및 설정
+
+### 클라이언트 설치
+
+```bash
+pip install vdms
+```
+
+### 데이터베이스 설치
+
+VDMS 시작을 위한 두 가지 방법이 있습니다:
+
+#### 도커를 통해 로컬 머신에 VDMS 설치
+
+```bash
+    docker run -d -p 55555:55555 intellabs/vdms:latest
+```
+
+#### 로컬 머신에 VDMS 직접 설치
+
+[설치 지침](https://github.com/IntelLabs/vdms/blob/master/INSTALL.md)을 참조하십시오.
+
+## VectorStore
+
+벡터 저장소는 VDMS에 대한 간단한 래퍼입니다. 데이터를 저장하고 검색하기 위한 간단한 인터페이스를 제공합니다.
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "VDMS"}, {"imported": "CharacterTextSplitter", "source": "langchain.text_splitter", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "VDMS"}, {"imported": "VDMS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vdms.VDMS.html", "title": "VDMS"}, {"imported": "VDMS_Client", "source": "langchain_community.vectorstores.vdms", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vdms.VDMS_Client.html", "title": "VDMS"}, {"imported": "HuggingFaceEmbeddings", "source": "langchain_community.embeddings.huggingface", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceEmbeddings.html", "title": "VDMS"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain.text_splitter import CharacterTextSplitter
+
+loader = TextLoader("./state_of_the_union.txt")
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+
+from langchain_community.vectorstores import VDMS
+from langchain_community.vectorstores.vdms import VDMS_Client
+from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+
+client = VDMS_Client("localhost", 55555)
+vectorstore = VDMS.from_documents(
+    docs,
+    client=client,
+    collection_name="langchain-demo",
+    embedding_function=HuggingFaceEmbeddings(),
+    engine="FaissFlat"
+    distance_strategy="L2",
+)
+
+query = "What did the president say about Ketanji Brown Jackson"
+results = vectorstore.similarity_search(query)
+```
+
+VDMS 래퍼에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/vdms)을 참조하십시오.

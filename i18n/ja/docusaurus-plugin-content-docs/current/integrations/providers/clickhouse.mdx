@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# ClickHouse
+
+> [ClickHouse](https://clickhouse.com/)は、フルSQL対応と分析クエリ作成を支援する多様な機能を備えた、リアルタイムアプリやアナリティクスに最適な高速で効率的なオープンソースデータベースです。
+> `L2Distance`などの距離検索機能や[近似最近傍検索インデックス](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes)を備えており、ClickHouseをSQLを使って高性能でスケーラブルなベクトルデータベースとして使用できます。
+
+## インストールとセットアップ
+
+`clickhouse-connect`Pythonパッケージをインストールする必要があります。
+
+```bash
+pip install clickhouse-connect
+```
+
+## ベクトルストア
+
+[使用例](/docs/integrations/vectorstores/clickhouse)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "Clickhouse", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clickhouse.Clickhouse.html", "title": "ClickHouse"}, {"imported": "ClickhouseSettings", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clickhouse.ClickhouseSettings.html", "title": "ClickHouse"}]-->
+from langchain_community.vectorstores import Clickhouse, ClickhouseSettings
+```

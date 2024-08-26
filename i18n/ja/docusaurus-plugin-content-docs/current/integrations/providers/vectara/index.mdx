@@ -1,0 +1,96 @@
+---
+translated: true
+---
+
+# Vectara
+
+>[Vectara](https://vectara.com/)は開発者のためのGenAIプラットフォームです。セマンティック検索やRAG(Retrieval Augmented Generation)のGenAIアプリケーションを構築するための簡単なAPIを提供しています。
+
+**Vectaraの概要:**
+- `Vectara`は開発者中心のAPIプラットフォームで、信頼できるGenAIアプリケーションを構築することができます。
+- Vectaraを使用するには、まず[サインアップ](https://vectara.com/integrations/langchain)してアカウントを作成する必要があります。その後、インデックス化と検索のためのコーパスとAPIキーを作成します。
+- Vectaraの[インデックス化API](https://docs.vectara.com/docs/indexing-apis/indexing)を使用して、ドキュメントをVectaraのインデックスに追加することができます。
+- Vectaraの[検索API](https://docs.vectara.com/docs/search-apis/search)を使用して、Vectaraのインデックスを検索することができます(ハイブリッド検索もサポートしています)。
+
+## インストールとセットアップ
+
+LangChainでVectaraを使用するには、特別なインストール手順は必要ありません。
+始めるには、[サインアップ](https://vectara.com/integrations/langchain)し、[クイックスタート](https://docs.vectara.com/docs/quickstart)ガイドに従ってコーパスとAPIキーを作成してください。
+これらを取得したら、Vectaraベクトルストアの引数として提供するか、環境変数として設定することができます。
+
+- `VECTARA_CUSTOMER_ID`="your_customer_id"をエクスポートする
+- `VECTARA_CORPUS_ID`="your_corpus_id"をエクスポートする
+- `VECTARA_API_KEY`="your-vectara-api-key"をエクスポートする
+
+## ベクトルストアとしてのVectara
+
+Vectaraプラットフォームを包装するラッパーが存在し、セマンティック検索や例の選択のためのベクトルストアとして使用することができます。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "Vectara", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vectara.Vectara.html", "title": "Vectara"}]-->
+from langchain_community.vectorstores import Vectara
+```
+
+Vectaraベクトルストアのインスタンスを作成するには:
+
+```python
+vectara = Vectara(
+    vectara_customer_id=customer_id,
+    vectara_corpus_id=corpus_id,
+    vectara_api_key=api_key
+)
+```
+
+customer_id、corpus_id、api_keyは省略可能で、指定されない場合は、それぞれ`VECTARA_CUSTOMER_ID`、`VECTARA_CORPUS_ID`、`VECTARA_API_KEY`の環境変数から読み取られます。
+
+ベクトルストアを取得したら、標準的な`VectorStore`インターフェースに従って`add_texts`または`add_documents`を使用することができます。例:
+
+```python
+vectara.add_texts(["to be or not to be", "that is the question"])
+```
+
+Vectaraはファイルアップロードをサポートしているため、ファイル(PDF、TXT、HTML、PPT、DOC等)を直接アップロードする機能も追加しました。このメソッドを使用する場合、ファイルはVectara側に直接アップロードされ、最適に処理およびチャンクされるため、LangChainのドキュメントローダーやチャンク機能を使う必要はありません。
+
+例:
+
+```python
+vectara.add_files(["path/to/file1.pdf", "path/to/file2.pdf",...])
+```
+
+ベクトルストアを検索するには、`similarity_search`メソッド(または`similarity_search_with_score`)を使用します。これは、クエリ文字列を受け取り、関連するドキュメントのリストを返します。
+
+```python
+results = vectara.similarity_score("what is LangChain?")
+```
+
+結果は、関連するドキュメントのリストと、各ドキュメントの関連性スコアが返されます。
+
+この場合、デフォルトの検索パラメータを使用しましたが、`similarity_search`または`similarity_search_with_score`で以下の追加引数を指定することもできます:
+- `k`: 返す結果の数(デフォルトは5)
+- `lambda_val`: ハイブリッド検索の[語彙的マッチング](https://docs.vectara.com/docs/api-reference/search-apis/lexical-matching)係数(デフォルトは0.025)
+- `filter`: 結果に適用する[フィルター](https://docs.vectara.com/docs/common-use-cases/filtering-by-metadata/filter-overview)(デフォルトはNone)
+- `n_sentence_context`: 実際のマッチングセグメントの前後に含める文の数。デフォルトは2。
+- `mmr_config`: クエリでMMRモードを指定するために使用できます。
+   - `is_enabled`: True or False
+   - `mmr_k`: MMRの再ランキングに使用する結果の数
+   - `diversity_bias`: 0 = 多様性なし、1 = 完全な多様性。MMRの式のλパラメータで、0...1の範囲
+
+## 検索支援型生成(RAG)のためのVectara
+
+Vectaraは、生成型要約を含む完全なRAGパイプラインを提供しています。
+このパイプラインを使用するには、`similarity_search`または`similarity_search_with_score`で`summary_config`引数を指定します。
+
+- `summary_config`: LLMサマリーをRAGで要求するために使用できます。
+   - `is_enabled`: True or False
+   - `max_results`: サマリー生成に使用する結果の数
+   - `response_lang`: 応答サマリーの言語、ISO 639-2形式(例: 'en', 'fr', 'de'など)
+
+## サンプルノートブック
+
+Vectaraの詳細な使用例については、以下のサンプルをご覧ください:
+* [このノートブック](/docs/integrations/vectorstores/vectara)では、Vectaraをベクトルストアとしてセマンティック検索に使用する方法を示しています。
+* [このノートブック](/docs/integrations/providers/vectara/vectara_chat)では、LangChainとVectaraを使ってチャットボットを構築する方法を示しています。
+* [このノートブック](/docs/integrations/providers/vectara/vectara_summary)では、生成型要約を含む完全なVectara RAGパイプラインの使用方法を示しています。
+* [このノートブック](/docs/integrations/retrievers/self_query/vectara_self_query)では、Vectaraを使ったself-query機能を示しています。

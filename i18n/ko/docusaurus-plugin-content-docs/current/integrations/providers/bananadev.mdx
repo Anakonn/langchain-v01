@@ -1,0 +1,69 @@
+---
+translated: true
+---
+
+# 바나나
+
+>[바나나](https://www.banana.dev/)는 AI 모델에 대한 서버리스 GPU 추론, CI/CD 빌드 파이프라인 및 모델을 서비스하기 위한 간단한 Python 프레임워크(`Potassium`)를 제공합니다.
+
+이 페이지에서는 LangChain 내에서 [바나나](https://www.banana.dev) 생태계를 사용하는 방법을 다룹니다.
+
+## 설치 및 설정
+
+- `banana-dev` Python 패키지를 설치합니다:
+
+```bash
+pip install banana-dev
+```
+
+- [Banana.dev 대시보드](https://app.banana.dev)에서 Banana API 키를 가져와 환경 변수(`BANANA_API_KEY`)로 설정합니다.
+- 모델의 세부 정보 페이지에서 모델 키와 URL 슬러그를 가져옵니다.
+
+## Banana 템플릿 정의
+
+Banana 앱을 위한 GitHub 리포지토리를 설정해야 합니다. [이 가이드](https://docs.banana.dev/banana-docs/)를 사용하여 5분 내에 시작할 수 있습니다.
+
+또한 준비된 LLM 예제로 Banana의 [CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq) GitHub 리포지토리를 확인할 수 있습니다. 이를 포크하고 Banana에 배포하면 됩니다.
+
+기타 시작 리포지토리는 [여기](https://github.com/orgs/bananaml/repositories?q=demo-&type=all&language=&sort=)에서 확인할 수 있습니다.
+
+## Banana 앱 빌드
+
+LangChain 내에서 Banana 앱을 사용하려면 반환된 JSON에 `outputs` 키를 포함해야 하며, 값은 문자열이어야 합니다.
+
+```python
+# Return the results as a dictionary
+result = {'outputs': result}
+```
+
+추론 함수의 예는 다음과 같습니다:
+
+```python
+@app.handler("/")
+def handler(context: dict, request: Request) -> Response:
+    """Handle a request to generate code from a prompt."""
+    model = context.get("model")
+    tokenizer = context.get("tokenizer")
+    max_new_tokens = request.json.get("max_new_tokens", 512)
+    temperature = request.json.get("temperature", 0.7)
+    prompt = request.json.get("prompt")
+    prompt_template=f'''[INST] Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using ```:
+    {prompt}
+    [/INST]
+    '''
+    input_ids = tokenizer(prompt_template, return_tensors='pt').input_ids.cuda()
+    output = model.generate(inputs=input_ids, temperature=temperature, max_new_tokens=max_new_tokens)
+    result = tokenizer.decode(output[0])
+    return Response(json={"outputs": result}, status=200)
+```
+
+이 예제는 [CodeLlama-7B-Instruct-GPTQ](https://github.com/bananaml/demo-codellama-7b-instruct-gptq)의 `app.py` 파일에서 가져온 것입니다.
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Banana", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.bananadev.Banana.html", "title": "Banana"}]-->
+from langchain_community.llms import Banana
+```
+
+사용 예제는 [/docs/integrations/llms/banana](/docs/integrations/llms/banana)에서 확인할 수 있습니다.

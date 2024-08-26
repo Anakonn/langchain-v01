@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# Évaluateurs de comparaison
+
+Les évaluateurs de comparaison dans LangChain permettent de mesurer deux chaînes différentes ou les sorties de LLM. Ces évaluateurs sont utiles pour les analyses comparatives, comme les tests A/B entre deux modèles de langage, ou la comparaison de différentes versions du même modèle. Ils peuvent également être utiles pour des choses comme la génération de scores de préférence pour l'apprentissage par renforcement assisté par l'IA.
+
+Ces évaluateurs héritent de la classe `PairwiseStringEvaluator`, fournissant une interface de comparaison pour deux chaînes de caractères - généralement, les sorties de deux requêtes ou modèles différents, ou deux versions du même modèle. En essence, un évaluateur de comparaison effectue une évaluation sur une paire de chaînes de caractères et renvoie un dictionnaire contenant le score d'évaluation et d'autres détails pertinents.
+
+Pour créer un évaluateur de comparaison personnalisé, héritez de la classe `PairwiseStringEvaluator` et remplacez la méthode `_evaluate_string_pairs`. Si vous avez besoin d'une évaluation asynchrone, remplacez également la méthode `_aevaluate_string_pairs`.
+
+Voici un résumé des principales méthodes et propriétés d'un évaluateur de comparaison :
+
+- `evaluate_string_pairs` : Évaluer les paires de chaînes de sortie. Cette fonction doit être remplacée lors de la création d'évaluateurs personnalisés.
+- `aevaluate_string_pairs` : Évaluer de manière asynchrone les paires de chaînes de sortie. Cette fonction doit être remplacée pour une évaluation asynchrone.
+- `requires_input` : Cette propriété indique si cet évaluateur nécessite une chaîne d'entrée.
+- `requires_reference` : Cette propriété spécifie si cet évaluateur nécessite une étiquette de référence.
+
+:::note Prise en charge de LangSmith
+La méthode d'évaluation [run_on_dataset](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.smith) est conçue pour évaluer un seul modèle à la fois et ne prend donc pas en charge ces évaluateurs.
+:::
+
+Des informations détaillées sur la création d'évaluateurs personnalisés et les évaluateurs de comparaison intégrés disponibles sont fournies dans les sections suivantes.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

@@ -1,0 +1,16 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# Mise en production
+
+Après avoir développé un prototype de votre application de modèle de langue, l'étape suivante consiste à la préparer pour la production.
+Cette section contient des guides sur les meilleures pratiques pour rendre et maintenir votre application prête pour la production,
+en s'assurant qu'elle est prête pour une utilisation dans le monde réel.
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/productionization/")} />

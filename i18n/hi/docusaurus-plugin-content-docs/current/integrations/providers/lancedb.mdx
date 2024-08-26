@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# LanceDB
+
+यह पृष्ठ LangChain में [LanceDB](https://github.com/lancedb/lancedb) का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट LanceDB रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `pip install lancedb` के साथ Python SDK स्थापित करें
+
+## रैपर्स
+
+### VectorStore
+
+LanceDB डेटाबेस के चारों ओर एक रैपर मौजूद है, जो आपको इसका उपयोग एक वेक्टर स्टोर के रूप में करने की अनुमति देता है,
+चाहे वह语义 खोज या उदाहरण चयन के लिए हो।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "LanceDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lancedb.LanceDB.html", "title": "LanceDB"}]-->
+from langchain_community.vectorstores import LanceDB
+```
+
+LanceDB रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/lancedb) देखें

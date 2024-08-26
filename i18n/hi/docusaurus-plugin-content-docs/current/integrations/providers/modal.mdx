@@ -1,0 +1,97 @@
+---
+translated: true
+---
+
+यह पृष्ठ मॉडल पारिस्थितिकी तंत्र का उपयोग करके कस्टम एलएलएम को चलाने के बारे में कवर करता है।
+यह दो भागों में विभाजित है:
+
+1. मॉडल स्थापना और वेब एंडपॉइंट तैनाती
+2. `LLM` रैपर क्लास के साथ तैनात वेब एंडपॉइंट का उपयोग करना।
+
+## स्थापना और सेटअप
+
+- `pip install modal` के साथ स्थापित करें
+- `modal token new` चलाएं
+
+## अपने मॉडल फ़ंक्शन और वेबहुक को परिभाषित करें
+
+आपको एक प्रोम्प्ट शामिल करना होगा। एक कठोर प्रतिक्रिया संरचना है:
+
+```python
+class Item(BaseModel):
+    prompt: str
+
+@stub.function()
+@modal.web_endpoint(method="POST")
+def get_text(item: Item):
+    return {"prompt": run_gpt2.call(item.prompt)}
+```
+
+यह GPT2 मॉडल के साथ एक उदाहरण है:
+
+```python
+from pydantic import BaseModel
+
+import modal
+
+CACHE_PATH = "/root/model_cache"
+
+class Item(BaseModel):
+    prompt: str
+
+stub = modal.Stub(name="example-get-started-with-langchain")
+
+def download_model():
+    from transformers import GPT2Tokenizer, GPT2LMHeadModel
+    tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+    model = GPT2LMHeadModel.from_pretrained('gpt2')
+    tokenizer.save_pretrained(CACHE_PATH)
+    model.save_pretrained(CACHE_PATH)
+
+# Define a container image for the LLM function below, which
+# downloads and stores the GPT-2 model.
+image = modal.Image.debian_slim().pip_install(
+    "tokenizers", "transformers", "torch", "accelerate"
+).run_function(download_model)
+
+@stub.function(
+    gpu="any",
+    image=image,
+    retries=3,
+)
+def run_gpt2(text: str):
+    from transformers import GPT2Tokenizer, GPT2LMHeadModel
+    tokenizer = GPT2Tokenizer.from_pretrained(CACHE_PATH)
+    model = GPT2LMHeadModel.from_pretrained(CACHE_PATH)
+    encoded_input = tokenizer(text, return_tensors='pt').input_ids
+    output = model.generate(encoded_input, max_length=50, do_sample=True)
+    return tokenizer.decode(output[0], skip_special_tokens=True)
+
+@stub.function()
+@modal.web_endpoint(method="POST")
+def get_text(item: Item):
+    return {"prompt": run_gpt2.call(item.prompt)}
+```
+
+### वेब एंडपॉइंट तैनात करें
+
+[`modal deploy`](https://modal.com/docs/reference/cli/deploy) CLI कमांड के साथ मॉडल क्लाउड पर वेब एंडपॉइंट तैनात करें।
+आपका वेब एंडपॉइंट `modal.run` डोमेन के तहत एक स्थायी यूआरएल प्राप्त करेगा।
+
+## मॉडल वेब एंडपॉइंट के लिए एलएलएम रैपर
+
+`Modal` एलएलएम रैपर क्लास जो आपके तैनात वेब एंडपॉइंट का यूआरएल स्वीकार करेगी।
+
+```python
+<!--IMPORTS:[{"imported": "Modal", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.modal.Modal.html", "title": "Modal"}]-->
+from langchain_community.llms import Modal
+
+endpoint_url = "https://ecorp--custom-llm-endpoint.modal.run"  # REPLACE ME with your deployed Modal web endpoint's URL
+
+llm = Modal(endpoint_url=endpoint_url)
+llm_chain = LLMChain(prompt=prompt, llm=llm)
+
+question = "What NFL team won the Super Bowl in the year Justin Beiber was born?"
+
+llm_chain.run(question)
+```

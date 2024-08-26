@@ -1,0 +1,88 @@
+---
+translated: true
+---
+
+# Datadog Tracing
+
+>[ddtrace](https://github.com/DataDog/dd-trace-py) est une bibliothèque de surveillance des performances d'application (APM) de Datadog qui fournit une intégration pour surveiller votre application LangChain.
+
+Principales fonctionnalités de l'intégration ddtrace pour LangChain :
+- Traces : Capturer les requêtes LangChain, les paramètres, les compléments de requête et visualiser les opérations LangChain.
+- Métriques : Capturer la latence des requêtes LangChain, les erreurs et l'utilisation des jetons/coûts (pour les modèles de langage OpenAI et les modèles de chat).
+- Journaux : Stocker les données de complétion de requête pour chaque opération LangChain.
+- Tableau de bord : Combiner les métriques, les journaux et les données de trace dans un seul plan pour surveiller les requêtes LangChain.
+- Moniteurs : Fournir des alertes en réponse aux pics de latence des requêtes LangChain ou du taux d'erreur.
+
+Remarque : L'intégration LangChain de ddtrace fournit actuellement le traçage pour les modèles de langage, les modèles de chat, les modèles d'incorporation de texte, les chaînes et les magasins de vecteurs.
+
+## Installation et configuration
+
+1. Activez l'APM et StatsD dans votre agent Datadog, ainsi qu'une clé API Datadog. Par exemple, dans Docker :
+
+```bash
+docker run -d --cgroupns host \
+              --pid host \
+              -v /var/run/docker.sock:/var/run/docker.sock:ro \
+              -v /proc/:/host/proc/:ro \
+              -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+              -e DD_API_KEY=<DATADOG_API_KEY> \
+              -p 127.0.0.1:8126:8126/tcp \
+              -p 127.0.0.1:8125:8125/udp \
+              -e DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true \
+              -e DD_APM_ENABLED=true \
+              gcr.io/datadoghq/agent:latest
+```
+
+2. Installez la bibliothèque Python APM de Datadog.
+
+```bash
+pip install ddtrace>=1.17
+```
+
+3. L'intégration LangChain peut être activée automatiquement lorsque vous préfixez la commande de votre application Python LangChain avec `ddtrace-run` :
+
+```bash
+DD_SERVICE="my-service" DD_ENV="staging" DD_API_KEY=<DATADOG_API_KEY> ddtrace-run python <your-app>.py
+```
+
+**Remarque** : Si l'agent utilise un nom d'hôte ou un port non par défaut, assurez-vous également de définir `DD_AGENT_HOST`, `DD_TRACE_AGENT_PORT` ou `DD_DOGSTATSD_PORT`.
+
+De plus, l'intégration LangChain peut être activée par programmation en ajoutant `patch_all()` ou `patch(langchain=True)` avant la première importation de `langchain` dans votre application.
+
+Notez que l'utilisation de `ddtrace-run` ou `patch_all()` activera également les intégrations `requests` et `aiohttp` qui tracent les requêtes HTTP aux fournisseurs de modèles de langage, ainsi que l'intégration `openai` qui trace les requêtes à la bibliothèque OpenAI.
+
+```python
+from ddtrace import config, patch
+
+# Note: be sure to configure the integration before calling ``patch()``!
+# e.g. config.langchain["logs_enabled"] = True
+
+patch(langchain=True)
+
+# to trace synchronous HTTP requests
+# patch(langchain=True, requests=True)
+
+# to trace asynchronous HTTP requests (to the OpenAI library)
+# patch(langchain=True, aiohttp=True)
+
+# to include underlying OpenAI spans from the OpenAI integration
+# patch(langchain=True, openai=True)patch_all
+```
+
+Consultez la [documentation de la bibliothèque APM Python](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html) pour une utilisation plus avancée.
+
+## Configuration
+
+Consultez la [documentation de la bibliothèque APM Python](https://ddtrace.readthedocs.io/en/stable/integrations.html#langchain) pour toutes les options de configuration disponibles.
+
+### Échantillonnage des journaux de requête et de complétion
+
+Pour activer l'échantillonnage des journaux de requête et de complétion, définissez la variable d'environnement `DD_LANGCHAIN_LOGS_ENABLED=1`. Par défaut, 10 % des requêtes tracées émettront des journaux contenant les requêtes et les compléments.
+
+Pour ajuster le taux d'échantillonnage des journaux, consultez la [documentation de la bibliothèque APM](https://ddtrace.readthedocs.io/en/stable/integrations.html#langchain).
+
+**Remarque** : La soumission de journaux nécessite que `DD_API_KEY` soit spécifié lors de l'exécution de `ddtrace-run`.
+
+## Dépannage
+
+Besoin d'aide ? Créez un problème sur [ddtrace](https://github.com/DataDog/dd-trace-py) ou contactez le [support Datadog](https://docs.datadoghq.com/help/).

@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# TiDB
+
+> [TiDB Cloud](https://tidbcloud.com/) es una solución integral de base de datos como servicio (DBaaS) que ofrece opciones dedicadas y sin servidor. `TiDB Serverless` ahora está integrando una búsqueda vectorial integrada en el panorama de MySQL. Con esta mejora, puede desarrollar aplicaciones de IA utilizando `TiDB Serverless` sin necesidad de una nueva base de datos o pilas técnicas adicionales. Sé de los primeros en experimentarlo uniéndote a la [lista de espera para la versión beta privada](https://tidb.cloud/ai).
+
+## Instalación y configuración
+
+Debes obtener los detalles de conexión de la base de datos TiDB.
+Visita [TiDB Cloud](https://tidbcloud.com/) para obtener los detalles de conexión.
+
+## Cargador de documentos
+
+```python
+<!--IMPORTS:[{"imported": "TiDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tidb.TiDBLoader.html", "title": "TiDB"}]-->
+from langchain_community.document_loaders import TiDBLoader
+```
+
+Consulta los detalles [aquí](/docs/integrations/document_loaders/tidb).
+
+## Almacén vectorial
+
+```python
+<!--IMPORTS:[{"imported": "TiDBVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tidb_vector.TiDBVectorStore.html", "title": "TiDB"}]-->
+from langchain_community.vectorstores import TiDBVectorStore
+```
+
+Consulta los detalles [aquí](/docs/integrations/vectorstores/tidb_vector).
+
+## Memoria
+
+```python
+<!--IMPORTS:[{"imported": "TiDBChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.tidb.TiDBChatMessageHistory.html", "title": "TiDB"}]-->
+from langchain_community.chat_message_histories import TiDBChatMessageHistory
+```
+
+Consulta los detalles [aquí](/docs/integrations/memory/tidb_chat_message_history).

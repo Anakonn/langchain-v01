@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# VoyageAI
+
+VoyageAI와 관련된 모든 기능
+
+>[VoyageAI](https://www.voyageai.com/) Voyage AI는 더 나은 검색 품질을 위해 귀하의 도메인과 회사에 맞춤화된 임베딩 모델을 구축합니다.
+
+## 설치 및 설정
+
+통합 패키지를 설치하세요.
+
+```bash
+pip install langchain-voyageai
+```
+
+VoyageAI API 키를 받아 환경 변수(`VOYAGE_API_KEY`)로 설정하세요.
+
+## 텍스트 임베딩 모델
+
+[사용 예시](/docs/integrations/text_embedding/voyageai)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIEmbeddings", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_voyageai.embeddings.VoyageAIEmbeddings.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIEmbeddings
+```
+
+## 재순위화
+
+[사용 예시](/docs/integrations/document_transformers/voyageai-reranker)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIRerank", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/rerank/langchain_voyageai.rerank.VoyageAIRerank.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIRerank
+```

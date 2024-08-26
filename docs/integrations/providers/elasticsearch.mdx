@@ -1,0 +1,60 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/elasticsearch
+translated: false
+---
+
+# Elasticsearch
+
+> [Elasticsearch](https://www.elastic.co/elasticsearch/) is a distributed, RESTful search and analytics engine.
+> It provides a distributed, multi-tenant-capable full-text search engine with an HTTP web interface and schema-free
+> JSON documents.
+
+## Installation and Setup
+
+There are two ways to get started with Elasticsearch:
+
+#### Install Elasticsearch on your local machine via docker
+
+Example: Run a single-node Elasticsearch instance with security disabled. This is not recommended for production use.
+
+```bash
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.http.ssl.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+```
+
+#### Deploy Elasticsearch on Elastic Cloud
+
+Elastic Cloud is a managed Elasticsearch service. Signup for a [free trial](https://cloud.elastic.co/registration?utm_source=langchain&utm_content=documentation).
+
+### Install Client
+
+```bash
+pip install elasticsearch
+pip install langchain-elasticsearch
+```
+
+## Embedding models
+
+See a [usage example](/docs/integrations/text_embedding/elasticsearch).
+
+```python
+<!--IMPORTS:[{"imported": "ElasticsearchEmbeddings", "source": "langchain_elasticsearch.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.html", "title": "Elasticsearch"}]-->
+from langchain_elasticsearch.embeddings import ElasticsearchEmbeddings
+```
+
+## Vector store
+
+See a [usage example](/docs/integrations/vectorstores/elasticsearch).
+
+```python
+<!--IMPORTS:[{"imported": "ElasticsearchStore", "source": "langchain_elasticsearch.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_elasticsearch.vectorstores.ElasticsearchStore.html", "title": "Elasticsearch"}]-->
+from langchain_elasticsearch.vectorstores import ElasticsearchStore
+```
+
+## Memory
+
+See a [usage example](/docs/integrations/memory/elasticsearch_chat_message_history).
+
+```python
+<!--IMPORTS:[{"imported": "ElasticsearchChatMessageHistory", "source": "langchain_elasticsearch.chat_history", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory.html", "title": "Elasticsearch"}]-->
+from langchain_elasticsearch.chat_history import ElasticsearchChatMessageHistory
+```

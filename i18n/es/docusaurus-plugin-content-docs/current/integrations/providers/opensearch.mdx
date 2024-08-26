@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# OpenSearch
+
+Esta página cubre cómo usar el ecosistema de OpenSearch dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envolturas específicas de OpenSearch.
+
+## Instalación y configuración
+
+- Instala el paquete de Python con `pip install opensearch-py`
+
+## Envolturas
+
+### VectorStore
+
+Existe una envoltura alrededor de las bases de datos de vectores de OpenSearch, lo que te permite usarla como un vectorstore
+para búsqueda semántica utilizando búsqueda de vectores aproximada impulsada por los motores lucene, nmslib y faiss
+o utilizando scripting doloroso y funciones de puntuación de scripts para búsqueda de vectores de fuerza bruta.
+
+Para importar este vectorstore:
+
+```python
+<!--IMPORTS:[{"imported": "OpenSearchVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.opensearch_vector_search.OpenSearchVectorSearch.html", "title": "OpenSearch"}]-->
+from langchain_community.vectorstores import OpenSearchVectorSearch
+```
+
+Para un recorrido más detallado de la envoltura de OpenSearch, consulta [este cuaderno](/docs/integrations/vectorstores/opensearch)

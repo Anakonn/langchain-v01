@@ -1,0 +1,36 @@
+---
+translated: true
+---
+
+# PGVector
+
+यह पृष्ठ LangChain में Postgres [PGVector](https://github.com/pgvector/pgvector) पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट PGVector रैपर्स के संदर्भ।
+
+## स्थापना
+
+- `pip install pgvector` के साथ Python पैकेज स्थापित करें
+
+## सेटअप
+
+1. पहला कदम `pgvector` एक्सटेंशन के साथ एक डेटाबेस बनाना है।
+
+    [PGVector स्थापना चरण](https://github.com/pgvector/pgvector#installation) पर दिए गए चरणों का पालन करें डेटाबेस और एक्सटेंशन को स्थापित करने के लिए। Docker छवि शुरू करने के लिए सबसे आसान तरीका है।
+
+## रैपर
+
+### VectorStore
+
+Postgres वेक्टर डेटाबेस के इर्द-गिर्द एक रैपर मौजूद है, जो आपको इसका उपयोग वेक्टर स्टोर के रूप में करने की अनुमति देता है,
+चाहे वह语义 खोज या उदाहरण चयन के लिए हो।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "PGVector", "source": "langchain_community.vectorstores.pgvector", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.pgvector.PGVector.html", "title": "PGVector"}]-->
+from langchain_community.vectorstores.pgvector import PGVector
+```
+
+### उपयोग
+
+PGVector रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/pgvector) देखें

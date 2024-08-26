@@ -1,0 +1,55 @@
+---
+translated: true
+---
+
+# Divisores de texto
+
+Una vez que haya cargado los documentos, a menudo querrá transformarlos para que se adapten mejor a su aplicación. El ejemplo más simple es que es posible que desee dividir un documento largo en trozos más pequeños que puedan caber en la ventana de contexto de su modelo. LangChain tiene una serie de transformadores de documentos integrados que facilitan la división, combinación, filtrado y manipulación de documentos.
+
+Cuando desea trabajar con piezas de texto largas, es necesario dividir ese texto en trozos.
+Por simple que parezca, hay mucha complejidad potencial aquí. Idealmente, desea mantener juntas las piezas de texto semánticamente relacionadas. Lo que significa "semánticamente relacionado" podría depender del tipo de texto.
+Este cuaderno muestra varias formas de hacer eso.
+
+A un nivel alto, los divisores de texto funcionan de la siguiente manera:
+
+1. Divide el texto en trozos pequeños y semánticamente significativos (a menudo oraciones).
+2. Comience a combinar estos trozos pequeños en un trozo más grande hasta que alcance un cierto tamaño (medido por alguna función).
+3. Una vez que alcance ese tamaño, haga que ese trozo sea su propio texto y luego comience a crear un nuevo trozo de texto con algo de superposición (para mantener el contexto entre trozos).
+
+Eso significa que hay dos ejes diferentes a lo largo de los cuales puede personalizar su divisor de texto:
+
+1. Cómo se divide el texto
+2. Cómo se mide el tamaño del trozo
+
+## Tipos de divisores de texto
+
+LangChain ofrece muchos tipos diferentes de `divisores de texto`.
+Todos ellos se encuentran en el paquete `langchain-text-splitters`.
+
+Columnas de la tabla:
+
+- **Nombre**: Nombre del divisor de texto
+- **Clases**: Clases que implementan este divisor de texto
+- **Se divide en**: Cómo este divisor de texto divide el texto
+- **Agrega metadatos**: Si este divisor de texto agrega o no metadatos sobre de dónde proviene cada trozo.
+- **Descripción**: Descripción del divisor, incluida la recomendación sobre cuándo usarlo.
+
+| Nombre     | Clases                                                                                                                                                                                                             | Se divide en                                                   | Agrega metadatos | Descripción                                                                                                                                                                                                                                                                  |
+|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Recursivo | [RecursiveCharacterTextSplitter](/docs/modules/data_connection/document_transformers/recursive_text_splitter), [RecursiveJsonSplitter](/docs/modules/data_connection/document_transformers/recursive_json_splitter) | Una lista de caracteres definidos por el usuario     |               | Divide el texto de forma recursiva. Este fraccionamiento intenta mantener las piezas de texto relacionadas una al lado de la otra. Esta es la `forma recomendada` de comenzar a dividir el texto.                                                                                                                    |
+| HTML      | [HTMLHeaderTextSplitter](/docs/modules/data_connection/document_transformers/HTML_header_metadata), [HTMLSectionSplitter](/docs/modules/data_connection/document_transformers/HTML_section_aware_splitter)          | Caracteres específicos de HTML                                                                                                 | ✅             | Divide el texto en función de caracteres específicos de HTML. En particular, esto agrega información relevante sobre de dónde proviene ese trozo (en función del HTML)                                                                                                                               |
+| Markdown  | [MarkdownHeaderTextSplitter](/docs/modules/data_connection/document_transformers/markdown_header_metadata)                                                                                                          | Caracteres específicos de Markdown                                                                                    | ✅             | Divide el texto en función de caracteres específicos de Markdown. En particular, esto agrega información relevante sobre de dónde proviene ese trozo (en función del Markdown)                                                                                                                       |
+| Código      | [muchos idiomas](/docs/modules/data_connection/document_transformers/code_splitter)                                                                                                                                 | Caracteres específicos de los lenguajes de programación (Python, JS)                                                                           |               | Divide el texto en función de caracteres específicos de los lenguajes de programación. Hay 15 idiomas diferentes disponibles para elegir.                                                                                                                                                           |
+| Token    | [muchas clases](/docs/modules/data_connection/document_transformers/split_by_token)                                                                                                                                  | Tokens                                                                                                          |               | Divide el texto en tokens. Existen algunas formas diferentes de medir los tokens.                                                                                                                                                                                                   |
+| Carácter  | [CharacterTextSplitter](/docs/modules/data_connection/document_transformers/character_text_splitter)                                                                                                                | Un carácter definido por el usuario                                                                                        |               | Divide el texto en función de un carácter definido por el usuario. Uno de los métodos más sencillos.                                                                                                                                                                                                   |
+| [Experimental] Agrupador semántico | [SemanticChunker](/docs/modules/data_connection/document_transformers/semantic-chunker)                                                                                                                             | Oraciones                                                                                                       |               | Primero divide en oraciones. Luego combina las que están una al lado de la otra si son lo suficientemente similares semánticamente. Tomado de [Greg Kamradt](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb) |
+| Divisor de texto semántico de AI21 | [AI21SemanticTextSplitter](/docs/integrations/document_transformers/ai21_semantic_text_splitter)                                                                                                                    |    ✅           | Identifica temas distintos que forman piezas de texto coherentes y se divide a lo largo de ellos.                                                                                                                                                                         |
+
+## Evaluar divisores de texto
+
+Puede evaluar los divisores de texto con la [utilidad Chunkviz](https://www.chunkviz.com/) creada por `Greg Kamradt`.
+`Chunkviz` es una excelente herramienta para visualizar cómo funciona su divisor de texto. Le mostrará cómo se divide su texto y lo ayudará a ajustar los parámetros de división.
+
+## Otras transformaciones de documentos
+
+La división de texto es solo un ejemplo de transformaciones que es posible que desee realizar en los documentos antes de pasarlos a un LLM. Visite [Integraciones](/docs/integrations/document_transformers/) para obtener documentación sobre las integraciones de transformadores de documentos integrados con herramientas de terceros.

@@ -1,0 +1,73 @@
+---
+translated: true
+---
+
+# Recherche vectorielle Oracle AI
+
+La recherche vectorielle Oracle AI est conçue pour les charges de travail d'intelligence artificielle (IA) qui vous permettent d'interroger les données en fonction de la sémantique, plutôt que des mots-clés. L'un des plus grands avantages de la recherche vectorielle Oracle AI est que la recherche sémantique sur les données non structurées peut être combinée avec la recherche relationnelle sur les données d'entreprise dans un seul et même système.
+Cela est non seulement puissant mais aussi beaucoup plus efficace car vous n'avez pas besoin d'ajouter une base de données vectorielle spécialisée, éliminant ainsi les problèmes de fragmentation des données entre plusieurs systèmes.
+
+De plus, comme Oracle construit des technologies de base de données depuis si longtemps, vos vecteurs peuvent bénéficier de toutes les fonctionnalités les plus puissantes d'Oracle Database, comme les suivantes :
+
+ * Prise en charge du partitionnement
+ * Évolutivité des clusters d'applications réelles
+ * Analyses intelligentes Exadata
+ * Traitement des fragments sur des bases de données géographiquement distribuées
+ * Transactions
+ * SQL parallèle
+ * Reprise après sinistre
+ * Sécurité
+ * Oracle Machine Learning
+ * Oracle Graph Database
+ * Oracle Spatial and Graph
+ * Oracle Blockchain
+ * JSON
+
+## Chargeurs de documents
+
+Veuillez consulter l'[exemple d'utilisation](/docs/integrations/document_loaders/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleDocLoader", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleDocLoader.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleDocLoader
+```
+
+## Fractionnement de texte
+
+Veuillez consulter l'[exemple d'utilisation](/docs/integrations/document_loaders/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleTextSplitter", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleTextSplitter.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleTextSplitter
+```
+
+## Embeddings
+
+Veuillez consulter l'[exemple d'utilisation](/docs/integrations/text_embedding/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleEmbeddings", "source": "langchain_community.embeddings.oracleai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oracleai.OracleEmbeddings.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+```
+
+## Résumé
+
+Veuillez consulter l'[exemple d'utilisation](/docs/integrations/tools/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleSummary", "source": "langchain_community.utilities.oracleai", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.oracleai.OracleSummary.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.utilities.oracleai import OracleSummary
+```
+
+## Magasin vectoriel
+
+Veuillez consulter l'[exemple d'utilisation](/docs/integrations/vectorstores/oracle).
+
+```python
+<!--IMPORTS:[{"imported": "OracleVS", "source": "langchain_community.vectorstores.oraclevs", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.oraclevs.OracleVS.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.vectorstores.oraclevs import OracleVS
+```
+
+## Démonstration de bout en bout
+
+Veuillez consulter le [Guide de démonstration de bout en bout de la recherche vectorielle Oracle AI](https://github.com/langchain-ai/langchain/blob/master/cookbook/oracleai_demo).

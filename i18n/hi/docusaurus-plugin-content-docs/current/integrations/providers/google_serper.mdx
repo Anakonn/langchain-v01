@@ -1,0 +1,83 @@
+---
+translated: true
+---
+
+# सरपर - गूगल खोज एपीआई
+
+यह पृष्ठ [Serper](https://serper.dev) गूगल खोज एपीआई का उपयोग करने के बारे में कवर करता है। Serper एक कम लागत वाला गूगल खोज एपीआई है जिसका उपयोग गूगल खोज से उत्तर बॉक्स, ज्ञान ग्राफ और कार्गो परिणाम डेटा को जोड़ने के लिए किया जा सकता है।
+यह दो भागों में विभाजित है: सेटअप, और फिर विशिष्ट गूगल Serper रैपर के संदर्भ।
+
+## सेटअप
+
+- [serper.dev](https://serper.dev) पर जाकर एक मुफ्त खाता बनाएं
+- एपीआई कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`SERPER_API_KEY`) के रूप में सेट करें
+
+## रैपर
+
+### उपयोगिता
+
+एक GoogleSerperAPIWrapper उपयोगिता मौजूद है जो इस एपीआई को रैप करता है। इस उपयोगिता को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Serper - Google Search API"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+```
+
+आप इसका उपयोग एक स्वयं पूछ श्रृंखला के हिस्से के रूप में कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Serper - Google Search API"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Serper - Google Search API"}, {"imported": "initialize_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html", "title": "Serper - Google Search API"}, {"imported": "Tool", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.Tool.html", "title": "Serper - Google Search API"}, {"imported": "AgentType", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html", "title": "Serper - Google Search API"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+from langchain_openai import OpenAI
+from langchain.agents import initialize_agent, Tool
+from langchain.agents import AgentType
+
+import os
+
+os.environ["SERPER_API_KEY"] = ""
+os.environ['OPENAI_API_KEY'] = ""
+
+llm = OpenAI(temperature=0)
+search = GoogleSerperAPIWrapper()
+tools = [
+    Tool(
+        name="Intermediate Answer",
+        func=search.run,
+        description="useful for when you need to ask with search"
+    )
+]
+
+self_ask_with_search = initialize_agent(tools, llm, agent=AgentType.SELF_ASK_WITH_SEARCH, verbose=True)
+self_ask_with_search.run("What is the hometown of the reigning men's U.S. Open champion?")
+```
+
+#### आउटपुट
+
+```output
+Entering new AgentExecutor chain...
+ Yes.
+Follow up: Who is the reigning men's U.S. Open champion?
+Intermediate answer: Current champions Carlos Alcaraz, 2022 men's singles champion.
+Follow up: Where is Carlos Alcaraz from?
+Intermediate answer: El Palmar, Spain
+So the final answer is: El Palmar, Spain
+
+> Finished chain.
+
+'El Palmar, Spain'
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/tools/google_serper) देखें।
+
+### उपकरण
+
+आप इस रैपर को एक उपकरण के रूप में भी आसानी से लोड कर सकते हैं (एजेंट के साथ उपयोग करने के लिए)।
+आप इसे निम्नानुसार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Serper - Google Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["google-serper"])
+```
+
+उपकरणों के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

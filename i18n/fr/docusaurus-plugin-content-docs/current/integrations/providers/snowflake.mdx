@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Flocon de neige
+
+> [Flocon de neige](https://www.snowflake.com/) est une plateforme d'entreposage de données basée sur le cloud
+> qui vous permet de stocker et d'interroger de grandes quantités de données.
+
+Cette page couvre comment utiliser l'écosystème `Flocon de neige` dans `LangChain`.
+
+## Modèles d'intégration
+
+Flocon de neige propose leurs modèles d'intégration open weight `arctique` gratuitement
+sur [Hugging Face](https://huggingface.co/Snowflake/snowflake-arctic-embed-l).
+Vous pouvez utiliser ces modèles via le
+[connecteur HuggingFaceEmbeddings](/docs/integrations/text_embedding/huggingfacehub) :
+
+```shell
+pip install langchain-community sentence-transformers
+```
+
+```python
+from langchain_community.text_embeddings import HuggingFaceEmbeddings
+
+model = HuggingFaceEmbeddings(model_name="snowflake/arctic-embed-l")
+```
+
+## Chargeur de documents
+
+Vous pouvez utiliser le [`SnowflakeLoader`](/docs/integrations/document_loaders/snowflake)
+pour charger des données à partir de Flocon de neige :
+
+```python
+<!--IMPORTS:[{"imported": "SnowflakeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.snowflake_loader.SnowflakeLoader.html", "title": "Snowflake"}]-->
+from langchain_community.document_loaders import SnowflakeLoader
+```

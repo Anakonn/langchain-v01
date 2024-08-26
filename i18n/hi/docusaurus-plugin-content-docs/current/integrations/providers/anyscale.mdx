@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+# एनीस्केल
+
+>[एनीस्केल](https://www.anyscale.com) उत्पादन-तैयार एपीआई के माध्यम से एलएलएम को चलाने, फाइन ट्यून करने और पैमाने पर लाने के लिए एक प्लेटफॉर्म है।
+>[एनीस्केल एंडपॉइंट](https://docs.anyscale.com/endpoints/overview) लागत-प्रभावी तरीके से कई ओपन-सोर्स मॉडल प्रदान करते हैं।
+
+`एनीस्केल` भी [एक उदाहरण](https://docs.anyscale.com/endpoints/model-serving/examples/langchain-integration) प्रदान करता है
+उन्नत चैट एजेंटों के लिए `LangChain` को `एनीस्केल` के साथ सेट अप करने का।
+
+## इंस्टॉलेशन और सेटअप
+
+- एक एनीस्केल सर्विस यूआरएल, रूट और एपीआई कुंजी प्राप्त करें और उन्हें पर्यावरण चर (`ANYSCALE_SERVICE_URL`,`ANYSCALE_SERVICE_ROUTE`, `ANYSCALE_SERVICE_TOKEN`) के रूप में सेट करें।
+- अधिक जानकारी के लिए कृपया [एनीस्केल दस्तावेज़](https://www.anyscale.com/get-started) देखें।
+
+हमें `openai` पैकेज इंस्टॉल करना होगा:
+
+```bash
+pip install openai
+```
+
+## एलएलएम
+
+[उपयोग उदाहरण](/docs/integrations/llms/anyscale) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Anyscale", "source": "langchain_community.llms.anyscale", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.anyscale.Anyscale.html", "title": "Anyscale"}]-->
+from langchain_community.llms.anyscale import Anyscale
+```
+
+## चैट मॉडल
+
+[उपयोग उदाहरण](/docs/integrations/chat/anyscale) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnyscale", "source": "langchain_community.chat_models.anyscale", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.anyscale.ChatAnyscale.html", "title": "Anyscale"}]-->
+from langchain_community.chat_models.anyscale import ChatAnyscale
+```
+
+## एम्बेडिंग
+
+[उपयोग उदाहरण](/docs/integrations/text_embedding/anyscale) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AnyscaleEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.anyscale.AnyscaleEmbeddings.html", "title": "Anyscale"}]-->
+from langchain_community.embeddings import AnyscaleEmbeddings
+```

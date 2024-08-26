@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# Notion DB
+
+>[Notion](https://www.notion.so/)は、カンバンボード、タスク、Wiki、データベースを統合した共同作業プラットフォームで、Markdownをサポートしています。ノートテイキング、知識とデータ管理、プロジェクトとタスク管理のための総合的なワークスペースです。
+
+## インストールとセットアップ
+
+すべての手順は以下の例に記載されています。
+
+## ドキュメントローダー
+
+2つの異なるローダーがあります: `NotionDirectoryLoader`と`NotionDBLoader`。
+
+[NotionDirectoryLoaderの使用例](/docs/integrations/document_loaders/notion)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "NotionDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notion.NotionDirectoryLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDirectoryLoader
+```
+
+[NotionDBLoaderの使用例](/docs/integrations/document_loaders/notiondb)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "NotionDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notiondb.NotionDBLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDBLoader
+```

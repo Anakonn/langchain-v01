@@ -1,0 +1,132 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 2
+translated: true
+---
+
+# テキストエンベディングモデル
+
+:::info
+組み込みのテキストエンベディングモデルプロバイダーとの統合については、[Integrations](/docs/integrations/text_embedding/)のドキュメントをご覧ください。
+:::
+
+Embeddingsクラスは、テキストエンベディングモデルとのインターフェースを提供するクラスです。テキストエンベディングモデルプロバイダー(OpenAI、Cohere、Hugging Faceなど)は多数ありますが、このクラスはそれらすべてに対する標準的なインターフェースを提供するように設計されています。
+
+Embeddingsは、テキストの一部をベクトル表現に変換します。これは有用です。なぜなら、テキストをベクトル空間で考えることができ、ベクトル空間で最も類似したテキストを検索するようなセマンティック検索などのことができるようになるからです。
+
+LangChainのベースとなるEmbeddingsクラスには、ドキュメントをエンベディングする1つのメソッドと、クエリをエンベディングする1つのメソッドがあります。前者は複数のテキストを入力として受け取り、後者は単一のテキストを入力として受け取ります。これらを別々のメソッドとしているのは、一部のエンベディングプロバイダーでは、検索対象のドキュメントとクエリ自体のエンベディングに異なる方法を使用しているためです。
+
+## 始めましょう
+
+### セットアップ
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+OpenAIのパートナーパッケージをインストールする必要があります:
+
+```bash
+pip install langchain-openai
+```
+
+APIにアクセスするには、アカウントを作成し、[ここ](https://platform.openai.com/account/api-keys)からAPIキーを取得する必要があります。キーが手に入ったら、次のように環境変数に設定します:
+
+```bash
+export OPENAI_API_KEY="..."
+```
+
+環境変数を設定したくない場合は、OpenAI LLMクラスのインスタンス化時に`api_key`パラメーターを直接渡すこともできます:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings(api_key="...")
+```
+
+それ以外の場合は、パラメーターなしでインスタンス化できます:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings()
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+CohereのSDKパッケージをインストールする必要があります:
+
+```bash
+pip install langchain-cohere
+```
+
+APIにアクセスするには、アカウントを作成し、[ここ](https://dashboard.cohere.com/api-keys)からAPIキーを取得する必要があります。キーが手に入ったら、次のように環境変数に設定します:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+環境変数を設定したくない場合は、Cohere LLMクラスのインスタンス化時に`cohere_api_key`パラメーターを直接渡すこともできます:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings(cohere_api_key="...")
+```
+
+それ以外の場合は、パラメーターなしでインスタンス化できます:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings()
+```
+
+  </TabItem>
+</Tabs>
+
+### `embed_documents`
+
+#### テキストのリストをエンベディング
+
+```python
+embeddings = embeddings_model.embed_documents(
+    [
+        "Hi there!",
+        "Oh, hello!",
+        "What's your name?",
+        "My friends call me World",
+        "Hello World!"
+    ]
+)
+len(embeddings), len(embeddings[0])
+```
+
+```output
+(5, 1536)
+```
+
+### `embed_query`
+
+#### 単一のクエリをエンベディング
+
+他のエンベディングされたテキストと比較する目的で、単一のテキストをエンベディングします。
+
+```python
+embedded_query = embeddings_model.embed_query("What was the name mentioned in the conversation?")
+embedded_query[:5]
+```
+
+```output
+[0.0053587136790156364,
+ -0.0004999046213924885,
+ 0.038883671164512634,
+ -0.003001077566295862,
+ -0.00900818221271038]
+```

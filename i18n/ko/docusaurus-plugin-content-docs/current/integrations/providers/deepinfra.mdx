@@ -1,0 +1,55 @@
+---
+translated: true
+---
+
+# DeepInfra
+
+>[DeepInfra](https://deepinfra.com/docs)를 사용하면 [최신 기계 학습 모델](https://deepinfra.com/models)을 쉽게 실행할 수 있습니다.
+> DeepInfra는 모델 실행, 확장 및 모니터링과 관련된 모든 작업을 처리합니다. 사용자는 애플리케이션에 집중하고 간단한 REST API 호출로 모델을 통합할 수 있습니다.
+
+>DeepInfra는 LangChain과의 [통합 예제](https://deepinfra.com/docs/advanced/langchain)를 제공합니다.
+
+이 페이지에서는 `LangChain` 내에서 `DeepInfra` 생태계를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 특정 DeepInfra 래퍼에 대한 참조로 구성됩니다.
+
+## 설치 및 설정
+
+- 이 링크 [여기](https://deepinfra.com/)에서 DeepInfra API 키를 얻으세요.
+- DeepInfra API 키를 얻고 환경 변수(`DEEPINFRA_API_TOKEN`)로 설정하세요.
+
+## 사용 가능한 모델
+
+DeepInfra는 배포할 준비가 된 다양한 오픈 소스 LLM을 제공합니다.
+
+[text-generation](https://deepinfra.com/models?type=text-generation) 및 [embeddings](https://deepinfra.com/models?type=embeddings)에 대한 지원 모델을 확인할 수 있습니다.
+
+[요청 및 응답 매개변수 목록](https://deepinfra.com/meta-llama/Llama-2-70b-chat-hf/api)을 볼 수 있습니다.
+
+채팅 모델은 [openai api를 따릅니다](https://deepinfra.com/meta-llama/Llama-2-70b-chat-hf/api?example=openai-http)
+
+## LLM
+
+[사용 예제](/docs/integrations/llms/deepinfra)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "DeepInfra", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.deepinfra.DeepInfra.html", "title": "DeepInfra"}]-->
+from langchain_community.llms import DeepInfra
+```
+
+## Embeddings
+
+[사용 예제](/docs/integrations/text_embedding/deepinfra)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "DeepInfraEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.deepinfra.DeepInfraEmbeddings.html", "title": "DeepInfra"}]-->
+from langchain_community.embeddings import DeepInfraEmbeddings
+```
+
+## 채팅 모델
+
+[사용 예제](/docs/integrations/chat/deepinfra)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ChatDeepInfra", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.deepinfra.ChatDeepInfra.html", "title": "DeepInfra"}]-->
+from langchain_community.chat_models import ChatDeepInfra
+```

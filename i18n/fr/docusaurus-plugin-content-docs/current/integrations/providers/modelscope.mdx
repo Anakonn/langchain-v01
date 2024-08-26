@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# ModelScope
+
+>[ModelScope](https://www.modelscope.cn/home) est un grand référentiel de modèles et de jeux de données.
+
+Cette page couvre comment utiliser l'écosystème modelscope dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers modelscope spécifiques.
+
+## Installation et configuration
+
+Installez le package `modelscope`.
+
+```bash
+pip install modelscope
+```
+
+## Modèles d'incorporation de texte
+
+```python
+<!--IMPORTS:[{"imported": "ModelScopeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.modelscope_hub.ModelScopeEmbeddings.html", "title": "ModelScope"}]-->
+from langchain_community.embeddings import ModelScopeEmbeddings
+```
+
+Pour un parcours plus détaillé de cela, voir [ce notebook](/docs/integrations/text_embedding/modelscope_hub)

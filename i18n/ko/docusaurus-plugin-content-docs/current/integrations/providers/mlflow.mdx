@@ -1,0 +1,124 @@
+---
+translated: true
+---
+
+# LLM용 MLflow 배포
+
+>[LLM용 MLflow 배포](https://www.mlflow.org/docs/latest/llms/deployments/index.html)는 OpenAI와 Anthropic과 같은 다양한 대규모 언어 모델(LLM) 공급업체를 조직 내에서 사용하고 관리하는 것을 간소화하는 강력한 도구입니다. 이는 특정 LLM 관련 요청을 처리하기 위한 통합 엔드포인트를 제공하여 이러한 서비스와의 상호 작용을 단순화합니다.
+
+## 설치 및 설정
+
+MLflow 배포 종속성을 사용하여 `mlflow`를 설치합니다:
+
+```sh
+pip install 'mlflow[genai]'
+```
+
+OpenAI API 키를 환경 변수로 설정합니다:
+
+```sh
+export OPENAI_API_KEY=...
+```
+
+구성 파일을 만듭니다:
+
+```yaml
+endpoints:
+  - name: completions
+    endpoint_type: llm/v1/completions
+    model:
+      provider: openai
+      name: text-davinci-003
+      config:
+        openai_api_key: $OPENAI_API_KEY
+
+  - name: embeddings
+    endpoint_type: llm/v1/embeddings
+    model:
+      provider: openai
+      name: text-embedding-ada-002
+      config:
+        openai_api_key: $OPENAI_API_KEY
+```
+
+배포 서버를 시작합니다:
+
+```sh
+mlflow deployments start-server --config-path /path/to/config.yaml
+```
+
+## `MLflow`가 제공하는 예제
+
+>`mlflow.langchain` 모듈은 `LangChain` 모델을 기록하고 로드하기 위한 API를 제공합니다.
+> 이 모듈은 langchain 맛의 다변량 LangChain 모델과 pyfunc 맛의 단변량 LangChain
+> 모델을 내보냅니다.
+
+자세한 내용은 [API 문서와 예제](https://www.mlflow.org/docs/latest/llms/langchain/index.html)를 참조하세요.
+
+## Completions 예제
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "MLflow Deployments for LLMs"}, {"imported": "Mlflow", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.mlflow.Mlflow.html", "title": "MLflow Deployments for LLMs"}]-->
+import mlflow
+from langchain.chains import LLMChain, PromptTemplate
+from langchain_community.llms import Mlflow
+
+llm = Mlflow(
+    target_uri="http://127.0.0.1:5000",
+    endpoint="completions",
+)
+
+llm_chain = LLMChain(
+    llm=Mlflow,
+    prompt=PromptTemplate(
+        input_variables=["adjective"],
+        template="Tell me a {adjective} joke",
+    ),
+)
+result = llm_chain.run(adjective="funny")
+print(result)
+
+with mlflow.start_run():
+    model_info = mlflow.langchain.log_model(chain, "model")
+
+model = mlflow.pyfunc.load_model(model_info.model_uri)
+print(model.predict([{"adjective": "funny"}]))
+```
+
+## Embeddings 예제
+
+```python
+<!--IMPORTS:[{"imported": "MlflowEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.mlflow.MlflowEmbeddings.html", "title": "MLflow Deployments for LLMs"}]-->
+from langchain_community.embeddings import MlflowEmbeddings
+
+embeddings = MlflowEmbeddings(
+    target_uri="http://127.0.0.1:5000",
+    endpoint="embeddings",
+)
+
+print(embeddings.embed_query("hello"))
+print(embeddings.embed_documents(["hello"]))
+```
+
+## Chat 예제
+
+```python
+<!--IMPORTS:[{"imported": "ChatMlflow", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.mlflow.ChatMlflow.html", "title": "MLflow Deployments for LLMs"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "MLflow Deployments for LLMs"}, {"imported": "SystemMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html", "title": "MLflow Deployments for LLMs"}]-->
+from langchain_community.chat_models import ChatMlflow
+from langchain_core.messages import HumanMessage, SystemMessage
+
+chat = ChatMlflow(
+    target_uri="http://127.0.0.1:5000",
+    endpoint="chat",
+)
+
+messages = [
+    SystemMessage(
+        content="You are a helpful assistant that translates English to French."
+    ),
+    HumanMessage(
+        content="Translate this sentence from English to French: I love programming."
+    ),
+]
+print(chat(messages))
+```

@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# EverNote
+
+>[EverNote](https://evernote.com/)は、写真、オーディオ、保存されたWebコンテンツを埋め込むことができるアーカイブおよびノート作成用のツールです。ノートは仮想の「ノートブック」に保存され、タグ付け、注釈付け、編集、検索、エクスポートが可能です。
+
+## インストールとセットアップ
+
+まず、`lxml`と`html2text`のPythonパッケージをインストールする必要があります。
+
+```bash
+pip install lxml
+pip install html2text
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/evernote)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "EverNoteLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.evernote.EverNoteLoader.html", "title": "EverNote"}]-->
+from langchain_community.document_loaders import EverNoteLoader
+```

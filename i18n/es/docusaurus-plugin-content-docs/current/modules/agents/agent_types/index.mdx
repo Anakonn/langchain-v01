@@ -1,0 +1,44 @@
+---
+sidebar_position: 2
+title: Tipos
+translated: true
+---
+
+# Tipos de agentes
+
+Esto categoriza todos los agentes disponibles a lo largo de algunas dimensiones.
+
+**Tipo de modelo previsto**
+
+Si este agente está diseñado para modelos de chat (recibe mensajes, produce mensajes) o LLM (recibe cadena, produce cadena). Lo principal que esto afecta es la estrategia de prompting utilizada. Puedes usar un agente con un tipo de modelo diferente al que está diseñado, pero probablemente no produzca resultados de la misma calidad.
+
+**Admite historial de chat**
+
+Si estos tipos de agentes admiten o no el historial de chat. Si lo hace, significa que se puede usar como un chatbot. Si no lo hace, entonces significa que es más adecuado para tareas individuales. Admitir el historial de chat generalmente requiere modelos mejores, por lo que los primeros tipos de agentes dirigidos a modelos peores pueden no admitirlo.
+
+**Admite herramientas de entrada múltiple**
+
+Si estos tipos de agentes admiten o no herramientas con múltiples entradas. Si una herramienta solo requiere una sola entrada, es generalmente más fácil para un LLM saber cómo invocarla. Por lo tanto, varios de los primeros tipos de agentes dirigidos a modelos peores pueden no admitirlos.
+
+**Admite llamadas de funciones en paralelo**
+
+Que un LLM llame a varias herramientas al mismo tiempo puede acelerar mucho a los agentes cuando hay tareas que se benefician de hacerlo. Sin embargo, es mucho más desafiante para los LLM hacer esto, por lo que algunos tipos de agentes no lo admiten.
+
+**Parámetros de modelo requeridos**
+
+Si este agente requiere que el modelo admita parámetros adicionales. Algunos tipos de agentes aprovechan cosas como la llamada de funciones de OpenAI, que requieren otros parámetros del modelo. Si no se requiere ninguno, significa que todo se hace a través de prompting.
+
+**Cuándo usar**
+
+Nuestros comentarios sobre cuándo deberías considerar usar este tipo de agente.
+
+| Tipo de agente | Tipo de modelo previsto | Admite historial de chat | Admite herramientas de entrada múltiple | Admite llamadas de funciones en paralelo | Parámetros de modelo requeridos | Cuándo usar | API |
+|--------------------------------------------|---------------------|-----------------------|----------------------------|-------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| [Llamada de herramientas](/docs/modules/agents/agent_types/tool_calling)             | Chat                | ✅                    | ✅                         | ✅                                   | `tools`              | Si estás usando un modelo de llamada de herramientas | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.tool_calling_agent.base.create_tool_calling_agent.html) |
+| [Herramientas de OpenAI](./openai_tools)             | Chat                | ✅                    | ✅                         | ✅                                   | `tools`              | [Legacy] Si estás usando un modelo reciente de OpenAI (`1106` en adelante). Se recomienda el agente genérico de Llamada de herramientas en su lugar. | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_tools.base.create_openai_tools_agent.html) |
+| [Funciones de OpenAI](./openai_functions_agent)| Chat                | ✅                    | ✅                         |                                     | `functions`          | [Legacy] Si estás usando un modelo de OpenAI, o un modelo de código abierto que se haya afinado para la llamada de funciones y exponga los mismos parámetros `functions` que OpenAI. Se recomienda el agente genérico de Llamada de herramientas en su lugar | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html) |
+| [XML](./xml_agent)                         | LLM                 | ✅                    |                            |                                     |                      | Si estás usando modelos de Anthropic u otros modelos buenos en XML | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.xml.base.create_xml_agent.html)                                                                                               |
+| [Chat estructurado](./structured_chat)       | Chat                | ✅                    | ✅                         |                                     |                      | Si necesitas admitir herramientas con múltiples entradas | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.structured_chat.base.create_structured_chat_agent.html) |
+| [Chat JSON](./json_agent)                  | Chat                | ✅                    |                            |                                     |                      | Si estás usando un modelo bueno en JSON | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.json_chat.base.create_json_chat_agent.html) |
+| [ReAct](./react)                           | LLM                 | ✅                    |                            |                                     |                      | Si estás usando un modelo simple | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html) |
+| [Autopreguntar con búsqueda](./self_ask_with_search)| LLM              |                       |                            |                                     |                      | Si estás usando un modelo simple y solo tienes una herramienta de búsqueda | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.self_ask_with_search.base.create_self_ask_with_search_agent.html) |

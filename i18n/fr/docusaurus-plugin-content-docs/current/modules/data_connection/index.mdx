@@ -1,0 +1,72 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# Récupération
+
+De nombreuses applications de LLM nécessitent des données spécifiques à l'utilisateur qui ne font pas partie de l'ensemble d'entraînement du modèle.
+La principale façon d'y parvenir est par le biais de la génération augmentée par la récupération (Retrieval Augmented Generation, RAG).
+Dans ce processus, des données externes sont *récupérées* puis transmises au LLM lors de l'étape de *génération*.
+
+LangChain fournit tous les éléments de base pour les applications RAG - du simple au complexe.
+Cette section de la documentation couvre tout ce qui concerne l'étape de *récupération* - c'est-à-dire la récupération des données.
+Bien que cela puisse sembler simple, cela peut être subtilement complexe.
+Cela englobe plusieurs modules clés.
+
+![Diagramme illustratif montrant le processus de connexion des données avec les étapes suivantes : Source, Charger, Transformer, Intégrer, Stocker et Récupérer.](/img/data_connection.jpg "Diagramme du processus de connexion des données")
+
+## [Chargeurs de documents](/docs/modules/data_connection/document_loaders/)
+
+Les **chargeurs de documents** chargent des documents à partir de nombreuses sources différentes.
+LangChain fournit plus de 100 chargeurs de documents différents ainsi que des intégrations avec d'autres principaux fournisseurs du secteur,
+comme AirByte et Unstructured.
+LangChain fournit des intégrations pour charger tous les types de documents (HTML, PDF, code) à partir de tous les types d'emplacements (compartiments S3 privés, sites web publics).
+
+## [Division de texte](/docs/modules/data_connection/document_transformers/)
+
+Une partie clé de la récupération est de récupérer uniquement les parties pertinentes des documents.
+Cela implique plusieurs étapes de transformation pour préparer les documents à la récupération.
+L'une des principales est la division (ou le découpage) d'un grand document en plus petits morceaux.
+LangChain fournit plusieurs algorithmes de transformation pour faire cela, ainsi que de la logique optimisée pour des types de documents spécifiques (code, markdown, etc.).
+
+## [Modèles d'intégration de texte](/docs/modules/data_connection/text_embedding/)
+
+Une autre partie clé de la récupération est la création d'intégrations pour les documents.
+Les intégrations capturent le sens sémantique du texte, permettant de trouver rapidement et efficacement d'autres parties d'un texte qui sont similaires.
+LangChain fournit des intégrations avec plus de 25 fournisseurs et méthodes d'intégration différents,
+du open-source aux API propriétaires,
+vous permettant de choisir celui qui convient le mieux à vos besoins.
+LangChain fournit une interface standard, vous permettant de passer facilement d'un modèle à l'autre.
+
+## [Magasins de vecteurs](/docs/modules/data_connection/vectorstores/)
+
+Avec l'essor des intégrations, il est apparu un besoin de bases de données pour prendre en charge le stockage et la recherche efficaces de ces intégrations.
+LangChain fournit des intégrations avec plus de 50 magasins de vecteurs différents, du open-source local aux propriétaires hébergés dans le cloud,
+vous permettant de choisir celui qui convient le mieux à vos besoins.
+LangChain expose une interface standard, vous permettant de passer facilement d'un magasin de vecteurs à l'autre.
+
+## [Récupérateurs](/docs/modules/data_connection/retrievers/)
+
+Une fois les données dans la base de données, vous devez encore les récupérer.
+LangChain prend en charge de nombreux algorithmes de récupération différents et c'est l'un des domaines où nous apportons le plus de valeur.
+LangChain prend en charge des méthodes de base faciles à démarrer - à savoir la recherche sémantique simple.
+Cependant, nous avons également ajouté une collection d'algorithmes au-dessus de cela pour améliorer les performances.
+Ceux-ci incluent :
+
+- [Récupérateur de document parent](/docs/modules/data_connection/retrievers/parent_document_retriever) : Cela vous permet de créer plusieurs intégrations par document parent, vous permettant de rechercher des morceaux plus petits tout en renvoyant un contexte plus large.
+- [Récupérateur d'auto-requête](/docs/modules/data_connection/retrievers/self_query) : Les questions des utilisateurs contiennent souvent une référence à quelque chose qui n'est pas seulement sémantique mais plutôt une expression d'une certaine logique qui peut être mieux représentée sous forme de filtre de métadonnées. L'auto-requête vous permet d'analyser la partie *sémantique* d'une requête à partir d'autres *filtres de métadonnées* présents dans la requête.
+- [Récupérateur d'ensemble](/docs/modules/data_connection/retrievers/ensemble) : Parfois, vous voudrez peut-être récupérer des documents à partir de plusieurs sources différentes, ou en utilisant plusieurs algorithmes différents. Le récupérateur d'ensemble vous permet de le faire facilement.
+- Et plus encore !
+
+## [Indexation](/docs/modules/data_connection/indexing)
+
+L'**API d'indexation** de LangChain synchronise vos données à partir de n'importe quelle source dans un magasin de vecteurs,
+vous aidant à :
+
+- Éviter d'écrire du contenu dupliqué dans le magasin de vecteurs
+- Éviter de réécrire le contenu inchangé
+- Éviter de recalculer les intégrations sur le contenu inchangé
+
+Tout cela devrait vous faire gagner du temps et de l'argent, ainsi qu'améliorer les résultats de votre recherche vectorielle.

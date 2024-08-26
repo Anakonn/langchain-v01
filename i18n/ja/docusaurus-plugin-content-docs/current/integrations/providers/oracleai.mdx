@@ -1,0 +1,74 @@
+---
+translated: true
+---
+
+# OracleAI ベクトル検索
+
+Oracle AI ベクトル検索は、セマンティクスに基づいてデータを検索できるAI(人工知能)ワークロード向けに設計されています。Oracle AI ベクトル検索の最大の利点の1つは、構造化データに対する関係検索と非構造化データに対するセマンティック検索を1つのシステムで組み合わせられることです。
+
+これは強力であり、特殊なベクトルデータベースを追加する必要がないため、複数のシステム間でデータが断片化するという問題を解消できます。
+
+さらに、Oracleはデータベース技術の構築に長年取り組んできたため、ベクトルはOracle Databaseの最強の機能を活用できます。以下がその一例です:
+
+ * パーティショニングサポート
+ * Real Application Clustersによるスケーラビリティ
+ * Exadata スマートスキャン
+ * 地理的に分散したデータベースにおけるシャード処理
+ * トランザクション
+ * パラレルSQL
+ * ディザスターリカバリ
+ * セキュリティ
+ * Oracle Machine Learning
+ * Oracle Graph Database
+ * Oracle Spatial and Graph
+ * Oracle Blockchain
+ * JSON
+
+## ドキュメントローダー
+
+使用例については[こちら](/docs/integrations/document_loaders/oracleai)をご確認ください。
+
+```python
+<!--IMPORTS:[{"imported": "OracleDocLoader", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleDocLoader.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleDocLoader
+```
+
+## テキストスプリッター
+
+使用例については[こちら](/docs/integrations/document_loaders/oracleai)をご確認ください。
+
+```python
+<!--IMPORTS:[{"imported": "OracleTextSplitter", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleTextSplitter.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleTextSplitter
+```
+
+## エンベディング
+
+使用例については[こちら](/docs/integrations/text_embedding/oracleai)をご確認ください。
+
+```python
+<!--IMPORTS:[{"imported": "OracleEmbeddings", "source": "langchain_community.embeddings.oracleai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oracleai.OracleEmbeddings.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+```
+
+## サマリー
+
+使用例については[こちら](/docs/integrations/tools/oracleai)をご確認ください。
+
+```python
+<!--IMPORTS:[{"imported": "OracleSummary", "source": "langchain_community.utilities.oracleai", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.oracleai.OracleSummary.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.utilities.oracleai import OracleSummary
+```
+
+## ベクトルストア
+
+使用例については[こちら](/docs/integrations/vectorstores/oracle)をご確認ください。
+
+```python
+<!--IMPORTS:[{"imported": "OracleVS", "source": "langchain_community.vectorstores.oraclevs", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.oraclevs.OracleVS.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.vectorstores.oraclevs import OracleVS
+```
+
+## エンドツーエンドデモ
+
+Oracle AI ベクトル検索のエンドツーエンドデモガイドについては[こちら](https://github.com/langchain-ai/langchain/blob/master/cookbook/oracleai_demo)をご確認ください。

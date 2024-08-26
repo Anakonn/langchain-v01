@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# ForefrontAI
+
+このページでは、LangChainでForefrontAIエコシステムを使用する方法について説明します。
+2つの部分に分かれています: インストールとセットアップ、そして特定のForefrontAIラッパーへの参照。
+
+## インストールとセットアップ
+
+- ForefrontAIのAPIキーを取得し、環境変数(`FOREFRONTAI_API_KEY`)に設定します。
+
+## ラッパー
+
+### LLM
+
+ForefrontAIのLLMラッパーが存在し、これにアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "ForefrontAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.forefrontai.ForefrontAI.html", "title": "ForefrontAI"}]-->
+from langchain_community.llms import ForefrontAI
+```

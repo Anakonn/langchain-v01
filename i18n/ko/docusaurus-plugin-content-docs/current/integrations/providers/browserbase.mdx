@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# 브라우저베이스
+
+>[브라우저베이스](https://browserbase.com)는 무서버 플랫폼으로 헤드리스 브라우저를 실행할 수 있으며, 고급 디버깅, 세션 녹화, 스텔스 모드, 통합 프록시 및 캡차 해결 기능을 제공합니다.
+
+## 설치 및 설정
+
+- [browserbase.com](https://browserbase.com)에서 API 키를 받아 환경 변수(`BROWSERBASE_API_KEY`)에 설정하세요.
+- [Browserbase SDK](http://github.com/browserbase/python-sdk)를 설치하세요:
+
+```python
+pip install browserbase
+```
+
+## 문서 로더
+
+[사용 예시](/docs/integrations/document_loaders/browserbase)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "BrowserbaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.browserbase.BrowserbaseLoader.html", "title": "Browserbase"}]-->
+from langchain_community.document_loaders import BrowserbaseLoader
+```
+
+## 멀티모달
+
+[사용 예시](/docs/integrations/document_loaders/browserbase)를 참고하세요.
+
+```python
+from browserbase.helpers.gpt4 import GPT4VImage, GPT4VImageDetail
+```

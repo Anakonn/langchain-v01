@@ -1,0 +1,61 @@
+---
+translated: true
+---
+
+# Oracle Cloud Infrastructure (OCI)
+
+[Oracle Cloud Infrastructure](https://www.oracle.com/artificial-intelligence/) に関連する `LangChain` の統合。
+
+## LLMs
+
+### OCI Generative AI
+
+> Oracle Cloud Infrastructure (OCI) [Generative AI](https://docs.oracle.com/en-us/iaas/Content/generative-ai/home.htm) は、幅広い用途をカバーする最先端のカスタマイズ可能な大規模言語モデル (LLM) のセットを単一の API で提供する完全管理型のサービスです。
+> OCI Generative AI サービスを使用すると、事前に学習済みのモデルにアクセスしたり、専用の AI クラスターでお客様のデータに基づいてカスタムモデルを作成およびホストすることができます。
+
+使用するには、最新の `oci` Python SDK がインストールされている必要があります。
+
+```bash
+pip install -U oci
+```
+
+[使用例](/docs/integrations/llms/oci_generative_ai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OCIGenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.oci_generative_ai.OCIGenAI.html", "title": "Oracle Cloud Infrastructure (OCI)"}]-->
+from langchain_community.llms import OCIGenAI
+```
+
+### OCI Data Science Model Deployment Endpoint
+
+> [OCI Data Science](https://docs.oracle.com/en-us/iaas/data-science/using/home.htm) は、データサイエンスチームのための完全管理型かつサーバーレスのプラットフォームです。OCI Data Science
+> プラットフォームを使用すると、機械学習モデルを構築、トレーニング、管理し、
+> [OCI Data Science Model Deployment Service](https://docs.oracle.com/en-us/iaas/data-science/using/model-dep-about.htm) を使用して OCI Model Deployment Endpoint としてデプロイできます。
+
+VLLM または TGI フレームワークでLLMをデプロイした場合は、`OCIModelDeploymentVLLM` または `OCIModelDeploymentTGI` クラスを使用してそれと対話できます。
+
+使用するには、最新の `oracle-ads` Python SDK がインストールされている必要があります。
+
+```bash
+pip install -U oracle-ads
+```
+
+[使用例](/docs/integrations/llms/oci_model_deployment_endpoint)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OCIModelDeploymentVLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM.html", "title": "Oracle Cloud Infrastructure (OCI)"}, {"imported": "OCIModelDeploymentTGI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI.html", "title": "Oracle Cloud Infrastructure (OCI)"}]-->
+from langchain_community.llms import OCIModelDeploymentVLLM
+
+from langchain_community.llms import OCIModelDeploymentTGI
+```
+
+## テキストエンベディングモデル
+
+### OCI Generative AI
+
+[使用例](/docs/integrations/text_embedding/oci_generative_ai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OCIGenAIEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oci_generative_ai.OCIGenAIEmbeddings.html", "title": "Oracle Cloud Infrastructure (OCI)"}]-->
+from langchain_community.embeddings import OCIGenAIEmbeddings
+```

@@ -1,0 +1,135 @@
+---
+translated: true
+---
+
+# OpenAI
+
+OpenAI से संबंधित सभी कार्यक्षमता
+
+>[OpenAI](https://en.wikipedia.org/wiki/OpenAI) एक अमेरिकी कृत्रिम बुद्धिमत्ता (AI) अनुसंधान प्रयोगशाला है
+> जिसमें गैर-लाभकारी `OpenAI Incorporated`
+> और इसकी लाभकारी सहायक कंपनी `OpenAI Limited Partnership` शामिल हैं।
+> `OpenAI` मैत्रीपूर्ण AI को बढ़ावा देने और विकसित करने के घोषित उद्देश्य के साथ AI अनुसंधान करता है।
+> `OpenAI` प्रणालियां `Microsoft` के `Azure`-आधारित सुपरकंप्यूटिंग प्लेटफॉर्म पर चलती हैं।
+
+>[OpenAI API](https://platform.openai.com/docs/models) विभिन्न क्षमताओं और मूल्य बिंदुओं वाले मॉडलों के विविध सेट द्वारा संचालित है।
+>
+>[ChatGPT](https://chat.openai.com) `OpenAI` द्वारा विकसित एक कृत्रिम बुद्धिमत्ता (AI) चैटबॉट है।
+
+## स्थापना और सेटअप
+
+एकीकरण पैकेज को इंस्टॉल करें
+
+```bash
+pip install langchain-openai
+```
+
+एक OpenAI api कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`OPENAI_API_KEY`) के रूप में सेट करें
+
+## LLM
+
+[उपयोग उदाहरण](/docs/integrations/llms/openai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import OpenAI
+```
+
+यदि आप `Azure` पर होस्ट किए गए मॉडल का उपयोग कर रहे हैं, तो आपको उस लिए अलग रैपर का उपयोग करना चाहिए:
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.azure.AzureOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import AzureOpenAI
+```
+
+`Azure` रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यहां](/docs/integrations/llms/azure_openai) देखें
+
+## चैट मॉडल
+
+[उपयोग उदाहरण](/docs/integrations/chat/openai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import ChatOpenAI
+```
+
+यदि आप `Azure` पर होस्ट किए गए मॉडल का उपयोग कर रहे हैं, तो आपको उस लिए अलग रैपर का उपयोग करना चाहिए:
+
+```python
+<!--IMPORTS:[{"imported": "AzureChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import AzureChatOpenAI
+```
+
+`Azure` रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यहां](/docs/integrations/chat/azure_chat_openai) देखें
+
+## एम्बेडिंग मॉडल
+
+[उपयोग उदाहरण](/docs/integrations/text_embedding/openai) देखें
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "OpenAI"}]-->
+from langchain_openai import OpenAIEmbeddings
+```
+
+## दस्तावेज़ लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/chatgpt_loader) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatGPTLoader", "source": "langchain_community.document_loaders.chatgpt", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.chatgpt.ChatGPTLoader.html", "title": "OpenAI"}]-->
+from langchain_community.document_loaders.chatgpt import ChatGPTLoader
+```
+
+## रिट्रीवर
+
+[उपयोग उदाहरण](/docs/integrations/retrievers/chatgpt-plugin) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatGPTPluginRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.chatgpt_plugin_retriever.ChatGPTPluginRetriever.html", "title": "OpenAI"}]-->
+from langchain.retrievers import ChatGPTPluginRetriever
+```
+
+## उपकरण
+
+### Dall-E छवि जनरेटर
+
+>[OpenAI Dall-E](https://openai.com/dall-e-3) `OpenAI` द्वारा विकसित पाठ-से-छवि मॉडल हैं
+> जो गहन सीखने की विधियों का उपयोग करके प्राकृतिक भाषा वर्णनों, "प्रेरणाओं" कहलाने वाली, से डिजिटल छवियों को जनरेट करते हैं।
+
+[उपयोग उदाहरण](/docs/integrations/tools/dalle_image_generator) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DallEAPIWrapper", "source": "langchain_community.utilities.dalle_image_generator", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dalle_image_generator.DallEAPIWrapper.html", "title": "OpenAI"}]-->
+from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
+```
+
+## एडाप्टर
+
+[उपयोग उदाहरण](/docs/integrations/adapters/openai) देखें।
+
+```python
+from langchain.adapters import openai as lc_openai
+```
+
+## टोकनाइज़र
+
+`tiktoken` टोकनाइज़र का उपयोग कई जगहों पर किया जा सकता है। डिफ़ॉल्ट रूप से, इसका उपयोग OpenAI LLM के लिए टोकन गिनने के लिए किया जाता है।
+
+आप इसका उपयोग दस्तावेज़ को विभाजित करते समय टोकन गिनने के लिए भी कर सकते हैं
+
+```python
+<!--IMPORTS:[{"imported": "CharacterTextSplitter", "source": "langchain.text_splitter", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "OpenAI"}]-->
+from langchain.text_splitter import CharacterTextSplitter
+CharacterTextSplitter.from_tiktoken_encoder(...)
+```
+
+इस बारे में अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/modules/data_connection/document_transformers/split_by_token#tiktoken) देखें
+
+## श्रृंखला
+
+[उपयोग उदाहरण](/docs/guides/productionization/safety/moderation) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIModerationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.moderation.OpenAIModerationChain.html", "title": "OpenAI"}]-->
+from langchain.chains import OpenAIModerationChain
+```

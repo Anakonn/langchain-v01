@@ -1,0 +1,59 @@
+---
+translated: true
+---
+
+# हेलिकोन
+
+यह पृष्ठ LangChain में [हेलिकोन](https://helicone.ai) पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+
+## हेलिकोन क्या है?
+
+हेलिकोन एक [ओपन-सोर्स](https://github.com/Helicone/helicone) अवलोकन प्लेटफ़ॉर्म है जो आपके OpenAI ट्रैफ़िक को प्रॉक्सी करता है और आपके व्यय, लेटेंसी और उपयोग के बारे में महत्वपूर्ण अंतर्दृष्टि प्रदान करता है।
+
+![हेलिकोन डैशबोर्ड का स्क्रीनशॉट जो प्रतिदिन औसत अनुरोध, प्रतिक्रिया समय, प्रति प्रतिक्रिया टोकन, कुल लागत और समय के साथ अनुरोधों का एक ग्राफ दिखाता है।](/img/HeliconeDashboard.png "हेलिकोन डैशबोर्ड")
+
+## त्वरित शुरुआत
+
+आपके LangChain वातावरण में आप केवल निम्नलिखित पैरामीटर जोड़ सकते हैं।
+
+```bash
+export OPENAI_API_BASE="https://oai.hconeai.com/v1"
+```
+
+अब [helicone.ai](https://www.helicone.ai/signup) पर जाकर अपना खाता बनाएं और हमारे डैशबोर्ड में अपना OpenAI API कुंजी जोड़ें ताकि आप अपने लॉग देख सकें।
+
+![हेलिकोन डैशबोर्ड में OpenAI API कुंजी दर्ज करने और प्रबंधित करने का इंटरफ़ेस।](/img/HeliconeKeys.png "हेलिकोन API कुंजी इनपुट")
+
+## हेलिकोन कैशिंग को कैसे सक्षम करें
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Helicone"}]-->
+from langchain_openai import OpenAI
+import openai
+openai.api_base = "https://oai.hconeai.com/v1"
+
+llm = OpenAI(temperature=0.9, headers={"Helicone-Cache-Enabled": "true"})
+text = "What is a helicone?"
+print(llm.invoke(text))
+```
+
+[हेलिकोन कैशिंग दस्तावेज़](https://docs.helicone.ai/advanced-usage/caching)
+
+## हेलिकोन कस्टम गुण कैसे उपयोग करें
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Helicone"}]-->
+from langchain_openai import OpenAI
+import openai
+openai.api_base = "https://oai.hconeai.com/v1"
+
+llm = OpenAI(temperature=0.9, headers={
+        "Helicone-Property-Session": "24",
+        "Helicone-Property-Conversation": "support_issue_2",
+        "Helicone-Property-App": "mobile",
+      })
+text = "What is a helicone?"
+print(llm.invoke(text))
+```
+
+[हेलिकोन गुण दस्तावेज़](https://docs.helicone.ai/advanced-usage/custom-properties)

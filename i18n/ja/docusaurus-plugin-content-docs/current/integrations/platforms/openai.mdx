@@ -1,0 +1,133 @@
+---
+translated: true
+---
+
+# OpenAI
+
+OpenAIに関連するすべての機能
+
+>[OpenAI](https://en.wikipedia.org/wiki/OpenAI)は、非営利の`OpenAI Incorporated`と営利子会社の`OpenAI Limited Partnership`から成る、アメリカのAI研究所です。
+>`OpenAI`は、友好的なAIの促進と開発を目的として、AI研究を行っています。
+>`OpenAI`のシステムは、`Microsoft`の`Azure`ベースのスーパーコンピューティングプラットフォームで動作しています。
+
+>[OpenAI API](https://platform.openai.com/docs/models)は、さまざまな機能と価格帯のモデルによって動作しています。
+
+>[ChatGPT](https://chat.openai.com)は、`OpenAI`が開発した人工知能(AI)チャットボットです。
+
+## インストールとセットアップ
+
+統合パッケージをインストールします。
+
+```bash
+pip install langchain-openai
+```
+
+OpenAIのAPIキーを取得し、環境変数(`OPENAI_API_KEY`)に設定します。
+
+## LLM
+
+[使用例](/docs/integrations/llms/openai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import OpenAI
+```
+
+`Azure`でホストされているモデルを使用する場合は、別のラッパーを使用する必要があります。
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.azure.AzureOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import AzureOpenAI
+```
+
+`Azure`ラッパーの詳細な使用方法については、[こちら](/docs/integrations/llms/azure_openai)を参照してください。
+
+## チャットモデル
+
+[使用例](/docs/integrations/chat/openai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import ChatOpenAI
+```
+
+`Azure`でホストされているモデルを使用する場合は、別のラッパーを使用する必要があります。
+
+```python
+<!--IMPORTS:[{"imported": "AzureChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import AzureChatOpenAI
+```
+
+`Azure`ラッパーの詳細な使用方法については、[こちら](/docs/integrations/chat/azure_chat_openai)を参照してください。
+
+## 埋め込みモデル
+
+[使用例](/docs/integrations/text_embedding/openai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "OpenAI"}]-->
+from langchain_openai import OpenAIEmbeddings
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/chatgpt_loader)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatGPTLoader", "source": "langchain_community.document_loaders.chatgpt", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.chatgpt.ChatGPTLoader.html", "title": "OpenAI"}]-->
+from langchain_community.document_loaders.chatgpt import ChatGPTLoader
+```
+
+## リトリーバー
+
+[使用例](/docs/integrations/retrievers/chatgpt-plugin)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ChatGPTPluginRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.chatgpt_plugin_retriever.ChatGPTPluginRetriever.html", "title": "OpenAI"}]-->
+from langchain.retrievers import ChatGPTPluginRetriever
+```
+
+## ツール
+
+### Dall-E 画像生成器
+
+>[OpenAI Dall-E](https://openai.com/dall-e-3)は、`OpenAI`が開発したテキストから画像を生成するモデルです。
+>自然言語の説明、いわゆる「プロンプト」から、デジタル画像を生成します。
+
+[使用例](/docs/integrations/tools/dalle_image_generator)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "DallEAPIWrapper", "source": "langchain_community.utilities.dalle_image_generator", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dalle_image_generator.DallEAPIWrapper.html", "title": "OpenAI"}]-->
+from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
+```
+
+## アダプター
+
+[使用例](/docs/integrations/adapters/openai)を参照してください。
+
+```python
+from langchain.adapters import openai as lc_openai
+```
+
+## トークナイザー
+
+`tiktoken`トークナイザーは、さまざまな場所で使用できます。デフォルトでは、OpenAI LLMのトークン数をカウントするために使用されます。
+
+ドキュメントを分割する際にも、トークン数をカウントするために使用できます。
+
+```python
+<!--IMPORTS:[{"imported": "CharacterTextSplitter", "source": "langchain.text_splitter", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "OpenAI"}]-->
+from langchain.text_splitter import CharacterTextSplitter
+CharacterTextSplitter.from_tiktoken_encoder(...)
+```
+
+この詳細については、[このノートブック](/docs/modules/data_connection/document_transformers/split_by_token#tiktoken)を参照してください。
+
+## チェーン
+
+[使用例](/docs/guides/productionization/safety/moderation)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIModerationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.moderation.OpenAIModerationChain.html", "title": "OpenAI"}]-->
+from langchain.chains import OpenAIModerationChain
+```

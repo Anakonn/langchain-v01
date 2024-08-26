@@ -1,0 +1,55 @@
+---
+translated: true
+---
+
+# बैडू
+
+>[बैडू क्लाउड](https://cloud.baidu.com/) बैडू, इंक. द्वारा प्रदान किया जाने वाला एक क्लाउड सेवा है, जिसका मुख्यालय बीजिंग में है। यह क्लाउड स्टोरेज सेवा, क्लाइंट सॉफ्टवेयर, फ़ाइल प्रबंधन, संसाधन साझाकरण और तृतीय पक्ष एकीकरण प्रदान करता है।
+
+## इंस्टॉलेशन और सेटअप
+
+`Qianfan` `AK` और `SK` कुंजियां यहाँ से पंजीकरण और प्राप्त करें [यहाँ](https://cloud.baidu.com/product/wenxinworkshop)।
+
+## LLMs
+
+### बैडू Qianfan
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/baidu_qianfan_endpoint) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "QianfanLLMEndpoint", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.baidu_qianfan_endpoint.QianfanLLMEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.llms import QianfanLLMEndpoint
+```
+
+## चैट मॉडल
+
+### Qianfan चैट एंडपॉइंट
+
+एक [उपयोग उदाहरण](/docs/integrations/chat/baidu_qianfan_endpoint) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "QianfanChatEndpoint", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.baidu_qianfan_endpoint.QianfanChatEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.chat_models import QianfanChatEndpoint
+```
+
+## एम्बेडिंग मॉडल
+
+### बैडू Qianfan
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/baidu_qianfan_endpoint) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "QianfanEmbeddingsEndpoint", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.baidu_qianfan_endpoint.QianfanEmbeddingsEndpoint.html", "title": "Baidu"}]-->
+from langchain_community.embeddings import QianfanEmbeddingsEndpoint
+```
+
+## वेक्टर स्टोर
+
+### बैडू क्लाउड ElasticSearch VectorSearch
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/baiducloud_vector_search) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "BESVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.baiducloud_vector_search.BESVectorStore.html", "title": "Baidu"}]-->
+from langchain_community.vectorstores import BESVectorStore
+```

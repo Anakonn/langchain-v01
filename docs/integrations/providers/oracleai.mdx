@@ -1,0 +1,74 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/oracleai
+translated: false
+---
+
+# OracleAI Vector Search
+
+Oracle AI Vector Search is designed for Artificial Intelligence (AI) workloads that allows you to query data based on semantics, rather than keywords. One of the biggest benefit of Oracle AI Vector Search is that semantic search on unstructured data can be combined with relational search on business data in one single system.
+This is not only powerful but also significantly more effective because you dont need to add a specialized vector database, eliminating the pain of data fragmentation between multiple systems.
+
+In addition, because Oracle has been building database technologies for so long, your vectors can benefit from all of Oracle Database's most powerful features, like the following:
+
+ * Partitioning Support
+ * Real Application Clusters scalability
+ * Exadata smart scans
+ * Shard processing across geographically distributed databases
+ * Transactions
+ * Parallel SQL
+ * Disaster recovery
+ * Security
+ * Oracle Machine Learning
+ * Oracle Graph Database
+ * Oracle Spatial and Graph
+ * Oracle Blockchain
+ * JSON
+
+## Document Loaders
+
+Please check the [usage example](/docs/integrations/document_loaders/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleDocLoader", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleDocLoader.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleDocLoader
+```
+
+## Text Splitter
+
+Please check the [usage example](/docs/integrations/document_loaders/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleTextSplitter", "source": "langchain_community.document_loaders.oracleai", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.oracleai.OracleTextSplitter.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.document_loaders.oracleai import OracleTextSplitter
+```
+
+## Embeddings
+
+Please check the [usage example](/docs/integrations/text_embedding/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleEmbeddings", "source": "langchain_community.embeddings.oracleai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oracleai.OracleEmbeddings.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.embeddings.oracleai import OracleEmbeddings
+```
+
+## Summary
+
+Please check the [usage example](/docs/integrations/tools/oracleai).
+
+```python
+<!--IMPORTS:[{"imported": "OracleSummary", "source": "langchain_community.utilities.oracleai", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.oracleai.OracleSummary.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.utilities.oracleai import OracleSummary
+```
+
+## Vector Store
+
+Please check the [usage example](/docs/integrations/vectorstores/oracle).
+
+```python
+<!--IMPORTS:[{"imported": "OracleVS", "source": "langchain_community.vectorstores.oraclevs", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.oraclevs.OracleVS.html", "title": "OracleAI Vector Search"}]-->
+from langchain_community.vectorstores.oraclevs import OracleVS
+```
+
+## End to End Demo
+
+Please check the [Oracle AI Vector Search End-to-End Demo Guide](https://github.com/langchain-ai/langchain/blob/master/cookbook/oracleai_demo).

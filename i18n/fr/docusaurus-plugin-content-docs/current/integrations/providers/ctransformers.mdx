@@ -1,0 +1,62 @@
+---
+translated: true
+---
+
+# Transformateurs C
+
+Cette page couvre comment utiliser la bibliothèque [C Transformers](https://github.com/marella/ctransformers) dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers spécifiques aux C Transformers.
+
+## Installation et configuration
+
+- Installez le package Python avec `pip install ctransformers`
+- Téléchargez un [modèle GGML](https://huggingface.co/TheBloke) pris en charge (voir [Modèles pris en charge](https://github.com/marella/ctransformers#supported-models)))
+
+## Wrappers
+
+### LLM
+
+Il existe un wrapper LLM CTransformers, que vous pouvez accéder avec :
+
+```python
+<!--IMPORTS:[{"imported": "CTransformers", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ctransformers.CTransformers.html", "title": "C Transformers"}]-->
+from langchain_community.llms import CTransformers
+```
+
+Il fournit une interface unifiée pour tous les modèles :
+
+```python
+llm = CTransformers(model='/path/to/ggml-gpt-2.bin', model_type='gpt2')
+
+print(llm.invoke('AI is going to'))
+```
+
+Si vous obtenez une erreur `illegal instruction`, essayez d'utiliser `lib='avx'` ou `lib='basic'` :
+
+```py
+llm = CTransformers(model='/path/to/ggml-gpt-2.bin', model_type='gpt2', lib='avx')
+```
+
+Il peut être utilisé avec des modèles hébergés sur le Hugging Face Hub :
+
+```py
+llm = CTransformers(model='marella/gpt-2-ggml')
+```
+
+Si un référentiel de modèle a plusieurs fichiers de modèle (fichiers `.bin`), spécifiez un fichier de modèle en utilisant :
+
+```py
+llm = CTransformers(model='marella/gpt-2-ggml', model_file='ggml-model.bin')
+```
+
+Des paramètres supplémentaires peuvent être transmis en utilisant le paramètre `config` :
+
+```py
+config = {'max_new_tokens': 256, 'repetition_penalty': 1.1}
+
+llm = CTransformers(model='marella/gpt-2-ggml', config=config)
+```
+
+Consultez la [Documentation](https://github.com/marella/ctransformers#config) pour obtenir la liste des paramètres disponibles.
+
+Pour un didacticiel plus détaillé sur ce sujet, consultez [ce notebook](/docs/integrations/llms/ctransformers).

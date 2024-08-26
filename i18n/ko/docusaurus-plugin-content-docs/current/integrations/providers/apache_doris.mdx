@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Apache Doris
+
+>[Apache Doris](https://doris.apache.org/)는 실시간 분석을 위한 현대적인 데이터 웨어하우스입니다.
+실시간 데이터를 대규모로 처리하면서도 번개처럼 빠른 분석을 제공합니다.
+
+>일반적으로 `Apache Doris`는 OLAP 범주에 속하며, [ClickBench — a Benchmark For Analytical DBMS](https://benchmark.clickhouse.com/)에서 뛰어난 성능을 보여주었습니다.
+> 초고속 벡터화된 실행 엔진을 가지고 있어 빠른 벡터 데이터베이스로도 사용될 수 있습니다.
+
+## 설치 및 설정
+
+```bash
+pip install pymysql
+```
+
+## 벡터 스토어
+
+[usage example](/docs/integrations/vectorstores/apache_doris)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ApacheDoris", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.apache_doris.ApacheDoris.html", "title": "Apache Doris"}]-->
+from langchain_community.vectorstores import ApacheDoris
+```

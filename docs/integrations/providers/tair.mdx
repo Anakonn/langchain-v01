@@ -1,0 +1,29 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/tair
+translated: false
+---
+
+# Tair
+
+>[Alibaba Cloud Tair](https://www.alibabacloud.com/help/en/tair/latest/what-is-tair) is a cloud native in-memory database service
+> developed by `Alibaba Cloud`. It provides rich data models and enterprise-grade capabilities to
+> support your real-time online scenarios while maintaining full compatibility with open-source `Redis`.
+> `Tair` also introduces persistent memory-optimized instances that are based on
+> new non-volatile memory (NVM) storage medium.
+
+## Installation and Setup
+
+Install Tair Python SDK:
+
+```bash
+pip install tair
+```
+
+## Vector Store
+
+```python
+<!--IMPORTS:[{"imported": "Tair", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tair.Tair.html", "title": "Tair"}]-->
+from langchain_community.vectorstores import Tair
+```
+
+See a [usage example](/docs/integrations/vectorstores/tair).

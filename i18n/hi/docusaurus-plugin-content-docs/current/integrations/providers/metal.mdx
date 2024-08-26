@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# धातु
+
+यह पृष्ठ LangChain में [धातु](https://getmetal.io) का उपयोग करने के बारे में कवर करता है।
+
+## धातु क्या है?
+
+धातु एक उत्पादन के लिए बनाया गया प्रबंधित पुनर्प्राप्ति और मेमोरी प्लेटफ़ॉर्म है। अपने डेटा को आसानी से `धातु` में इंडेक्स करें और उसमें सेमेंटिक खोज और पुनर्प्राप्ति चलाएं।
+
+![धातु डैशबोर्ड का स्क्रीनशॉट जिसमें ब्राउज़ इंडेक्स सुविधा दिखाई दे रही है और नमूना डेटा है।](/img/MetalDash.png "धातु डैशबोर्ड इंटरफ़ेस")
+
+## त्वरित शुरुआत
+
+[धातु खाता बनाकर](https://app.getmetal.io/signup) शुरू करें।
+
+फिर, आप `MetalRetriever` क्लास का लाभ उठा सकते हैं ताकि आप अपने डेटा को सेमेंटिक खोज, प्रोम्प्टिंग संदर्भ आदि के लिए पुनर्प्राप्त कर सकें। यह क्लास एक `धातु` इंस्टेंस और धातु API को पास करने के लिए एक पैरामीटर डिक्शनरी लेता है।
+
+```python
+<!--IMPORTS:[{"imported": "MetalRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.metal.MetalRetriever.html", "title": "Metal"}]-->
+from langchain.retrievers import MetalRetriever
+from metal_sdk.metal import Metal
+
+
+metal = Metal("API_KEY", "CLIENT_ID", "INDEX_ID");
+retriever = MetalRetriever(metal, params={"limit": 2})
+
+docs = retriever.invoke("search term")
+```

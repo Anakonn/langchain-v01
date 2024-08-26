@@ -1,0 +1,63 @@
+---
+translated: true
+---
+
+# Clarifai
+
+>[Clarifai](https://clarifai.com)は2013年に設立された最初のディープラーニングプラットフォームの1つです。Clarifaiは、画像、ビデオ、テキスト、オーディオデータを対象としたデータ探索、データラベリング、モデルトレーニング、評価、推論のための完全なAIライフサイクルを備えたAIプラットフォームを提供しています。LangChainエコシステムでは、私たちが知る限り、Clarifaiは1つの本番規模のプラットフォームでLLM、エンベディング、ベクトルストアをサポートする唯一のプロバイダーであり、LangChainの実装を実用化するのに最適な選択肢です。
+
+## インストールとセットアップ
+
+- PythonのSDKをインストールします:
+
+```bash
+pip install clarifai
+```
+
+[Clarifaiアカウントに登録](https://clarifai.com/signup)し、[セキュリティ設定](https://clarifai.com/settings/security)からパーソナルアクセストークンを取得して、環境変数(`CLARIFAI_PAT`)に設定します。
+
+## モデル
+
+Clarifaiは、さまざまなユースケースに対応した1,000以上のAIモデルを提供しています。[ここで探索](https://clarifai.com/explore)して、ご自身のユースケースに最適なモデルを見つけることができます。これらのモデルには、OpenAI、Anthropic、Cohere、AI21などの他のプロバイダーが作成したものや、Falcon、InstructorXLなどの最先端のオープンソースモデルも含まれています。製品にベストなAIを組み込むことができます。これらのモデルは、クリエイターのuser_idと、アプリケーションと呼ばれるプロジェクトのapp_idで整理されています。ユースケースに最適なモデルを見つけたら、これらのIDをメモしておく必要があります。
+
+また、画像、ビデオ、テキスト、オーディオの理解に多数のモデルがあるため、それらのデータタイプを理解するための専門家としてAIエージェントを構築することができます。
+
+### LLM
+
+ClarifaiプラットフォームのLLMの選択肢を見つけるには、[ここ](https://clarifai.com/explore/models?filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-to-text%22%5D%7D%5D&page=1&perPage=24)からテキストからテキストのモデルタイプを選択してください。
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.llms import Clarifai
+llm = Clarifai(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+詳細については、Clarifai LLMラッパーのドキュメントに[詳細な解説](/docs/integrations/llms/clarifai)があります。
+
+### テキストエンベディングモデル
+
+Clarifaiプラットフォームのテキストエンベディングモデルの選択肢を見つけるには、[ここ](https://clarifai.com/explore/models?page=1&perPage=24&filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-embedder%22%5D%7D%5D)からテキストからエンベディングのモデルタイプを選択してください。
+
+LangChainにはClarifaiエンベディングモデルがあり、これを使用できます:
+
+```python
+<!--IMPORTS:[{"imported": "ClarifaiEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.clarifai.ClarifaiEmbeddings.html", "title": "Clarifai"}]-->
+from langchain_community.embeddings import ClarifaiEmbeddings
+embeddings = ClarifaiEmbeddings(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+詳細については、Clarifaiエンベディングラッパーのドキュメントに[詳細な解説](/docs/integrations/text_embedding/clarifai)があります。
+
+## ベクトルストア
+
+ClarifaiのベクトルDBは2016年に立ち上げられ、ライブ検索クエリをサポートするように最適化されています。Clarifaiプラットフォームのワークフローでは、データが自動的にエンベディングモデルなどによってインデックス化され、DBで検索できるようになります。ベクトルだけでなく、メタデータの一致、他のAIによる予測概念、地理座標検索などでも、DBを検索できます。アプリケーションを作成し、[ドキュメント](https://docs.clarifai.com/api-guide/data/create-get-update-delete)に記載されているようにAPIを通じてデータをアップロードするか、clarifai.comのUIを使ってください。
+
+LangChainから直接データを追加することもでき、自動インデックス化が行われます。これは、他のベクトルストアでは、エンベディングモデルをコンストラクタで提供し、LangChainがテキストからエンベディングを取得してインデックスに書き込む必要があるのとは少し異なります。これはより便利であり、Clarifaiの分散クラウドでバックグラウンドでインデックス化を行うことで、はるかにスケーラブルです。
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.vectorstores import Clarifai
+clarifai_vector_db = Clarifai.from_texts(user_id=USER_ID, app_id=APP_ID, texts=texts, pat=CLARIFAI_PAT, number_of_docs=NUMBER_OF_DOCS, metadatas = metadatas)
+```
+
+詳細については、Clarifaiベクトルストアのドキュメントに[詳細な解説](/docs/integrations/vectorstores/clarifai)があります。

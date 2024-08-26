@@ -1,0 +1,57 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 텍스트 분할기
+
+문서를 로드하면 종종 애플리케이션에 더 잘 맞도록 변환해야 합니다. 가장 단순한 예는 긴 문서를 모델의 컨텍스트 창에 맞출 수 있는 더 작은 청크로 분할하는 것일 수 있습니다. LangChain에는 문서를 분할, 결합, 필터링 및 기타 방식으로 조작하는 것을 쉽게 만드는 많은 내장 문서 변환기가 있습니다.
+
+긴 텍스트를 다루려면 해당 텍스트를 청크로 분할해야 합니다.
+이것이 얼마나 단순해 보이든, 여기에는 많은 잠재적 복잡성이 있습니다. 이상적으로는 의미적으로 관련된 텍스트 조각을 함께 유지하고 싶습니다. "의미적으로 관련된"이 무엇을 의미하는지는 텍스트 유형에 따라 달라질 수 있습니다.
+이 노트북은 이를 수행하는 여러 가지 방법을 보여줍니다.
+
+높은 수준에서 텍스트 분할기는 다음과 같이 작동합니다:
+
+1. 텍스트를 작고 의미 있는 청크(종종 문장)로 분할합니다.
+2. 이러한 작은 청크를 결합하여 특정 크기(일부 함수로 측정)에 도달할 때까지 더 큰 청크를 만듭니다.
+3. 그 크기에 도달하면 해당 청크를 자체 텍스트 조각으로 만들고 약간의 중복(청크 간 컨텍스트 유지)으로 새 텍스트 청크 만들기를 시작합니다.
+
+즉, 텍스트 분할기를 사용자 정의할 수 있는 두 가지 다른 축이 있습니다:
+
+1. 텍스트를 어떻게 분할할지
+2. 청크 크기를 어떻게 측정할지
+
+## 텍스트 분할기 유형
+
+LangChain은 많은 다른 유형의 `text splitters`를 제공합니다.
+이들은 모두 `langchain-text-splitters` 패키지에 있습니다.
+
+테이블 열:
+
+- **이름**: 텍스트 분할기의 이름
+- **클래스**: 이 텍스트 분할기를 구현하는 클래스
+- **분할 기준**: 이 텍스트 분할기가 텍스트를 어떻게 분할하는지
+- **메타데이터 추가**: 이 텍스트 분할기가 각 청크의 출처에 대한 메타데이터를 추가하는지 여부
+- **설명**: 분할기에 대한 설명, 언제 사용해야 하는지에 대한 권장 사항 포함
+
+| 이름     | 클래스                                                                                                                                                                                                             | 분할 기준                                                   | 메타데이터 추가 | 설명                                                                                                                                                                                                                                                                  |
+|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 재귀적 | [RecursiveCharacterTextSplitter](/docs/modules/data_connection/document_transformers/recursive_text_splitter), [RecursiveJsonSplitter](/docs/modules/data_connection/document_transformers/recursive_json_splitter) | 사용자 정의 문자 목록     |               | 재귀적으로 텍스트를 분할합니다. 이 분할은 관련된 텍스트 조각을 서로 가까이 유지하려고 합니다. 이것은 텍스트를 분할하는 `권장 방법`입니다.                                                                                                                    |
+| HTML      | [HTMLHeaderTextSplitter](/docs/modules/data_connection/document_transformers/HTML_header_metadata), [HTMLSectionSplitter](/docs/modules/data_connection/document_transformers/HTML_section_aware_splitter)          | HTML 특정 문자                                                                                                 | ✅             | HTML 특정 문자를 기반으로 텍스트를 분할합니다. 특히 해당 청크가 어디에서 왔는지(HTML 기반)에 대한 관련 정보를 추가합니다.                                                                                                                               |
+| Markdown  | [MarkdownHeaderTextSplitter](/docs/modules/data_connection/document_transformers/markdown_header_metadata)                                                                                                          | Markdown 특정 문자                                                                                    | ✅             | Markdown 특정 문자를 기반으로 텍스트를 분할합니다. 특히 해당 청크가 어디에서 왔는지(Markdown 기반)에 대한 관련 정보를 추가합니다.                                                                                                                       |
+| 코드      | [many languages](/docs/modules/data_connection/document_transformers/code_splitter)                                                                                                                                 | 코드(Python, JS) 특정 문자                                                                           |               | 코딩 언어별 문자를 기반으로 텍스트를 분할합니다. 15개의 다른 언어를 선택할 수 있습니다.                                                                                                                                                           |
+| 토큰    | [many classes](/docs/modules/data_connection/document_transformers/split_by_token)                                                                                                                                  | 토큰                                                                                                          |               | 토큰을 기반으로 텍스트를 분할합니다. 토큰을 측정하는 몇 가지 다른 방법이 있습니다.                                                                                                                                                                                                   |
+| 문자  | [CharacterTextSplitter](/docs/modules/data_connection/document_transformers/character_text_splitter)                                                                                                                | 사용자 정의 문자                                                                                        |               | 사용자 정의 문자를 기반으로 텍스트를 분할합니다. 가장 간단한 방법 중 하나입니다.                                                                                                                                                                                                   |
+| [실험적] 의미 청크 생성기 | [SemanticChunker](/docs/modules/data_connection/document_transformers/semantic-chunker)                                                                                                                             | 문장                                                                                                       |               | 먼저 문장으로 분할합니다. 그런 다음 서로 충분히 의미적으로 유사한 경우 옆에 있는 것들을 결합합니다. [Greg Kamradt](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb)에서 가져온 것입니다. |
+| AI21 의미 텍스트 분할기 | [AI21SemanticTextSplitter](/docs/integrations/document_transformers/ai21_semantic_text_splitter)                                                                                                                    |    ✅           | 일관된 텍스트 조각을 형성하는 고유한 주제를 식별하고 그에 따라 분할합니다.                                                                                                                                                                                         |
+
+## 텍스트 분할기 평가
+
+[Chunkviz 유틸리티](https://www.chunkviz.com/)를 사용하여 텍스트 분할기를 평가할 수 있습니다. `Greg Kamradt`가 만든 것입니다.
+`Chunkviz`는 텍스트 분할기의 작동 방식을 시각화하는 훌륭한 도구입니다. 텍스트가 어떻게 분할되는지 보여주고 분할 매개변수를 조정하는 데 도움이 됩니다.
+
+## 기타 문서 변환
+
+텍스트 분할은 LLM에 전달하기 전에 문서에 수행할 수 있는 변환의 한 예일 뿐입니다. [Integrations](/docs/integrations/document_transformers/)로 이동하여 3rd-party 도구와의 내장 문서 변환기 통합에 대한 문서를 확인하세요.

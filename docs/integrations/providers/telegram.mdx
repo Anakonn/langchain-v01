@@ -1,0 +1,31 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/telegram
+translated: false
+---
+
+# Telegram
+
+>[Telegram Messenger](https://web.telegram.org/a/) is a globally accessible freemium, cross-platform, encrypted, cloud-based and centralized instant messaging service. The application also provides optional end-to-end encrypted chats and video calling, VoIP, file sharing and several other features.
+
+## Installation and Setup
+
+See [setup instructions](/docs/integrations/document_loaders/telegram).
+
+## Document Loader
+
+See a [usage example](/docs/integrations/document_loaders/telegram).
+
+```python
+<!--IMPORTS:[{"imported": "TelegramChatFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.telegram.TelegramChatFileLoader.html", "title": "Telegram"}, {"imported": "TelegramChatApiLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.telegram.TelegramChatApiLoader.html", "title": "Telegram"}]-->
+from langchain_community.document_loaders import TelegramChatFileLoader
+from langchain_community.document_loaders import TelegramChatApiLoader
+```
+
+## Chat loader
+
+See a [usage example](/docs/integrations/chat_loaders/telegram).
+
+```python
+<!--IMPORTS:[{"imported": "TelegramChatLoader", "source": "langchain_community.chat_loaders.telegram", "docs": "https://api.python.langchain.com/en/latest/chat_loaders/langchain_community.chat_loaders.telegram.TelegramChatLoader.html", "title": "Telegram"}]-->
+from langchain_community.chat_loaders.telegram import TelegramChatLoader
+```

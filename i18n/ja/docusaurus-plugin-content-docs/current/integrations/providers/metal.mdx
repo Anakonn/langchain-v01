@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# 金属
+
+このページでは、LangChainでの[Metal](https://getmetal.io)の使用方法について説明します。
+
+## Metalとは何ですか?
+
+Metalは、本番環境向けに構築された管理型の検索・メモリプラットフォームです。データを簡単に`Metal`にインデックス化し、セマンティック検索と検索を実行できます。
+
+![Metalダッシュボードのスクリーンショット。Browse Indexの機能と、サンプルデータが表示されています。](/img/MetalDash.png "Metalダッシュボードインターフェース")
+
+## クイックスタート
+
+[Metalアカウントの作成](https://app.getmetal.io/signup)から始めましょう。
+
+次に、`MetalRetriever`クラスを使って、セマンティック検索、プロンプトコンテキストなどのためのデータを簡単に取得できます。このクラスには、`Metal`インスタンスと、Metal APIに渡すパラメーターの辞書が必要です。
+
+```python
+<!--IMPORTS:[{"imported": "MetalRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.metal.MetalRetriever.html", "title": "Metal"}]-->
+from langchain.retrievers import MetalRetriever
+from metal_sdk.metal import Metal
+
+
+metal = Metal("API_KEY", "CLIENT_ID", "INDEX_ID");
+retriever = MetalRetriever(metal, params={"limit": 2})
+
+docs = retriever.invoke("search term")
+```

@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# Streamlit
+
+>[Streamlit](https://streamlit.io/)は、データアプリを構築して共有するための高速な方法です。
+>`Streamlit`は、純粋なPythonを使って、わずかな時間でデータスクリプトをシェアできるWebアプリに変換します。フロントエンドの経験は不要です。
+>[streamlit.io/generative-ai](https://streamlit.io/generative-ai)でさらに多くの例を確認できます。
+
+## インストールとセットアップ
+
+`streamlit`Pythonパッケージをインストールする必要があります:
+
+```bash
+pip install streamlit
+```
+
+## メモリ
+
+[使用例](/docs/integrations/memory/streamlit_chat_message_history)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.streamlit.StreamlitChatMessageHistory.html", "title": "Streamlit"}]-->
+from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+```
+
+## コールバック
+
+[使用例](/docs/integrations/callbacks/streamlit)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitCallbackHandler", "source": "langchain_community.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.streamlit.StreamlitCallbackHandler.html", "title": "Streamlit"}]-->
+from langchain_community.callbacks import StreamlitCallbackHandler
+```

@@ -1,0 +1,30 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# Tiendas
+
+En muchas aplicaciones diferentes, tener algún tipo de almacenamiento de clave-valor es útil.
+En esta sección, veremos algunas formas diferentes de almacenar pares clave-valor
+usando implementaciones de la interfaz `ByteStore`.
+
+## Características (compatibles de forma nativa)
+
+Todos los `ByteStore` admiten las siguientes funciones, que se utilizan para modificar
+**m**últiples pares clave-valor a la vez:
+
+- `mget(key: Sequence[str]) -> List[Optional[bytes]]`: obtener el contenido de múltiples claves, devolviendo `None` si la clave no existe
+- `mset(key_value_pairs: Sequence[Tuple[str, bytes]]) -> None`: establecer el contenido de múltiples claves
+- `mdelete(key: Sequence[str]) -> None`: eliminar múltiples claves
+- `yield_keys(prefix: Optional[str] = None) -> Iterator[str]`: generar todas las claves en la tienda, opcionalmente filtrando por un prefijo
+
+## Cómo elegir uno
+
+Los `ByteStore` están diseñados para ser intercambiables. De forma predeterminada, la mayoría de las integraciones dependientes
+usan el `InMemoryByteStore`, que es una tienda de clave-valor simple en memoria.
+
+Sin embargo, si comienza a tener otros requisitos, como escalabilidad masiva o persistencia,
+puede intercambiar la implementación de `ByteStore` por una de las otras documentadas
+en esta sección.

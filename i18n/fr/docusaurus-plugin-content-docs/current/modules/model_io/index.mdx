@@ -1,0 +1,318 @@
+---
+sidebar_class_name: hidden
+sidebar_custom_props:
+  description: Interagir avec les modèles de langage
+sidebar_position: 0
+translated: true
+---
+
+# Entrée/Sortie du modèle
+
+L'élément central de toute application de modèle de langage est... le modèle. LangChain vous fournit les briques de base pour interagir avec n'importe quel modèle de langage.
+
+![Organigramme illustrant le processus d'entrée/sortie du modèle avec les étapes Format, Predict et Parse, montrant la transformation des variables d'entrée en une sortie structurée.](/img/model_io.jpg "Diagramme du processus d'entrée/sortie du modèle")
+
+# Démarrage rapide
+
+Le démarrage rapide ci-dessous couvrira les bases de l'utilisation des composants d'entrée/sortie du modèle de LangChain. Il présentera les deux types de modèles différents - les LLM et les modèles de chat. Il couvrira ensuite comment utiliser les modèles de prompt pour formater les entrées de ces modèles, et comment utiliser les analyseurs de sortie pour travailler avec les sorties.
+
+Les modèles de langage dans LangChain se déclinent en deux saveurs :
+
+### [ChatModels](/docs/modules/model_io/chat/)
+
+[Les modèles de chat](/docs/modules/model_io/chat/) sont souvent basés sur des LLM mais spécialement conçus pour avoir des conversations. 
+Leur interface de fournisseur utilise une interface différente des modèles de complétion de texte pur. Au lieu d'une seule chaîne, 
+ils prennent une liste de messages de chat en entrée et renvoient un message d'IA en sortie. Voir la section ci-dessous pour plus de détails sur ce qu'est exactement un message. GPT-4 et Claude-2 d'Anthropic sont tous deux implémentés en tant que modèles de chat.
+
+### [LLMs](/docs/modules/model_io/llms/)
+
+[LLMs](/docs/modules/model_io/llms/) dans LangChain font référence aux modèles de complétion de texte pur.
+Les API qu'ils enveloppent prennent une chaîne de caractères comme entrée et renvoient une chaîne de caractères comme sortie. GPT-3 d'OpenAI est implémenté en tant que LLM.
+
+Ces deux types d'API ont des schémas d'entrée et de sortie différents.
+
+De plus, tous les modèles ne sont pas les mêmes. Différents modèles ont différentes stratégies d'amorçage qui fonctionnent mieux pour eux. Par exemple, les modèles d'Anthropic fonctionnent mieux avec XML tandis que ceux d'OpenAI fonctionnent mieux avec JSON. Vous devriez garder cela à l'esprit lors de la conception de vos applications.
+
+Pour ce guide de démarrage, nous utiliserons des modèles de chat et fournirons quelques options : utiliser une API comme Anthropic ou OpenAI, ou utiliser un modèle open source local via Ollama.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+
+Tout d'abord, nous devrons installer leur package partenaire :
+
+```shell
+pip install langchain-openai
+```
+
+L'accès à l'API nécessite une clé API, que vous pouvez obtenir en créant un compte et en vous rendant [ici](https://platform.openai.com/account/api-keys). Une fois que nous avons une clé, nous voudrons la définir en tant que variable d'environnement en exécutant :
+
+```shell
+export OPENAI_API_KEY="..."
+```
+
+Nous pouvons alors initialiser le modèle :
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Model I/O"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Model I/O"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAI
+
+llm = OpenAI()
+chat_model = ChatOpenAI(model="gpt-3.5-turbo-0125")
+```
+
+Si vous préférez ne pas définir de variable d'environnement, vous pouvez passer la clé directement via le paramètre nommé `api_key` lors de l'initialisation de la classe LLM d'OpenAI :
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Model I/O"}]-->
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(api_key="...")
+```
+
+Tant `llm` que `chat_model` sont des objets qui représentent la configuration d'un modèle particulier.
+Vous pouvez les initialiser avec des paramètres comme `temperature` et d'autres, et les passer autour.
+La principale différence entre eux est leur schéma d'entrée et de sortie.
+Les objets LLM prennent une chaîne de caractères en entrée et renvoient une chaîne de caractères.
+Les objets ChatModel prennent une liste de messages en entrée et renvoient un message.
+
+Nous pouvons voir la différence entre un LLM et un ChatModel lorsque nous l'invoquons.
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Model I/O"}]-->
+from langchain_core.messages import HumanMessage
+
+text = "What would be a good company name for a company that makes colorful socks?"
+messages = [HumanMessage(content=text)]
+
+llm.invoke(text)
+# >> Feetful of Fun
+
+chat_model.invoke(messages)
+# >> AIMessage(content="Socks O'Color")
+```
+
+Le LLM renvoie une chaîne de caractères, tandis que le ChatModel renvoie un message.
+
+  </TabItem>
+  <TabItem value="local" label="Local (en utilisant Ollama)">
+
+[Ollama](https://ollama.ai/) vous permet d'exécuter des modèles de langage open source, comme Llama 2, localement.
+
+Tout d'abord, suivez [ces instructions](https://github.com/jmorganca/ollama) pour configurer et exécuter une instance locale d'Ollama :
+
+* [Télécharger](https://ollama.ai/download)
+* Récupérer un modèle via `ollama pull llama2`
+
+Ensuite, assurez-vous que le serveur Ollama est en cours d'exécution. Après cela, vous pouvez faire :
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Model I/O"}, {"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Model I/O"}]-->
+from langchain_community.llms import Ollama
+from langchain_community.chat_models import ChatOllama
+
+llm = Ollama(model="llama2")
+chat_model = ChatOllama()
+```
+
+Tant `llm` que `chat_model` sont des objets qui représentent la configuration d'un modèle particulier.
+Vous pouvez les initialiser avec des paramètres comme `temperature` et d'autres, et les passer autour.
+La principale différence entre eux est leur schéma d'entrée et de sortie.
+Les objets LLM prennent une chaîne de caractères en entrée et renvoient une chaîne de caractères.
+Les objets ChatModel prennent une liste de messages en entrée et renvoient un message.
+
+Nous pouvons voir la différence entre un LLM et un ChatModel lorsque nous l'invoquons.
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Model I/O"}]-->
+from langchain_core.messages import HumanMessage
+
+text = "What would be a good company name for a company that makes colorful socks?"
+messages = [HumanMessage(content=text)]
+
+llm.invoke(text)
+# >> Feetful of Fun
+
+chat_model.invoke(messages)
+# >> AIMessage(content="Socks O'Color")
+```
+
+Le LLM renvoie une chaîne de caractères, tandis que le ChatModel renvoie un message.
+
+  </TabItem>
+  <TabItem value="anthropic" label="Anthropic (modèle de chat uniquement)">
+
+Tout d'abord, nous devrons importer le package LangChain x Anthropic.
+
+```shell
+pip install langchain-anthropic
+```
+
+L'accès à l'API nécessite une clé API, que vous pouvez obtenir en créant un compte [ici](https://claude.ai/login). Une fois que nous avons une clé, nous voudrons la définir en tant que variable d'environnement en exécutant :
+
+```shell
+export ANTHROPIC_API_KEY="..."
+```
+
+Nous pouvons alors initialiser le modèle :
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnthropic", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html", "title": "Model I/O"}]-->
+from langchain_anthropic import ChatAnthropic
+
+chat_model = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024)
+```
+
+Si vous préférez ne pas définir de variable d'environnement, vous pouvez passer la clé directement via le paramètre nommé `api_key` lors de l'initialisation de la classe Anthropic Chat Model :
+
+```python
+chat_model = ChatAnthropic(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere (modèle de chat uniquement)">
+
+Tout d'abord, nous devrons installer leur package partenaire :
+
+```shell
+pip install langchain-cohere
+```
+
+L'accès à l'API nécessite une clé API, que vous pouvez obtenir en créant un compte et en vous rendant [ici](https://dashboard.cohere.com/api-keys). Une fois que nous avons une clé, nous voudrons la définir en tant que variable d'environnement en exécutant :
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+Nous pouvons alors initialiser le modèle :
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Model I/O"}]-->
+from langchain_cohere import ChatCohere
+
+chat_model = ChatCohere()
+```
+
+Si vous préférez ne pas définir de variable d'environnement, vous pouvez passer la clé directement via le paramètre nommé `cohere_api_key` lors de l'initialisation de la classe Cohere LLM :
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Model I/O"}]-->
+from langchain_cohere import ChatCohere
+
+chat_model = ChatCohere(cohere_api_key="...")
+```
+
+  </TabItem>
+</Tabs>
+
+## Modèles d'invite
+
+La plupart des applications d'apprentissage automatique de langage (LLM) ne transmettent pas directement l'entrée de l'utilisateur à un LLM. Généralement, ils ajouteront l'entrée de l'utilisateur à un morceau de texte plus important, appelé un modèle d'invite, qui fournit un contexte supplémentaire sur la tâche spécifique à accomplir.
+
+Dans l'exemple précédent, le texte que nous avons transmis au modèle contenait des instructions pour générer un nom d'entreprise. Pour notre application, il serait idéal si l'utilisateur ne devait fournir que la description d'une entreprise/d'un produit sans se soucier de donner des instructions au modèle.
+
+Les PromptTemplates aident exactement à cela !
+Ils regroupent toute la logique pour passer de l'entrée de l'utilisateur à un invite entièrement formaté.
+Cela peut commencer très simplement - par exemple, un invite pour produire la chaîne ci-dessus serait juste :
+
+```python
+<!--IMPORTS:[{"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Model I/O"}]-->
+from langchain_core.prompts import PromptTemplate
+
+prompt = PromptTemplate.from_template("What is a good name for a company that makes {product}?")
+prompt.format(product="colorful socks")
+```
+
+```python
+What is a good name for a company that makes colorful socks?
+```
+
+Il y a plusieurs avantages à utiliser ceux-ci plutôt que le formatage brut des chaînes.
+Vous pouvez "partialiser" les variables - par exemple, vous pouvez formater seulement certaines des variables à la fois.
+Vous pouvez les composer ensemble, en combinant facilement différents modèles dans un seul invite.
+Pour des explications de ces fonctionnalités, voir la [section sur les invites](/docs/modules/model_io/prompts) pour plus de détails.
+
+Les `PromptTemplate`s peuvent également être utilisés pour produire une liste de messages.
+Dans ce cas, l'invite contient non seulement des informations sur le contenu, mais aussi sur chaque message (son rôle, sa position dans la liste, etc.).
+Ici, ce qui se passe le plus souvent est qu'un `ChatPromptTemplate` est une liste de `ChatMessageTemplates`.
+Chaque `ChatMessageTemplate` contient des instructions sur la façon de formater ce `ChatMessage` - son rôle, et aussi son contenu.
+Examinons cela ci-dessous :
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts.chat", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Model I/O"}]-->
+from langchain_core.prompts.chat import ChatPromptTemplate
+
+template = "You are a helpful assistant that translates {input_language} to {output_language}."
+human_template = "{text}"
+
+chat_prompt = ChatPromptTemplate.from_messages([
+    ("system", template),
+    ("human", human_template),
+])
+
+chat_prompt.format_messages(input_language="English", output_language="French", text="I love programming.")
+```
+
+```pycon
+[
+    SystemMessage(content="You are a helpful assistant that translates English to French.", additional_kwargs={}),
+    HumanMessage(content="I love programming.")
+]
+```
+
+Les ChatPromptTemplates peuvent également être construits d'autres manières - voir la [section sur les invites](/docs/modules/model_io/prompts) pour plus de détails.
+
+## Analyseurs de sortie
+
+Les `OutputParser`s convertissent la sortie brute d'un modèle de langage dans un format utilisable en aval.
+Il existe quelques types principaux d'`OutputParser`s, notamment :
+
+- Convertir le texte d'un `LLM` en informations structurées (par exemple, du JSON)
+- Convertir un `ChatMessage` en une simple chaîne
+- Convertir les informations supplémentaires renvoyées par un appel, en plus du message (comme l'invocation de fonction d'OpenAI), en une chaîne.
+
+Pour plus d'informations à ce sujet, voir la [section sur les analyseurs de sortie](/docs/modules/model_io/output_parsers).
+
+Dans ce guide de démarrage, nous utilisons un simple analyseur qui analyse une liste de valeurs séparées par des virgules.
+
+```python
+<!--IMPORTS:[{"imported": "CommaSeparatedListOutputParser", "source": "langchain.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.list.CommaSeparatedListOutputParser.html", "title": "Model I/O"}]-->
+from langchain.output_parsers import CommaSeparatedListOutputParser
+
+output_parser = CommaSeparatedListOutputParser()
+output_parser.parse("hi, bye")
+# >> ['hi', 'bye']
+```
+
+## Composition avec LCEL
+
+Nous pouvons maintenant combiner tout cela en une seule chaîne.
+Cette chaîne prendra des variables d'entrée, les transmettra à un modèle d'invite pour créer un invite, transmettra l'invite à un modèle de langage, puis transmettra la sortie à un (éventuel) analyseur de sortie.
+C'est un moyen pratique de regrouper une pièce de logique modulaire.
+Voyons-le en action !
+
+```python
+template = "Generate a list of 5 {text}.\n\n{format_instructions}"
+
+chat_prompt = ChatPromptTemplate.from_template(template)
+chat_prompt = chat_prompt.partial(format_instructions=output_parser.get_format_instructions())
+chain = chat_prompt | chat_model | output_parser
+chain.invoke({"text": "colors"})
+# >> ['red', 'blue', 'green', 'yellow', 'orange']
+```
+
+Notez que nous utilisons la syntaxe `|` pour joindre ces composants.
+Cette syntaxe `|` est alimentée par le langage d'expression LangChain (LCEL) et s'appuie sur l'interface `Runnable` universelle que tous ces objets implémentent.
+Pour en savoir plus sur LCEL, lisez la documentation [ici](/docs/expression_language).
+
+## Conclusion
+
+Voilà pour le démarrage avec les invites, les modèles et les analyseurs de sortie ! Cela n'a couvert que la surface de ce qu'il y a à apprendre. Pour plus d'informations, consultez :
+
+- La [section sur les invites](./prompts) pour plus d'informations sur la façon de travailler avec les modèles d'invite
+- La [section ChatModel](./chat) pour plus d'informations sur l'interface ChatModel
+- La [section LLM](./llms) pour plus d'informations sur l'interface LLM
+- La [section sur les analyseurs de sortie](./output_parsers) pour des informations sur les différents types d'analyseurs de sortie.

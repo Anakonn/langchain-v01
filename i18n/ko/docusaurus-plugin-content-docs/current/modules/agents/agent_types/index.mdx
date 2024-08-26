@@ -1,0 +1,44 @@
+---
+sidebar_position: 2
+title: 유형
+translated: true
+---
+
+# 에이전트 유형
+
+이것은 몇 가지 차원에 따라 사용 가능한 모든 에이전트를 분류합니다.
+
+**대상 모델 유형**
+
+이 에이전트가 채팅 모델(메시지 입력, 메시지 출력) 또는 LLM(문자열 입력, 문자열 출력)을 위해 설계되었는지 여부입니다. 이것이 주로 영향을 미치는 것은 프롬프팅 전략입니다. 다른 유형의 모델로 에이전트를 사용할 수 있지만, 동일한 품질의 결과를 얻지 못할 가능성이 높습니다.
+
+**채팅 기록 지원**
+
+이 에이전트 유형이 채팅 기록을 지원하는지 여부입니다. 지원한다면 채팅봇으로 사용할 수 있습니다. 그렇지 않다면 단일 작업에 더 적합합니다. 채팅 기록 지원은 일반적으로 더 나은 모델이 필요하므로, 더 나쁜 모델을 대상으로 하는 초기 에이전트 유형에서는 지원되지 않을 수 있습니다.
+
+**다중 입력 도구 지원**
+
+이 에이전트 유형이 다중 입력 도구를 지원하는지 여부입니다. 도구에 단일 입력만 필요한 경우 LLM이 어떻게 호출해야 하는지 알기 쉽습니다. 따라서 더 나쁜 모델을 대상으로 하는 몇몇 초기 에이전트 유형에서는 이를 지원하지 않을 수 있습니다.
+
+**병렬 기능 호출 지원**
+
+LLM이 여러 도구를 동시에 호출할 수 있다면 에이전트의 속도를 크게 높일 수 있습니다. 그러나 LLM이 이를 수행하는 것은 매우 어려우므로, 일부 에이전트 유형에서는 이를 지원하지 않습니다.
+
+**필요한 모델 매개변수**
+
+이 에이전트에 모델이 지원해야 하는 추가 매개변수가 있는지 여부입니다. 일부 에이전트 유형은 OpenAI 함수 호출과 같은 기능을 활용하며, 이를 위해서는 다른 모델 매개변수가 필요합니다. 필요한 매개변수가 없다면 모든 것이 프롬프팅을 통해 수행됩니다.
+
+**사용 시기**
+
+이 에이전트 유형을 사용해야 하는 경우에 대한 저희의 의견입니다.
+
+| 에이전트 유형 | 대상 모델 유형 | 채팅 기록 지원 | 다중 입력 도구 지원 | 병렬 기능 호출 지원 | 필요한 모델 매개변수 | 사용 시기 | API |
+|--------------------------------------------|---------------------|-----------------------|----------------------------|-------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| [Tool Calling](/docs/modules/agents/agent_types/tool_calling)             | 채팅                | ✅                    | ✅                         | ✅                                   | `tools`              | 도구 호출 모델을 사용하는 경우 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.tool_calling_agent.base.create_tool_calling_agent.html) |
+| [OpenAI Tools](./openai_tools)             | 채팅                | ✅                    | ✅                         | ✅                                   | `tools`              | [Legacy] 최근 OpenAI 모델(`1106` 이상)을 사용하는 경우. 일반 도구 호출 에이전트 사용이 권장됩니다. | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_tools.base.create_openai_tools_agent.html) |
+| [OpenAI Functions](./openai_functions_agent)| 채팅                | ✅                    | ✅                         |                                     | `functions`          | [Legacy] OpenAI 모델 또는 함수 호출을 위해 fine-tuned된 오픈 소스 모델을 사용하는 경우. 일반 도구 호출 에이전트 사용이 권장됩니다. | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html) |
+| [XML](./xml_agent)                         | LLM                 | ✅                    |                            |                                     |                      | Anthropic 모델 또는 XML 처리에 능숙한 다른 모델을 사용하는 경우 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.xml.base.create_xml_agent.html)                                                                                               |
+| [Structured Chat](./structured_chat)       | 채팅                | ✅                    | ✅                         |                                     |                      | 다중 입력 도구를 지원해야 하는 경우 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.structured_chat.base.create_structured_chat_agent.html) |
+| [JSON Chat](./json_agent)                  | 채팅                | ✅                    |                            |                                     |                      | JSON 처리에 능숙한 모델을 사용하는 경우 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.json_chat.base.create_json_chat_agent.html) |
+| [ReAct](./react)                           | LLM                 | ✅                    |                            |                                     |                      | 단순한 모델을 사용하는 경우 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html) |
+| [Self Ask With Search](./self_ask_with_search)| LLM              |                       |                            |                                     |                      | 단순한 모델을 사용하고 검색 도구가 하나만 있는 경우 | [Ref](https://api.python.langchain.com/en/latest/agents/langchain.agents.self_ask_with_search.base.create_self_ask_with_search_agent.html) |

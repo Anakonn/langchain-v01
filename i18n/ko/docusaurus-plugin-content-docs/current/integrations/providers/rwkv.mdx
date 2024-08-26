@@ -1,0 +1,73 @@
+---
+translated: true
+---
+
+# RWKV-4
+
+이 페이지에서는 LangChain 내에서 `RWKV-4` 래퍼를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 예제를 사용한 사용법으로 구성됩니다.
+
+## 설치 및 설정
+
+- `pip install rwkv`로 Python 패키지를 설치합니다.
+- `pip install tokenizer`로 tokenizer Python 패키지를 설치합니다.
+- [RWKV 모델](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main)을 다운로드하여 원하는 디렉토리에 저장합니다.
+- [tokens 파일](https://raw.githubusercontent.com/BlinkDL/ChatRWKV/main/20B_tokenizer.json)을 다운로드합니다.
+
+## 사용법
+
+### RWKV
+
+RWKV 래퍼를 사용하려면 사전 학습된 모델 파일의 경로와 tokenizer의 구성을 제공해야 합니다.
+
+```python
+<!--IMPORTS:[{"imported": "RWKV", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.rwkv.RWKV.html", "title": "RWKV-4"}]-->
+from langchain_community.llms import RWKV
+```
+
+# 모델 테스트
+
+```python
+
+def generate_prompt(instruction, input=None):
+    if input:
+        return f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+# Instruction:
+{instruction}
+
+# Input:
+{input}
+
+# Response:
+"""
+    else:
+        return f"""Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+# Instruction:
+{instruction}
+
+# Response:
+"""
+
+
+model = RWKV(model="./models/RWKV-4-Raven-3B-v7-Eng-20230404-ctx4096.pth", strategy="cpu fp32", tokens_path="./rwkv/20B_tokenizer.json")
+response = model.invoke(generate_prompt("Once upon a time, "))
+```
+
+## 모델 파일
+
+[RWKV-4-Raven](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main) 리포지토리에서 모델 파일 다운로드 링크를 찾을 수 있습니다.
+
+### Rwkv-4 models -> 권장 VRAM
+
+```text
+RWKV VRAM
+Model | 8bit | bf16/fp16 | fp32
+14B   | 16GB | 28GB      | >50GB
+7B    | 8GB  | 14GB      | 28GB
+3B    | 2.8GB| 6GB       | 12GB
+1b5   | 1.3GB| 3GB       | 6GB
+```
+
+전략, 스트리밍 및 cuda 지원에 대한 자세한 내용은 [rwkv pip](https://pypi.org/project/rwkv/) 페이지를 참조하세요.

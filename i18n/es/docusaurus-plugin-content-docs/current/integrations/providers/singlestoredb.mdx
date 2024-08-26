@@ -1,0 +1,34 @@
+---
+translated: true
+---
+
+# SingleStoreDB
+
+>[SingleStoreDB](https://singlestore.com/) es una base de datos SQL distribuida de alto rendimiento que admite el despliegue tanto en la [nube](https://www.singlestore.com/cloud/) como en las instalaciones. Proporciona almacenamiento de vectores y funciones de vectores, incluidos [dot_product](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/dot_product.html) y [euclidean_distance](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/euclidean_distance.html), lo que permite admitir aplicaciones de IA que requieren coincidencia de similitud de texto.
+
+## Instalación y configuración
+
+Hay varias formas de establecer una [conexión](https://singlestoredb-python.labs.singlestore.com/generated/singlestoredb.connect.html) a la base de datos. Puede configurar variables de entorno o pasar parámetros con nombre al constructor `SingleStoreDB`.
+Alternativamente, puede proporcionar estos parámetros a los métodos `from_documents` y `from_texts`.
+
+```bash
+pip install singlestoredb
+```
+
+## Vector Store
+
+Consulte un [ejemplo de uso](/docs/integrations/vectorstores/singlestoredb).
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.singlestoredb.SingleStoreDB.html", "title": "SingleStoreDB"}]-->
+from langchain_community.vectorstores import SingleStoreDB
+```
+
+## Memoria
+
+Consulte un [ejemplo de uso](/docs/integrations/memory/singlestoredb_chat_message_history).
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDBChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory.html", "title": "SingleStoreDB"}]-->
+from langchain.memory import SingleStoreDBChatMessageHistory
+```

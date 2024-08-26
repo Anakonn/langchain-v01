@@ -1,0 +1,46 @@
+---
+translated: true
+---
+
+import DocCardList from "@theme/DocCardList";
+
+# Évaluation
+
+La construction d'applications avec des modèles de langage implique de nombreuses pièces mobiles. L'un des composants les plus critiques est de s'assurer que les résultats produits par vos modèles sont fiables et utiles pour un large éventail d'entrées, et qu'ils fonctionnent bien avec les autres composants logiciels de votre application. Assurer la fiabilité se résume généralement à une combinaison de conception d'application, de tests et d'évaluation, et de contrôles d'exécution.
+
+Les guides de cette section passent en revue les API et les fonctionnalités que LangChain fournit pour vous aider à mieux évaluer vos applications. L'évaluation et les tests sont tous deux essentiels lorsqu'il s'agit de déployer des applications LLM, car les environnements de production nécessitent des résultats reproductibles et utiles.
+
+LangChain propose divers types d'évaluateurs pour vous aider à mesurer les performances et l'intégrité sur des données diverses, et nous espérons encourager la communauté à créer et à partager d'autres évaluateurs utiles afin que chacun puisse s'améliorer. Ces documents présenteront les types d'évaluateurs, la façon de les utiliser et fourniront quelques exemples de leur utilisation dans des scénarios du monde réel.
+Ces évaluateurs intégrés s'intègrent en douceur avec [LangSmith](/docs/langsmith) et vous permettent de créer des boucles de rétroaction qui améliorent votre application au fil du temps et empêchent les régressions.
+
+Chaque type d'évaluateur dans LangChain est accompagné d'implémentations prêtes à l'emploi et d'une API extensible qui permet une personnalisation selon vos besoins uniques. Voici quelques-uns des types d'évaluateurs que nous proposons :
+
+- [Évaluateurs de chaînes de caractères](/docs/guides/productionization/evaluation/string/) : Ces évaluateurs évaluent la chaîne de caractères prédite pour une entrée donnée, généralement en la comparant à une chaîne de référence.
+- [Évaluateurs de trajectoire](/docs/guides/productionization/evaluation/trajectory/) : Ceux-ci sont utilisés pour évaluer l'ensemble de la trajectoire des actions des agents.
+- [Évaluateurs de comparaison](/docs/guides/productionization/evaluation/comparison/) : Ces évaluateurs sont conçus pour comparer les prédictions de deux exécutions sur une entrée commune.
+
+Ces évaluateurs peuvent être utilisés dans divers scénarios et peuvent être appliqués à différentes implémentations de chaînes et de LLM dans la bibliothèque LangChain.
+
+Nous travaillons également à partager des guides et des recettes qui démontrent comment utiliser ces évaluateurs dans des scénarios du monde réel, comme :
+
+- [Comparaisons de chaînes](/docs/guides/productionization/evaluation/examples/comparisons) : Cet exemple utilise un évaluateur de comparaison pour prédire la sortie préférée. Il passe en revue les moyens de mesurer les intervalles de confiance pour sélectionner les différences statistiquement significatives dans les scores de préférence agrégés entre différents modèles ou invites.
+
+## Évaluation LangSmith
+
+LangSmith fournit un cadre d'évaluation et de traçage intégré qui vous permet de vérifier les régressions, de comparer les systèmes et d'identifier et de corriger facilement les sources d'erreurs et les problèmes de performances. Consultez la documentation sur [l'évaluation LangSmith](https://docs.smith.langchain.com/evaluation) et les [recettes](https://docs.smith.langchain.com/cookbook) supplémentaires pour plus d'informations détaillées sur l'évaluation de vos applications.
+
+## Références LangChain
+
+La qualité de votre application est une fonction à la fois du LLM que vous choisissez et des stratégies d'invite et de récupération de données que vous employez pour fournir le contexte du modèle. Nous avons publié un certain nombre de tâches de référence dans le cadre du [package LangChain Benchmarks](https://langchain-ai.github.io/langchain-benchmarks/) pour évaluer différents systèmes LLM sur des tâches telles que :
+
+- Utilisation des outils de l'agent
+- Question-réponse avec augmentation de la récupération
+- Extraction structurée
+
+Consultez la documentation pour des exemples et des informations sur le classement.
+
+## Documentation de référence
+
+Pour des informations détaillées sur les évaluateurs disponibles, y compris la façon de les instancier, de les configurer et de les personnaliser, consultez la [documentation de référence](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.evaluation) directement.
+
+<DocCardList />

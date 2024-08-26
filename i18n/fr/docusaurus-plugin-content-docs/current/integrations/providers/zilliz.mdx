@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Zilliz
+
+>[Zilliz Cloud](https://zilliz.com/doc/quick_start) est un service entièrement géré sur le cloud pour `LF AI Milvus®`,
+
+## Installation et configuration
+
+Installez le SDK Python :
+
+```bash
+pip install pymilvus
+```
+
+## Vectorstore
+
+Un wrapper autour des index Zilliz vous permet de l'utiliser comme un vectorstore,
+que ce soit pour la recherche sémantique ou la sélection d'exemples.
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Zilliz"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+Pour un parcours détaillé du wrapper Miluvs, voir [ce notebook](/docs/integrations/vectorstores/zilliz)

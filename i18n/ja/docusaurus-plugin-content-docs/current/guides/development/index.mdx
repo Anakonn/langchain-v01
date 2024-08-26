@@ -1,0 +1,14 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 開発
+
+このセクションには、LangChainでアプリを構築するための一般的な情報を含むガイドが含まれています。
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/development/")} />

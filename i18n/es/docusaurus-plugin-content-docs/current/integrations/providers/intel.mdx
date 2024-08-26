@@ -1,0 +1,129 @@
+---
+translated: true
+---
+
+# Intel
+
+>[Optimum Intel](https://github.com/huggingface/optimum-intel?tab=readme-ov-file#optimum-intel) es la interfaz entre las bibliotecas 🤗 Transformers y Diffusers y las diferentes herramientas y bibliotecas proporcionadas por Intel para acelerar las tuberías de extremo a extremo en arquitecturas Intel.
+
+>[Intel® Extension for Transformers](https://github.com/intel/intel-extension-for-transformers?tab=readme-ov-file#intel-extension-for-transformers) (ITREX) es un kit de herramientas innovador diseñado para acelerar GenAI/LLM en todas partes con el rendimiento óptimo de los modelos basados en Transformer en varias plataformas Intel, incluidos Intel Gaudi2, Intel CPU e Intel GPU.
+
+Esta página cubre cómo usar optimum-intel e ITREX con LangChain.
+
+## Optimum-intel
+
+Toda la funcionalidad relacionada con [optimum-intel](https://github.com/huggingface/optimum-intel.git) e [IPEX](https://github.com/intel/intel-extension-for-pytorch).
+
+### Instalación
+
+Instalar usando optimum-intel e ipex:
+
+```bash
+pip install optimum[neural-compressor]
+pip install intel_extension_for_pytorch
+```
+
+Sigue las instrucciones de instalación que se especifican a continuación:
+
+* Instalar optimum-intel como se muestra [aquí](https://github.com/huggingface/optimum-intel).
+* Instalar IPEX como se muestra [aquí](https://intel.github.io/intel-extension-for-pytorch/index.html#installation?platform=cpu&version=v2.2.0%2Bcpu).
+
+### Modelos de incrustación
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/optimum_intel).
+También ofrecemos un cuaderno tutorial completo "rag_with_quantized_embeddings.ipynb" para usar el incrustador en una tubería RAG en el directorio de recetas.
+
+```python
+<!--IMPORTS:[{"imported": "QuantizedBiEncoderEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.optimum_intel.QuantizedBiEncoderEmbeddings.html", "title": "Intel"}]-->
+from langchain_community.embeddings import QuantizedBiEncoderEmbeddings
+```
+
+## Intel® Extension for Transformers (ITREX)
+
+(ITREX) es un kit de herramientas innovador para acelerar los modelos basados en Transformer en plataformas Intel, en particular, efectivo en el procesador Intel Xeon Scalable de 4.a generación Sapphire Rapids (con el código Sapphire Rapids).
+
+La cuantización es un proceso que implica reducir la precisión de estos pesos representándolos usando una cantidad menor de bits. La cuantización solo de pesos se enfoca específicamente en cuantizar los pesos de la red neuronal mientras mantiene otros componentes, como las activaciones, en su precisión original.
+
+A medida que los modelos de lenguaje grandes (LLM) se vuelven más prevalentes, existe una necesidad creciente de nuevos y mejorados métodos de cuantización que puedan satisfacer las demandas computacionales de estas arquitecturas modernas mientras mantienen la precisión. En comparación con la [cuantización normal](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/quantization.md) como W8A8, la cuantización solo de pesos probablemente sea un mejor equilibrio para equilibrar el rendimiento y la precisión, ya que veremos a continuación que el cuello de botella de implementar LLM es el ancho de banda de memoria y normalmente la cuantización solo de pesos podría conducir a una mejor precisión.
+
+Aquí, presentaremos los Modelos de incrustación y la cuantización solo de pesos para los modelos de lenguaje grandes de Transformers con ITREX. La cuantización solo de pesos es una técnica utilizada en el aprendizaje profundo para reducir los requisitos de memoria y cómputo de las redes neuronales. En el contexto de las redes neuronales profundas, los parámetros del modelo, también conocidos como pesos, se representan típicamente usando números de punto flotante, lo que puede consumir una cantidad significativa de memoria y requerir recursos computacionales intensivos.
+
+Toda la funcionalidad relacionada con [intel-extension-for-transformers](https://github.com/intel/intel-extension-for-transformers).
+
+### Instalación
+
+Instalar intel-extension-for-transformers. Para los requisitos del sistema y otros consejos de instalación, consulta la [Guía de instalación](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/installation.md)
+
+```bash
+pip install intel-extension-for-transformers
+```
+
+Instalar otros paquetes requeridos.
+
+```bash
+pip install -U torch onnx accelerate datasets
+```
+
+### Modelos de incrustación
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/itrex).
+
+```python
+<!--IMPORTS:[{"imported": "QuantizedBgeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.itrex.QuantizedBgeEmbeddings.html", "title": "Intel"}]-->
+from langchain_community.embeddings import QuantizedBgeEmbeddings
+```
+
+### Cuantización solo de pesos con ITREX
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/weight_only_quantization).
+
+## Detalles de los parámetros de configuración
+
+Aquí está el detalle de la clase `WeightOnlyQuantConfig`.
+
+#### weight_dtype (cadena): Tipo de datos de peso, el valor predeterminado es "nf4".
+
+Admitimos cuantificar los pesos a los siguientes tipos de datos para almacenar (weight_dtype en WeightOnlyQuantConfig):
+* **int8**: Usa el tipo de datos de 8 bits.
+* **int4_fullrange**: Usa el valor -8 del rango int4 en comparación con el rango int4 normal [-7,7].
+* **int4_clip**: Recorta y retiene los valores dentro del rango int4, estableciendo otros en cero.
+* **nf4**: Usa el tipo de datos de punto flotante normalizado de 4 bits.
+* **fp4_e2m1**: Usa el tipo de datos de punto flotante regular de 4 bits. "e2" significa que se usan 2 bits para el exponente y "m1" significa que se usa 1 bit para la mantisa.
+
+#### compute_dtype (cadena): Tipo de datos de cálculo, el valor predeterminado es "fp32".
+
+Mientras que estas técnicas almacenan los pesos en 4 u 8 bits, el cálculo aún se realiza en float32, bfloat16 o int8 (compute_dtype en WeightOnlyQuantConfig):
+* **fp32**: Usa el tipo de datos float32 para calcular.
+* **bf16**: Usa el tipo de datos bfloat16 para calcular.
+* **int8**: Usa el tipo de datos de 8 bits para calcular.
+
+#### llm_int8_skip_modules (lista de nombres de módulos): Módulos para omitir la cuantización, el valor predeterminado es None.
+
+Es una lista de módulos que se omitirán de la cuantización.
+
+#### scale_dtype (cadena): El tipo de datos de escala, el valor predeterminado es "fp32".
+
+Ahora solo se admite "fp32" (float32).
+
+#### mse_range (booleano): Si se debe buscar el mejor rango de recorte del rango [0.805, 1.0, 0.005], el valor predeterminado es False.
+
+#### use_double_quant (booleano): Si se debe cuantificar la escala, el valor predeterminado es False.
+
+Aún no se admite.
+
+#### double_quant_dtype (cadena): Reservado para la doble cuantización.
+
+#### double_quant_scale_dtype (cadena): Reservado para la doble cuantización.
+
+#### group_size (int): Tamaño del grupo al cuantizar.
+
+#### scheme (cadena): Qué formato se utilizará para cuantizar los pesos. El valor predeterminado es "sym".
+
+* **sym**: Simétrico.
+* **asym**: Asimétrico.
+
+#### algorithm (string): Qué algoritmo mejorar la precisión. El valor predeterminado es "RTN"
+
+* **RTN**: Round-to-nearest (RTN) es un método de cuantificación que podemos pensar de manera muy intuitiva.
+* **AWQ**: Proteger solo el 1% de los pesos salientes puede reducir en gran medida el error de cuantización. los canales de pesos salientes se seleccionan observando la distribución de activación y peso por canal. Los pesos salientes también se cuantizan después de multiplicar un factor de escala grande antes de la cuantización para preservar.
+* **TEQ**: Una transformación equivalente entrenable que preserva la precisión FP32 en la cuantización de pesos únicamente.

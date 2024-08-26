@@ -1,0 +1,116 @@
+---
+translated: true
+---
+
+# भविष्यवाणी गार्ड
+
+यह पृष्ठ LangChain में भविष्यवाणी गार्ड पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट भविष्यवाणी गार्ड रैपरों के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `pip install predictionguard` के साथ Python SDK स्थापित करें
+- भविष्यवाणी गार्ड एक्सेस टोकन प्राप्त करें ([यहाँ](https://docs.predictionguard.com/)) वर्णित के रूप में) और इसे एक पर्यावरण चर (`PREDICTIONGUARD_TOKEN`) के रूप में सेट करें
+
+## LLM रैपर
+
+भविष्यवाणी गार्ड LLM रैपर मौजूद है, जिसका उपयोग आप इस प्रकार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "PredictionGuard", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.predictionguard.PredictionGuard.html", "title": "Prediction Guard"}]-->
+from langchain_community.llms import PredictionGuard
+```
+
+आप LLM को प्रारंभ करते समय भविष्यवाणी गार्ड मॉडल का नाम एक तर्क के रूप में प्रदान कर सकते हैं:
+
+```python
+pgllm = PredictionGuard(model="MPT-7B-Instruct")
+```
+
+आप अपना एक्सेस टोकन सीधे एक तर्क के रूप में भी प्रदान कर सकते हैं:
+
+```python
+pgllm = PredictionGuard(model="MPT-7B-Instruct", token="<your access token>")
+```
+
+अंत में, आप "आउटपुट" तर्क प्रदान कर सकते हैं जो LLM के आउटपुट को संरचित/नियंत्रित करने के लिए उपयोग किया जाता है:
+
+```python
+pgllm = PredictionGuard(model="MPT-7B-Instruct", output={"type": "boolean"})
+```
+
+## उदाहरण उपयोग
+
+नियंत्रित या गार्ड किए गए LLM रैपर का मूलभूत उपयोग:
+
+```python
+<!--IMPORTS:[{"imported": "PredictionGuard", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.predictionguard.PredictionGuard.html", "title": "Prediction Guard"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Prediction Guard"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Prediction Guard"}]-->
+import os
+
+import predictionguard as pg
+from langchain_community.llms import PredictionGuard
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+
+# Your Prediction Guard API key. Get one at predictionguard.com
+os.environ["PREDICTIONGUARD_TOKEN"] = "<your Prediction Guard access token>"
+
+# Define a prompt template
+template = """Respond to the following query based on the context.
+
+Context: EVERY comment, DM + email suggestion has led us to this EXCITING announcement! 🎉 We have officially added TWO new candle subscription box options! 📦
+Exclusive Candle Box - $80
+Monthly Candle Box - $45 (NEW!)
+Scent of The Month Box - $28 (NEW!)
+Head to stories to get ALL the deets on each box! 👆 BONUS: Save 50% on your first box with code 50OFF! 🎉
+
+Query: {query}
+
+Result: """
+prompt = PromptTemplate.from_template(template)
+
+# With "guarding" or controlling the output of the LLM. See the
+# Prediction Guard docs (https://docs.predictionguard.com) to learn how to
+# control the output with integer, float, boolean, JSON, and other types and
+# structures.
+pgllm = PredictionGuard(model="MPT-7B-Instruct",
+                        output={
+                                "type": "categorical",
+                                "categories": [
+                                    "product announcement",
+                                    "apology",
+                                    "relational"
+                                    ]
+                                })
+pgllm(prompt.format(query="What kind of post is this?"))
+```
+
+भविष्यवाणी गार्ड रैपर के साथ मूलभूत LLM श्रृंखला:
+
+```python
+<!--IMPORTS:[{"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Prediction Guard"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Prediction Guard"}, {"imported": "PredictionGuard", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.predictionguard.PredictionGuard.html", "title": "Prediction Guard"}]-->
+import os
+
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain_community.llms import PredictionGuard
+
+# Optional, add your OpenAI API Key. This is optional, as Prediction Guard allows
+# you to access all the latest open access models (see https://docs.predictionguard.com)
+os.environ["OPENAI_API_KEY"] = "<your OpenAI api key>"
+
+# Your Prediction Guard API key. Get one at predictionguard.com
+os.environ["PREDICTIONGUARD_TOKEN"] = "<your Prediction Guard access token>"
+
+pgllm = PredictionGuard(model="OpenAI-gpt-3.5-turbo-instruct")
+
+template = """Question: {question}
+
+Answer: Let's think step by step."""
+prompt = PromptTemplate.from_template(template)
+llm_chain = LLMChain(prompt=prompt, llm=pgllm, verbose=True)
+
+question = "What NFL team won the Super Bowl in the year Justin Beiber was born?"
+
+llm_chain.predict(question=question)
+```

@@ -1,0 +1,90 @@
+---
+translated: true
+---
+
+# Xorbits Inference (Xinference)
+
+このページでは、LangChainを使用して[Xinference](https://github.com/xorbitsai/inference)を使用する方法を示します。
+
+`Xinference`は、ラップトップでも簡単に展開およびサービスを提供できるように設計された、強力で汎用的なライブラリです。
+
+## インストールとセットアップ
+
+Xinferenceは、PyPIからpipを使ってインストールできます:
+
+```bash
+pip install "xinference[all]"
+```
+
+## LLM
+
+XinferenceはGGML互換のさまざまなモデルをサポートしています。組み込みモデルを表示するには、次のコマンドを実行します:
+
+```bash
+xinference list --all
+```
+
+### Xinferenceのラッパー
+
+次のように実行して、Xinferenceのローカルインスタンスを起動できます:
+
+```bash
+xinference
+```
+
+また、Xinferenceをクラスター環境にデプロイすることもできます。まず、サーバー上でXinference supervisorを起動します:
+
+```bash
+xinference-supervisor -H "${supervisor_host}"
+```
+
+次に、他のサーバー上でXinference workerを起動します:
+
+```bash
+xinference-worker -e "http://${supervisor_host}:9997"
+```
+
+ローカルでXinferenceを起動することもできます:
+
+```bash
+xinference
+```
+
+Xinferenceが起動すると、CLIまたはXinferenceクライアントを使ってモデル管理用のエンドポイントにアクセスできます。
+
+ローカルデプロイの場合、エンドポイントはhttp://localhost:9997 になります。
+クラスターデプロイの場合、エンドポイントはhttp://$\{supervisor_host}:9997になります。
+
+次に、モデルを起動する必要があります。モデル名やmodel_size_in_billions、量子化などの属性を指定できます。CLIを使って実行できます。例:
+
+```bash
+xinference launch -n orca -s 3 -q q4_0
+```
+
+モデルのuidが返されます。
+
+使用例:
+
+```python
+<!--IMPORTS:[{"imported": "Xinference", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.xinference.Xinference.html", "title": "Xorbits Inference (Xinference)"}]-->
+from langchain_community.llms import Xinference
+
+llm = Xinference(
+    server_url="http://0.0.0.0:9997",
+    model_uid = {model_uid} # replace model_uid with the model UID return from launching the model
+)
+
+llm(
+    prompt="Q: where can we visit in the capital of France? A:",
+    generate_config={"max_tokens": 1024, "stream": True},
+)
+
+```
+
+### 使用方法
+
+詳細な情報と例については、[Xinference LLMsの例](/docs/integrations/llms/xinference)を参照してください。
+
+### エンベディング
+
+Xinferenceはクエリとドキュメントのエンベディングもサポートしています。詳細なデモについては、[Xinferenceエンベディングの例](/docs/integrations/text_embedding/xinference)を参照してください。

@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Git
+
+>[Git](https://en.wikipedia.org/wiki/Git) est un système de contrôle de version distribué qui suit les modifications dans un ensemble de fichiers informatiques, généralement utilisé pour coordonner le travail entre programmeurs développant collaborativement du code source pendant le développement de logiciels.
+
+## Installation et configuration
+
+Tout d'abord, vous devez installer le package python `GitPython`.
+
+```bash
+pip install GitPython
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/git).
+
+```python
+<!--IMPORTS:[{"imported": "GitLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.git.GitLoader.html", "title": "Git"}]-->
+from langchain_community.document_loaders import GitLoader
+```

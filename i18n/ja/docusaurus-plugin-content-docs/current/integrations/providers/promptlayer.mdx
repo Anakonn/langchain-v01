@@ -1,0 +1,52 @@
+---
+translated: true
+---
+
+# PromptLayer
+
+>[PromptLayer](https://docs.promptlayer.com/introduction)は、プロンプトエンジニアリングのためのプラットフォームです。
+>また、リクエストの可視化、プロンプトのバージョン管理、使用状況の追跡など、LLMの可視性を高めるのにも役立ちます。
+>
+>`PromptLayer`には、LangChainと直接統合するLLMもありますが(例えば、
+>[`PromptLayerOpenAI`](https://docs.promptlayer.com/languages/langchain))など)、
+>コールバックを使用して`PromptLayer`をLangChainと統合することをお勧めします。
+
+## インストールと設定
+
+`PromptLayer`を使用するには、以下の手順を行う必要があります:
+- `PromptLayer`アカウントを作成する
+- APIトークンを作成し、環境変数(`PROMPTLAYER_API_KEY`)に設定する
+
+Pythonパッケージをインストールします:
+
+```bash
+pip install promptlayer
+```
+
+## コールバック
+
+[使用例](/docs/integrations/callbacks/promptlayer)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "PromptLayerCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.promptlayer_callback.PromptLayerCallbackHandler.html", "title": "PromptLayer"}]-->
+import promptlayer  # Don't forget this import!
+from langchain.callbacks import PromptLayerCallbackHandler
+```
+
+## LLM
+
+[使用例](/docs/integrations/llms/promptlayer_openai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "PromptLayerOpenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.promptlayer_openai.PromptLayerOpenAI.html", "title": "PromptLayer"}]-->
+from langchain_community.llms import PromptLayerOpenAI
+```
+
+## チャットモデル
+
+[使用例](/docs/integrations/chat/promptlayer_chatopenai)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "PromptLayerChatOpenAI", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.promptlayer_openai.PromptLayerChatOpenAI.html", "title": "PromptLayer"}]-->
+from langchain_community.chat_models import PromptLayerChatOpenAI
+```

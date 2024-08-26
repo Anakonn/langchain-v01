@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# SQLite
+
+>[SQLite](https://en.wikipedia.org/wiki/SQLite)는 C 프로그래밍 언어로 작성된 데이터베이스 엔진입니다. 독립형 애플리케이션이 아니라 소프트웨어 개발자가 자신의 애플리케이션에 포함시키는 라이브러리입니다. 따라서 내장형 데이터베이스 제품군에 속합니다. 주요 웹 브라우저, 운영 체제, 모바일 폰 및 기타 내장형 시스템에 널리 사용되는 가장 널리 배포된 데이터베이스 엔진입니다.
+
+## 설치 및 설정
+
+`SQLAlchemy` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install SQLAlchemy
+```
+
+## 벡터 스토어
+
+[사용 예제](/docs/integrations/vectorstores/sqlitevss)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SQLiteVSS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sqlitevss.SQLiteVSS.html", "title": "SQLite"}]-->
+from langchain_community.vectorstores import SQLiteVSS
+```
+
+## 메모리
+
+[사용 예제](/docs/integrations/memory/sqlite)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SQLChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.sql.SQLChatMessageHistory.html", "title": "SQLite"}]-->
+from langchain_community.chat_message_histories import SQLChatMessageHistory
+```

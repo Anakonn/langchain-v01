@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# मॉडलस्कोप
+
+>[मॉडलस्कोप](https://www.modelscope.cn/home) मॉडल और डेटासेट का एक बड़ा भंडार है।
+
+यह पृष्ठ LangChain में मॉडलस्कोप पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट मॉडलस्कोप रैपर संदर्भ।
+
+## स्थापना और सेटअप
+
+`modelscope` पैकेज स्थापित करें।
+
+```bash
+pip install modelscope
+```
+
+## पाठ एम्बेडिंग मॉडल
+
+```python
+<!--IMPORTS:[{"imported": "ModelScopeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.modelscope_hub.ModelScopeEmbeddings.html", "title": "ModelScope"}]-->
+from langchain_community.embeddings import ModelScopeEmbeddings
+```
+
+इसके लिए एक अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/text_embedding/modelscope_hub) देखें

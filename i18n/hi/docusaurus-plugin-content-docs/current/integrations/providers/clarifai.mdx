@@ -1,0 +1,63 @@
+---
+translated: true
+---
+
+# क्लेरिफाई
+
+>[क्लेरिफाई](https://clarifai.com) वह एक ऐसा डीप लर्निंग प्लेटफॉर्म है जिसकी स्थापना 2013 में हुई थी। क्लेरिफाई एक ऐसा एआई प्लेटफॉर्म प्रदान करता है जिसमें छवि, वीडियो, पाठ और ऑडियो डेटा के लिए डेटा एक्सप्लोरेशन, डेटा लेबलिंग, मॉडल प्रशिक्षण, मूल्यांकन और अनुमान के पूरे एआई जीवन चक्र शामिल हैं। LangChain पारिस्थितिकी तंत्र में, जहां तक हमें पता है, क्लेरिफाई वह एकमात्र प्रदाता है जो एक उत्पादन स्केल प्लेटफॉर्म में एलएलएम, एम्बेडिंग और वेक्टर स्टोर का समर्थन करता है, जिससे यह आपके LangChain कार्यान्वयन को संचालित करने के लिए एक उत्कृष्ट विकल्प बन जाता है।
+
+## स्थापना और सेटअप
+
+- पायथन एसडीके स्थापित करें:
+
+```bash
+pip install clarifai
+```
+
+[साइन-अप](https://clarifai.com/signup) करें क्लेरिफाई खाते के लिए, फिर अपने [सुरक्षा सेटिंग](https://clarifai.com/settings/security) से व्यक्तिगत एक्सेस टोकन प्राप्त करें ताकि आप क्लेरिफाई एपीआई का उपयोग कर सकें और इसे एक पर्यावरण चर (`CLARIFAI_PAT`) के रूप में सेट करें।
+
+## मॉडल
+
+क्लेरिफाई कई अलग-अलग उपयोग मामलों के लिए 1,000 से अधिक एआई मॉडल प्रदान करता है। आप [यहाँ](https://clarifai.com/explore) उन्हें देख सकते हैं ताकि आप अपने उपयोग मामले के लिए सबसे उपयुक्त मॉडल ढूंढ सकें। ये मॉडल OpenAI, Anthropic, Cohere, AI21 आदि जैसे अन्य प्रदाताओं द्वारा बनाए गए मॉडलों के साथ-साथ Falcon, InstructorXL आदि जैसे ओपन सोर्स के नवीनतम मॉडल भी शामिल हैं ताकि आप अपने उत्पादों में सर्वश्रेष्ठ एआई को बना सकें। आप इन्हें creator's user_id और applications नामक projects द्वारा संगठित पाएंगे जिनका app_id होता है। जब आप अपने उपयोग मामले के लिए सबसे अच्छा मॉडल ढूंढ लेंगे, तो इन ID की नोट करना महत्वपूर्ण होगा!
+
+यह भी ध्यान रखें कि चूंकि छवि, वीडियो, पाठ और ऑडियो समझने के लिए कई मॉडल हैं, इसलिए आप कुछ रुचिकर एआई एजेंट बना सकते हैं जो उन डेटा प्रकारों को समझने के लिए विविध एआई मॉडलों का उपयोग करते हैं।
+
+### एलएलएम
+
+क्लेरिफाई प्लेटफॉर्म में एलएलएम का चयन करने के लिए आप [यहाँ](https://clarifai.com/explore/models?filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-to-text%22%5D%7D%5D&page=1&perPage=24) पाठ से पाठ मॉडल प्रकार का चयन कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.llms import Clarifai
+llm = Clarifai(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+अधिक जानकारी के लिए, क्लेरिफाई एलएलएम रैपर पर दस्तावेज़ [विस्तृत वॉकथ्रू](/docs/integrations/llms/clarifai) प्रदान करते हैं।
+
+### पाठ एम्बेडिंग मॉडल
+
+क्लेरिफाई प्लेटफॉर्म में पाठ एम्बेडिंग मॉडलों का चयन करने के लिए आप [यहाँ](https://clarifai.com/explore/models?page=1&perPage=24&filterData=%5B%7B%22field%22%3A%22model_type_id%22%2C%22value%22%3A%5B%22text-embedder%22%5D%7D%5D) पाठ से एम्बेडिंग मॉडल प्रकार का चयन कर सकते हैं।
+
+LangChain में एक क्लेरिफाई एम्बेडिंग मॉडल है, जिसका उपयोग आप इस प्रकार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "ClarifaiEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.clarifai.ClarifaiEmbeddings.html", "title": "Clarifai"}]-->
+from langchain_community.embeddings import ClarifaiEmbeddings
+embeddings = ClarifaiEmbeddings(pat=CLARIFAI_PAT, user_id=USER_ID, app_id=APP_ID, model_id=MODEL_ID)
+```
+
+अधिक जानकारी के लिए, क्लेरिफाई एम्बेडिंग रैपर पर दस्तावेज़ [विस्तृत वॉकथ्रू](/docs/integrations/text_embedding/clarifai) प्रदान करते हैं।
+
+## वेक्टर स्टोर
+
+क्लेरिफाई का वेक्टर डीबी 2016 में लॉन्च किया गया था और लाइव खोज क्वेरी का समर्थन करने के लिए अनुकूलित किया गया है। क्लेरिफाई प्लेटफॉर्म में workflows के माध्यम से, आपका डेटा एक एम्बेडिंग मॉडल और वैकल्पिक रूप से अन्य मॉडलों द्वारा स्वचालित रूप से इंडेक्स किया जाता है ताकि खोज के लिए उस जानकारी को डीबी में सूचीबद्ध किया जा सके। आप न केवल वेक्टर के माध्यम से बल्कि मेटाडेटा मैच, अन्य एआई द्वारा भविष्यवाणित अवधारणाओं और यहां तक कि भौगोलिक निर्देशांक खोज के माध्यम से भी डीबी का क्वेरी कर सकते हैं। बस एक एप्लिकेशन बनाएं, अपने डेटा के प्रकार के लिए उपयुक्त आधारभूत workflow का चयन करें, और इसे [यहाँ दस्तावेज़ीकृत](https://docs.clarifai.com/api-guide/data/create-get-update-delete) या clarifai.com पर UI के माध्यम से अपलोड करें।
+
+आप LangChain से सीधे डेटा भी जोड़ सकते हैं, और स्वचालित इंडेक्सिंग आपके लिए हो जाएगी। आप देखेंगे कि यह अन्य वेक्टर स्टोर से थोड़ा अलग है, जहां आपको उनके निर्माता में एक एम्बेडिंग मॉडल प्रदान करना होता है और LangChain को पाठ से एम्बेडिंग प्राप्त करने और उन्हें सूचकांक में लिखने का समन्वय करना होता है। न केवल यह अधिक सुविधाजनक है, बल्कि पृष्ठभूमि में सभी इंडेक्सिंग करने के लिए वितरित क्लाउड का उपयोग करना कहीं अधिक पैमाने पर काम करता है।
+
+```python
+<!--IMPORTS:[{"imported": "Clarifai", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clarifai.Clarifai.html", "title": "Clarifai"}]-->
+from langchain_community.vectorstores import Clarifai
+clarifai_vector_db = Clarifai.from_texts(user_id=USER_ID, app_id=APP_ID, texts=texts, pat=CLARIFAI_PAT, number_of_docs=NUMBER_OF_DOCS, metadatas = metadatas)
+```
+
+अधिक जानकारी के लिए, क्लेरिफाई वेक्टर स्टोर पर दस्तावेज़ [विस्तृत वॉकथ्रू](/docs/integrations/vectorstores/clarifai) प्रदान करते हैं।

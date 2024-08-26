@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# Argilla
+
+>[Argilla](https://argilla.io/) est une plateforme open-source de curation de données pour les LLM.
+> Avec `Argilla`, tout le monde peut construire des modèles de langue robustes grâce à une curation de données plus rapide
+> en utilisant à la fois les commentaires humains et les commentaires des machines. `Argilla` fournit un support pour chaque étape du cycle MLOps,
+> du étiquetage des données à la surveillance des modèles.
+
+## Installation et configuration
+
+Obtenez votre [clé API](https://platform.openai.com/account/api-keys).
+
+Installez le package Python :
+
+```bash
+pip install argilla
+```
+
+## Callbacks
+
+```python
+<!--IMPORTS:[{"imported": "ArgillaCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.argilla_callback.ArgillaCallbackHandler.html", "title": "Argilla"}]-->
+from langchain.callbacks import ArgillaCallbackHandler
+```
+
+Voir un [exemple](/docs/integrations/callbacks/argilla).

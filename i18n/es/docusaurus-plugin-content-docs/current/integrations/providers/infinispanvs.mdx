@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# Infinispan VS
+
+> [Infinispan](https://infinispan.org) Infinispan es una cuadrícula de datos en memoria de código abierto que proporciona
+> un almacén de datos clave/valor capaz de contener todo tipo de datos, desde objetos Java hasta texto sin formato.
+> Desde la versión 15, Infinispan admite la búsqueda vectorial en las cachés.
+
+## Instalación y configuración
+
+Consulte [Empezar](https://infinispan.org/get-started/) para ejecutar un servidor Infinispan, es posible que desee deshabilitar la autenticación
+(no compatible por el momento)
+
+## Vector Store
+
+Consulte un [ejemplo de uso](/docs/integrations/vectorstores/infinispanvs).
+
+```python
+<!--IMPORTS:[{"imported": "InfinispanVS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.infinispanvs.InfinispanVS.html", "title": "Infinispan VS"}]-->
+from langchain_community.vectorstores import InfinispanVS
+```

@@ -1,0 +1,254 @@
+---
+translated: true
+---
+
+# 非構造化
+
+> [Unstructured.IO](https://www.unstructured.io/)の`unstructured`パッケージは、PDFやWord文書などの生のソース文書から、きれいなテキストを抽出します。
+このページでは、LangChainの中で[`unstructured`](https://github.com/Unstructured-IO/unstructured)エコシステムを使う方法を説明します。
+
+## インストールとセットアップ
+
+ローカルで実行されるローダーを使用している場合は、以下の手順で`unstructured`とその依存関係をローカルで実行できるようにします。
+
+- `pip install unstructured`でPythonSDKをインストールします。
+    - 文書固有の依存関係をextrasでインストールできます。例: `pip install "unstructured[docx]"`。
+    - すべての文書タイプの依存関係をインストールするには、`pip install "unstructured[all-docs]"`を使います。
+- お使いのシステムにまだ利用可能でない場合は、以下のシステム依存関係をインストールします。
+  解析する文書タイプによっては、これらすべてが必要ではない可能性があります。
+    - `libmagic-dev` (ファイルタイプ検出)
+    - `poppler-utils` (画像とPDF)
+    - `tesseract-ocr`(画像とPDF)
+    - `libreoffice` (MS Officeドキュメント)
+    - `pandoc` (EPUB)
+
+セットアップが少なくて済むようにしたい場合は、単に`pip install unstructured`を実行し、`UnstructuredAPIFileLoader`または`UnstructuredAPIFileIOLoader`を使うことができます。
+これにより、ホストされているUnstructuredAPIを使ってドキュメントを処理できます。
+
+`Unstructured API`を使うには、APIキーが必要です。
+[ここ](https://unstructured.io/api-key-hosted)でAPIキーを要求し、今すぐ使い始めることができます!
+READMEの[ここ](https://github.com/Unstructured-IO/unstructured-api)を確認して、APIコールの使い始め方を確認してください。
+フィードバックをお待ちしています。[コミュニティSlack](https://join.slack.com/t/unstructuredw-kbe4326/shared_invite/zt-1x7cgo0pg-PTptXWylzPQF9xZolzCnwQ)で進捗をお知らせください。
+品質とパフォーマンスの向上に向けて、さらなる改善に取り組んでいます!
+Unstructured APIをセルフホストしたり、ローカルで実行したい場合は、[ここ](https://github.com/Unstructured-IO/unstructured-api#dizzy-instructions-for-using-the-docker-image)の手順を確認してください。
+
+## データローダー
+
+`Unstructured`の主な用途はデータローダーです。
+
+### UnstructuredAPIFileIOLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/unstructured_file#unstructured-api)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredAPIFileIOLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredAPIFileIOLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredAPIFileIOLoader
+```
+
+### UnstructuredAPIFileLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/unstructured_file#unstructured-api)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredAPIFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredAPIFileLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredAPIFileLoader
+```
+
+### UnstructuredCHMLoader
+
+`CHM`は`Microsoft Compiled HTML Help`の略称です。
+
+APIドキュメントの使用例をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredCHMLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.chm.UnstructuredCHMLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredCHMLoader
+```
+
+### UnstructuredCSVLoader
+
+`comma-separated values`(`CSV`)ファイルは、値をカンマで区切った区切り文字ファイルです。
+ファイルの各行がデータレコードで、各レコードは1つ以上のフィールドで構成されています。
+
+使用例は[こちら](/docs/integrations/document_loaders/csv#unstructuredcsvloader)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredCSVLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.csv_loader.UnstructuredCSVLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredCSVLoader
+```
+
+### UnstructuredEmailLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/email)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredEmailLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.email.UnstructuredEmailLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredEmailLoader
+```
+
+### UnstructuredEPubLoader
+
+[EPUB](https://en.wikipedia.org/wiki/EPUB)は`.epub`の拡張子を持つ`電子書籍ファイル形式`です。
+この用語は`electronic publication`の略で、時には`ePub`と表記されることもあります。
+EPUBは多くの電子書籍リーダーでサポートされており、ほとんどのスマートフォン、タブレット、コンピューターで互換性のあるソフトウェアが利用できます。
+
+使用例は[こちら](/docs/integrations/document_loaders/epub)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredEPubLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.epub.UnstructuredEPubLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredEPubLoader
+```
+
+### UnstructuredExcelLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/microsoft_excel)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredExcelLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.excel.UnstructuredExcelLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredExcelLoader
+```
+
+### UnstructuredFileIOLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/google_drive#passing-in-optional-file-loaders)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredFileIOLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredFileIOLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredFileIOLoader
+```
+
+### UnstructuredFileLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/unstructured_file)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.unstructured.UnstructuredFileLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredFileLoader
+```
+
+### UnstructuredHTMLLoader
+
+使用例は[こちら](/docs/modules/data_connection/document_loaders/html)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html.UnstructuredHTMLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredHTMLLoader
+```
+
+### UnstructuredImageLoader
+
+使用例は[こちら](/docs/integrations/document_loaders/image)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredImageLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.image.UnstructuredImageLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredImageLoader
+```
+
+### UnstructuredMarkdownLoader
+
+使用例は[こちら](/docs/integrations/vectorstores/starrocks)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredMarkdownLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.markdown.UnstructuredMarkdownLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
+```
+
+### UnstructuredODTLoader
+
+`Open Document Format for Office Applications (ODF)`、通称`OpenDocument`は、ワープロ文書、スプレッドシート、プレゼンテーション、グラフィックスのためのオープンなファイル形式で、ZIP圧縮されたXMLファイルを使用しています。
+オフィスアプリケーションのためのオープンなXMLベースのファイル形式仕様を提供することを目的として開発されました。
+
+使用例は[こちら](/docs/integrations/document_loaders/odt)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredODTLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.odt.UnstructuredODTLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredODTLoader
+```
+
+### UnstructuredOrgModeLoader
+
+[Org Mode](https://en.wikipedia.org/wiki/Org-mode)文書は、Emacsの自由ソフトウェアテキストエディタ内で、メモ、計画、執筆のためのドキュメント編集、フォーマット、および整理モードです。
+
+使用例は[こちら](/docs/integrations/document_loaders/org_mode)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredOrgModeLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.org_mode.UnstructuredOrgModeLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredOrgModeLoader
+```
+
+### UnstructuredPDFLoader
+
+使用例は[こちら](/docs/modules/data_connection/document_loaders/pdf#using-unstructured)。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPDFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.pdf.UnstructuredPDFLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredPDFLoader
+```
+
+### UnstructuredPowerPointLoader
+
+[使用例](/docs/integrations/document_loaders/microsoft_powerpoint)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPowerPointLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.powerpoint.UnstructuredPowerPointLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+```
+
+### UnstructuredRSTLoader
+
+`reStructured Text` (`RST`)ファイルは、主にPythonプログラミング言語コミュニティで技術ドキュメンテーションに使用されるテキストデータのファイル形式です。
+
+[使用例](/docs/integrations/document_loaders/rst)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredRSTLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rst.UnstructuredRSTLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredRSTLoader
+```
+
+### UnstructuredRTFLoader
+
+APIドキュメンテーションの使用例をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredRTFLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.rtf.UnstructuredRTFLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredRTFLoader
+```
+
+### UnstructuredTSVLoader
+
+`tab-separated values` (`TSV`)ファイルは、表形式のデータを保存するための単純なテキストベースのファイル形式です。
+レコードは改行で区切られ、レコード内の値はタブ文字で区切られます。
+
+[使用例](/docs/integrations/document_loaders/tsv)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredTSVLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tsv.UnstructuredTSVLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredTSVLoader
+```
+
+### UnstructuredURLLoader
+
+[使用例](/docs/integrations/document_loaders/url)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredURLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.url.UnstructuredURLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredURLLoader
+```
+
+### UnstructuredWordDocumentLoader
+
+[使用例](/docs/integrations/document_loaders/microsoft_word#using-unstructured)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredWordDocumentLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.word_document.UnstructuredWordDocumentLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+```
+
+### UnstructuredXMLLoader
+
+[使用例](/docs/integrations/document_loaders/xml)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredXMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.xml.UnstructuredXMLLoader.html", "title": "Unstructured"}]-->
+from langchain_community.document_loaders import UnstructuredXMLLoader
+```

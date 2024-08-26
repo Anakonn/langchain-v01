@@ -1,0 +1,74 @@
+---
+translated: true
+---
+
+# Introduction to MDX
+
+MDX is a superset of Markdown that allows you to use JSX (React components) inside Markdown documents. This enables you to create rich, interactive content that goes beyond the static pages that traditional Markdown provides.
+
+## What is MDX?
+
+MDX is a file format that lets you seamlessly write JSX in your Markdown documents. You can import components, use component logic, and output dynamic content all from within your Markdown files.
+
+This makes MDX a powerful tool for creating interactive documentation, blogs with live code examples, and other rich content experiences.
+
+# LangChain cookbook
+
+LangChainを使ってアプリケーションを構築するための例コード集で、[メインドキュメント](https://python.langchain.com)に含まれるものよりも、より応用的で最終的なサンプルに重点を置いています。
+
+ノートブック | 説明
+:- | :-
+[LLaMA2_sql_chat.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/LLaMA2_sql_chat.ipynb) | オープンソースのLLM (llama2)を使って、SQLiteデータベースに含まれるロスターを操作するSQLチャットアプリケーションを構築します。
+[Semi_Structured_RAG.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/Semi_Structured_RAG.ipynb) | Unstructuredによるパース、Multi-Vector Retrieverによる保存、LCELによる実装チェーンを使って、テキストとテーブルを含む半構造化データに対してRAG (Retrieval-Augmented Generation) を実行します。
+[Semi_structured_and_multi_moda...](https://github.com/langchain-ai/langchain/tree/master/cookbook/Semi_structured_and_multi_modal_RAG.ipynb) | Unstructuredによるパース、Multi-Vector Retrieverによる保存と検索、LCELによる実装チェーンを使って、半構造化データと画像を含む文書に対してRAG (Retrieval-Augmented Generation) を実行します。
+[Semi_structured_multi_modal_RA...](https://github.com/langchain-ai/langchain/tree/master/cookbook/Semi_structured_multi_modal_RAG_LLaMA2.ipynb) | Unstructuredによるパース、Multi-Vector Retrieverによる保存、LCELによる実装チェーン、llama2、llava、gpt4allなどのオープンソースの言語モデルを使って、半構造化データと画像を含む文書に対してRAG (Retrieval-Augmented Generation) を実行します。
+[amazon_personalize_how_to.ipynb](https://github.com/langchain-ai/langchain/blob/master/cookbook/amazon_personalize_how_to.ipynb) | Amazon Personalizeから個人化された推奨を取得し、カスタムエージェントを使ってジェネレーティブAIアプリを構築します。
+[analyze_document.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/analyze_document.ipynb) | 単一の長文書を分析します。
+[autogpt/autogpt.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/autogpt/autogpt.ipynb) | LangChainプリミティブ (LLMs、PromptTemplates、VectorStores、Embeddings、Tools) を使ってautogptを実装します。
+[autogpt/marathon_times.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/autogpt/marathon_times.ipynb) | マラソンの勝利タイムを見つけるためのautogptを実装します。
+[baby_agi.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/baby_agi.ipynb) | 目的に基づいてタスクを生成および実行できるbabyagiエージェントを実装します。特定のVectorStores/Modelプロバイダを交換できるようにしています。
+[baby_agi_with_agent.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/baby_agi_with_agent.ipynb) | babyagiノートブックの実行チェーンを、ツールにアクセスできるエージェントに置き換えて、より信頼性の高い情報を得ることを目指します。
+[camel_role_playing.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/camel_role_playing.ipynb) | 役割演技とインセプションプロンプティングを使って、タスクの完了に向けてチャットエージェントを導くCAMELフレームワークを実装します。
+[causal_program_aided_language_...](https://github.com/langchain-ai/langchain/tree/master/cookbook/causal_program_aided_language_model.ipynb) | 因果構造を組み込むことで、複雑な物語や数学の問題における幻覚を防ぐ、Causal Program-Aided Language (CPAL) チェーンを実装します。
+[code-analysis-deeplake.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/code-analysis-deeplake.ipynb) | GPTとActiveLoopのDeep Lakeを使って、自身のコードベースを分析します。
+[custom_agent_with_plugin_retri...](https://github.com/langchain-ai/langchain/tree/master/cookbook/custom_agent_with_plugin_retrieval.ipynb) | ツールを検索し、OpenAPIエンドポイントに自然言語のラッパーを作成できるカスタムエージェントを構築します。
+[custom_agent_with_plugin_retri...](https://github.com/langchain-ai/langchain/tree/master/cookbook/custom_agent_with_plugin_retrieval_using_plugnplai.ipynb) | プラグイン検索機能を備えたカスタムエージェントを構築し、`plugnplai`ディレクトリのAIプラグインを利用します。
+[databricks_sql_db.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/databricks_sql_db.ipynb) | Databricksランタイムとdatabricks SQLに接続します。
+[deeplake_semantic_search_over_...](https://github.com/langchain-ai/langchain/tree/master/cookbook/deeplake_semantic_search_over_chat.ipynb) | Activeloopのdeep lakeとGPT4を使って、グループチャットに対してセマンティック検索とQ&Aを実行します。
+[elasticsearch_db_qa.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/elasticsearch_db_qa.ipynb) | Elasticsearchアナリティクスデータベースと自然言語で対話し、Elasticsearch DSL APIを使ってサーチクエリを構築します。
+[extraction_openai_tools.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/extraction_openai_tools.ipynb) | OpenAIツールを使った構造化データの抽出
+[forward_looking_retrieval_augm...](https://github.com/langchain-ai/langchain/tree/master/cookbook/forward_looking_retrieval_augmented_generation.ipynb) | 質問に答えを生成し、不確定なトークンを特定し、それらに基づいて仮想の質問を生成し、関連文書を検索して答えを継続的に生成する、Forward-Looking Active Retrieval Augmented Generation (FLARE) メソッドを実装します。
+[generative_agents_interactive_...](https://github.com/langchain-ai/langchain/tree/master/cookbook/generative_agents_interactive_simulacra_of_human_behavior.ipynb) | 時間加重メモリオブジェクトをバックエンドに持つLangChainリトリーバーを使って、人間の行動をシミュレートするジェネレーティブエージェントを実装します。
+[gymnasium_agent_simulation.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/gymnasium_agent_simulation.ipynb) | Gymnasiumのようなテキストベースのゲームなどの、シミュレーション環境でのシンプルなエージェント-環境相互作用ループを作成します。
+[hugginggpt.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/hugginggpt.ipynb) | HuggingFaceとの連携を通じて、ChatGPTなどの言語モデルをマシンラーニングコミュニティに接続するHuggingGPTシステムを実装します。
+[hypothetical_document_embeddin...](https://github.com/langchain-ai/langchain/tree/master/cookbook/hypothetical_document_embeddings.ipynb) | 仮想の文書埋め込み (Hypothetical Document Embeddings, HYDE) を使って、文書インデックスを改善します。
+[learned_prompt_optimization.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/learned_prompt_optimization.ipynb) | 強化学習を使って、特定の用語を注入することで言語モデルのプロンプトを自動的に強化し、ユーザーの好みに基づいて応答をパーソナライズできるようにします。
+[llm_bash.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/llm_bash.ipynb) | 言語学習モデル (LLMs) とBashプロセスを使って、簡単なファイルシステムコマンドを実行します。
+[llm_checker.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/llm_checker.ipynb) | LLMCheckerChainを使って、自己検証チェーンを作成します。
+[llm_math.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/llm_math.ipynb) | 言語モデルとPythonのREPLを使って、複雑な数学の単語問題を解きます。
+[llm_summarization_checker.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/llm_summarization_checker.ipynb) | テキストサマリーの精度をチェックし、結果を改善するためにチェッカーを複数回実行できるようにします。
+[llm_symbolic_math.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/llm_symbolic_math.ipynb) | 言語学習モデル (LLMs) とSymPy (Pythonの記号数学ライブラリ) を使って、代数方程式を解きます。
+[meta_prompt.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/meta_prompt.ipynb) | メタプロンプトの概念を実装します。これは、自身のパフォーマンスを振り返り、指示を適宜修正できる自己改善型エージェントを構築する手法です。
+[multi_modal_output_agent.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/multi_modal_output_agent.ipynb) | 画像とテキストの両方を生成する、マルチモーダルな出力を生成します。
+[multi_player_dnd.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/multi_player_dnd.ipynb) | カスタム関数を使って、エージェントの発言順序を決定する、マルチプレイヤーのダンジョンズ&ドラゴンズゲームをシミュレーションします。
+[multiagent_authoritarian.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/multiagent_authoritarian.ipynb) | 特権的なエージェントが会話を制御し、誰が発言するか、いつ会話が終了するかを決める、マルチエージェントシミュレーションを実装します (擬似ニュースネットワークの文脈で)。
+[multiagent_bidding.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/multiagent_bidding.ipynb) | 最高額の入札者が次に発言する、マルチエージェントシミュレーションを実装します (架空の大統領選討論会の例で示します)。
+[myscale_vector_sql.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/myscale_vector_sql.ipynb) | myscale統合ベクトルデータベースにアクセスし、相互作用することで、LLMアプリケーションのパフォーマンスを向上させます。
+[openai_functions_retrieval_qa....](https://github.com/langchain-ai/langchain/tree/master/cookbook/openai_functions_retrieval_qa.ipynb) | 検索パイプラインにOpenAI関数を組み込むことで、質問応答システムの出力構造を整理します。
+[openai_v1_cookbook.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/openai_v1_cookbook.ipynb) | OpenAI Python ライブラリのV1リリースに合わせて追加された新機能を探索します。
+[petting_zoo.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/petting_zoo.ipynb) | Petting Zooライブラリを使って、シミュレーション環境でのマルチエージェントシミュレーションを作成します。
+[plan_and_execute_agent.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/plan_and_execute_agent.ipynb) | 言語モデル (LLM) でタスクを計画し、別のエージェントで実行する、計画と実行のエージェントを作成します。
+[press_releases.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/press_releases.ipynb) | [Kay.ai](https://kay.ai)が提供する企業のプレスリリースデータを取得およびクエリします。
+[program_aided_language_model.i...](https://github.com/langchain-ai/langchain/tree/master/cookbook/program_aided_language_model.ipynb) | 提供された研究論文で説明されているProgram-Aided Language Modelを実装します。
+[qa_citations.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/qa_citations.ipynb) | モデルに情報源を引用させる方法について説明しています。
+[rag_upstage_layout_analysis_groundedness_check.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/rag_upstage_layout_analysis_groundedness_check.ipynb) | Upstage Layout AnalysisとGroundedness Checkを使ったエンドツーエンドのRAGの例です。
+[retrieval_in_sql.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/retrieval_in_sql.ipynb) | pgvectorを使ってPostgreSQLデータベースでRAG (Retrieval-Augmented Generation) を実行します。
+[sales_agent_with_context.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/sales_agent_with_context.ipynb) | 自然な販売会話を行い、他のシステムと対話し、製品知識ベースを使って製品について説明できる、コンテキスト対応のAI販売エージェント「salesgpt」を実装します。
+[self_query_hotel_search.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/self_query_hotel_search.ipynb) | 特定のホテル推奨データセットを使って、自己クエリ検索を使ったホテル部屋検索機能を構築します。
+[smart_llm.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/smart_llm.ipynb) | 複数の出力提案を生成し、それらを批評して最良のものを見つけ出し、さらに改善を加えて最終的な出力を生成する、SmartLLMChainを実装します。
+[tree_of_thought.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/tree_of_thought.ipynb) | Tree of Thoughtテクニックを使って大規模言語モデルにクエリを投げかけます。
+[twitter-the-algorithm-analysis...](https://github.com/langchain-ai/langchain/tree/master/cookbook/twitter-the-algorithm-analysis-deeplake.ipynb) | GPT4とActiveLoopのDeep Lakeを使って、Twitterアルゴリズムのソースコードを分析します。
+[two_agent_debate_tools.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/two_agent_debate_tools.ipynb) | エージェントが様々なツールを利用できる、マルチエージェントの対話をシミュレーションします。
+[two_player_dnd.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/two_player_dnd.ipynb) | 主人公とダンジョンマスターの対話を調整するダイアログシミュレータークラスを使って、2人プレイのダンジョンズ&ドラゴンズゲームをシミュレーションします。
+[wikibase_agent.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/wikibase_agent.ipynb) | SPARQLの生成を利用した、シンプルなwikibaseエージェントを作成し、http://wikidata.orgで動作確認を行います。
+[oracleai_demo.ipynb](https://github.com/langchain-ai/langchain/tree/master/cookbook/oracleai_demo.ipynb) | このガイドでは、Oracle AI Vector Searchとlangchainを組み合わせたエンドツーエンドのRAGパイプラインの活用方法を説明しています。OracleDocLoaderを使ってさまざまなソースからドキュメントを読み込み、OracleSummaryでデータベース内外でサマリーを生成し、OracleEmbeddingsで埋め込みを作成します。OracleTextSplitterを使ってドキュメントをニーズに合わせてチャンクに分割し、最後にOracleVSでベクトルストアに保存してクエリを実行します。

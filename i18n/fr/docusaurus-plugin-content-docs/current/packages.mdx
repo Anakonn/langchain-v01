@@ -1,0 +1,62 @@
+---
+fixed: true
+translated: true
+---
+
+# 📕 Gestion des versions de paquets
+
+À l'heure actuelle, LangChain a un processus de publication ad hoc : les versions sont publiées avec une fréquence élevée par un mainteneur et publiées sur [PyPI](https://pypi.org/).
+
+Les différents paquets sont légèrement versionnés différemment.
+
+## `langchain-core`
+
+`langchain-core` est actuellement en version `0.1.x`.
+
+Comme `langchain-core` contient les abstractions de base et le runtime pour tout l'écosystème LangChain, nous communiquerons tout changement cassant avec un préavis et une augmentation de version. L'exception à cela est tout ce qui est marqué avec le décorateur `beta` (vous pouvez le voir dans la référence de l'API et verrez des avertissements lors de l'utilisation de ces fonctionnalités). La raison des fonctionnalités bêta est que, étant donné le rythme de changement du domaine, la possibilité de se déplacer rapidement reste une priorité.
+
+Les augmentations de version mineure se produiront pour :
+
+- Changements cassants pour toutes les interfaces publiques marquées comme `beta`.
+
+Les augmentations de version de correctif se produiront pour :
+
+- Corrections de bugs
+- Nouvelles fonctionnalités
+- Tout changement sur les interfaces privées
+- Tout changement sur les fonctionnalités `beta`
+
+## `langchain`
+
+`langchain` est actuellement en version `0.1.x`
+
+Les augmentations de version mineure se produiront pour :
+
+- Changements cassants pour toutes les interfaces publiques NON marquées comme `beta`.
+
+Les augmentations de version de correctif se produiront pour :
+
+- Corrections de bugs
+- Nouvelles fonctionnalités
+- Tout changement sur les interfaces privées
+- Tout changement sur les fonctionnalités `beta`
+
+Nous travaillons sur la version 0.2 de `langchain`, qui aura quelques changements cassants pour les Chains et Agents hérités.
+
+De plus, nous supprimerons `langchain-community` comme dépendance et cesserons de ré-exporter les intégrations qui ont été déplacées vers `langchain-community`.
+
+## `langchain-community`
+
+`langchain-community` est actuellement en version `0.0.x`
+
+Tous les changements seront accompagnés d'une augmentation de version de correctif.
+
+## `langchain-experimental`
+
+`langchain-experimental` est actuellement en version `0.0.x`
+
+Tous les changements seront accompagnés d'une augmentation de version de correctif.
+
+## Paquets partenaires
+
+Les paquets partenaires sont versionnés indépendamment.

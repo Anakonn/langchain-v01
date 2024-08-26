@@ -1,0 +1,64 @@
+---
+translated: true
+---
+
+# Jaguar
+
+Cette page décrit comment utiliser la base de données vectorielle Jaguar dans LangChain.
+Elle contient trois sections : introduction, installation et configuration, et API Jaguar.
+
+## Introduction
+
+La base de données vectorielle Jaguar a les caractéristiques suivantes :
+
+1. C'est une base de données vectorielle distribuée
+2. La fonctionnalité "ZeroMove" de JaguarDB permet une évolutivité horizontale instantanée
+3. Multimodal : embeddings, texte, images, vidéos, PDF, audio, séries temporelles et géospatiales
+4. Tous les maîtres : permet des lectures et des écritures parallèles
+5. Capacités de détection des anomalies
+6. Prise en charge de RAG : combine LLM avec des données propriétaires et en temps réel
+7. Métadonnées partagées : partage de métadonnées entre plusieurs index vectoriels
+8. Métriques de distance : Euclidienne, Cosinus, InnerProduct, Manhatten, Chebyshev, Hamming, Jeccard, Minkowski
+
+[Présentation de la base de données vectorielle évolutive Jaguar](http://www.jaguardb.com)
+
+Vous pouvez exécuter JaguarDB dans un conteneur docker ; ou télécharger le logiciel et l'exécuter sur le cloud ou hors cloud.
+
+## Installation et configuration
+
+- Installez JaguarDB sur un ou plusieurs hôtes
+- Installez le serveur de passerelle HTTP Jaguar sur un hôte
+- Installez le package client HTTP JaguarDB
+
+Les étapes sont décrites dans [la documentation Jaguar](http://www.jaguardb.com/support.html)
+
+Variables d'environnement dans les programmes clients :
+
+    export OPENAI_API_KEY="......"
+    export JAGUAR_API_KEY="......"
+
+## API Jaguar
+
+Avec LangChain, une classe cliente Jaguar est fournie en l'important en Python :
+
+```python
+<!--IMPORTS:[{"imported": "Jaguar", "source": "langchain_community.vectorstores.jaguar", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.jaguar.Jaguar.html", "title": "Jaguar"}]-->
+from langchain_community.vectorstores.jaguar import Jaguar
+```
+
+Les fonctions API prises en charge de la classe Jaguar sont :
+
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `is_anomalous`
+- `create`
+- `delete`
+- `clear`
+- `drop`
+- `login`
+- `logout`
+
+Pour plus de détails sur l'API Jaguar, veuillez vous référer à [ce notebook](/docs/integrations/vectorstores/jaguar)

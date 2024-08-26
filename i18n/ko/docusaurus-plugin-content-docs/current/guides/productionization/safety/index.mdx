@@ -1,0 +1,15 @@
+---
+translated: true
+---
+
+# 개인정보 보호 및 안전
+
+LLM을 사용할 때 주요 우려 사항 중 하나는 개인 데이터를 오용하거나 유해하거나 비윤리적인 텍스트를 생성할 수 있다는 것입니다. 이는 이 분야에서 활발히 연구되고 있는 영역입니다. 여기에서는 LLM의 출력을 더 안전하게 만들기 위한 연구에서 영감을 받은 몇 가지 내장 체인을 소개합니다.
+
+- [Amazon Comprehend 중재 체인](/docs/guides/productionization/safety/amazon_comprehend_chain): [Amazon Comprehend](https://aws.amazon.com/comprehend/)를 사용하여 개인 식별 정보(PII) 및 유해성을 감지하고 처리합니다.
+- [헌법 체인](/docs/guides/productionization/safety/constitutional_chain): 모델 행동을 안내할 원칙 세트를 모델에 프롬프트합니다.
+- [Hugging Face 프롬프트 인젝션 식별](/docs/guides/productionization/safety/hugging_face_prompt_injection): 프롬프트 인젝션 공격을 감지하고 처리합니다.
+- [Layerup Security](/docs/guides/productionization/safety/layerup_security): PII 및 민감한 데이터를 쉽게 마스킹하고, PII 및 민감한 데이터, 프롬프트 인젝션, 환각, 남용 등 10가지 이상의 LLM 기반 위협 벡터를 탐지하고 완화합니다.
+- [논리적 오류 체인](/docs/guides/productionization/safety/logical_fallacy_chain): 모델 출력을 논리적 오류와 비교하여 어떤 이탈도 수정합니다.
+- [중재 체인](/docs/guides/productionization/safety/moderation): 출력 텍스트가 유해한지 여부를 확인하고 이를 플래그로 표시합니다.
+- [Presidio 데이터 익명화](/docs/guides/productionization/safety/presidio_data_anonymization): 민감한 데이터가 적절히 관리되고 통제되도록 지원합니다.

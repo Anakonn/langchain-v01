@@ -1,0 +1,43 @@
+---
+translated: true
+---
+
+# 스택 익스체인지
+
+>[스택 익스체인지](https://en.wikipedia.org/wiki/Stack_Exchange)는 다양한 분야의 질문과 답변(Q&A) 웹사이트 네트워크로, 각 사이트는 특정 주제를 다루며 질문, 답변 및 사용자가 평판 보상 프로세스의 대상이 됩니다.
+
+이 페이지에서는 LangChain 내에서 `스택 익스체인지 API`를 사용하는 방법을 다룹니다.
+
+## 설치 및 설정
+
+- 다음과 같이 요구사항을 설치하세요.
+
+```bash
+pip install stackapi
+```
+
+## 래퍼
+
+### 유틸리티
+
+`StackExchangeAPIWrapper` 유틸리티가 이 API를 래핑합니다. 이 유틸리티를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "StackExchangeAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.stackexchange.StackExchangeAPIWrapper.html", "title": "Stack Exchange"}]-->
+from langchain_community.utilities import StackExchangeAPIWrapper
+```
+
+이 래퍼에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/tools/stackexchange)을 참조하세요.
+
+### 도구
+
+이 래퍼를 도구(Agent와 함께 사용하기 위한)로 쉽게 로드할 수도 있습니다.
+다음과 같이 수행할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Stack Exchange"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["stackexchange"])
+```
+
+도구에 대한 자세한 내용은 [이 페이지](/docs/modules/tools/)를 참조하세요.

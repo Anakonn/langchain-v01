@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# ग्राफसिग्नल
+
+यह पृष्ठ LangChain को ट्रेस और मॉनिटर करने के लिए [Graphsignal](https://app.graphsignal.com) का उपयोग करने को कवर करता है। Graphsignal आपके एप्लिकेशन में पूर्ण दृश्यता प्रदान करता है। यह श्रृंखलाओं और उपकरणों द्वारा लेटेंसी विश्लेषण, पूर्ण संदर्भ के साथ अपवाद, डेटा मॉनिटरिंग, कंप्यूट/जीपीयू उपयोग, OpenAI लागत विश्लेषण और अधिक प्रदान करता है।
+
+## स्थापना और सेटअप
+
+- `pip install graphsignal` के साथ Python लाइब्रेरी स्थापित करें
+- यहाँ [free Graphsignal account](https://graphsignal.com) बनाएं
+- एक API कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`GRAPHSIGNAL_API_KEY`) के रूप में सेट करें
+
+## ट्रेसिंग और मॉनिटरिंग
+
+Graphsignal स्वचालित रूप से श्रृंखलाओं को इंस्ट्रूमेंट और ट्रेस और मॉनिटर करना शुरू कर देता है। ट्रेस और मेट्रिक्स फिर आपके [Graphsignal डैशबोर्ड](https://app.graphsignal.com) में उपलब्ध होते हैं।
+
+एक तैनाती नाम प्रदान करके ट्रेसर को प्रारंभ करें:
+
+```python
+import graphsignal
+
+graphsignal.configure(deployment='my-langchain-app-prod')
+```
+
+इसके अलावा, किसी भी फ़ंक्शन या कोड को ट्रेस करने के लिए, आप एक डिकोरेटर या एक संदर्भ प्रबंधक का उपयोग कर सकते हैं:
+
+```python
+@graphsignal.trace_function
+def handle_request():
+    chain.run("some initial text")
+```
+
+```python
+with graphsignal.start_trace('my-chain'):
+    chain.run("some initial text")
+```
+
+वैकल्पिक रूप से, प्रत्येक ट्रेस के लिए फ़ंक्शन-स्तर के आंकड़ों को रिकॉर्ड करने के लिए प्रोफ़ाइलिंग सक्षम करें।
+
+```python
+with graphsignal.start_trace(
+        'my-chain', options=graphsignal.TraceOptions(enable_profiling=True)):
+    chain.run("some initial text")
+```
+
+पूर्ण सेटअप निर्देशों के लिए [Quick Start](/html-tag/4] गाइड देखें।

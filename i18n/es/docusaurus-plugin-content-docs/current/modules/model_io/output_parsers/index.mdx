@@ -1,0 +1,46 @@
+---
+hide_table_of_contents: true
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# Analizadores de salida
+
+Los analizadores de salida son responsables de tomar la salida de un LLM y transformarla a un formato más adecuado. Esto es muy útil cuando se utilizan LLM para generar cualquier forma de datos estructurados.
+
+Además de tener una gran colección de diferentes tipos de analizadores de salida, un beneficio distintivo de los analizadores de salida de LangChain es que muchos de ellos admiten el streaming.
+
+## [Inicio rápido](./quick_start)
+
+Consulte [esta guía de inicio rápido](./quick_start) para obtener una introducción a los analizadores de salida y cómo trabajar con ellos.
+
+## Tipos de analizadores de salida
+
+LangChain tiene muchos tipos diferentes de `analizadores de salida`.
+
+Columnas de la tabla:
+
+- **Nombre**: El nombre del analizador de salida
+- **Admite transmisión**: Si el analizador de salida admite transmisión.
+- **Tiene instrucciones de formato**: Si el analizador de salida tiene instrucciones de formato. Esto generalmente está disponible, excepto cuando (a) el esquema deseado no se especifica en el mensaje, sino en otros parámetros (como la llamada a funciones de OpenAI), o (b) cuando el OutputParser envuelve a otro OutputParser.
+- **Llama a LLM**: Si este analizador de salida llama a un LLM. Esto generalmente solo lo hacen los analizadores de salida que intentan corregir la salida con formato incorrecto.
+- **Tipo de entrada**: Tipo de entrada esperado. La mayoría de los analizadores de salida funcionan tanto con cadenas como con mensajes, pero algunos (como OpenAI Functions) necesitan un mensaje con kwargs específicos.
+- **Tipo de salida**: El tipo de salida del objeto devuelto por el analizador.
+- **Descripción**: Nuestros comentarios sobre este analizador de salida y cuándo usarlo.
+
+| Nombre            | Admite transmisión | Tiene instrucciones de formato | Llama a LLM | Tipo de entrada                  | Tipo de salida       | Descripción                                                                                                                                                                                                                                             |
+|-----------------|--------------------|-------------------------------|-------------|----------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [OpenAITools](./types/openai_tools) |                   | (Pasa `tools` al modelo)     |             | `Message` (con `tool_choice`)    | Objeto JSON          | Usa los últimos argumentos de llamada a funciones de OpenAI `tools` y `tool_choice` para estructurar la salida devuelta. Si está utilizando un modelo que admite la llamada a funciones, este es generalmente el método más confiable.                                                                                         |
+| [OpenAIFunctions](./types/openai_functions) | ✅                  | (Pasa `functions` al modelo) |             | `Message` (con `function_call`) | Objeto JSON          | Usa los argumentos de llamada a funciones de OpenAI heredados `functions` y `function_call` para estructurar la salida devuelta.                                                                                        |
+| [JSON](./types/json)            | ✅                  | ✅                             |             | `str` \| `Message`               | Objeto JSON          | Devuelve un objeto JSON según lo especificado. Especifica un modelo Pydantic y devolverá JSON para ese modelo. Probablemente el analizador de salida más confiable para obtener datos estructurados que NO utilicen llamadas a funciones.                                    |
+| [XML](./types/xml)            | ✅                  | ✅                             |             | `str` \| `Message`                 | `dict`               | Devuelve un diccionario de etiquetas. Úselo cuando se necesita salida XML. Úselo con modelos que sean buenos escribiendo XML (como los de Anthropic).                                                                                                                            |
+| [CSV](./types/csv)           | ✅                  | ✅                             |             | `str` \| `Message`                 | `List[str]`          | Devuelve una lista de valores separados por comas.                                                                                                                                                                                                |
+| [OutputFixing](./types/output_fixing)    |                    |                               | ✅           | `str` \| `Message`                 |                      | Envuelve a otro analizador de salida. Si ese analizador de salida genera un error, entonces este pasará el mensaje de error y la salida incorrecta a un LLM y le pedirá que corrija la salida.                                                                                              |
+| [RetryWithError](./types/retry)  |                    |                               | ✅           | `str` \| `Message`                 |                      | Envuelve a otro analizador de salida. Si ese analizador de salida genera un error, entonces este pasará las entradas originales, la salida incorrecta y el mensaje de error a un LLM y le pedirá que lo corrija. En comparación con `OutputFixingParser`, este también envía las instrucciones originales. |
+| [Pydantic](./types/pydantic)        |                    | ✅                             |             | `str` \| `Message`                 | `pydantic.BaseModel` | Toma un modelo Pydantic definido por el usuario y devuelve los datos en ese formato.                                                                                                                                                                     |
+| [YAML](./types/yaml)        |                    | ✅                             |             | `str` \| `Message`                 | `pydantic.BaseModel` | Toma un modelo Pydantic definido por el usuario y devuelve los datos en ese formato. Usa YAML para codificarlo.                                                                                                                                                                    |
+| [PandasDataFrame](./types/pandas_dataframe) |                    | ✅                             |             | `str` \| `Message`                 | `dict`               | Útil para realizar operaciones con pandas DataFrames.                                                                                                                                                                                                      |
+| [Enum](./types/enum)            |                    | ✅                             |             | `str` \| `Message`                 | `Enum`               | Analiza la respuesta en uno de los valores de enum proporcionados.                                                                                                                                                                                    |
+| [Datetime](./types/datetime)        |                    | ✅                             |             | `str` \| `Message`                 | `datetime.datetime`  | Analiza la respuesta en una cadena de fecha y hora.                                                                                                                                                                                                  |
+| [Structured](./types/structured)      |                    | ✅                             |             | `str` \| `Message`                 | `Dict[str, str]`     | Un analizador de salida que devuelve información estructurada. Es menos potente que otros analizadores de salida, ya que solo permite que los campos sean cadenas. Esto es útil cuando se trabaja con LLM más pequeños.                                            |

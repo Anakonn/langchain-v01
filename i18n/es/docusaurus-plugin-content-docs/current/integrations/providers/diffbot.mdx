@@ -1,0 +1,22 @@
+---
+translated: true
+---
+
+# Diffbot
+
+>[Diffbot](https://docs.diffbot.com/docs) es un servicio para leer páginas web. A diferencia de las herramientas tradicionales de web scraping, `Diffbot` no requiere ninguna regla para leer el contenido de una página.
+>Comienza con visión por computadora, que clasifica una página en uno de los 20 tipos posibles. El contenido se interpreta entonces mediante un modelo de aprendizaje automático entrenado para identificar los atributos clave de una página en función de su tipo.
+>El resultado es un sitio web transformado en datos estructurados y limpios (como JSON o CSV), listos para tu aplicación.
+
+## Instalación y configuración
+
+Lee las [instrucciones](https://docs.diffbot.com/reference/authentication) sobre cómo obtener el token de la API de Diffbot.
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/diffbot).
+
+```python
+<!--IMPORTS:[{"imported": "DiffbotLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.diffbot.DiffbotLoader.html", "title": "Diffbot"}]-->
+from langchain_community.document_loaders import DiffbotLoader
+```

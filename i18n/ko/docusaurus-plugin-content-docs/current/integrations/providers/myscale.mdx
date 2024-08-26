@@ -1,0 +1,72 @@
+---
+translated: true
+---
+
+# MyScale
+
+이 페이지에서는 LangChain 내에서 MyScale 벡터 데이터베이스를 사용하는 방법을 다룹니다.
+이는 설치 및 설정, 그리고 특정 MyScale 래퍼에 대한 참조의 두 부분으로 구성됩니다.
+
+MyScale을 사용하면 구조화된 데이터와 비구조화된(벡터화된) 데이터를 모두 관리할 수 있으며, SQL을 사용하여 두 유형의 데이터에 대한 결합 쿼리 및 분석을 수행할 수 있습니다. 또한 ClickHouse 기반의 클라우드 네이티브 OLAP 아키텍처를 통해 대용량 데이터셋에서도 빠른 데이터 처리가 가능합니다.
+
+## 소개
+
+[MyScale 및 고성능 벡터 검색 개요](https://docs.myscale.com/en/overview/)
+
+이제 SaaS에 등록하고 [클러스터를 시작할 수 있습니다!](https://docs.myscale.com/en/quickstart/)
+
+SQL과 벡터를 통합하는 방법에 대해 자세히 알고 싶다면 [이 문서](https://docs.myscale.com/en/vector-reference/)를 참조하세요.
+
+또한 Hugging Face에서 실시간 데모를 제공합니다! [Hugging Face 스페이스](https://huggingface.co/myscale)를 확인해 보세요! 수백만 개의 벡터를 순식간에 검색할 수 있습니다!
+
+## 설치 및 설정
+
+- `pip install clickhouse-connect`로 Python SDK를 설치하세요.
+
+### 환경 설정
+
+MyScale 인덱스에 대한 매개변수를 설정하는 두 가지 방법이 있습니다.
+
+1. 환경 변수
+
+    앱을 실행하기 전에 `export`로 환경 변수를 설정하세요:
+    `export MYSCALE_HOST='<your-endpoints-url>' MYSCALE_PORT=<your-endpoints-port> MYSCALE_USERNAME=<your-username> MYSCALE_PASSWORD=<your-password> ...`
+
+    계정, 비밀번호 및 기타 정보는 SaaS에서 찾을 수 있습니다. 자세한 내용은 [이 문서](https://docs.myscale.com/en/cluster-management/)를 참조하세요.
+    `MyScaleSettings` 아래의 모든 속성은 `MYSCALE_` 접두사로 설정할 수 있으며 대소문자를 구분하지 않습니다.
+
+2. `MyScaleSettings` 객체 생성
+
+    ```python
+    from langchain_community.vectorstores import MyScale, MyScaleSettings
+    config = MyScaleSetting(host="<your-backend-url>", port=8443, ...)
+    index = MyScale(embedding_function, config)
+    index.add_documents(...)
+    ```
+
+## 래퍼
+
+지원되는 기능:
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `asimilarity_search`
+- `similarity_search_by_vector`
+- `asimilarity_search_by_vector`
+- `similarity_search_with_relevance_scores`
+- `delete`
+
+### VectorStore
+
+MyScale 데이터베이스를 래핑하는 래퍼가 있어 의미 검색이나 유사한 예제 검색에 벡터 저장소로 사용할 수 있습니다.
+
+이 벡터 저장소를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "MyScale", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.myscale.MyScale.html", "title": "MyScale"}]-->
+from langchain_community.vectorstores import MyScale
+```
+
+MyScale 래퍼에 대한 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/myscale)을 참조하세요.

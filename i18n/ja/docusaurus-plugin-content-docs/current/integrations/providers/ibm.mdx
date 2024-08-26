@@ -1,0 +1,51 @@
+---
+translated: true
+---
+
+# IBM
+
+[IBM watsonx.ai](https://www.ibm.com/products/watsonx-ai) プラットフォームに関連する `LangChain` インテグレーション。
+
+IBM® watsonx.ai™ AI スタジオは、IBM [watsonx](https://www.ibm.com/watsonx)™ AI およびデータプラットフォームの一部で、[foundation models](https://www.ibm.com/products/watsonx-ai/foundation-models) と従来の機械学習 (ML) によって駆動される新しい生成 AI 機能を集約したスタジオです。エンタープライズデータを使ってモデルをチューニングおよびガイドし、パフォーマンスの高いプロンプトを簡単に構築および改善できます。watsonx.ai を使えば、わずかなデータでも短時間で AI アプリケーションを構築できます。
+watsonx.ai には以下の機能があります:
+
+- **マルチモデルの多様性と柔軟性:** IBM 開発、オープンソース、サードパーティのモデルから選択できるほか、独自のモデルを構築することもできます。
+- **差別化されたクライアントの保護:** IBM は IBM 開発のモデルを保証し、サードパーティの知的財産権の請求からクライアントを免責します。
+- **エンドツーエンドの AI ガバナンス:** 企業は、ビジネス全体で信頼できるデータを使って AI の影響を拡大・加速できます。
+- **ハイブリッド、マルチクラウドの展開:** IBM は、お客様のハイブリッドクラウドスタックに AI ワークロードを統合・展開する柔軟性を提供します。
+
+## インストールと設定
+
+パッケージをインストールします
+
+```bash
+pip install -qU langchain-ibm
+```
+
+IBM watsonx.ai の API キーを取得し、環境変数 (`WATSONX_APIKEY`) に設定します
+
+```python
+import os
+
+os.environ["WATSONX_APIKEY"] = "your IBM watsonx.ai api key"
+```
+
+## LLMs
+
+### WatsonxLLM
+
+[使用例](/docs/integrations/llms/ibm_watsonx)を参照してください。
+
+```python
+from langchain_ibm import WatsonxLLM
+```
+
+## 埋め込みモデル
+
+### WatsonxEmbeddings
+
+[使用例](/docs/integrations/text_embedding/ibm_watsonx)を参照してください。
+
+```python
+from langchain_ibm import WatsonxEmbeddings
+```

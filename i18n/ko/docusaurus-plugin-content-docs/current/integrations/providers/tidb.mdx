@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# TiDB
+
+> [TiDB Cloud](https://tidbcloud.com/)는 전용 및 서버리스 옵션을 제공하는 포괄적인 Database-as-a-Service(DBaaS) 솔루션입니다. `TiDB Serverless`는 이제 MySQL 환경에 내장된 벡터 검색을 통합하고 있습니다. 이 향상을 통해 새로운 데이터베이스나 추가 기술 스택 없이 `TiDB Serverless`를 사용하여 AI 애플리케이션을 seamlessly 개발할 수 있습니다. [프라이빗 베타 대기자 명단](https://tidb.cloud/ai)에 가입하여 이를 처음으로 경험해 보세요.
+
+## 설치 및 설정
+
+TiDB 데이터베이스의 연결 세부 정보를 얻어야 합니다.
+[TiDB Cloud](https://tidbcloud.com/)를 방문하여 연결 세부 정보를 얻으세요.
+
+## 문서 로더
+
+```python
+<!--IMPORTS:[{"imported": "TiDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tidb.TiDBLoader.html", "title": "TiDB"}]-->
+from langchain_community.document_loaders import TiDBLoader
+```
+
+자세한 내용은 [여기](/docs/integrations/document_loaders/tidb)를 참조하세요.
+
+## 벡터 스토어
+
+```python
+<!--IMPORTS:[{"imported": "TiDBVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tidb_vector.TiDBVectorStore.html", "title": "TiDB"}]-->
+from langchain_community.vectorstores import TiDBVectorStore
+```
+
+자세한 내용은 [여기](/docs/integrations/vectorstores/tidb_vector)를 참조하세요.
+
+## 메모리
+
+```python
+<!--IMPORTS:[{"imported": "TiDBChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.tidb.TiDBChatMessageHistory.html", "title": "TiDB"}]-->
+from langchain_community.chat_message_histories import TiDBChatMessageHistory
+```
+
+자세한 내용은 [여기](/docs/integrations/memory/tidb_chat_message_history)를 참조하세요.

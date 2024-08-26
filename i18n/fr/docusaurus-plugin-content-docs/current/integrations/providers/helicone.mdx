@@ -1,0 +1,59 @@
+---
+translated: true
+---
+
+# Helicone
+
+Cette page explique comment utiliser l'écosystème [Helicone](https://helicone.ai) dans LangChain.
+
+## Qu'est-ce qu'Helicone ?
+
+Helicone est une plateforme d'observabilité [open-source](https://github.com/Helicone/helicone) qui fait office de proxy pour votre trafic OpenAI et vous fournit des informations clés sur vos dépenses, la latence et l'utilisation.
+
+![Capture d'écran du tableau de bord Helicone montrant le nombre moyen de requêtes par jour, le temps de réponse, les jetons par réponse, le coût total et un graphique des requêtes au fil du temps.](/img/HeliconeDashboard.png "Tableau de bord Helicone")
+
+## Démarrage rapide
+
+Avec votre environnement LangChain, vous pouvez simplement ajouter le paramètre suivant.
+
+```bash
+export OPENAI_API_BASE="https://oai.hconeai.com/v1"
+```
+
+Rendez-vous maintenant sur [helicone.ai](https://www.helicone.ai/signup) pour créer votre compte et ajouter votre clé API OpenAI dans notre tableau de bord pour afficher vos journaux.
+
+![Interface pour saisir et gérer les clés API OpenAI dans le tableau de bord Helicone.](/img/HeliconeKeys.png "Saisie de la clé API Helicone")
+
+## Comment activer la mise en cache Helicone
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Helicone"}]-->
+from langchain_openai import OpenAI
+import openai
+openai.api_base = "https://oai.hconeai.com/v1"
+
+llm = OpenAI(temperature=0.9, headers={"Helicone-Cache-Enabled": "true"})
+text = "What is a helicone?"
+print(llm.invoke(text))
+```
+
+[Documentation sur la mise en cache Helicone](https://docs.helicone.ai/advanced-usage/caching)
+
+## Comment utiliser les propriétés personnalisées Helicone
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Helicone"}]-->
+from langchain_openai import OpenAI
+import openai
+openai.api_base = "https://oai.hconeai.com/v1"
+
+llm = OpenAI(temperature=0.9, headers={
+        "Helicone-Property-Session": "24",
+        "Helicone-Property-Conversation": "support_issue_2",
+        "Helicone-Property-App": "mobile",
+      })
+text = "What is a helicone?"
+print(llm.invoke(text))
+```
+
+[Documentation sur les propriétés Helicone](https://docs.helicone.ai/advanced-usage/custom-properties)

@@ -1,0 +1,72 @@
+---
+translated: true
+---
+
+# 모멘토
+
+> [Momento Cache](https://docs.momentohq.com/)는 진정한 서버리스 캐싱 서비스로, 즉각적인 탄력성, 스케일 투 제로 기능, 그리고 빠른 성능을 제공합니다.
+>
+> [Momento Vector Index](https://docs.momentohq.com/vector-index)는 가장 생산적이고 사용하기 쉬운 완전한 서버리스 벡터 인덱스로 두각을 나타냅니다.
+>
+> 두 서비스 모두 SDK를 가져오고, API 키를 얻은 다음, 코드에 몇 줄만 입력하면 사용할 수 있습니다. 이들은 LLM 데이터 요구사항에 대한 종합적인 솔루션을 제공합니다.
+
+이 페이지에서는 LangChain 내에서 [Momento](https://gomomento.com) 생태계를 사용하는 방법을 다룹니다.
+
+## 설치 및 설정
+
+- [여기](https://console.gomomento.com/)에서 무료 계정에 가입하여 API 키를 받으세요.
+- `pip install momento`로 Momento Python SDK를 설치하세요.
+
+## 캐시
+
+Momento를 LLM 프롬프트와 응답을 위한 서버리스, 분산, 저지연 캐시로 사용하세요. 표준 캐시는 모든 환경에서 Momento 사용자의 주요 사용 사례입니다.
+
+Momento Cache를 애플리케이션에 통합하려면:
+
+```python
+<!--IMPORTS:[{"imported": "MomentoCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.MomentoCache.html", "title": "Momento"}]-->
+from langchain.cache import MomentoCache
+```
+
+그런 다음 다음 코드로 설정하세요:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Momento"}]-->
+from datetime import timedelta
+from momento import CacheClient, Configurations, CredentialProvider
+from langchain.globals import set_llm_cache
+
+# Instantiate the Momento client
+cache_client = CacheClient(
+    Configurations.Laptop.v1(),
+    CredentialProvider.from_environment_variable("MOMENTO_API_KEY"),
+    default_ttl=timedelta(days=1))
+
+# Choose a Momento cache name of your choice
+cache_name = "langchain"
+
+# Instantiate the LLM cache
+set_llm_cache(MomentoCache(cache_client, cache_name))
+```
+
+## 메모리
+
+Momento를 LLM의 분산 메모리 저장소로 사용할 수 있습니다.
+
+채팅 메시지 기록을 위한 메모리 저장소로 Momento를 사용하는 방법에 대한 연습은 [이 노트북](/docs/integrations/memory/momento_chat_message_history)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "MomentoChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.momento.MomentoChatMessageHistory.html", "title": "Momento"}]-->
+from langchain.memory import MomentoChatMessageHistory
+```
+
+## 벡터 저장소
+
+Momento Vector Index (MVI)를 벡터 저장소로 사용할 수 있습니다.
+
+MVI를 벡터 저장소로 사용하는 방법에 대한 연습은 [이 노트북](/docs/integrations/vectorstores/momento_vector_index)을 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "MomentoVectorIndex", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.momento_vector_index.MomentoVectorIndex.html", "title": "Momento"}]-->
+from langchain_community.vectorstores import MomentoVectorIndex
+```

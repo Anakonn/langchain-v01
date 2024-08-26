@@ -1,0 +1,110 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 개념
+
+언어 모델 애플리케이션의 핵심 요소는 모델입니다. LangChain은 모든 언어 모델과 상호 작용할 수 있는 구성 요소를 제공합니다. 이 섹션의 내용은 모델 작업을 더 쉽게 만드는 것에 관한 것입니다. 이는 주로 모델의 명확한 인터페이스, 모델 입력 구성을 위한 도우미 유틸리티, 모델 출력 작업을 위한 도우미 유틸리티를 제공하는 것을 의미합니다.
+
+## 모델
+
+LangChain이 통합하는 두 가지 주요 유형의 모델은 LLM(Large Language Model)과 채팅 모델입니다. 이들은 입력 및 출력 유형에 의해 정의됩니다.
+
+### LLM
+
+LangChain의 LLM은 순수 텍스트 완성 모델을 나타냅니다. 
+이들의 API는 문자열 프롬프트를 입력으로 받아 문자열 완성을 출력합니다. OpenAI의 GPT-3가 LLM으로 구현되어 있습니다.
+
+### 채팅 모델
+
+채팅 모델은 종종 LLM을 기반으로 하지만 대화에 특화되어 있습니다.
+핵심적으로 이들의 제공자 API는 순수 텍스트 완성 모델과 다른 인터페이스를 사용합니다. 단일 문자열 대신 메시지 목록을 입력으로 받고 AI 메시지를 출력합니다. 메시지의 정확한 구성에 대해서는 아래 섹션을 참고하세요. GPT-4와 Anthropic의 Claude-2가 채팅 모델로 구현되어 있습니다.
+
+### 고려 사항
+
+이 두 API 유형은 입력과 출력 스키마가 상당히 다릅니다. 따라서 이들과 상호 작용하는 가장 좋은 방법이 다를 수 있습니다. LangChain은 이들을 상호 교환 가능하게 만들지만, 그렇다고 해서 **그렇게 해야 한다**는 의미는 아닙니다. 특히 LLM과 ChatModels에 대한 프롬프팅 전략이 상당히 다를 수 있습니다. 따라서 사용 중인 모델 유형에 맞게 프롬프트를 설계해야 합니다.
+
+또한 모든 모델이 동일한 것은 아닙니다. 각 모델마다 가장 잘 작동하는 프롬프팅 전략이 다릅니다. 예를 들어, Anthropic 모델은 XML을 가장 잘 처리하지만 OpenAI 모델은 JSON을 더 잘 처리합니다. 따라서 한 모델에 대해 잘 작동하는 프롬프트가 다른 모델에서는 잘 작동하지 않을 수 있습니다. LangChain은 많은 기본 프롬프트를 제공하지만, 이것들이 사용 중인 모델에 완벽하게 작동한다는 보장은 없습니다. 역사적으로 대부분의 프롬프트는 OpenAI에서 잘 작동하지만 다른 모델에서는 충분히 테스트되지 않았습니다. 이는 우리가 해결하고자 하는 문제이지만, 이 점을 염두에 두어야 합니다.
+
+## 메시지
+
+채팅 모델은 메시지 목록을 입력으로 받고 메시지를 출력합니다. 여러 가지 유형의 메시지가 있습니다. 모든 메시지에는 `role`과 `content` 속성이 있습니다. `role`은 메시지를 말하는 주체를 나타냅니다. LangChain은 다양한 역할에 대한 메시지 클래스를 가지고 있습니다. `content` 속성은 메시지의 내용을 나타냅니다. 이는 다음과 같은 형태일 수 있습니다:
+
+- 문자열(대부분의 모델이 이 형태)
+- 딕셔너리 목록(멀티모달 입력에 사용되며, 각 딕셔너리는 해당 입력 유형과 위치에 대한 정보를 포함)
+
+또한 메시지에는 `additional_kwargs` 속성이 있습니다. 이는 모델 제공자 특정 입력 매개변수와 같은 추가 정보를 전달하는 데 사용됩니다. 가장 잘 알려진 예는 OpenAI의 `function_call`입니다.
+
+### HumanMessage
+
+사용자로부터의 메시지를 나타냅니다. 일반적으로 내용만으로 구성됩니다.
+
+### AIMessage
+
+모델로부터의 메시지를 나타냅니다. `additional_kwargs`(예: OpenAI 함수 호출의 `functional_call`)가 포함될 수 있습니다.
+
+### SystemMessage
+
+시스템 메시지를 나타냅니다. 일부 모델만 이를 지원합니다. 이는 모델의 행동 방식을 알려줍니다. 일반적으로 내용만으로 구성됩니다.
+
+### FunctionMessage
+
+함수 호출의 결과를 나타냅니다. `role`과 `content` 외에도 호출된 함수의 이름을 나타내는 `name` 매개변수가 있습니다.
+
+### ToolMessage
+
+도구 호출의 결과를 나타냅니다. 이는 OpenAI의 `function`과 `tool` 메시지 유형을 일치시키기 위해 FunctionMessage와 구분됩니다. `role`과 `content` 외에도 해당 도구 호출의 ID를 나타내는 `tool_call_id` 매개변수가 있습니다.
+
+## 프롬프트
+
+언어 모델의 입력은 종종 프롬프트라고 불립니다. 종종 사용자의 입력이 모델의 직접적인 입력이 아닙니다. 대신 사용자 입력이 어떤 방식으로든 변환되어 모델에 전달되는 문자열 또는 메시지 목록이 됩니다. 사용자 입력을 최종 문자열 또는 메시지로 변환하는 객체를 "프롬프트 템플릿"이라고 합니다. LangChain은 프롬프트 작업을 더 쉽게 만들기 위해 여러 추상화를 제공합니다.
+
+### PromptValue
+
+채팅 모델과 LLM은 다른 입력 유형을 사용합니다. PromptValue는 두 모델 유형 간에 호환되도록 설계된 클래스입니다. 문자열로 변환(LLM과 작업)하거나 메시지 목록으로 변환(채팅 모델과 작업)할 수 있는 메서드를 노출합니다.
+
+### PromptTemplate
+
+[이것](/docs/modules/model_io/prompts/quick_start#prompttemplate)은 프롬프트 템플릿의 예입니다. 이는 템플릿 문자열로 구성됩니다. 이 문자열은 사용자 입력으로 포맷되어 최종 문자열을 생성합니다.
+
+### MessagePromptTemplate
+
+이 유형의 템플릿은 템플릿 **메시지**로 구성됩니다. 즉, 특정 역할과 PromptTemplate으로 구성됩니다. 이 PromptTemplate은 사용자 입력으로 포맷되어 최종 문자열을 생성하며, 이 문자열은 메시지의 `content`가 됩니다.
+
+#### HumanMessagePromptTemplate
+
+이는 HumanMessage를 생성하는 MessagePromptTemplate입니다.
+
+#### AIMessagePromptTemplate
+
+이는 AIMessage를 생성하는 MessagePromptTemplate입니다.
+
+#### SystemMessagePromptTemplate
+
+이는 SystemMessage를 생성하는 MessagePromptTemplate입니다.
+
+### MessagesPlaceholder
+
+입력 프롬프트에는 메시지 목록이 포함될 수 있습니다. 이 경우 MessagesPlaceholder를 사용해야 합니다. 이러한 객체는 `variable_name` 인수로 매개변수화됩니다. 동일한 `variable_name` 값을 가진 입력은 메시지 목록이어야 합니다.
+
+### ChatPromptTemplate
+
+[이것](/docs/modules/model_io/prompts/quick_start#chatprompttemplate)은 프롬프트 템플릿의 예입니다. 이것은 MessagePromptTemplates 또는 MessagePlaceholders의 목록으로 구성됩니다. 그런 다음 사용자 입력으로 형식화되어 최종 메시지 목록을 생성합니다.
+
+## Output Parsers
+
+모델의 출력은 문자열 또는 메시지입니다. 종종 문자열 또는 메시지에는 하위 프로세스에서 사용할 수 있는 특정 형식의 정보가 포함됩니다(예: 쉼표로 구분된 목록 또는 JSON 블롭). Output Parsers는 모델의 출력을 더 유용한 형식으로 변환하는 역할을 합니다. 일반적으로 출력 메시지의 `content`에서 작동하지만 때때로 `additional_kwargs` 필드의 값에서 작동합니다.
+
+### StrOutputParser
+
+이것은 언어 모델(LLM 또는 ChatModel)의 출력을 문자열로 변환하는 간단한 출력 파서입니다. 모델이 LLM(따라서 문자열 출력)인 경우 해당 문자열을 그대로 전달합니다. 출력이 ChatModel(따라서 메시지 출력)인 경우 메시지의 `.content` 속성을 전달합니다.
+
+### OpenAI Functions Parsers
+
+OpenAI 함수 호출 작업을 위한 몇 가지 파서가 있습니다. `function_call` 및 `arguments` 매개변수(추가 `additional_kwargs` 내부)의 출력을 처리하며 내용은 대부분 무시합니다.
+
+### Agent Output Parsers
+
+[에이전트](/docs/modules/agents/)는 언어 모델을 사용하여 취해야 할 단계를 결정하는 시스템입니다. 따라서 언어 모델의 출력을 취할 수 있는 스키마로 구문 분석해야 합니다. AgentOutputParsers는 원시 LLM 또는 ChatModel 출력을 해당 스키마로 변환하는 역할을 합니다. 이러한 출력 파서 내부의 논리는 사용되는 모델 및 프롬프팅 전략에 따라 다를 수 있습니다.

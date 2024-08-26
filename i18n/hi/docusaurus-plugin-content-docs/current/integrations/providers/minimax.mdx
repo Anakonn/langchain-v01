@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# मिनीमैक्स
+
+>[मिनीमैक्स](https://api.minimax.chat) एक चीनी स्टार्टअप है जो कंपनियों और व्यक्तियों के लिए प्राकृतिक भाषा प्रसंस्करण मॉडल प्रदान करता है।
+
+## इंस्टॉलेशन और सेटअप
+
+एक [मिनीमैक्स एपीआई कुंजी](https://api.minimax.chat/user-center/basic-information/interface-key) प्राप्त करें और इसे एक पर्यावरण चर (`MINIMAX_API_KEY`) के रूप में सेट करें
+एक [मिनीमैक्स समूह आईडी](https://api.minimax.chat/user-center/basic-information) प्राप्त करें और इसे एक पर्यावरण चर (`MINIMAX_GROUP_ID`) के रूप में सेट करें
+
+## एलएलएम
+
+एक मिनीमैक्स एलएलएम रैपर मौजूद है, जिसका उपयोग आप कर सकते हैं
+[उपयोग उदाहरण](/docs/integrations/llms/minimax) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Minimax", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.minimax.Minimax.html", "title": "Minimax"}]-->
+from langchain_community.llms import Minimax
+```
+
+## चैट मॉडल
+
+[उपयोग उदाहरण](/docs/integrations/chat/minimax) देखें
+
+```python
+<!--IMPORTS:[{"imported": "MiniMaxChat", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.minimax.MiniMaxChat.html", "title": "Minimax"}]-->
+from langchain_community.chat_models import MiniMaxChat
+```
+
+## पाठ एम्बेडिंग मॉडल
+
+एक मिनीमैक्स एम्बेडिंग मॉडल मौजूद है, जिसका उपयोग आप कर सकते हैं
+
+```python
+<!--IMPORTS:[{"imported": "MiniMaxEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.minimax.MiniMaxEmbeddings.html", "title": "Minimax"}]-->
+from langchain_community.embeddings import MiniMaxEmbeddings
+```

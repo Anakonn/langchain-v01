@@ -1,0 +1,15 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# उत्पादन
+
+आपने अपने भाषा मॉडल अनुप्रयोग का एक प्रोटोटाइप विकसित कर लिया है, अब अगला कदम उसे उत्पादन के लिए तैयार करना है।
+यह खंड उत्पादन-तैयार रखने और उसे वास्तविक दुनिया के उपयोग के लिए तैयार करने के लिए सर्वोत्तम प्रथाओं के बारे में मार्गदर्शन प्रदान करता है।
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/productionization/")} />

@@ -1,0 +1,62 @@
+---
+translated: true
+---
+
+# C 변환기
+
+이 페이지에서는 LangChain에서 [C 변환기](https://github.com/marella/ctransformers) 라이브러리를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 특정 C 변환기 래퍼에 대한 참조로 구성됩니다.
+
+## 설치 및 설정
+
+- `pip install ctransformers`로 Python 패키지를 설치합니다.
+- 지원되는 [GGML 모델](https://huggingface.co/TheBloke)을 다운로드합니다(지원되는 모델 참조).
+
+## 래퍼
+
+### LLM
+
+CTransformers LLM 래퍼가 존재하며, 다음과 같이 액세스할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "CTransformers", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ctransformers.CTransformers.html", "title": "C Transformers"}]-->
+from langchain_community.llms import CTransformers
+```
+
+모든 모델에 대한 통일된 인터페이스를 제공합니다:
+
+```python
+llm = CTransformers(model='/path/to/ggml-gpt-2.bin', model_type='gpt2')
+
+print(llm.invoke('AI is going to'))
+```
+
+`illegal instruction` 오류가 발생하는 경우 `lib='avx'` 또는 `lib='basic'`를 사용해 보세요:
+
+```py
+llm = CTransformers(model='/path/to/ggml-gpt-2.bin', model_type='gpt2', lib='avx')
+```
+
+Hugging Face Hub에 호스팅된 모델을 사용할 수 있습니다:
+
+```py
+llm = CTransformers(model='marella/gpt-2-ggml')
+```
+
+모델 리포지토리에 여러 모델 파일(`.bin` 파일)이 있는 경우 다음과 같이 모델 파일을 지정할 수 있습니다:
+
+```py
+llm = CTransformers(model='marella/gpt-2-ggml', model_file='ggml-model.bin')
+```
+
+추가 매개변수는 `config` 매개변수를 사용하여 전달할 수 있습니다:
+
+```py
+config = {'max_new_tokens': 256, 'repetition_penalty': 1.1}
+
+llm = CTransformers(model='marella/gpt-2-ggml', config=config)
+```
+
+사용 가능한 매개변수 목록은 [문서](https://github.com/marella/ctransformers#config)를 참조하세요.
+
+이에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/llms/ctransformers)에서 확인할 수 있습니다.

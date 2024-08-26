@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# Pétales
+
+Cette page couvre comment utiliser l'écosystème Pétales dans LangChain.
+Il est divisé en deux parties : l'installation et la configuration, puis les références aux wrappers Pétales spécifiques.
+
+## Installation et configuration
+
+- Installer avec `pip install petals`
+- Obtenir une clé d'API Hugging Face et la définir en tant que variable d'environnement (`HUGGINGFACE_API_KEY`)
+
+## Wrappers
+
+### LLM
+
+Il existe un wrapper LLM Pétales, que vous pouvez accéder avec
+
+```python
+<!--IMPORTS:[{"imported": "Petals", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.petals.Petals.html", "title": "Petals"}]-->
+from langchain_community.llms import Petals
+```

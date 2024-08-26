@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# Doré
+
+>[Doré](https://golden.com) fournit un ensemble d'API de langage naturel pour interroger et enrichir à l'aide du Golden Knowledge Graph, par exemple des requêtes telles que : `Produits d'OpenAI`, `Entreprises d'IA générative avec un financement de série A` et `rappeurs qui investissent` peuvent être utilisées pour récupérer des données structurées sur les entités pertinentes.
+
+>L'outil `golden-query` langchain est un wrapper au-dessus de l'[API Golden Query](https://docs.golden.com/reference/query-api) qui permet un accès programmatique à ces résultats.
+>Consultez la [documentation de l'API Golden Query](https://docs.golden.com/reference/query-api) pour plus d'informations.
+
+## Installation et configuration
+
+- Rendez-vous sur la [documentation de l'API Golden](https://docs.golden.com/) pour avoir un aperçu de l'API Golden.
+- Obtenez votre clé API sur la page [Paramètres de l'API Golden](https://golden.com/settings/api).
+- Enregistrez votre clé API dans la variable d'environnement GOLDEN_API_KEY
+
+## Wrappers
+
+### Utilitaire
+
+Il existe une utilitaire GoldenQueryAPIWrapper qui enveloppe cette API. Pour importer cet utilitaire :
+
+```python
+<!--IMPORTS:[{"imported": "GoldenQueryAPIWrapper", "source": "langchain_community.utilities.golden_query", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.golden_query.GoldenQueryAPIWrapper.html", "title": "Golden"}]-->
+from langchain_community.utilities.golden_query import GoldenQueryAPIWrapper
+```
+
+Pour un parcours détaillé de ce wrapper, voir [ce notebook](/docs/integrations/tools/golden_query).
+
+### Outil
+
+Vous pouvez également charger facilement ce wrapper en tant qu'Outil (à utiliser avec un Agent).
+Vous pouvez le faire avec :
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Golden"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["golden-query"])
+```
+
+Pour plus d'informations sur les outils, consultez [cette page](/docs/modules/tools/).

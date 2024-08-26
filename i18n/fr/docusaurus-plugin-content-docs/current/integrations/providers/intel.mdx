@@ -1,0 +1,129 @@
+---
+translated: true
+---
+
+# Intel
+
+>[Optimum Intel](https://github.com/huggingface/optimum-intel?tab=readme-ov-file#optimum-intel) est l'interface entre les bibliothèques 🤗 Transformers et Diffusers et les différents outils et bibliothèques fournis par Intel pour accélérer les pipelines de bout en bout sur les architectures Intel.
+
+>[Intel® Extension for Transformers](https://github.com/intel/intel-extension-for-transformers?tab=readme-ov-file#intel-extension-for-transformers) (ITREX) est une boîte à outils innovante conçue pour accélérer GenAI/LLM partout avec les performances optimales des modèles basés sur Transformer sur diverses plateformes Intel, notamment Intel Gaudi2, Intel CPU et Intel GPU.
+
+Cette page explique comment utiliser optimum-intel et ITREX avec LangChain.
+
+## Optimum-intel
+
+Toutes les fonctionnalités liées à [optimum-intel](https://github.com/huggingface/optimum-intel.git) et [IPEX](https://github.com/intel/intel-extension-for-pytorch).
+
+### Installation
+
+Installez optimum-intel et ipex en utilisant :
+
+```bash
+pip install optimum[neural-compressor]
+pip install intel_extension_for_pytorch
+```
+
+Veuillez suivre les instructions d'installation comme indiqué ci-dessous :
+
+* Installez optimum-intel comme indiqué [ici](https://github.com/huggingface/optimum-intel).
+* Installez IPEX comme indiqué [ici](https://intel.github.io/intel-extension-for-pytorch/index.html#installation?platform=cpu&version=v2.2.0%2Bcpu).
+
+### Modèles d'intégration
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/optimum_intel).
+Nous proposons également un notebook tutoriel complet "rag_with_quantized_embeddings.ipynb" pour utiliser l'intégrateur dans un pipeline RAG dans le répertoire cookbook.
+
+```python
+<!--IMPORTS:[{"imported": "QuantizedBiEncoderEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.optimum_intel.QuantizedBiEncoderEmbeddings.html", "title": "Intel"}]-->
+from langchain_community.embeddings import QuantizedBiEncoderEmbeddings
+```
+
+## Intel® Extension for Transformers (ITREX)
+
+(ITREX) est une boîte à outils innovante pour accélérer les modèles basés sur Transformer sur les plateformes Intel, en particulier, efficace sur le processeur Intel Xeon Scalable de 4e génération Sapphire Rapids (code-nommé Sapphire Rapids).
+
+La quantification est un processus qui consiste à réduire la précision de ces poids en les représentant à l'aide d'un nombre plus petit de bits. La quantification uniquement des poids se concentre spécifiquement sur la quantification des poids du réseau neuronal tout en conservant les autres composants, tels que les activations, dans leur précision d'origine.
+
+Alors que les modèles de langage à grande échelle (LLM) deviennent plus répandus, il y a un besoin croissant de nouvelles méthodes de quantification améliorées qui peuvent répondre aux demandes de calcul de ces architectures modernes tout en maintenant la précision. Par rapport à la [quantification normale](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/quantization.md) comme W8A8, la quantification uniquement des poids est probablement un meilleur compromis pour équilibrer les performances et la précision, car nous verrons ci-dessous que le goulot d'étranglement du déploiement des LLM est la bande passante mémoire et normalement la quantification uniquement des poids pourrait conduire à une meilleure précision.
+
+Ici, nous présenterons les modèles d'intégration et la quantification uniquement des poids pour les modèles de langage à grande échelle avec ITREX. La quantification uniquement des poids est une technique utilisée dans l'apprentissage en profondeur pour réduire les exigences de mémoire et de calcul des réseaux neuronaux. Dans le contexte des réseaux de neurones profonds, les paramètres du modèle, également connus sous le nom de poids, sont généralement représentés à l'aide de nombres à virgule flottante, ce qui peut consommer une quantité importante de mémoire et nécessiter des ressources de calcul intensives.
+
+Toutes les fonctionnalités liées à [intel-extension-for-transformers](https://github.com/intel/intel-extension-for-transformers).
+
+### Installation
+
+Installez intel-extension-for-transformers. Pour les exigences système et d'autres conseils d'installation, veuillez vous référer au [Guide d'installation](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/installation.md)
+
+```bash
+pip install intel-extension-for-transformers
+```
+
+Installez les autres packages requis.
+
+```bash
+pip install -U torch onnx accelerate datasets
+```
+
+### Modèles d'intégration
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/itrex).
+
+```python
+<!--IMPORTS:[{"imported": "QuantizedBgeEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.itrex.QuantizedBgeEmbeddings.html", "title": "Intel"}]-->
+from langchain_community.embeddings import QuantizedBgeEmbeddings
+```
+
+### Quantification uniquement des poids avec ITREX
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/weight_only_quantization).
+
+## Détail des paramètres de configuration
+
+Voici le détail de la classe `WeightOnlyQuantConfig`.
+
+#### weight_dtype (chaîne) : Type de données des poids, la valeur par défaut est "nf4".
+
+Nous prenons en charge la quantification des poids dans les types de données suivants pour le stockage (weight_dtype dans WeightOnlyQuantConfig) :
+* **int8** : Utilise le type de données 8 bits.
+* **int4_fullrange** : Utilise la valeur -8 de la plage int4 par rapport à la plage int4 normale [-7,7].
+* **int4_clip** : Rogne et conserve les valeurs dans la plage int4, en mettant les autres à zéro.
+* **nf4** : Utilise le type de données float 4 bits normalisé.
+* **fp4_e2m1** : Utilise le type de données float 4 bits régulier. "e2" signifie que 2 bits sont utilisés pour l'exposant et "m1" signifie que 1 bit est utilisé pour la mantisse.
+
+#### compute_dtype (chaîne) : Type de données de calcul, la valeur par défaut est "fp32".
+
+Bien que ces techniques stockent les poids en 4 ou 8 bits, le calcul se fait toujours en float32, bfloat16 ou int8 (compute_dtype dans WeightOnlyQuantConfig) :
+* **fp32** : Utilise le type de données float32 pour le calcul.
+* **bf16** : Utilise le type de données bfloat16 pour le calcul.
+* **int8** : Utilise le type de données 8 bits pour le calcul.
+
+#### llm_int8_skip_modules (liste des noms de modules) : Modules à ignorer la quantification, la valeur par défaut est None.
+
+Il s'agit d'une liste de modules à ignorer la quantification.
+
+#### scale_dtype (chaîne) : Le type de données d'échelle, la valeur par défaut est "fp32".
+
+Prend en charge uniquement "fp32" (float32).
+
+#### mse_range (booléen) : Rechercher la meilleure plage de rognage dans la plage [0,805, 1,0, 0,005], la valeur par défaut est False.
+
+#### use_double_quant (booléen) : Quantifier l'échelle, la valeur par défaut est False.
+
+Pas encore pris en charge.
+
+#### double_quant_dtype (chaîne) : Réservé pour la double quantification.
+
+#### double_quant_scale_dtype (chaîne) : Réservé pour la double quantification.
+
+#### group_size (int) : Taille du groupe lors de la quantification.
+
+#### scheme (chaîne) : Format dans lequel les poids seront quantifiés. La valeur par défaut est "sym".
+
+* **sym** : Symétrique.
+* **asym** : Asymétrique.
+
+#### algorithm (string) : Quel algorithme pour améliorer la précision. La valeur par défaut est "RTN"
+
+* **RTN** : Round-to-nearest (RTN) est une méthode de quantification que nous pouvons imaginer de manière très intuitive.
+* **AWQ** : Protéger seulement 1% des poids saillants peut grandement réduire l'erreur de quantification. Les canaux de poids saillants sont sélectionnés en observant la distribution de l'activation et du poids par canal. Les poids saillants sont également quantifiés après avoir multiplié un grand facteur d'échelle avant la quantification pour préserver.
+* **TEQ** : Une transformation équivalente entraînable qui préserve la précision FP32 dans la quantification des poids uniquement.

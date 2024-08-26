@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# Evaluadores de comparación
+
+Los evaluadores de comparación en LangChain ayudan a medir dos cadenas diferentes o salidas de LLM. Estos evaluadores son útiles para análisis comparativos, como pruebas A/B entre dos modelos de lenguaje, o comparar diferentes versiones del mismo modelo. También pueden ser útiles para cosas como generar puntajes de preferencia para el aprendizaje por refuerzo asistido por ia.
+
+Estos evaluadores heredan de la clase `PairwiseStringEvaluator`, proporcionando una interfaz de comparación para dos cadenas, generalmente, las salidas de dos solicitudes o modelos diferentes, o dos versiones del mismo modelo. En esencia, un evaluador de comparación realiza una evaluación en un par de cadenas y devuelve un diccionario que contiene el puntaje de evaluación y otros detalles relevantes.
+
+Para crear un evaluador de comparación personalizado, herede de la clase `PairwiseStringEvaluator` y sobrescriba el método `_evaluate_string_pairs`. Si requiere una evaluación asincrónica, también sobrescriba el método `_aevaluate_string_pairs`.
+
+Aquí hay un resumen de los métodos y propiedades clave de un evaluador de comparación:
+
+- `evaluate_string_pairs`: Evaluar los pares de cadenas de salida. Esta función debe sobrescribirse al crear evaluadores personalizados.
+- `aevaluate_string_pairs`: Evaluar asincrónicamente los pares de cadenas de salida. Esta función debe sobrescribirse para la evaluación asincrónica.
+- `requires_input`: Esta propiedad indica si este evaluador requiere una cadena de entrada.
+- `requires_reference`: Esta propiedad especifica si este evaluador requiere una etiqueta de referencia.
+
+:::note Soporte de LangSmith
+El método de evaluación [run_on_dataset](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.smith) está diseñado para evaluar solo un modelo a la vez y, por lo tanto, no admite estos evaluadores.
+:::
+
+La información detallada sobre la creación de evaluadores personalizados y los evaluadores de comparación incorporados disponibles se proporciona en las siguientes secciones.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

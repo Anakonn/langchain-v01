@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# 勾配
+
+>[勾配](https://gradient.ai/)を使うと、シンプルなWebAPIでLLMの微調整とコンプリーションを行うことができます。
+
+## インストールとセットアップ
+
+- PythonのSDKをインストールします:
+
+```bash
+pip install gradientai
+```
+
+[Gradientのアクセストークンとワークスペース](https://gradient.ai/)を取得し、環境変数 (`Gradient_ACCESS_TOKEN`) と (`GRADIENT_WORKSPACE_ID`) に設定します。
+
+## LLM
+
+Gradientのラッパーが用意されており、これを使ってアクセスできます。
+[使用例](/docs/integrations/llms/gradient)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "GradientLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.gradient_ai.GradientLLM.html", "title": "Gradient"}]-->
+from langchain_community.llms import GradientLLM
+```
+
+## テキストエンベディングモデル
+
+Gradientのエンベディングモデルが用意されており、これを使ってアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "GradientEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.gradient_ai.GradientEmbeddings.html", "title": "Gradient"}]-->
+from langchain_community.embeddings import GradientEmbeddings
+```
+
+詳細については、[このノートブック](/docs/integrations/text_embedding/gradient)をご覧ください。

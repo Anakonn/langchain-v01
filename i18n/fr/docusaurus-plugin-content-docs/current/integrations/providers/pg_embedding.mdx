@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Postgres Embedding
+
+> [pg_embedding](https://github.com/neondatabase/pg_embedding) est un package open-source pour
+> la recherche de similarité vectorielle à l'aide de `Postgres` et de l'algorithme `Hierarchical Navigable Small Worlds`
+> pour la recherche approximative des plus proches voisins.
+
+## Installation et configuration
+
+Nous devons installer plusieurs packages python.
+
+```bash
+pip install psycopg2-binary
+```
+
+## Magasin de vecteurs
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/pgembedding).
+
+```python
+<!--IMPORTS:[{"imported": "PGEmbedding", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.pgembedding.PGEmbedding.html", "title": "Postgres Embedding"}]-->
+from langchain_community.vectorstores import PGEmbedding
+```

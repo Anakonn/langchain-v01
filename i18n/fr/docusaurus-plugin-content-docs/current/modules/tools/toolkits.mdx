@@ -1,0 +1,23 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# Boîtes à outils
+
+Les boîtes à outils sont des collections d'outils conçues pour être utilisées ensemble pour des tâches spécifiques. Elles ont des méthodes de chargement pratiques.
+Pour obtenir la liste complète des boîtes à outils prêtes à l'emploi, visitez [Intégrations](/docs/integrations/toolkits/).
+
+Toutes les boîtes à outils exposent une méthode `get_tools` qui renvoie une liste d'outils.
+Vous pouvez donc faire :
+
+```python
+# Initialize a toolkit
+toolkit = ExampleTookit(...)
+
+# Get list of tools
+tools = toolkit.get_tools()
+
+# Create agent
+agent = create_agent_method(llm, tools, prompt)
+```

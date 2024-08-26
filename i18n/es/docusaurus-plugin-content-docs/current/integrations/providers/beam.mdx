@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Haz
+
+>[Haz](https://www.beam.cloud/) es una plataforma de computación en la nube que te permite ejecutar tu código
+> en servidores remotos con GPUs.
+
+## Instalación y configuración
+
+- [Crea una cuenta](https://www.beam.cloud/)
+- Instala la CLI de Haz con `curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh`
+- Registra las claves API con `beam configure`
+- Establece las variables de entorno (`BEAM_CLIENT_ID`) y (`BEAM_CLIENT_SECRET`)
+- Instala el SDK de Haz:
+
+```bash
+pip install beam-sdk
+```
+
+## LLMs
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/beam).
+
+Consulta otro ejemplo en la [documentación de Haz](https://docs.beam.cloud/examples/langchain).
+
+```python
+<!--IMPORTS:[{"imported": "Beam", "source": "langchain_community.llms.beam", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.beam.Beam.html", "title": "Beam"}]-->
+from langchain_community.llms.beam import Beam
+```

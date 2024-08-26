@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# vlite
+
+Esta página cubre cómo usar [vlite](https://github.com/sdan/vlite) dentro de LangChain. vlite es una base de datos de vectores simple y rápida para almacenar y recuperar incrustaciones.
+
+## Instalación y configuración
+
+Para instalar vlite, ejecuta el siguiente comando:
+
+```bash
+pip install vlite
+```
+
+Para el soporte de OCR de PDF, instala el extra `vlite[ocr]`:
+
+```bash
+pip install vlite[ocr]
+```
+
+## VectorStore
+
+vlite proporciona un wrapper alrededor de su base de datos de vectores, lo que le permite usarla como un vectorstore para la búsqueda semántica y la selección de ejemplos.
+
+Para importar el vectorstore de vlite:
+
+```python
+from langchain_community.vectorstores import vlite
+```
+
+### Uso
+
+Para una guía más detallada del wrapper de vlite, consulta [este cuaderno](/docs/integrations/vectorstores/vlite).

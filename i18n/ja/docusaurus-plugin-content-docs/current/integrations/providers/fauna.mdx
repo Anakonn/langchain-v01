@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Fauna
+
+>[Fauna](https://fauna.com/)は、文書の柔軟性と、リージョン、クラウド、またはグローバルにわたって拡張可能な、リレーショナルでACID準拠のデータベースの強力さを組み合わせた分散型のドキュメント-リレーショナルデータベースです。
+
+## インストールとセットアップ
+
+シークレットキーを取得する必要があります。
+詳細な[ガイド](https://docs.fauna.com/fauna/current/learn/security_model/)を参照してください。
+
+`fauna`パッケージをインストールする必要があります。
+
+```bash
+pip install -U fauna
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/fauna)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "FaunaLoader", "source": "langchain_community.document_loaders.fauna", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.fauna.FaunaLoader.html", "title": "Fauna"}]-->
+from langchain_community.document_loaders.fauna import FaunaLoader
+```

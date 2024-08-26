@@ -1,0 +1,30 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 4
+translated: true
+---
+
+# LLMs
+
+Los Modelos de Lenguaje de Gran Tamaño (LLMs) son un componente fundamental de LangChain.
+LangChain no proporciona sus propios LLMs, sino que más bien ofrece una interfaz estándar para interactuar con una gran variedad de LLMs diferentes. Para ser más específicos, esta interfaz toma como entrada una cadena de texto y devuelve una cadena de texto.
+
+Hay muchos proveedores de LLM (OpenAI, Cohere, Hugging Face, etc.) - la clase `LLM` está diseñada para proporcionar una interfaz estándar para todos ellos.
+
+## [Inicio Rápido](./quick_start)
+
+Consulta [este inicio rápido](./quick_start) para obtener una visión general del trabajo con LLMs, incluidos todos los diferentes métodos que exponen.
+
+## [Integraciones](/docs/integrations/llms/)
+
+Para obtener una lista completa de todas las integraciones de LLM que proporciona LangChain, por favor, ve a la [página de Integraciones](/docs/integrations/llms/)
+
+## Guías Prácticas
+
+Tenemos varias guías prácticas para un uso más avanzado de los LLMs.
+Esto incluye:
+
+- [Cómo escribir una clase LLM personalizada](./custom_llm)
+- [Cómo almacenar en caché las respuestas de LLM](./llm_caching)
+- [Cómo transmitir respuestas de un LLM](./streaming_llm)
+- [Cómo realizar un seguimiento del uso de tokens en una llamada a LLM](./token_usage_tracking)

@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Wolfram Alpha
+
+>[WolframAlpha](https://en.wikipedia.org/wiki/WolframAlpha)는 `Wolfram Research`에서 개발한 답변 엔진입니다.
+> 외부 데이터 소스에서 계산된 답변으로 사실적인 질문에 답변합니다.
+
+이 페이지에서는 LangChain 내에서 `Wolfram Alpha API`를 사용하는 방법을 다룹니다.
+
+## 설치 및 설정
+
+- 다음과 같이 요구사항을 설치합니다.
+
+```bash
+pip install wolframalpha
+```
+
+- Wolfram Alpha에 가입하고 개발자 계정을 만드세요 [여기](https://developer.wolframalpha.com/)
+- 앱을 만들고 `APP ID`를 받으세요
+- `WOLFRAM_ALPHA_APPID`라는 환경 변수에 APP ID를 설정하세요
+
+## 래퍼
+
+### 유틸리티
+
+WolframAlphaAPIWrapper 유틸리티가 이 API를 래핑합니다. 이 유틸리티를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "WolframAlphaAPIWrapper", "source": "langchain_community.utilities.wolfram_alpha", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.wolfram_alpha.WolframAlphaAPIWrapper.html", "title": "Wolfram Alpha"}]-->
+from langchain_community.utilities.wolfram_alpha import WolframAlphaAPIWrapper
+```
+
+이 래퍼에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/tools/wolfram_alpha)을 참고하세요.
+
+### 도구
+
+이 래퍼를 도구(Agent와 함께 사용하기 위한)로 쉽게 로드할 수 있습니다.
+다음과 같이 할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Wolfram Alpha"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["wolfram-alpha"])
+```
+
+도구에 대한 자세한 내용은 [이 페이지](/docs/modules/tools/)를 참고하세요.

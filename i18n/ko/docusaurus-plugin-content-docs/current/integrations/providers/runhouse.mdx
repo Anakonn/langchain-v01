@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# 런하우스
+
+이 페이지에서는 LangChain 내에서 [Runhouse](https://github.com/run-house/runhouse) 생태계를 사용하는 방법을 다룹니다.
+이 문서는 세 부분으로 구성됩니다: 설치 및 설정, LLMs, 임베딩.
+
+## 설치 및 설정
+
+- `pip install runhouse`로 Python SDK를 설치하세요.
+- 온디맨드 클러스터를 사용하려면 `sky check`로 클라우드 자격 증명을 확인하세요.
+
+## 자체 호스팅 LLMs
+
+기본적인 자체 호스팅 LLM의 경우 `SelfHostedHuggingFaceLLM` 클래스를 사용할 수 있습니다. 더 사용자 정의된 LLM의 경우 `SelfHostedPipeline` 부모 클래스를 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "SelfHostedPipeline", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted.SelfHostedPipeline.html", "title": "Runhouse"}, {"imported": "SelfHostedHuggingFaceLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html", "title": "Runhouse"}]-->
+from langchain_community.llms import SelfHostedPipeline, SelfHostedHuggingFaceLLM
+```
+
+자체 호스팅 LLMs에 대한 더 자세한 안내는 [이 노트북](/docs/integrations/llms/runhouse)을 참고하세요.
+
+## 자체 호스팅 임베딩
+
+LangChain에서 Runhouse를 통해 자체 호스팅 임베딩을 사용하는 여러 가지 방법이 있습니다.
+
+Hugging Face Transformers 모델에서 기본적인 자체 호스팅 임베딩을 사용하려면 `SelfHostedEmbedding` 클래스를 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "SelfHostedPipeline", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted.SelfHostedPipeline.html", "title": "Runhouse"}, {"imported": "SelfHostedHuggingFaceLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html", "title": "Runhouse"}]-->
+from langchain_community.llms import SelfHostedPipeline, SelfHostedHuggingFaceLLM
+```
+
+자체 호스팅 임베딩에 대한 더 자세한 안내는 [이 노트북](/docs/integrations/text_embedding/self-hosted)을 참고하세요.

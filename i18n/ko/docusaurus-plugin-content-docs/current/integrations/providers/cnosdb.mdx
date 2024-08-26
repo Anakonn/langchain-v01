@@ -1,0 +1,128 @@
+---
+translated: true
+---
+
+# CnosDB
+
+> [CnosDB](https://github.com/cnosdb/cnosdb)는 높은 성능, 높은 압축률 및 높은 사용 편의성을 가진 오픈 소스 분산 시계열 데이터베이스입니다.
+
+## 설치 및 설정
+
+```python
+pip install cnos-connector
+```
+
+## CnosDB에 연결하기
+
+`SQLDatabase.from_cnosdb()` 메서드를 사용하여 CnosDB에 연결할 수 있습니다.
+
+### 구문
+
+```python
+def SQLDatabase.from_cnosdb(url: str = "127.0.0.1:8902",
+                              user: str = "root",
+                              password: str = "",
+                              tenant: str = "cnosdb",
+                              database: str = "public")
+```
+
+인수:
+1. url (str): CnosDB 서비스의 HTTP 연결 호스트 이름 및 포트 번호, "http://" 또는 "https://"는 제외하며, 기본값은 "127.0.0.1:8902"입니다.
+2. user (str): CnosDB 서비스에 연결하는 데 사용되는 사용자 이름, 기본값은 "root"입니다.
+3. password (str): CnosDB 서비스에 연결하는 사용자의 비밀번호, 기본값은 ""입니다.
+4. tenant (str): CnosDB 서비스에 연결하는 데 사용되는 테넌트 이름, 기본값은 "cnosdb"입니다.
+5. database (str): CnosDB 테넌트의 데이터베이스 이름입니다.
+
+## 예제
+
+```python
+<!--IMPORTS:[{"imported": "SQLDatabase", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.sql_database.SQLDatabase.html", "title": "CnosDB"}]-->
+# Connecting to CnosDB with SQLDatabase Wrapper
+from langchain_community.utilities import SQLDatabase
+
+db = SQLDatabase.from_cnosdb()
+```
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "CnosDB"}]-->
+# Creating a OpenAI Chat LLM Wrapper
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+```
+
+### SQL 데이터베이스 체인
+
+이 예제는 CnosDB에서 질문에 답변하기 위한 SQL 체인의 사용을 보여줍니다.
+
+```python
+from langchain_community.utilities import SQLDatabaseChain
+
+db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+
+db_chain.run(
+    "What is the average temperature of air at station XiaoMaiDao between October 19, 2022 and Occtober 20, 2022?"
+)
+```
+
+```shell
+> Entering new  chain...
+What is the average temperature of air at station XiaoMaiDao between October 19, 2022 and Occtober 20, 2022?
+SQLQuery:SELECT AVG(temperature) FROM air WHERE station = 'XiaoMaiDao' AND time >= '2022-10-19' AND time < '2022-10-20'
+SQLResult: [(68.0,)]
+Answer:The average temperature of air at station XiaoMaiDao between October 19, 2022 and October 20, 2022 is 68.0.
+> Finished chain.
+```
+
+### SQL 데이터베이스 에이전트
+
+이 예제는 CnosDB에서 질문에 답변하기 위한 SQL 데이터베이스 에이전트의 사용을 보여줍니다.
+
+```python
+<!--IMPORTS:[{"imported": "create_sql_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.sql.base.create_sql_agent.html", "title": "CnosDB"}, {"imported": "SQLDatabaseToolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.sql.toolkit.SQLDatabaseToolkit.html", "title": "CnosDB"}]-->
+from langchain.agents import create_sql_agent
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+
+toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+agent = create_sql_agent(llm=llm, toolkit=toolkit, verbose=True)
+```
+
+```python
+agent.run(
+    "What is the average temperature of air at station XiaoMaiDao between October 19, 2022 and Occtober 20, 2022?"
+)
+```
+
+```shell
+> Entering new  chain...
+Action: sql_db_list_tables
+Action Input: ""
+Observation: air
+Thought:The "air" table seems relevant to the question. I should query the schema of the "air" table to see what columns are available.
+Action: sql_db_schema
+Action Input: "air"
+Observation:
+CREATE TABLE air (
+	pressure FLOAT,
+	station STRING,
+	temperature FLOAT,
+	time TIMESTAMP,
+	visibility FLOAT
+)
+
+/*
+3 rows from air table:
+pressure	station	temperature	time	visibility
+75.0	XiaoMaiDao	67.0	2022-10-19T03:40:00	54.0
+77.0	XiaoMaiDao	69.0	2022-10-19T04:40:00	56.0
+76.0	XiaoMaiDao	68.0	2022-10-19T05:40:00	55.0
+*/
+Thought:The "temperature" column in the "air" table is relevant to the question. I can query the average temperature between the specified dates.
+Action: sql_db_query
+Action Input: "SELECT AVG(temperature) FROM air WHERE station = 'XiaoMaiDao' AND time >= '2022-10-19' AND time <= '2022-10-20'"
+Observation: [(68.0,)]
+Thought:The average temperature of air at station XiaoMaiDao between October 19, 2022 and October 20, 2022 is 68.0.
+Final Answer: 68.0
+
+> Finished chain.
+```

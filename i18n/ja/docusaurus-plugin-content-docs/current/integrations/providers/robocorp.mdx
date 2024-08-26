@@ -1,0 +1,34 @@
+---
+translated: true
+---
+
+# Robocorp
+
+>[Robocorp](https://robocorp.com/) は、どこでも、どのスケールでも、シームレスに実行される Python ワーカーを構築およびオペレーションするのに役立ちます
+
+## インストールとセットアップ
+
+`langchain-robocorp` Python パッケージをインストールする必要があります:
+
+```bash
+pip install langchain-robocorp
+```
+
+エージェントアプリケーションから通信するには、Action Server のインスタンスが必要です。 [Robocorp クイックスタート](https://github.com/robocorp/robocorp#quickstart) を参照して、Action Server のセットアップと Actions の作成を行ってください。
+
+Action Server の `new` コマンドを使用して、新しいプロジェクトをブートストラップできます。
+
+```bash
+action-server new
+cd ./your-project-name
+action-server start
+```
+
+## ツールキット
+
+[使用例](/docs/integrations/toolkits/robocorp) を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "ActionServerToolkit", "source": "langchain_robocorp", "docs": "https://api.python.langchain.com/en/latest/toolkits/langchain_robocorp.toolkits.ActionServerToolkit.html", "title": "Robocorp"}]-->
+from langchain_robocorp import ActionServerToolkit
+```

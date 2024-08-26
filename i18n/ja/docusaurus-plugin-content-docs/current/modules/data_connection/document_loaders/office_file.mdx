@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# Microsoft Office
+
+>[Microsoft Office](https://www.office.com/) は生産性ソフトウェアのスイートで、Microsoft Word、Microsoft Excel、Microsoft PowerPoint、Microsoft Outlook、Microsoft OneNoteを含んでいます。Microsoft WindowsおよびmacOSオペレーティングシステム用に利用可能です。Android およびiOSでも利用可能です。
+
+これは、`DOCX`、`XLSX`、`PPTX`ドキュメントなどの一般的に使用されるファイル形式を、後続で使用できるドキュメント形式にロードする方法について説明しています。
+
+## AzureAIDocumentIntelligenceLoaderを使用したDOCX、XLSX、PPTXのロード
+
+[Azure AI Document Intelligence](https://aka.ms/doc-intelligence)（以前は`Azure Form Recognizer`と呼ばれていた）は、機械学習ベースのサービスで、デジタルまたはスキャンされたPDF、画像、Officeファイル、HTMLファイルから、テキスト（手書きを含む）、表、ドキュメント構造（タイトル、セクション見出しなど）、キーバリューペアを抽出します。Document Intelligenceは`PDF`、`JPEG/JPG`、`PNG`、`BMP`、`TIFF`、`HEIF`、`DOCX`、`XLSX`、`PPTX`、`HTML`をサポートしています。
+
+この[現在の実装](https://aka.ms/di-langchain)のローダーは、Document Intelligenceを使用して、コンテンツをページごとに取り込み、LangChainドキュメントに変換します。デフォルトの出力形式はMarkdownで、`MarkdownHeaderTextSplitter`を使用してセマンティックドキュメントチャンキングを簡単に行うことができます。`mode="single"`または`mode="page"`を使用して、単一ページまたはページごとに分割された純テキストを返すこともできます。
+
+### 前提条件
+
+**East US**、**West US2**、**West Europe**の3つのプレビュー リージョンのいずれかにあるAzure AI Document Intelligence リソース - 持っていない場合は[このドキュメント](https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource?view=doc-intel-4.0.0)に従って作成してください。ローダーにパラメーターとして`<endpoint>`と`<key>`を渡します。
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDocumentIntelligenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.doc_intelligence.AzureAIDocumentIntelligenceLoader.html", "title": "Microsoft Office"}]-->
+%pip install --upgrade --quiet  langchain langchain-community azure-ai-documentintelligence
+
+from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
+
+file_path = "<filepath>"
+endpoint = "<endpoint>"
+key = "<key>"
+loader = AzureAIDocumentIntelligenceLoader(
+    api_endpoint=endpoint, api_key=key, file_path=file_path, api_model="prebuilt-layout"
+)
+
+documents = loader.load()
+```

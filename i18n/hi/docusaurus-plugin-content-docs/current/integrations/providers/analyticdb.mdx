@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# एनालिटिकडीबी
+
+>[एनालिटिकडीबी फॉर पोस्टग्रेस्क्यूएल](https://www.alibabacloud.com/help/en/analyticdb-for-postgresql/latest/product-introduction-overview)
+> एक मासिव पैरलल प्रोसेसिंग (एमपीपी) डेटा वेयरहाउसिंग सेवा है
+> [अलीबाबा क्लाउड](https://www.alibabacloud.com/)
+>जो बड़ी मात्रा में डेटा का ऑनलाइन विश्लेषण करने के लिए डिज़ाइन किया गया है।
+
+>`एनालिटिकडीबी फॉर पोस्टग्रेस्क्यूएल` को ओपन-सोर्स `ग्रीनप्लम डेटाबेस`
+> परियोजना पर आधारित है और `अलीबाबा क्लाउड` द्वारा गहन विस्तार के साथ वर्धित है। एनालिटिकडीबी
+> फॉर पोस्टग्रेस्क्यूएल एएनएसआई एसक्यूएल 2003 वाक्यविन्यास और पोस्टग्रेस्क्यूएल और
+> ओरेकल डेटाबेस इकोसिस्टम के साथ संगत है। एनालिटिकडीबी फॉर पोस्टग्रेस्क्यूएल पंक्ति स्टोर और
+> कॉलम स्टोर का भी समर्थन करता है। एनालिटिकडीबी फॉर पोस्टग्रेस्क्यूएल पेटाबाइट्स के डेटा को ऑफ़लाइन में उच्च प्रदर्शन स्तर पर प्रोसेस करता है और उच्च समकालिक समर्थन करता है।
+
+यह पृष्ठ LangChain में एनालिटिकडीबी इकोसिस्टम का उपयोग करने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+आपको `sqlalchemy` पायथन पैकेज को स्थापित करना होगा।
+
+```bash
+pip install sqlalchemy
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/analyticdb) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AnalyticDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.analyticdb.AnalyticDB.html", "title": "AnalyticDB"}]-->
+from langchain_community.vectorstores import AnalyticDB
+```

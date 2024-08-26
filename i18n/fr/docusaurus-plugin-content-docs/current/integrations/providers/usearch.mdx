@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# Recherche U
+
+>[Recherche U](https://unum-cloud.github.io/usearch/) est un moteur de recherche vectorielle plus petit et plus rapide en un seul fichier.
+
+>`La fonctionnalité de base de Recherche U` est identique à `FAISS`, et l'interface devrait être
+> familière si vous avez déjà étudié la recherche des plus proches voisins approximatifs.
+> `Recherche U` et `FAISS` utilisent tous deux l'algorithme `HNSW`, mais ils diffèrent considérablement
+> dans leurs principes de conception. `Recherche U` est compact et largement compatible avec FAISS sans
+> sacrifier les performances, avec un accent mis principalement sur les métriques définies par l'utilisateur et moins de dépendances.
+
+## Installation et configuration
+
+Nous devons installer le package python `usearch`.
+
+```bash
+pip install usearch
+```
+
+## Magasin de vecteurs
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/usearch).
+
+```python
+<!--IMPORTS:[{"imported": "USearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.usearch.USearch.html", "title": "USearch"}]-->
+from langchain_community.vectorstores import USearch
+```

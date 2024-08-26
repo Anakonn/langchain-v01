@@ -1,0 +1,34 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# LangChain Expression Language (LCEL)
+
+LangChain Expression Language, ou LCEL, est un moyen déclaratif de composer facilement des chaînes.
+LCEL a été conçu dès le départ pour **prendre en charge la mise en production de prototypes, sans aucun changement de code**, du plus simple "prompt + LLM" à la chaîne la plus complexe (nous avons vu des gens exécuter avec succès des chaînes LCEL avec des centaines d'étapes en production). Pour mettre en évidence quelques-unes des raisons pour lesquelles vous pourriez vouloir utiliser LCEL :
+
+[**Prise en charge de premier ordre du streaming**](/docs/expression_language/streaming)
+Lorsque vous construisez vos chaînes avec LCEL, vous obtenez le meilleur temps possible jusqu'à la première sortie (le temps écoulé jusqu'à ce que le premier bloc de sortie apparaisse). Pour certaines chaînes, cela signifie par exemple que nous diffusons les jetons directement d'un LLM vers un analyseur de sortie en flux, et vous obtenez des blocs de sortie analysés et incrémentiels au même rythme que le fournisseur LLM produit les jetons bruts.
+
+[**Prise en charge asynchrone**](/docs/expression_language/interface)
+Toute chaîne construite avec LCEL peut être appelée à la fois avec l'API synchrone (par exemple, dans votre notebook Jupyter lors du prototypage) et avec l'API asynchrone (par exemple, dans un serveur [LangServe](/docs/langserve)). Cela permet d'utiliser le même code pour les prototypes et en production, avec de grandes performances et la capacité de gérer de nombreuses requêtes simultanées sur le même serveur.
+
+[**Exécution parallèle optimisée**](/docs/expression_language/primitives/parallel)
+Chaque fois que vos chaînes LCEL ont des étapes qui peuvent être exécutées en parallèle (par exemple, si vous récupérez des documents à partir de plusieurs récupérateurs), nous le faisons automatiquement, à la fois dans les interfaces synchrone et asynchrone, pour obtenir la plus petite latence possible.
+
+[**Nouvelles tentatives et solutions de rechange**](/docs/guides/productionization/fallbacks)
+Configurez les nouvelles tentatives et les solutions de rechange pour n'importe quelle partie de votre chaîne LCEL. C'est un excellent moyen de rendre vos chaînes plus fiables à grande échelle. Nous travaillons actuellement sur l'ajout de la prise en charge du streaming pour les nouvelles tentatives/solutions de rechange, afin que vous puissiez bénéficier de la fiabilité supplémentaire sans aucun coût de latence.
+
+[**Accès aux résultats intermédiaires**](/docs/expression_language/interface#async-stream-events-beta)
+Pour les chaînes plus complexes, il est souvent très utile d'accéder aux résultats des étapes intermédiaires même avant que la sortie finale ne soit produite. Cela peut être utilisé pour informer les utilisateurs finaux que quelque chose se passe, ou même simplement pour déboguer votre chaîne. Vous pouvez diffuser les résultats intermédiaires, et c'est disponible sur chaque serveur [LangServe](/docs/langserve).
+
+[**Schémas d'entrée et de sortie**](/docs/expression_language/interface#input-schema)
+Les schémas d'entrée et de sortie donnent à chaque chaîne LCEL des schémas Pydantic et JSONSchema déduits de la structure de votre chaîne. Cela peut être utilisé pour la validation des entrées et des sorties, et fait partie intégrante de LangServe.
+
+[**Traçage LangSmith transparent**](/docs/langsmith)
+À mesure que vos chaînes deviennent de plus en plus complexes, il devient de plus en plus important de comprendre exactement ce qui se passe à chaque étape.
+Avec LCEL, **toutes** les étapes sont automatiquement journalisées dans [LangSmith](/docs/langsmith/) pour une observabilité et une déboguabilité maximales.
+
+[**Déploiement LangServe transparent**](/docs/langserve)
+Toute chaîne créée avec LCEL peut être facilement déployée à l'aide de [LangServe](/docs/langserve).

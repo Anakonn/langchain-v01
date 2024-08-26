@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# 自信のあるAI
+
+>[Confident AI](https://confident-ai.com)は`DeepEval`の創造者です。
+>
+>[DeepEval](https://github.com/confident-ai/deepeval)は、LLMのユニットテストのためのパッケージです。
+>`DeepEval`を使用すると、ユニットテストと統合テストの両方を使用して、より堅牢な言語モデルを
+>より速い反復で構築できます。`DeepEval`は、合成データの作成からテストまでの各ステップをサポートします。
+
+## インストールとセットアップ
+
+[DeepEval APIの資格情報](https://app.confident-ai.com)を取得する必要があります。
+
+`DeepEval`Pythonパッケージをインストールする必要があります:
+
+```bash
+pip install deepeval
+```
+
+## コールバック
+
+[例](/docs/integrations/callbacks/confident)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "DeepEvalCallbackHandler", "source": "langchain.callbacks.confident_callback", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.confident_callback.DeepEvalCallbackHandler.html", "title": "Confident AI"}]-->
+from langchain.callbacks.confident_callback import DeepEvalCallbackHandler
+```

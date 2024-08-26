@@ -1,0 +1,99 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# インストール
+
+## 公式リリース
+
+LangChainをインストールするには以下を実行します:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs>
+  <TabItem value="pip" label="Pip" default>
+    <CodeBlock language="bash">pip install langchain</CodeBlock>
+  </TabItem>
+  <TabItem value="conda" label="Conda">
+    <CodeBlock language="bash">conda install langchain -c conda-forge</CodeBlock>
+  </TabItem>
+</Tabs>
+
+これにより、LangChainの最小限の要件がインストールされます。
+LangChainの価値の多くは、様々なモデルプロバイダー、データストア等との統合時に発揮されます。
+デフォルトでは、それらの統合に必要な依存関係はインストールされません。特定の統合に必要な依存関係は別途インストールする必要があります。
+
+## ソースからのインストール
+
+ソースからインストールする場合は、リポジトリをクローンし、ディレクトリが `PATH/TO/REPO/langchain/libs/langchain` であることを確認して、以下を実行します:
+
+```bash
+pip install -e .
+```
+
+## LangChain core
+
+`langchain-core` パッケージには、LangChain エコシステムの基本的な抽象化と LangChain Expression Language が含まれています。`langchain` によって自動的にインストールされますが、別途使用することもできます。以下でインストールできます:
+
+```bash
+pip install langchain-core
+```
+
+## LangChain community
+
+`langchain-community` パッケージには、サードパーティの統合が含まれています。`langchain` によって自動的にインストールされますが、別途使用することもできます。以下でインストールできます:
+
+```bash
+pip install langchain-community
+```
+
+## LangChain experimental
+
+`langchain-experimental` パッケージには、研究や実験的な用途を目的としたLangChainのコードが含まれています。
+以下でインストールできます:
+
+```bash
+pip install langchain-experimental
+```
+
+## LangGraph
+
+`langgraph` は、LangChainの上に構築された、LLMを使用した状態を持つマルチアクターアプリケーションを構築するためのライブラリです。
+以下でインストールできます:
+
+```bash
+pip install langgraph
+```
+
+## LangServe
+
+LangServeは、LangChainのランナブルやチェーンをRESTAPIとしてデプロイするのに役立ちます。
+LangServeは、LangChain CLIによって自動的にインストールされます。
+LangChain CLIを使用していない場合は、以下でインストールできます:
+
+```bash
+pip install "langserve[all]"
+```
+
+クライアントとサーバーの両方の依存関係をインストールするか、クライアントコードの場合は `pip install "langserve[client]"`、サーバーコードの場合は `pip install "langserve[server]"` でインストールできます。
+
+## LangChain CLI
+
+LangChain CLIは、LangChainテンプレートやその他のLangServeプロジェクトを操作するのに便利です。
+以下でインストールできます:
+
+```bash
+pip install langchain-cli
+```
+
+## LangSmith SDK
+
+LangSmith SDKは、LangChainによって自動的にインストールされます。
+LangChainを使用していない場合は、以下でインストールできます:
+
+```bash
+pip install langsmith
+```

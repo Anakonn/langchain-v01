@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# MediaWikiダンプ
+
+>[MediaWikiのXMLダンプ](https://www.mediawiki.org/wiki/Manual:Importing_XML_dumps)には、ウィキのコンテンツ(すべての改訂版のウィキページ)が含まれていますが、サイト関連のデータは含まれていません。XMLダンプはウィキデータベースの完全なバックアップを作成するものではなく、ユーザーアカウント、画像、編集履歴などは含まれていません。
+
+## インストールとセットアップ
+
+いくつかのPythonパッケージをインストールする必要があります。
+
+`mediawiki-utilities`はXMLスキーマ0.11をサポートしていますが、マージされていないブランチにあります。
+
+```bash
+pip install -qU git+https://github.com/mediawiki-utilities/python-mwtypes@updates_schema_0.11
+```
+
+`mediawiki-utilities mwxml`にはバグがあり、修正のPRが保留中です。
+
+```bash
+pip install -qU git+https://github.com/gdedrouas/python-mwxml@xml_format_0.11
+pip install -qU mwparserfromhell
+```
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/mediawikidump)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "MWDumpLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.mediawikidump.MWDumpLoader.html", "title": "MediaWikiDump"}]-->
+from langchain_community.document_loaders import MWDumpLoader
+```

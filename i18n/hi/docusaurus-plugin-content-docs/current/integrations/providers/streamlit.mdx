@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# स्ट्रीमलिट
+
+>[स्ट्रीमलिट](https://streamlit.io/) डेटा ऐप्स को बनाने और साझा करने का एक तेज़ तरीका है।
+>`स्ट्रीमलिट` डेटा स्क्रिप्ट को मिनटों में साझा करने योग्य वेब ऐप्स में बदल देता है। सभी पायथन में। कोई फ्रंट-एंड अनुभव की आवश्यकता नहीं है।
+>[streamlit.io/generative-ai](https://streamlit.io/generative-ai) पर और उदाहरण देखें।
+
+## इंस्टॉलेशन और सेटअप
+
+हमें `streamlit` पायथन पैकेज को इंस्टॉल करना होगा:
+
+```bash
+pip install streamlit
+```
+
+## मेमोरी
+
+[उपयोग उदाहरण](/docs/integrations/memory/streamlit_chat_message_history) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.streamlit.StreamlitChatMessageHistory.html", "title": "Streamlit"}]-->
+from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+```
+
+## कॉलबैक
+
+[उपयोग उदाहरण](/docs/integrations/callbacks/streamlit) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "StreamlitCallbackHandler", "source": "langchain_community.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.streamlit.StreamlitCallbackHandler.html", "title": "Streamlit"}]-->
+from langchain_community.callbacks import StreamlitCallbackHandler
+```

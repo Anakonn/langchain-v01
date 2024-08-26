@@ -1,0 +1,34 @@
+---
+translated: true
+---
+
+# SingleStoreDB
+
+>[SingleStoreDB](https://singlestore.com/) est une base de données SQL distribuée haute performance qui prend en charge le déploiement à la fois dans le [cloud](https://www.singlestore.com/cloud/) et sur site. Elle fournit un stockage vectoriel et des fonctions vectorielles, notamment [dot_product](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/dot_product.html) et [euclidean_distance](https://docs.singlestore.com/managed-service/en/reference/sql-reference/vector-functions/euclidean_distance.html), permettant ainsi de prendre en charge les applications d'IA qui nécessitent une correspondance de similarité de texte.
+
+## Installation et configuration
+
+Il existe plusieurs façons d'établir une [connexion](https://singlestoredb-python.labs.singlestore.com/generated/singlestoredb.connect.html) à la base de données. Vous pouvez soit configurer des variables d'environnement, soit transmettre des paramètres nommés au constructeur `SingleStoreDB`.
+Vous pouvez également fournir ces paramètres aux méthodes `from_documents` et `from_texts`.
+
+```bash
+pip install singlestoredb
+```
+
+## Stockage vectoriel
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/singlestoredb).
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.singlestoredb.SingleStoreDB.html", "title": "SingleStoreDB"}]-->
+from langchain_community.vectorstores import SingleStoreDB
+```
+
+## Mémoire
+
+Voir un [exemple d'utilisation](/docs/integrations/memory/singlestoredb_chat_message_history).
+
+```python
+<!--IMPORTS:[{"imported": "SingleStoreDBChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory.html", "title": "SingleStoreDB"}]-->
+from langchain.memory import SingleStoreDBChatMessageHistory
+```

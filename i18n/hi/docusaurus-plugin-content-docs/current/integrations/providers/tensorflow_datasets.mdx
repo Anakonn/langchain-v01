@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# TensorFlow डेटासेट
+
+>[TensorFlow डेटासेट](https://www.tensorflow.org/datasets) एक ऐसा संग्रह है जो तैयार उपयोग के लिए उपलब्ध है,
+> TensorFlow या अन्य Python ML फ्रेमवर्क जैसे Jax के साथ। सभी डेटासेट को [tf.data.Datasets](https://www.tensorflow.org/api_docs/python/tf/data/Dataset) के रूप में प्रदर्शित किया जाता है,
+> आसान-से-उपयोग और उच्च-प्रदर्शन इनपुट पाइपलाइन को सक्षम करते हुए। शुरू करने के लिए [गाइड](https://www.tensorflow.org/datasets/overview) और
+> [डेटासेट की सूची](https://www.tensorflow.org/datasets/catalog/overview#all_datasets) देखें।
+
+## इंस्टॉलेशन और सेटअप
+
+आपको `tensorflow` और `tensorflow-datasets` पायथन पैकेज इंस्टॉल करने की आवश्यकता है।
+
+```bash
+pip install tensorflow
+```
+
+```bash
+pip install tensorflow-dataset
+```
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/tensorflow_datasets) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "TensorflowDatasetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tensorflow_datasets.TensorflowDatasetLoader.html", "title": "TensorFlow Datasets"}]-->
+from langchain_community.document_loaders import TensorflowDatasetLoader
+```

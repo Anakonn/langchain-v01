@@ -1,0 +1,164 @@
+---
+translated: true
+---
+
+# MLflow AI Gateway
+
+:::warning
+
+MLflow AI Gateway ha sido descontinuado. Por favor, use [MLflow Deployments for LLMs](/docs/integrations/providers/mlflow/) en su lugar.
+
+:::
+
+>[El servicio MLflow AI Gateway](https://www.mlflow.org/docs/latest/index.html) es una herramienta poderosa diseñada para simplificar el uso y la gestión de varios proveedores de modelos de lenguaje a gran escala (LLM), como OpenAI y Anthropic, dentro de una organización. Ofrece una interfaz de alto nivel que simplifica la interacción con estos servicios al proporcionar un punto final unificado para manejar solicitudes específicas relacionadas con LLM.
+
+## Instalación y configuración
+
+Instala `mlflow` con las dependencias de MLflow AI Gateway:
+
+```sh
+pip install 'mlflow[gateway]'
+```
+
+Establece la clave API de OpenAI como una variable de entorno:
+
+```sh
+export OPENAI_API_KEY=...
+```
+
+Crea un archivo de configuración:
+
+```yaml
+routes:
+  - name: completions
+    route_type: llm/v1/completions
+    model:
+      provider: openai
+      name: text-davinci-003
+      config:
+        openai_api_key: $OPENAI_API_KEY
+
+  - name: embeddings
+    route_type: llm/v1/embeddings
+    model:
+      provider: openai
+      name: text-embedding-ada-002
+      config:
+        openai_api_key: $OPENAI_API_KEY
+```
+
+Inicia el servidor Gateway:
+
+```sh
+mlflow gateway start --config-path /path/to/config.yaml
+```
+
+## Ejemplo proporcionado por `MLflow`
+
+>El módulo `mlflow.langchain` proporciona una API para registrar y cargar modelos `LangChain`.
+> Este módulo exporta modelos LangChain multivariados en el sabor langchain y modelos LangChain univariados
+> en el sabor pyfunc.
+
+Consulta la [documentación de la API y los ejemplos](https://www.mlflow.org/docs/latest/python_api/mlflow.langchain.html?highlight=langchain#module-mlflow.langchain).
+
+## Ejemplo de completaciones
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "MLflow AI Gateway"}, {"imported": "MlflowAIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway.html", "title": "MLflow AI Gateway"}]-->
+import mlflow
+from langchain.chains import LLMChain, PromptTemplate
+from langchain_community.llms import MlflowAIGateway
+
+gateway = MlflowAIGateway(
+    gateway_uri="http://127.0.0.1:5000",
+    route="completions",
+    params={
+        "temperature": 0.0,
+        "top_p": 0.1,
+    },
+)
+
+llm_chain = LLMChain(
+    llm=gateway,
+    prompt=PromptTemplate(
+        input_variables=["adjective"],
+        template="Tell me a {adjective} joke",
+    ),
+)
+result = llm_chain.run(adjective="funny")
+print(result)
+
+with mlflow.start_run():
+    model_info = mlflow.langchain.log_model(chain, "model")
+
+model = mlflow.pyfunc.load_model(model_info.model_uri)
+print(model.predict([{"adjective": "funny"}]))
+```
+
+## Ejemplo de incrustaciones
+
+```python
+<!--IMPORTS:[{"imported": "MlflowAIGatewayEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.mlflow_gateway.MlflowAIGatewayEmbeddings.html", "title": "MLflow AI Gateway"}]-->
+from langchain_community.embeddings import MlflowAIGatewayEmbeddings
+
+embeddings = MlflowAIGatewayEmbeddings(
+    gateway_uri="http://127.0.0.1:5000",
+    route="embeddings",
+)
+
+print(embeddings.embed_query("hello"))
+print(embeddings.embed_documents(["hello"]))
+```
+
+## Ejemplo de chat
+
+```python
+<!--IMPORTS:[{"imported": "ChatMLflowAIGateway", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.mlflow_ai_gateway.ChatMLflowAIGateway.html", "title": "MLflow AI Gateway"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "MLflow AI Gateway"}, {"imported": "SystemMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html", "title": "MLflow AI Gateway"}]-->
+from langchain_community.chat_models import ChatMLflowAIGateway
+from langchain_core.messages import HumanMessage, SystemMessage
+
+chat = ChatMLflowAIGateway(
+    gateway_uri="http://127.0.0.1:5000",
+    route="chat",
+    params={
+        "temperature": 0.1
+    }
+)
+
+messages = [
+    SystemMessage(
+        content="You are a helpful assistant that translates English to French."
+    ),
+    HumanMessage(
+        content="Translate this sentence from English to French: I love programming."
+    ),
+]
+print(chat(messages))
+```
+
+## Databricks MLflow AI Gateway
+
+Databricks MLflow AI Gateway está en vista previa privada.
+Comunícate con un representante de Databricks para inscribirte en la vista previa.
+
+```python
+<!--IMPORTS:[{"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "MLflow AI Gateway"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "MLflow AI Gateway"}, {"imported": "MlflowAIGateway", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.mlflow_ai_gateway.MlflowAIGateway.html", "title": "MLflow AI Gateway"}]-->
+from langchain.chains import LLMChain
+from langchain_core.prompts import PromptTemplate
+from langchain_community.llms import MlflowAIGateway
+
+gateway = MlflowAIGateway(
+    gateway_uri="databricks",
+    route="completions",
+)
+
+llm_chain = LLMChain(
+    llm=gateway,
+    prompt=PromptTemplate(
+        input_variables=["adjective"],
+        template="Tell me a {adjective} joke",
+    ),
+)
+result = llm_chain.run(adjective="funny")
+print(result)
+```

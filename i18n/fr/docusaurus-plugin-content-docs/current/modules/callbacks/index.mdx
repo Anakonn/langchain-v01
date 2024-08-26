@@ -1,0 +1,163 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# Callbacks
+
+:::info
+Rendez-vous sur [Intégrations](/docs/integrations/callbacks/) pour la documentation sur les intégrations de callbacks intégrées avec des outils tiers.
+:::
+
+LangChain fournit un système de callbacks qui vous permet de vous brancher sur les différentes étapes de votre application LLM. Cela est utile pour la journalisation, la surveillance, le streaming et d'autres tâches.
+
+Vous pouvez vous abonner à ces événements en utilisant l'argument `callbacks` disponible dans toute l'API. Cet argument est une liste d'objets gestionnaires, qui doivent implémenter une ou plusieurs des méthodes décrites ci-dessous de manière plus détaillée.
+
+## Gestionnaires de callbacks
+
+Les `CallbackHandlers` sont des objets qui implémentent l'interface `CallbackHandler`, qui a une méthode pour chaque événement auquel on peut s'abonner. Le `CallbackManager` appellera la méthode appropriée sur chaque gestionnaire lorsque l'événement sera déclenché.
+
+```python
+class BaseCallbackHandler:
+    """Base callback handler that can be used to handle callbacks from langchain."""
+
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> Any:
+        """Run when LLM starts running."""
+
+    def on_chat_model_start(
+        self, serialized: Dict[str, Any], messages: List[List[BaseMessage]], **kwargs: Any
+    ) -> Any:
+        """Run when Chat Model starts running."""
+
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> Any:
+        """Run on new LLM token. Only available when streaming is enabled."""
+
+    def on_llm_end(self, response: LLMResult, **kwargs: Any) -> Any:
+        """Run when LLM ends running."""
+
+    def on_llm_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when LLM errors."""
+
+    def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> Any:
+        """Run when chain starts running."""
+
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> Any:
+        """Run when chain ends running."""
+
+    def on_chain_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when chain errors."""
+
+    def on_tool_start(
+        self, serialized: Dict[str, Any], input_str: str, **kwargs: Any
+    ) -> Any:
+        """Run when tool starts running."""
+
+    def on_tool_end(self, output: Any, **kwargs: Any) -> Any:
+        """Run when tool ends running."""
+
+    def on_tool_error(
+        self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
+    ) -> Any:
+        """Run when tool errors."""
+
+    def on_text(self, text: str, **kwargs: Any) -> Any:
+        """Run on arbitrary text."""
+
+    def on_agent_action(self, action: AgentAction, **kwargs: Any) -> Any:
+        """Run on agent action."""
+
+    def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
+        """Run on agent end."""
+```
+
+## Démarrer
+
+LangChain fournit quelques gestionnaires intégrés que vous pouvez utiliser pour démarrer. Ils sont disponibles dans le module `langchain_core/callbacks`. Le gestionnaire le plus basique est le `StdOutCallbackHandler`, qui se contente de journaliser tous les événements sur `stdout`.
+
+**Remarque** : lorsque le drapeau `verbose` sur l'objet est défini sur true, le `StdOutCallbackHandler` sera invoqué même s'il n'est pas explicitement passé.
+
+```python
+<!--IMPORTS:[{"imported": "StdOutCallbackHandler", "source": "langchain_core.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_core.callbacks.stdout.StdOutCallbackHandler.html", "title": "Callbacks"}, {"imported": "LLMChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Callbacks"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Callbacks"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Callbacks"}]-->
+from langchain_core.callbacks import StdOutCallbackHandler
+from langchain.chains import LLMChain
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+# Constructor callback: First, let's explicitly set the StdOutCallbackHandler when initializing our chain
+chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler])
+chain.invoke({"number":2})
+
+# Use verbose flag: Then, let's use the `verbose` flag to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
+chain.invoke({"number":2})
+
+# Request callbacks: Finally, let's use the request `callbacks` to achieve the same result
+chain = LLMChain(llm=llm, prompt=prompt)
+chain.invoke({"number":2}, {"callbacks":[handler]})
+
+```
+
+```output
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+
+
+> Entering new LLMChain chain...
+Prompt after formatting:
+1 + 2 =
+
+> Finished chain.
+```
+
+## Où passer les callbacks
+
+Les `callbacks` sont disponibles sur la plupart des objets tout au long de l'API (Chains, Models, Tools, Agents, etc.) à deux endroits différents :
+
+- **Callbacks du constructeur** : définis dans le constructeur, par exemple `LLMChain(callbacks=[handler], tags=['a-tag'])`. Dans ce cas, les callbacks seront utilisés pour tous les appels effectués sur cet objet, et seront limités à cet objet uniquement, par exemple, si vous passez un gestionnaire au constructeur de `LLMChain`, il ne sera pas utilisé par le Model attaché à cette chaîne.
+- **Callbacks de requête** : définis dans la méthode 'invoke' utilisée pour émettre une requête. Dans ce cas, les callbacks ne seront utilisés que pour cette requête spécifique, et pour toutes les sous-requêtes qu'elle contient (par exemple, un appel à un LLMChain déclenche un appel à un Model, qui utilise le même gestionnaire passé dans la méthode `invoke()`). Dans la méthode `invoke()`, les callbacks sont transmis via le paramètre de configuration.
+Exemple avec la méthode 'invoke' (**Remarque** : la même approche peut être utilisée pour les méthodes `batch`, `ainvoke` et `abatch`) :
+
+```python
+handler = StdOutCallbackHandler()
+llm = OpenAI()
+prompt = PromptTemplate.from_template("1 + {number} = ")
+
+config = {
+    'callbacks' : [handler]
+}
+
+chain = prompt | chain
+chain.invoke({"number":2}, config=config)
+```
+
+**Remarque :** `chain = prompt | chain` est équivalent à `chain = LLMChain(llm=llm, prompt=prompt)` (consultez la [documentation de LangChain Expression Language (LCEL)](/docs/expression_language/) pour plus de détails)
+
+L'argument `verbose` est disponible sur la plupart des objets tout au long de l'API (Chains, Models, Tools, Agents, etc.) en tant qu'argument de constructeur, par exemple `LLMChain(verbose=True)`, et il est équivalent à passer un `ConsoleCallbackHandler` à l'argument `callbacks` de cet objet et de tous les objets enfants. Cela est utile pour le débogage, car cela journalisera tous les événements sur la console.
+
+### Quand voulez-vous utiliser chacun d'entre eux ?
+
+- Les callbacks du constructeur sont les plus utiles pour des cas d'utilisation tels que la journalisation, la surveillance, etc., qui ne sont _pas spécifiques à une seule requête_, mais plutôt à l'ensemble de la chaîne. Par exemple, si vous voulez journaliser toutes les requêtes effectuées à un `LLMChain`, vous passeriez un gestionnaire au constructeur.
+- Les callbacks de requête sont les plus utiles pour des cas d'utilisation tels que le streaming, où vous voulez diffuser la sortie d'une seule requête vers une connexion websocket spécifique, ou d'autres cas d'utilisation similaires. Par exemple, si vous voulez diffuser la sortie d'une seule requête vers un websocket, vous passeriez un gestionnaire à la méthode `invoke()`.

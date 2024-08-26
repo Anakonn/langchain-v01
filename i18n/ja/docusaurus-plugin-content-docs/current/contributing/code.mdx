@@ -1,0 +1,242 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# コードの貢献
+
+このプロジェクトに貢献するには、["fork and pull request"](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)ワークフローに従ってください。
+メンテナーでない限り、このリポジトリに直接プッシュしないでください。
+
+プルリクエストを開く際は、チェックインされたプルリクエストテンプレートに従ってください。関連する問題を記載し、関連するメンテナーにタグ付けしてください。
+
+フォーマット、リンティング、テストのチェックに合格しないと、プルリクエストはマージされません。これらのチェックをローカルで実行する方法については、[テスト](#テスト)と[フォーマットとリンティング](#フォーマットとリンティング)を参照してください。
+
+ドキュメントとテストの品質を維持することが不可欠です。以下の場合は:
+- バグを修正した
+  - 可能であれば、関連するユニットまたは統合テストを追加してください。これらは `tests/unit_tests` と `tests/integration_tests` にあります。
+- 改善を行った
+  - 影響を受けるすべてのサンプルノートブックとドキュメントを更新してください。これらは `docs` にあります。
+  - 関連するユニットおよび統合テストを更新してください。
+- 機能を追加した
+  - `docs/docs/` にデモノートブックを追加してください。
+  - ユニットおよび統合テストを追加してください。
+
+私たちは小さな進歩志向のチームです。何か追加または変更したいことがある場合は、プルリクエストを開くのが最良の方法です。
+
+## 🚀 クイックスタート
+
+このクイックスタートガイドでは、リポジトリをローカルで実行する方法を説明します。
+[開発コンテナ](https://containers.dev/)については、[.devcontainer フォルダ](https://github.com/langchain-ai/langchain/tree/master/.devcontainer)を参照してください。
+
+### 依存関係管理: Poetry とその他の環境/依存関係マネージャー
+
+このプロジェクトでは、依存関係マネージャーとして [Poetry](https://python-poetry.org/) v1.7.1+ を使用しています。
+
+❗注意: *Poetry をインストールする前に*、`Conda` を使用している場合は新しい Conda 環境を作成し、アクティブ化してください (例: `conda create -n langchain python=3.9`)
+
+Poetry のインストール: **[インストール方法のドキュメント](https://python-poetry.org/docs/#installation)**。
+
+❗注意: `Conda` または `Pyenv` を環境/パッケージマネージャーとして使用している場合は、Poetry をインストールした後、
+Poetry に仮想環境の Python 環境を使用するように指示してください (`poetry config virtualenvs.prefer-active-python true`)
+
+### 異なるパッケージ
+
+このリポジトリには複数のパッケージが含まれています:
+- `langchain-core`: 主要な抽象化のためのベースインターフェイスと、それらを連鎖させるためのロジック (LangChain Expression Language)。
+- `langchain-community`: 様々なコンポーネントの第三者統合。
+- `langchain`: アプリケーションの認知アーキテクチャを構成するチェーン、エージェント、およびリトリーバロジック。
+- `langchain-experimental`: 実験的なコンポーネントとチェーン。これらは、技術が新しく未だ検証中であるか、ほとんどの本番システムでは許可されないレベルの LLM アクセスを必要とする可能性があります。
+- パートナー統合: `libs/partners` のパートナーパッケージは、個別にバージョン管理されています。
+
+これらそれぞれに独自の開発環境があります。ドキュメントはトップレベルの Makefile から実行されますが、テストとリリースのフローは別々に分かれています。
+
+このクイックスタートでは、langchain-community から始めましょう。
+
+```bash
+cd libs/community
+```
+
+### ローカル開発の依存関係
+
+langchain-community の開発要件をインストールします (langchain の実行、サンプルの実行、リンティング、フォーマット、テスト、カバレッジ用):
+
+```bash
+poetry install --with lint,typing,test,test_integration
+```
+
+次に、依存関係のインストールを確認します:
+
+```bash
+make test
+```
+
+インストール中に `WheelFileValidationError` for `debugpy` が発生した場合は、Poetry v1.6.1+ を使用していることを確認してください。この問題は古いバージョンの Poetry (例: 1.4.1) で発生していましたが、新しいリリースで解決されています。
+v1.6.1+ でも同じ問題が発生する場合は、"modern installation" を無効にして (`poetry config installer.modern-installation false`) 、要件を再インストールすることもできます。
+詳細については、[この `debugpy` の問題](https://github.com/microsoft/debugpy/issues/1246)を参照してください。
+
+### テスト
+
+_`langchain`、`langchain-community`、`langchain-experimental` では、一部のテスト依存関係がオプションです。オプションの依存関係についてのセクションを参照してください。_
+
+ユニットテストは、外部 API への呼び出しを必要としないモジュールロジックをカバーしています。
+新しいロジックを追加する場合は、ユニットテストを追加してください。
+
+ユニットテストを実行するには:
+
+```bash
+make test
+```
+
+Dockerでユニットテストを実行するには:
+
+```bash
+make docker_tests
+```
+
+[統合テストとコードカバレッジ](/docs/contributing/testing/)もあります。
+
+### langchain_core または langchain_experimental のみを開発する
+
+`langchain_core` または `langchain_experimental` のみを開発する場合は、それぞれのプロジェクトの依存関係をインストールし、テストを実行できます:
+
+```bash
+cd libs/core
+poetry install --with test
+make test
+```
+
+または:
+
+```bash
+cd libs/experimental
+poetry install --with test
+make test
+```
+
+### フォーマットとリンティング
+
+PRを送信する前にローカルで実行してください。CIシステムでも確認されます。
+
+#### コードフォーマット
+
+このプロジェクトのフォーマットは [ruff](https://docs.astral.sh/ruff/rules/) で行われます。
+
+ドキュメント、クックブック、テンプレートのフォーマットを実行するには:
+
+```bash
+make format
+```
+
+ライブラリのフォーマットを実行するには、同じコマンドを該当するライブラリのディレクトリから実行します:
+
+```bash
+cd libs/{LIBRARY}
+make format
+```
+
+さらに、現在のブランチとmasterブランチの差分にある変更されたファイルのみをフォーマットするには、format_diffコマンドを使用できます:
+
+```bash
+make format_diff
+```
+
+これは、プロジェクトの一部分のみ変更した場合に、変更箇所のみをフォーマットし、他の部分に影響を与えないようにするのに特に便利です。
+
+#### Linting
+
+このプロジェクトのLintingは[ruff](https://docs.astral.sh/ruff/rules/)と[mypy](http://mypy-lang.org/)の組み合わせで行われます。
+
+docsやcookbook、templatesのLintingを実行するには:
+
+```bash
+make lint
+```
+
+ライブラリのLintingを実行するには、関連するライブラリのディレクトリから同じコマンドを実行します:
+
+```bash
+cd libs/{LIBRARY}
+make lint
+```
+
+さらに、現在のブランチとmasterブランチの差分のファイルのみをLintingする`lint_diff`コマンドを使うこともできます:
+
+```bash
+make lint_diff
+```
+
+これは、プロジェクトの一部分のみ変更した場合に、全体のコードベースをチェックせずに変更箇所のLintingを行えるので便利です。
+
+Lintingは面倒に感じられるかもしれませんが、良いコードを提供したい場合は、プロジェクトメンテナーに連絡して支援を求めてください。Lintingがコードの提供の障壁にならないよう配慮しています。
+
+#### Spellcheck
+
+このプロジェクトのSpellcheckは[codespell](https://github.com/codespell-project/codespell)を使って行われます。
+`codespell`は一般的なタイポを見つけますが、誤検知(正しくスペルされているが使用頻度が低い単語)や見逃し(スペルミスを見つけられない)がある可能性があります。
+
+このプロジェクトのSpellcheckを行うには:
+
+```bash
+make spell_check
+```
+
+その場所で修正するには:
+
+```bash
+make spell_fix
+```
+
+codespellが誤ってフラグを立てている単語がある場合は、`pyproject.toml`ファイルのcodespellの設定に追加することで、その単語のSpellcheckをスキップできます。
+
+```python
+[tool.codespell]
+...
+# Add here:
+ignore-words-list = 'momento,collison,ned,foor,reworkd,parth,whats,aapply,mysogyny,unsecure'
+```
+
+## Optional Dependenciesの扱い
+
+`langchain`、`langchain-community`、`langchain-experimental`は、パッケージを軽量に保つためにOptional Dependenciesを使用しています。
+
+`langchain-core`およびパートナーパッケージでは、このようなOptional Dependenciesは使用されていません。
+
+新しい依存関係を追加する必要があるのは、**ユニットテスト**で依存関係が必要な場合のみです。
+パッケージが**統合テスト**でのみ必要な場合は、pyproject.tomlやpoetry.lockのファイルを変更する必要はありません。
+
+Langchainに新しい依存関係を追加する場合は、それがOptional Dependencyであると想定し、ほとんどのユーザーがそれをインストールしていないことを前提とします。
+
+依存関係がインストールされていないユーザーは、コードをインポートする際に**警告、エラー、例外**が発生しないようにする必要があります。
+
+pyproject.tomlファイルに依存関係を正しく追加するには、以下の手順に従ってください:
+
+1. 依存関係をメイングループのOptional Dependencyとして追加
+  ```bash
+  poetry add --optional [package_name]
+  ```
+2. pyproject.tomlを開き、`extended_testing`エクストラに依存関係を追加
+3. poetryファイルをロックし直してエクストラを更新
+  ```bash
+  poetry lock --no-update
+  ```
+4. 新しいコードをできる限り軽量なフィクスチャを使ってテストするユニットテストを追加
+5. 依存関係を必要とするテストには`@pytest.mark.requires(package_name)`デコレータを使用
+
+## Jupyter Notebookの追加
+
+Jupyter Notebookの例を追加する場合は、`dev`の依存関係をインストールする必要があります。
+
+dev依存関係をインストールするには:
+
+```bash
+poetry install --with dev
+```
+
+Notebookを起動します:
+
+```bash
+poetry run jupyter notebook
+```
+
+`poetry install`を実行すると、`langchain`パッケージがeditableモードでvirtualenvにインストールされるので、新しいロジックをNotebookにインポートできます。

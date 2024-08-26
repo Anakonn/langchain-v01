@@ -1,0 +1,46 @@
+---
+hide_table_of_contents: true
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# Analyseurs de sortie
+
+Les analyseurs de sortie sont chargés de prendre la sortie d'un LLM et de la transformer dans un format plus adapté. Cela est très utile lorsque vous utilisez des LLM pour générer toute forme de données structurées.
+
+Outre la possession d'une grande collection de différents types d'analyseurs de sortie, un avantage distinctif des analyseurs de sortie LangChain est que beaucoup d'entre eux prennent en charge le streaming.
+
+## [Démarrage rapide](./quick_start)
+
+Consultez [ce guide de démarrage rapide](./quick_start) pour une introduction aux analyseurs de sortie et à la façon de travailler avec eux.
+
+## Types de parseur de sortie
+
+LangChain a de nombreux types différents de `parseurs de sortie`.
+
+Colonnes du tableau :
+
+- **Nom** : Le nom du parseur de sortie
+- **Prend en charge le streaming** : Si le parseur de sortie prend en charge le streaming.
+- **A des instructions de format** : Si le parseur de sortie a des instructions de format. Cela est généralement disponible sauf lorsque (a) le schéma souhaité n'est pas spécifié dans l'invite mais dans d'autres paramètres (comme l'appel de fonction OpenAI), ou (b) lorsque l'OutputParser enveloppe un autre OutputParser.
+- **Appelle LLM** : Si ce parseur de sortie appelle lui-même un LLM. Cela n'est généralement fait que par les parseurs de sortie qui tentent de corriger une sortie mal formatée.
+- **Type d'entrée** : Type d'entrée attendu. La plupart des parseurs de sortie fonctionnent à la fois sur les chaînes de caractères et les messages, mais certains (comme OpenAI Functions) ont besoin d'un message avec des kwargs spécifiques.
+- **Type de sortie** : Le type de sortie de l'objet renvoyé par le parseur.
+- **Description** : Notre commentaire sur ce parseur de sortie et quand l'utiliser.
+
+| Nom                                                 | Prend en charge le streaming | A des instructions de format | Appelle LLM | Type d'entrée                     | Type de sortie       | Description                                                                                                                                                                                                                                             |
+|-----------------------------------------------------|------------------------------|------------------------------|-------------|-----------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [OpenAITools](./types/openai_tools)                 |                              | (Passe `tools` au modèle)     |             | `Message` (avec `tool_choice`)    | Objet JSON           | Utilise les derniers arguments d'appel de fonction OpenAI `tools` et `tool_choice` pour structurer la sortie de retour. Si vous utilisez un modèle qui prend en charge l'appel de fonction, c'est généralement la méthode la plus fiable.                |
+| [OpenAIFunctions](./types/openai_functions)         | ✅                             | (Passe `functions` au modèle) |             | `Message` (avec `function_call`)  | Objet JSON           | Utilise les arguments d'appel de fonction OpenAI hérités `functions` et `function_call` pour structurer la sortie de retour.                                                                                                                            |
+| [JSON](./types/json)                                | ✅                             | ✅                            |             | `str` \| `Message`                | Objet JSON           | Renvoie un objet JSON tel que spécifié. Vous spécifiez un modèle Pydantic et il renverra du JSON pour ce modèle. Probablement le parseur de sortie le plus fiable pour obtenir des données structurées qui n'utilisent PAS l'appel de fonction.           |
+| [XML](./types/xml)                                  | ✅                             | ✅                            |             | `str` \| `Message`                | `dict`              | Renvoie un dictionnaire de balises. À utiliser lorsque la sortie XML est nécessaire. À utiliser avec des modèles qui sont bons pour écrire du XML (comme ceux d'Anthropic).                                                                            |
+| [CSV](./types/csv)                                  | ✅                             | ✅                            |             | `str` \| `Message`                | `List[str]`         | Renvoie une liste de valeurs séparées par des virgules.                                                                                                                                                                                                |
+| [OutputFixing](./types/output_fixing)               |                               |                              | ✅           | `str` \| `Message`                |                     | Enveloppe un autre parseur de sortie. Si ce parseur de sortie renvoie une erreur, alors celui-ci transmettra le message d'erreur et la mauvaise sortie à un LLM et lui demandera de corriger la sortie.                                                |
+| [RetryWithError](./types/retry)                     |                               |                              | ✅           | `str` \| `Message`                |                     | Enveloppe un autre parseur de sortie. Si ce parseur de sortie renvoie une erreur, alors celui-ci transmettra les entrées d'origine, la mauvaise sortie et le message d'erreur à un LLM et lui demandera de le corriger. Comparé à `OutputFixingParser`, celui-ci envoie également les instructions d'origine. |
+| [Pydantic](./types/pydantic)                        |                               | ✅                            |             | `str` \| `Message`                | `pydantic.BaseModel` | Prend un modèle Pydantic défini par l'utilisateur et renvoie les données dans ce format.                                                                                                                                                             |
+| [YAML](./types/yaml)                                |                               | ✅                            |             | `str` \| `Message`                | `pydantic.BaseModel` | Prend un modèle Pydantic défini par l'utilisateur et renvoie les données dans ce format. Utilise YAML pour le coder.                                                                                                                                    |
+| [PandasDataFrame](./types/pandas_dataframe)         |                               | ✅                            |             | `str` \| `Message`                | `dict`              | Utile pour effectuer des opérations avec les pandas DataFrames.                                                                                                                                                                                        |
+| [Enum](./types/enum)                                |                               | ✅                            |             | `str` \| `Message`                | `Enum`              | Analyse la réponse dans l'une des valeurs d'enum fournies.                                                                                                                                                                                            |
+| [Datetime](./types/datetime)                        |                               | ✅                            |             | `str` \| `Message`                | `datetime.datetime` | Analyse la réponse dans une chaîne de caractères de date et heure.                                                                                                                                                                                    |
+| [Structured](./types/structured)                    |                               | ✅                            |             | `str` \| `Message`                | `Dict[str, str]`    | Un parseur de sortie qui renvoie des informations structurées. Il est moins puissant que d'autres parseurs de sortie car il ne permet que des champs de type chaîne de caractères. Cela est utile lorsque vous travaillez avec des LLM plus petits.       |

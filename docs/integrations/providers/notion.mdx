@@ -1,0 +1,32 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/notion
+translated: false
+---
+
+# Notion DB
+
+>[Notion](https://www.notion.so/) is a collaboration platform with modified Markdown support that integrates kanban
+> boards, tasks, wikis and databases. It is an all-in-one workspace for notetaking, knowledge and data management,
+> and project and task management.
+
+## Installation and Setup
+
+All instructions are in examples below.
+
+## Document Loader
+
+We have two different loaders: `NotionDirectoryLoader` and `NotionDBLoader`.
+
+See a [usage example for the NotionDirectoryLoader](/docs/integrations/document_loaders/notion).
+
+```python
+<!--IMPORTS:[{"imported": "NotionDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notion.NotionDirectoryLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDirectoryLoader
+```
+
+See a [usage example for the NotionDBLoader](/docs/integrations/document_loaders/notiondb).
+
+```python
+<!--IMPORTS:[{"imported": "NotionDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notiondb.NotionDBLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDBLoader
+```

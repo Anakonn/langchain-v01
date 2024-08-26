@@ -1,0 +1,64 @@
+---
+translated: true
+---
+
+# Oracle Cloud Infrastructure (OCI)
+
+Les intégrations `LangChain` liées à [Oracle Cloud Infrastructure](https://www.oracle.com/artificial-intelligence/).
+
+## LLMs
+
+### OCI Generative AI
+
+> Oracle Cloud Infrastructure (OCI) [Generative AI](https://docs.oracle.com/en-us/iaas/Content/generative-ai/home.htm) est un service entièrement géré qui fournit un ensemble de modèles de langage de pointe et personnalisables (LLM) couvrant un large éventail de cas d'utilisation, et qui sont accessibles via une seule API.
+> En utilisant le service OCI Generative AI, vous pouvez accéder à des modèles préentraînés prêts à l'emploi ou créer et héberger vos propres modèles personnalisés affinés en fonction de vos propres données sur des grappes IA dédiées.
+
+Pour l'utiliser, vous devez avoir le dernier SDK python `oci` installé.
+
+```bash
+pip install -U oci
+```
+
+Voir [exemples d'utilisation](/docs/integrations/llms/oci_generative_ai).
+
+```python
+<!--IMPORTS:[{"imported": "OCIGenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.oci_generative_ai.OCIGenAI.html", "title": "Oracle Cloud Infrastructure (OCI)"}]-->
+from langchain_community.llms import OCIGenAI
+```
+
+### Point de terminaison de déploiement de modèle OCI Data Science
+
+> [OCI Data Science](https://docs.oracle.com/en-us/iaas/data-science/using/home.htm) est une
+> plateforme entièrement gérée et sans serveur pour les équipes de science des données. En utilisant la plateforme OCI Data Science,
+> vous pouvez construire, entraîner et gérer des modèles d'apprentissage automatique, puis les déployer
+> en tant que point de terminaison de déploiement de modèle OCI en utilisant le
+> [service de déploiement de modèle OCI Data Science](https://docs.oracle.com/en-us/iaas/data-science/using/model-dep-about.htm).
+
+Si vous avez déployé un LLM avec le cadre VLLM ou TGI, vous pouvez utiliser les
+classes `OCIModelDeploymentVLLM` ou `OCIModelDeploymentTGI` pour interagir avec lui.
+
+Pour l'utiliser, vous devez avoir le dernier SDK python `oracle-ads` installé.
+
+```bash
+pip install -U oracle-ads
+```
+
+Voir [exemples d'utilisation](/docs/integrations/llms/oci_model_deployment_endpoint).
+
+```python
+<!--IMPORTS:[{"imported": "OCIModelDeploymentVLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentVLLM.html", "title": "Oracle Cloud Infrastructure (OCI)"}, {"imported": "OCIModelDeploymentTGI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.oci_data_science_model_deployment_endpoint.OCIModelDeploymentTGI.html", "title": "Oracle Cloud Infrastructure (OCI)"}]-->
+from langchain_community.llms import OCIModelDeploymentVLLM
+
+from langchain_community.llms import OCIModelDeploymentTGI
+```
+
+## Modèles d'incorporation de texte
+
+### OCI Generative AI
+
+Voir [exemples d'utilisation](/docs/integrations/text_embedding/oci_generative_ai).
+
+```python
+<!--IMPORTS:[{"imported": "OCIGenAIEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.oci_generative_ai.OCIGenAIEmbeddings.html", "title": "Oracle Cloud Infrastructure (OCI)"}]-->
+from langchain_community.embeddings import OCIGenAIEmbeddings
+```

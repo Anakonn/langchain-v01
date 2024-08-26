@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Doctran
+
+>[Doctran](https://github.com/psychic-api/doctran)은 파이썬 패키지입니다. LLM과 오픈 소스 NLP 라이브러리를 사용하여 원시 텍스트를 벡터 공간 검색에 최적화된 깨끗하고 구조화된 정보 밀도가 높은 문서로 변환합니다. `Doctran`을 더러운 문자열이 들어가고 깨끗하고 레이블이 지정된 문자열이 나오는 블랙박스로 생각할 수 있습니다.
+
+## 설치 및 설정
+
+```bash
+pip install doctran
+```
+
+## 문서 변환기
+
+### 문서 질문기
+
+[DoctranQATransformer 사용 예제](/docs/integrations/document_transformers/doctran_interrogate_document)를 참조하세요.
+
+```python
+from langchain_community.document_loaders import DoctranQATransformer
+```
+
+### 속성 추출기
+
+[DoctranPropertyExtractor 사용 예제](/docs/integrations/document_transformers/doctran_extract_properties)를 참조하세요.
+
+```python
+from langchain_community.document_loaders import DoctranPropertyExtractor
+```
+
+### 문서 번역기
+
+[DoctranTextTranslator 사용 예제](/docs/integrations/document_transformers/doctran_translate_document)를 참조하세요.
+
+```python
+from langchain_community.document_loaders import DoctranTextTranslator
+```

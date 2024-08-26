@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# Doctran
+
+>[Doctran](https://github.com/psychic-api/doctran) es un paquete de Python. Utiliza LLM y bibliotecas de procesamiento de lenguaje natural de código abierto para transformar texto sin procesar en documentos limpios, estructurados y densos en información que están optimizados para la recuperación de espacios vectoriales. Puedes pensar en `Doctran` como una caja negra donde entran cadenas desordenadas y salen cadenas etiquetadas, limpias y agradables.
+
+## Instalación y configuración
+
+```bash
+pip install doctran
+```
+
+## Transformadores de documentos
+
+### Interrogador de documentos
+
+Consulta un [ejemplo de uso para DoctranQATransformer](/docs/integrations/document_transformers/doctran_interrogate_document).
+
+```python
+from langchain_community.document_loaders import DoctranQATransformer
+```
+
+### Extractor de propiedades
+
+Consulta un [ejemplo de uso para DoctranPropertyExtractor](/docs/integrations/document_transformers/doctran_extract_properties).
+
+```python
+from langchain_community.document_loaders import DoctranPropertyExtractor
+```
+
+### Traductor de documentos
+
+Consulta un [ejemplo de uso para DoctranTextTranslator](/docs/integrations/document_transformers/doctran_translate_document).
+
+```python
+from langchain_community.document_loaders import DoctranTextTranslator
+```

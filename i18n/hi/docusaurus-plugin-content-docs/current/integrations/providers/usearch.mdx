@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# USearch
+
+>[USearch](https://unum-cloud.github.io/usearch/) एक छोटा और तेज़ एकल फ़ाइल वेक्टर सर्च इंजन है।
+
+>`USearch` की मूल कार्यक्षमता `FAISS` के समान है, और यह इंटरफ़ेस परिचित लगेगा यदि आप कभी भी लगभग निकटतम पड़ोसियों खोज का अन्वेषण किया है।
+> `USearch` और `FAISS` दोनों `HNSW` एल्गोरिदम का उपयोग करते हैं, लेकिन उनकी डिज़ाइन सिद्धांतों में काफी अंतर है। `USearch` कॉम्पैक्ट है और प्रदर्शन को कम किए बिना `FAISS` के साथ व्यापक रूप से संगत है, उपयोगकर्ता परिभाषित मीट्रिक्स और कम निर्भरताओं पर प्राथमिक ध्यान केंद्रित है।
+
+## स्थापना और सेटअप
+
+हमें `usearch` पायथन पैकेज स्थापित करने की आवश्यकता है।
+
+```bash
+pip install usearch
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/usearch) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "USearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.usearch.USearch.html", "title": "USearch"}]-->
+from langchain_community.vectorstores import USearch
+```

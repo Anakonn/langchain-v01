@@ -1,0 +1,43 @@
+---
+translated: true
+---
+
+# Apify
+
+>[Apify](https://apify.com)は、Web スクレイピングとデータ抽出のためのクラウドプラットフォームで、
+>さまざまなスクレイピング、クロール、抽出のユースケースに対応した
+>1,000 以上の事前構築されたアプリ「*Actors*」のエコシステム[](https://apify.com/store)を提供しています。
+
+[![Apify Actors](/img/ApifyActors.png)](https://apify.com/store)
+
+このインテグレーションにより、`Apify`プラットフォーム上でActorsを実行し、その結果をLangChainにロードして、
+ウェブサイトのドキュメント、ブログ、ナレッジベースなどからドキュメントとデータをベクトルインデックスに供給し、
+回答を生成することができます。
+
+## インストールとセットアップ
+
+- Python用のApify APIクライアントを`pip install apify-client`でインストールします
+- [Apify APIトークン](https://console.apify.com/account/integrations)を取得し、環境変数(`APIFY_API_TOKEN`)に設定するか、
+  `ApifyWrapper`のコンストラクタに`apify_api_token`として渡します。
+
+## ユーティリティ
+
+`ApifyWrapper`を使ってApifyプラットフォーム上でActorsを実行することができます。
+
+```python
+<!--IMPORTS:[{"imported": "ApifyWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.apify.ApifyWrapper.html", "title": "Apify"}]-->
+from langchain_community.utilities import ApifyWrapper
+```
+
+このラッパーの詳細な使用方法については、[このノートブック](/docs/integrations/tools/apify)を参照してください。
+
+## ドキュメントローダー
+
+`ApifyDatasetLoader`を使ってApifyデータセットからデータを取得することもできます。
+
+```python
+<!--IMPORTS:[{"imported": "ApifyDatasetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.apify_dataset.ApifyDatasetLoader.html", "title": "Apify"}]-->
+from langchain_community.document_loaders import ApifyDatasetLoader
+```
+
+このローダーの詳細な使用方法については、[このノートブック](/docs/integrations/document_loaders/apify_dataset)を参照してください。

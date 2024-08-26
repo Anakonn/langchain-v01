@@ -1,0 +1,62 @@
+---
+fixed: true
+translated: true
+---
+
+# 📕 Versión del paquete
+
+Hasta ahora, LangChain tiene un proceso de lanzamiento ad hoc: los lanzamientos se realizan con alta frecuencia por un mantenedor y se publican en [PyPI](https://pypi.org/).
+
+Los diferentes paquetes se versionan de manera ligeramente diferente.
+
+## `langchain-core`
+
+`langchain-core` se encuentra actualmente en la versión `0.1.x`.
+
+Como `langchain-core` contiene las abstracciones base y el entorno de ejecución para todo el ecosistema de LangChain, comunicaremos cualquier cambio importante con un aviso previo y un aumento de versión. La excepción a esto es cualquier cosa marcada con el decorador `beta` (puedes verlo en la referencia de la API y verás advertencias al usar dicha funcionalidad). La razón de las funciones beta es que, dado el ritmo de cambio del campo, poder moverse rápidamente sigue siendo una prioridad.
+
+Los aumentos de versión menor ocurrirán por:
+
+- Cambios importantes en cualquier interfaz pública marcada como `beta`.
+
+Los aumentos de versión de parche ocurrirán por:
+
+- Corrección de errores
+- Nuevas funciones
+- Cualquier cambio en las interfaces privadas
+- Cualquier cambio en las funciones `beta`
+
+## `langchain`
+
+`langchain` se encuentra actualmente en la versión `0.1.x`
+
+Los aumentos de versión menor ocurrirán por:
+
+- Cambios importantes en cualquier interfaz pública NO marcada como `beta`.
+
+Los aumentos de versión de parche ocurrirán por:
+
+- Corrección de errores
+- Nuevas funciones
+- Cualquier cambio en las interfaces privadas
+- Cualquier cambio en las funciones `beta`
+
+Estamos trabajando en el lanzamiento de `langchain` v0.2, que tendrá algunos cambios importantes en las Cadenas y Agentes heredados.
+
+Además, eliminaremos `langchain-community` como dependencia y dejaremos de re-exportar integraciones que se hayan trasladado a `langchain-community`.
+
+## `langchain-community`
+
+`langchain-community` se encuentra actualmente en la versión `0.0.x`
+
+Todos los cambios irán acompañados de un aumento de versión de parche.
+
+## `langchain-experimental`
+
+`langchain-experimental` se encuentra actualmente en la versión `0.0.x`
+
+Todos los cambios irán acompañados de un aumento de versión de parche.
+
+## Paquetes de socios
+
+Los paquetes de socios se versionan de forma independiente.

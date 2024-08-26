@@ -1,0 +1,94 @@
+---
+translated: true
+---
+
+# Airbyte Hubspot (डिप्रीकेटेड)
+
+नोट: `AirbyteHubspotLoader` डिप्रीकेटेड है। कृपया [`AirbyteLoader`](/docs/integrations/document_loaders/airbyte) का उपयोग करें।
+
+>[Airbyte](https://github.com/airbytehq/airbyte) एक डेटा एकीकरण प्लेटफॉर्म है जो API, डेटाबेस और फ़ाइलों से वेयरहाउस और लेक्स तक के ELT पाइपलाइन के लिए है। इसके पास डेटा वेयरहाउस और डेटाबेस के लिए सबसे बड़ा कैटलॉग का ELT कनेक्टर है।
+
+यह लोडर हब्सपॉट कनेक्टर को एक दस्तावेज़ लोडर के रूप में एक्सपोज़ करता है, जिससे आप विभिन्न हब्सपॉट ऑब्जेक्ट्स को दस्तावेज़ के रूप में लोड कर सकते हैं।
+
+## इंस्टॉलेशन
+
+पहले, आपको `airbyte-source-hubspot` पायथन पैकेज इंस्टॉल करना होगा।
+
+```python
+%pip install --upgrade --quiet  airbyte-source-hubspot
+```
+
+## उदाहरण
+
+कॉन्फ़िगर करने के बारे में विस्तृत जानकारी के लिए [Airbyte दस्तावेज़ पृष्ठ](https://docs.airbyte.com/integrations/sources/hubspot/) देखें।
+कॉन्फ़िग ऑब्जेक्ट का JSON स्कीमा जिसका पालन किया जाना चाहिए, GitHub पर पाया जा सकता है: [https://github.com/airbytehq/airbyte/blob/master/airbyte-integrations/connectors/source-hubspot/source_hubspot/spec.yaml](https://github.com/airbytehq/airbyte/blob/master/airbyte-integrations/connectors/source-hubspot/source_hubspot/spec.yaml)।
+
+सामान्य आकार इस प्रकार दिखता है:
+
+```python
+{
+  "start_date": "<date from which to start retrieving records from in ISO format, e.g. 2020-10-20T00:00:00Z>",
+  "credentials": {
+    "credentials_title": "Private App Credentials",
+    "access_token": "<access token of your private app>"
+  }
+}
+```
+
+डिफ़ॉल्ट रूप से सभी फ़ील्ड मेटाडेटा में संग्रहीत होते हैं और पाठ को खाली स्ट्रिंग सेट किया जाता है। रीडर द्वारा लौटाए गए दस्तावेज़ों को ट्रांसफ़ॉर्म करके दस्तावेज़ का पाठ्य निर्मित करें।
+
+```python
+from langchain_community.document_loaders.airbyte import AirbyteHubspotLoader
+
+config = {
+    # your hubspot configuration
+}
+
+loader = AirbyteHubspotLoader(
+    config=config, stream_name="products"
+)  # check the documentation linked above for a list of all streams
+```
+
+अब आप दस्तावेज़ को सामान्य तरीके से लोड कर सकते हैं।
+
+```python
+docs = loader.load()
+```
+
+क्योंकि `load` एक सूची लौटाता है, यह सभी दस्तावेज़ लोड होने तक रोक देगा। इस प्रक्रिया पर बेहतर नियंत्रण प्राप्त करने के लिए, आप `lazy_load` विधि का भी उपयोग कर सकते हैं जो एक इटरेटर लौटाता है:
+
+```python
+docs_iterator = loader.lazy_load()
+```
+
+ध्यान रखें कि डिफ़ॉल्ट रूप से पृष्ठ सामग्री खाली है और मेटाडेटा ऑब्जेक्ट में रिकॉर्ड से सभी जानकारी होती है। दस्तावेज़ों को प्रोसेस करने के लिए, आधार लोडर से अनुरासित एक क्लास बनाएं और `_handle_records` विधि को स्वयं लागू करें:
+
+```python
+from langchain_community.docstore.document import Document
+
+
+def handle_record(record, id):
+    return Document(page_content=record.data["title"], metadata=record.data)
+
+
+loader = AirbyteHubspotLoader(
+    config=config, record_handler=handle_record, stream_name="products"
+)
+docs = loader.load()
+```
+
+## इनक्रीमेंटल लोड
+
+कुछ स्ट्रीम्स इनक्रीमेंटल लोडिंग की अनुमति देते हैं, यह मतलब है कि स्रोत सिंक किए गए रिकॉर्डों को ट्रैक रखता है और उन्हें फिर से लोड नहीं करता है। यह उन स्रोतों के लिए उपयोगी है जिनमें बहुत अधिक डेटा है और बार-बार अपडेट किया जाता है।
+
+इसका लाभ उठाने के लिए, लोडर के `last_state` गुण को संग्रहीत करें और लोडर बनाते समय इसे पास करें। यह सुनिश्चित करेगा कि केवल नए रिकॉर्ड लोड किए जाएं।
+
+```python
+last_state = loader.last_state  # store safely
+
+incremental_loader = AirbyteHubspotLoader(
+    config=config, stream_name="products", state=last_state
+)
+
+new_docs = incremental_loader.load()
+```

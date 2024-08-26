@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Argilla
+
+>[Argilla](https://argilla.io/)は、LLMのためのオープンソースのデータキュレーションプラットフォームです。
+>`Argilla`を使えば、人間とマシンのフィードバックを使って、より迅速なデータキュレーションを通じて、堅牢な言語モデルを誰もが構築できます。`Argilla`は、データラベリングからモデル監視まで、MLOpsサイクルのすべての段階をサポートしています。
+
+## インストールとセットアップ
+
+[APIキー](https://platform.openai.com/account/api-keys)を取得してください。
+
+Pythonパッケージをインストールします:
+
+```bash
+pip install argilla
+```
+
+## コールバック
+
+```python
+<!--IMPORTS:[{"imported": "ArgillaCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.argilla_callback.ArgillaCallbackHandler.html", "title": "Argilla"}]-->
+from langchain.callbacks import ArgillaCallbackHandler
+```
+
+[例](/docs/integrations/callbacks/argilla)を参照してください。

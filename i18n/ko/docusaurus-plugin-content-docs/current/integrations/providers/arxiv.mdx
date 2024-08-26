@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# 아카이브
+
+>[arXiv](https://arxiv.org/)는 물리학, 수학, 컴퓨터 과학, 정량 생물학, 정량 금융, 통계, 전기 공학 및 시스템 과학, 경제학 분야의 200만 건의 학술 논문을 제공하는 오픈 액세스 아카이브입니다.
+
+## 설치 및 설정
+
+먼저 `arxiv` Python 패키지를 설치해야 합니다.
+
+```bash
+pip install arxiv
+```
+
+다음으로 `PyMuPDF` Python 패키지를 설치해야 합니다. 이 패키지는 `arxiv.org` 사이트에서 다운로드한 PDF 파일을 텍스트 형식으로 변환합니다.
+
+```bash
+pip install pymupdf
+```
+
+## 문서 로더
+
+[사용 예시](/docs/integrations/document_loaders/arxiv)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ArxivLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.arxiv.ArxivLoader.html", "title": "Arxiv"}]-->
+from langchain_community.document_loaders import ArxivLoader
+```
+
+## 리트리버
+
+[사용 예시](/docs/integrations/retrievers/arxiv)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ArxivRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.arxiv.ArxivRetriever.html", "title": "Arxiv"}]-->
+from langchain.retrievers import ArxivRetriever
+```

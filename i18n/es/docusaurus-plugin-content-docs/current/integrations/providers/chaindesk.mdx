@@ -1,0 +1,21 @@
+---
+translated: true
+---
+
+# Escritorio de cadena
+
+>[Escritorio de cadena](https://chaindesk.ai) es una plataforma de recuperación de documentos [de código abierto](https://github.com/gmpetrov/databerry) que ayuda a conectar sus datos personales con Modelos de Lenguaje Grande.
+
+## Instalación y configuración
+
+Necesitamos registrarnos en Chaindesk, crear un almacén de datos, agregar algunos datos y obtener la URL del punto final de la API de su almacén de datos.
+Necesitamos la [Clave API](https://docs.chaindesk.ai/api-reference/authentication).
+
+## Recuperador
+
+Consulte un [ejemplo de uso](/docs/integrations/retrievers/chaindesk).
+
+```python
+<!--IMPORTS:[{"imported": "ChaindeskRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.chaindesk.ChaindeskRetriever.html", "title": "Chaindesk"}]-->
+from langchain.retrievers import ChaindeskRetriever
+```

@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# नेब्यूला
+
+यह पृष्ठ [नेब्यूला](https://symbl.ai/nebula), [Symbl.ai](https://symbl.ai/) के एलएलएम पारिस्थितिकी तंत्र का LangChain में उपयोग करने को कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट नेब्यूला रैपर संदर्भ।
+
+## स्थापना और सेटअप
+
+- एक [नेब्यूला एपीआई कुंजी](https://info.symbl.ai/Nebula_Private_Beta.html) प्राप्त करें और इसे पर्यावरण चर `NEBULA_API_KEY` के रूप में सेट करें
+- अधिक जानकारी के लिए कृपया [नेब्यूला दस्तावेज़ीकरण](https://docs.symbl.ai/docs/nebula-llm) देखें।
+
+### एलएलएम
+
+एक नेब्यूला एलएलएम रैपर मौजूद है, जिसका उपयोग आप इस प्रकार कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "Nebula", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.symblai_nebula.Nebula.html", "title": "Nebula"}]-->
+from langchain_community.llms import Nebula
+llm = Nebula()
+```

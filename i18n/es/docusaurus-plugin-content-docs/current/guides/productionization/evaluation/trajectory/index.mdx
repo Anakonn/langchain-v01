@@ -1,0 +1,29 @@
+---
+sidebar_position: 4
+translated: true
+---
+
+# Evaluadores de Trayectoria
+
+Los Evaluadores de Trayectoria en LangChain proporcionan un enfoque más holístico para evaluar a un agente. Estos evaluadores evalúan la secuencia completa de acciones tomadas por un agente y sus respuestas correspondientes, a lo que nos referimos como la "trayectoria". Esto le permite medir mejor la eficacia y las capacidades de un agente.
+
+Un Evaluador de Trayectoria implementa la interfaz `AgentTrajectoryEvaluator`, que requiere dos métodos principales:
+
+- `evaluate_agent_trajectory`: Este método evalúa de forma sincrónica la trayectoria de un agente.
+- `aevaluate_agent_trajectory`: Este homólogo asíncrono permite que las evaluaciones se ejecuten en paralelo para mayor eficiencia.
+
+Ambos métodos aceptan tres parámetros principales:
+
+- `input`: La entrada inicial dada al agente.
+- `prediction`: La respuesta final predicha por el agente.
+- `agent_trajectory`: Los pasos intermedios tomados por el agente, dados como una lista de tuplas.
+
+Estos métodos devuelven un diccionario. Se recomienda que las implementaciones personalizadas devuelvan un `score` (un número flotante que indica la eficacia del agente) y un `reasoning` (una cadena que explica el razonamiento detrás de la puntuación).
+
+Puede capturar la trayectoria de un agente inicializando el agente con el parámetro `return_intermediate_steps=True`. Esto le permite recopilar todos los pasos intermedios sin depender de callbacks especiales.
+
+Para profundizar en la implementación y el uso de los Evaluadores de Trayectoria, consulte las secciones a continuación.
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

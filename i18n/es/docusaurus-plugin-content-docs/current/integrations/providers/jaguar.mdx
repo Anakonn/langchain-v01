@@ -1,0 +1,65 @@
+---
+traducido: falso
+translated: true
+---
+
+# Jaguar
+
+Esta página describe cómo usar la base de datos de vectores Jaguar dentro de LangChain.
+Contiene tres secciones: introducción, instalación y configuración, y API de Jaguar.
+
+## Introducción
+
+La base de datos de vectores Jaguar tiene las siguientes características:
+
+1. Es una base de datos de vectores distribuida
+2. La función "ZeroMove" de JaguarDB permite una escalabilidad horizontal instantánea
+3. Multimodal: incrustaciones, texto, imágenes, videos, PDF, audio, series temporales y geoespacial
+4. Todos los maestros: permite lecturas y escrituras paralelas
+5. Capacidades de detección de anomalías
+6. Soporte RAG: combina LLM con datos propietarios y en tiempo real
+7. Metadatos compartidos: intercambio de metadatos entre múltiples índices de vectores
+8. Métricas de distancia: Euclidiana, Coseno, InnerProduct, Manhatten, Chebyshev, Hamming, Jeccard, Minkowski
+
+[Descripción general de la base de datos de vectores escalable Jaguar](http://www.jaguardb.com)
+
+Puede ejecutar JaguarDB en un contenedor docker; o descargar el software y ejecutarlo en la nube o fuera de ella.
+
+## Instalación y configuración
+
+- Instale JaguarDB en un host o en varios hosts
+- Instale el servidor Jaguar HTTP Gateway en un host
+- Instale el paquete Jaguar HTTP Client
+
+Los pasos se describen en [Documentos de Jaguar](http://www.jaguardb.com/support.html)
+
+Variables de entorno en programas cliente:
+
+    export OPENAI_API_KEY="......"
+    export JAGUAR_API_KEY="......"
+
+## API de Jaguar
+
+Junto con LangChain, se proporciona una clase de cliente de Jaguar importándola en Python:
+
+```python
+<!--IMPORTS:[{"imported": "Jaguar", "source": "langchain_community.vectorstores.jaguar", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.jaguar.Jaguar.html", "title": "Jaguar"}]-->
+from langchain_community.vectorstores.jaguar import Jaguar
+```
+
+Las funciones de API compatibles de la clase Jaguar son:
+
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `is_anomalous`
+- `create`
+- `delete`
+- `clear`
+- `drop`
+- `login`
+- `logout`
+
+Para más detalles sobre la API de Jaguar, consulte [este cuaderno](/docs/integrations/vectorstores/jaguar)

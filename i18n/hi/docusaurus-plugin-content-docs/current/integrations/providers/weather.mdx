@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# मौसम
+
+>[OpenWeatherMap](https://openweathermap.org/) एक ओपन-सोर्स मौसम सेवा प्रदाता है।
+
+## स्थापना और सेटअप
+
+```bash
+pip install pyowm
+```
+
+हमें `OpenWeatherMap API टोकन` सेट करना होगा।
+
+## दस्तावेज़ लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/weather) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "WeatherDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.weather.WeatherDataLoader.html", "title": "Weather"}]-->
+from langchain_community.document_loaders import WeatherDataLoader
+```

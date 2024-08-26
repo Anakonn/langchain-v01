@@ -1,0 +1,73 @@
+---
+translated: true
+---
+
+# MyScale
+
+Cette page couvre comment utiliser la base de données vectorielle MyScale dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers MyScale spécifiques.
+
+Avec MyScale, vous pouvez gérer à la fois les données structurées et non structurées (vectorisées), et effectuer des requêtes et des analyses conjointes sur les deux types de données à l'aide de SQL. De plus, l'architecture OLAP cloud-native de MyScale, construite sur ClickHouse, permet un traitement des données ultra-rapide, même sur des jeux de données massifs.
+
+## Introduction
+
+[Présentation de MyScale et de la recherche vectorielle haute performance](https://docs.myscale.com/en/overview/)
+
+Vous pouvez maintenant vous inscrire sur notre SaaS et [démarrer un cluster maintenant !](https://docs.myscale.com/en/quickstart/)
+
+Si vous êtes également intéressé par la manière dont nous avons réussi à intégrer SQL et les vecteurs, veuillez vous référer [à ce document](https://docs.myscale.com/en/vector-reference/) pour plus de détails sur la syntaxe.
+
+Nous proposons également une démonstration en direct sur Hugging Face ! Veuillez consulter notre [espace Hugging Face](https://huggingface.co/myscale) ! Ils recherchent des millions de vecteurs en un clin d'œil !
+
+## Installation et configuration
+
+- Installez le SDK Python avec `pip install clickhouse-connect`
+
+### Configuration des environnements
+
+Il existe deux façons de configurer les paramètres pour l'index MyScale.
+
+1. Variables d'environnement
+
+    Avant d'exécuter l'application, veuillez définir la variable d'environnement avec `export` :
+    `export MYSCALE_HOST='<your-endpoints-url>' MYSCALE_PORT=<your-endpoints-port> MYSCALE_USERNAME=<your-username> MYSCALE_PASSWORD=<your-password> ...`
+
+    Vous pouvez facilement trouver votre compte, votre mot de passe et d'autres informations sur notre SaaS. Pour plus de détails, veuillez vous référer [à ce document](https://docs.myscale.com/en/cluster-management/)
+    Chaque attribut sous `MyScaleSettings` peut être défini avec le préfixe `MYSCALE_` et n'est pas sensible à la casse.
+
+2. Créer un objet `MyScaleSettings` avec les paramètres
+
+    ```python
+    from langchain_community.vectorstores import MyScale, MyScaleSettings
+    config = MyScaleSetting(host="<your-backend-url>", port=8443, ...)
+    index = MyScale(embedding_function, config)
+    index.add_documents(...)
+    ```
+
+## Wrappers
+
+fonctions prises en charge :
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `asimilarity_search`
+- `similarity_search_by_vector`
+- `asimilarity_search_by_vector`
+- `similarity_search_with_relevance_scores`
+- `delete`
+
+### VectorStore
+
+Il existe un wrapper autour de la base de données MyScale, vous permettant de l'utiliser comme un vectorstore,
+que ce soit pour la recherche sémantique ou la récupération d'exemples similaires.
+
+Pour importer ce vectorstore :
+
+```python
+<!--IMPORTS:[{"imported": "MyScale", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.myscale.MyScale.html", "title": "MyScale"}]-->
+from langchain_community.vectorstores import MyScale
+```
+
+Pour un parcours plus détaillé du wrapper MyScale, voir [ce notebook](/docs/integrations/vectorstores/myscale)

@@ -1,0 +1,43 @@
+---
+translated: true
+---
+
+# Nuclia
+
+>[Nuclia](https://nuclia.com) indexa automáticamente sus datos no estructurados de cualquier fuente interna
+> y externa, proporcionando resultados de búsqueda optimizados y respuestas generativas.
+> Puede manejar la transcripción de video y audio, la extracción de contenido de imágenes y el análisis de documentos.
+
+>`Nuclia Understanding API` el transformador de documentos divide el texto en párrafos y oraciones,
+> identifica entidades, proporciona un resumen del texto y genera incrustaciones para todas las oraciones.
+
+## Instalación y configuración
+
+Necesitamos instalar el paquete `nucliadb-protos` para usar la `Nuclia Understanding API`.
+
+```bash
+pip install nucliadb-protos
+```
+
+Para usar la `Nuclia Understanding API`, necesitamos tener una `cuenta de Nuclia`.
+Podemos crear una de forma gratuita en [https://nuclia.cloud](https://nuclia.cloud),
+y luego [crear una clave NUA](https://docs.nuclia.dev/docs/docs/using/understanding/intro).
+
+Para usar el transformador de documentos de Nuclia, necesitamos instanciar una `NucliaUnderstandingAPI`
+herramienta con `enable_ml` establecida en `True`:
+
+```python
+<!--IMPORTS:[{"imported": "NucliaUnderstandingAPI", "source": "langchain_community.tools.nuclia", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.nuclia.tool.NucliaUnderstandingAPI.html", "title": "Nuclia"}]-->
+from langchain_community.tools.nuclia import NucliaUnderstandingAPI
+
+nua = NucliaUnderstandingAPI(enable_ml=True)
+```
+
+## Transformador de documentos
+
+Consulte un [ejemplo de uso](/docs/integrations/document_transformers/nuclia_transformer).
+
+```python
+<!--IMPORTS:[{"imported": "NucliaTextTransformer", "source": "langchain_community.document_transformers.nuclia_text_transform", "docs": "https://api.python.langchain.com/en/latest/document_transformers/langchain_community.document_transformers.nuclia_text_transform.NucliaTextTransformer.html", "title": "Nuclia"}]-->
+from langchain_community.document_transformers.nuclia_text_transform import NucliaTextTransformer
+```

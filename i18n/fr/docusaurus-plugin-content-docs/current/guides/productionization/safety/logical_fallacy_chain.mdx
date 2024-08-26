@@ -1,0 +1,84 @@
+---
+translated: true
+---
+
+# Chaîne de sophismes logiques
+
+Cet exemple montre comment supprimer les sophismes logiques de la sortie du modèle.
+
+## Sophismes logiques
+
+Les `sophismes logiques` sont des raisonnements erronés ou de faux arguments qui peuvent saper la validité des sorties d'un modèle.
+
+Les exemples incluent le raisonnement circulaire, les fausses dichotomies, les attaques ad hominem, etc. Les modèles d'apprentissage automatique sont optimisés pour bien performer sur des métriques spécifiques comme la précision, la perplexité ou la perte. Cependant, l'optimisation des métriques seule ne garantit pas un raisonnement logiquement valide.
+
+Les modèles de langage peuvent apprendre à exploiter les failles du raisonnement pour générer des arguments plausibles mais logiquement invalides. Lorsque les modèles s'appuient sur des sophismes, leurs sorties deviennent peu fiables et peu dignes de confiance, même s'ils obtiennent de bons scores sur les métriques. Les utilisateurs ne peuvent pas se fier à ces sorties. La propagation de sophismes logiques peut répandre la désinformation, confondre les utilisateurs et entraîner des conséquences néfastes dans le monde réel lorsque les modèles sont déployés dans des produits ou des services.
+
+La surveillance et les tests spécifiques aux failles logiques sont un défi, contrairement à d'autres problèmes de qualité. Cela nécessite de raisonner sur les arguments plutôt que de faire de la correspondance de motifs.
+
+Par conséquent, il est crucial que les développeurs de modèles s'attaquent proactivement aux sophismes logiques après avoir optimisé les métriques. Des techniques spécialisées comme la modélisation causale, les tests de robustesse et l'atténuation des biais peuvent aider à éviter les raisonnements erronés. Dans l'ensemble, permettre aux failles logiques de persister rend les modèles moins sûrs et moins éthiques. Éliminer les sophismes garantit que les sorties des modèles restent logiquement valides et alignées sur le raisonnement humain. Cela maintient la confiance des utilisateurs et atténue les risques.
+
+## Exemple
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Logical Fallacy chain"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Logical Fallacy chain"}, {"imported": "LLMChain", "source": "langchain.chains.llm", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Logical Fallacy chain"}, {"imported": "FallacyChain", "source": "langchain_experimental.fallacy_removal.base", "docs": "https://api.python.langchain.com/en/latest/fallacy_removal/langchain_experimental.fallacy_removal.base.FallacyChain.html", "title": "Logical Fallacy chain"}]-->
+# Imports
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains.llm import LLMChain
+from langchain_experimental.fallacy_removal.base import FallacyChain
+```
+
+```python
+# Example of a model output being returned with a logical fallacy
+misleading_prompt = PromptTemplate(
+    template="""You have to respond by using only logical fallacies inherent in your answer explanations.
+
+Question: {question}
+
+Bad answer:""",
+    input_variables=["question"],
+)
+
+llm = OpenAI(temperature=0)
+misleading_chain = LLMChain(llm=llm, prompt=misleading_prompt)
+misleading_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+    'The earth is round because my professor said it is, and everyone believes my professor'
+```
+
+```python
+fallacies = FallacyChain.get_fallacies(["correction"])
+fallacy_chain = FallacyChain.from_llm(
+    chain=misleading_chain,
+    logical_fallacies=fallacies,
+    llm=llm,
+    verbose=True,
+)
+
+fallacy_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+
+
+    > Entering new FallacyChain chain...
+    Initial response:  The earth is round because my professor said it is, and everyone believes my professor.
+
+    Applying correction...
+
+    Fallacy Critique: The model's response uses an appeal to authority and ad populum (everyone believes the professor). Fallacy Critique Needed.
+
+    Updated response: You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.
+
+
+    > Finished chain.
+
+
+
+
+
+    'You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.'
+```

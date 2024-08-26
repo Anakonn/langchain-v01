@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# रनहाउस
+
+यह पृष्ठ [रनहाउस](https://github.com/run-house/runhouse) पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह तीन भागों में विभाजित है: स्थापना और सेटअप, एलएलएम और एम्बेडिंग।
+
+## स्थापना और सेटअप
+
+- `pip install runhouse` के साथ पायथन एसडीके स्थापित करें
+- यदि आप ऑन-डिमांड क्लस्टर का उपयोग करना चाहते हैं, तो `sky check` के साथ अपने क्लाउड क्रेडेंशियल्स की जांच करें
+
+## स्वयं होस्ट किए गए एलएलएम
+
+एक बुनियादी स्वयं होस्ट किए गए एलएलएम के लिए, आप `SelfHostedHuggingFaceLLM` क्लास का उपयोग कर सकते हैं। अधिक कस्टम एलएलएम के लिए, आप `SelfHostedPipeline` पेरेंट क्लास का उपयोग कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "SelfHostedPipeline", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted.SelfHostedPipeline.html", "title": "Runhouse"}, {"imported": "SelfHostedHuggingFaceLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html", "title": "Runhouse"}]-->
+from langchain_community.llms import SelfHostedPipeline, SelfHostedHuggingFaceLLM
+```
+
+स्वयं होस्ट किए गए एलएलएम के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/llms/runhouse) देखें
+
+## स्वयं होस्ट किए गए एम्बेडिंग
+
+रनहाउस के माध्यम से एलंगचेन के साथ स्वयं होस्ट किए गए एम्बेडिंग का उपयोग करने के कई तरीके हैं।
+
+एक बुनियादी स्वयं होस्ट किया गया एम्बेडिंग हुगिंग फेस ट्रांसफॉर्मर्स मॉडल से उपयोग करने के लिए, आप `SelfHostedEmbedding` क्लास का उपयोग कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "SelfHostedPipeline", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted.SelfHostedPipeline.html", "title": "Runhouse"}, {"imported": "SelfHostedHuggingFaceLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html", "title": "Runhouse"}]-->
+from langchain_community.llms import SelfHostedPipeline, SelfHostedHuggingFaceLLM
+```
+
+स्वयं होस्ट किए गए एम्बेडिंग के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/text_embedding/self-hosted) देखें

@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# क्यूड्रेंट
+
+>[क्यूड्रेंट](https://qdrant.tech/documentation/) (पढ़ें: क्वाड्रेंट) एक वेक्टर समानता खोज इंजन है।
+> यह एक उत्पादन-तैयार सेवा प्रदान करता है जिसमें एक सुविधाजनक API है जिससे आप बिंदुओं - वेक्टरों के साथ अतिरिक्त पेलोड को संग्रहीत, खोज और प्रबंधित कर सकते हैं। `क्यूड्रेंट` विस्तारित फ़िल्टरिंग समर्थन के लिए अनुकूलित है।
+
+## स्थापना और सेटअप
+
+पायथन एसडीके स्थापित करें:
+
+```bash
+pip install qdrant-client
+```
+
+## वेक्टर स्टोर
+
+`क्यूड्रेंट` इंडेक्स के इर्द-गिर्द एक रैपर मौजूद है, जो आपको इसका उपयोग एक वेक्टर स्टोर के रूप में करने की अनुमति देता है, चाहे वह语义搜索के लिए हो या उदाहरण चयन के लिए।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Qdrant"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+क्यूड्रेंट रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/vectorstores/qdrant) देखें

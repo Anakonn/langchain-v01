@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# Milvus
+
+>[Milvus](https://milvus.io/docs/overview.md)는 딥 신경망 및 기타 기계 학습(ML) 모델에 의해 생성된 대량의 임베딩 벡터를 저장, 인덱싱 및 관리하는 데이터베이스입니다.
+
+## 설치 및 설정
+
+Python SDK를 설치하세요:
+
+```bash
+pip install pymilvus
+```
+
+## 벡터 저장소
+
+`Milvus` 인덱스를 래핑하는 래퍼가 있어, 의미 검색 또는 예제 선택을 위해 이를 벡터 저장소로 사용할 수 있습니다.
+
+이 벡터 저장소를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Milvus"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+`Milvus` 래퍼에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/milvus)을 참조하세요.

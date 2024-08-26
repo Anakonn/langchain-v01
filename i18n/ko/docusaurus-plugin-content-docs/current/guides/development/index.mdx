@@ -1,0 +1,14 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 개발
+
+이 섹션에는 LangChain으로 앱을 빌드하는 데 필요한 일반적인 정보가 담긴 가이드가 포함되어 있습니다.
+
+import DocCardList from "@theme/DocCardList";
+import { useCurrentSidebarCategory } from '@docusaurus/theme-common';
+
+<DocCardList items={useCurrentSidebarCategory().items.filter((item) => item.href !== "/docs/guides/development/")} />

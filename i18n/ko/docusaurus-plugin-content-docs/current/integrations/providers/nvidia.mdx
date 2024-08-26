@@ -1,0 +1,61 @@
+---
+translated: true
+---
+
+# NVIDIA
+
+>NVIDIA는 LangChain을 위한 통합 패키지 `langchain-nvidia-ai-endpoints`를 제공합니다.
+
+## NVIDIA AI Foundation Endpoints
+
+> [NVIDIA AI Foundation Endpoints](https://www.nvidia.com/en-us/ai-data-science/foundation-models/)는 사용자들이 `Mixtral 8x7B`, `Llama 2`, `Stable Diffusion` 등의 NVIDIA AI Foundation 모델에 대한 NVIDIA 호스팅 API 엔드포인트에 쉽게 접근할 수 있게 해줍니다. 이러한 모델들은 [NVIDIA API 카탈로그](https://build.nvidia.com/)에 호스팅되어 있으며, NVIDIA AI 플랫폼에 최적화되어 테스트되었기 때문에 가속화된 스택에서 빠르고 쉽게 평가하고, 추가로 사용자 정의하며, 최고의 성능으로 실행할 수 있습니다.
+>
+> [NVIDIA AI Foundation Endpoints](https://www.nvidia.com/en-us/ai-data-science/foundation-models/)를 통해 [NVIDIA DGX Cloud](https://www.nvidia.com/en-us/data-center/dgx-cloud/)에서 완전히 가속화된 스택을 사용하여 빠른 결과를 얻을 수 있습니다. 사용자 정의 후에는 [NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise/)를 사용하여 엔터프라이즈 수준의 보안, 안정성 및 지원으로 어디에서나 배포할 수 있습니다.
+
+LangChain에서는 익숙한 API를 통해 NVIDIA AI Foundation 모델의 선택된 집합을 직접 지원합니다.
+
+지원되는 모델은 [build.nvidia.com](https://build.nvidia.com/)에서 찾을 수 있습니다.
+
+이러한 모델은 아래와 같이 [`langchain-nvidia-ai-endpoints`](https://pypi.org/project/langchain-nvidia-ai-endpoints/) 패키지를 통해 접근할 수 있습니다.
+
+### 설정
+
+1. [NVIDIA](https://build.nvidia.com/)에 무료 계정을 만드세요. NVIDIA AI Foundation 모델이 여기에 호스팅됩니다.
+
+2. 원하는 모델을 선택하세요.
+
+3. `Input` 섹션에서 `Python` 탭을 선택하고 `Get API Key`를 클릭한 후 `Generate Key`를 클릭하세요.
+
+4. 생성된 키를 `NVIDIA_API_KEY`로 복사하여 저장하세요. 그러면 엔드포인트에 접근할 수 있습니다.
+
+```bash
+export NVIDIA_API_KEY=nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+- 패키지 설치:
+
+```bash
+pip install -U langchain-nvidia-ai-endpoints
+```
+
+### 채팅 모델
+
+사용 예시는 [여기](/docs/integrations/chat/nvidia_ai_endpoints)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ChatNVIDIA", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_nvidia_ai_endpoints.chat_models.ChatNVIDIA.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
+
+llm = ChatNVIDIA(model="mixtral_8x7b")
+result = llm.invoke("Write a ballad about LangChain.")
+print(result.content)
+```
+
+### 임베딩 모델
+
+사용 예시는 [여기](/docs/integrations/text_embedding/nvidia_ai_endpoints)에서 확인하세요.
+
+```python
+<!--IMPORTS:[{"imported": "NVIDIAEmbeddings", "source": "langchain_nvidia_ai_endpoints", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_nvidia_ai_endpoints.embeddings.NVIDIAEmbeddings.html", "title": "NVIDIA"}]-->
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+```

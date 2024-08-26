@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# spaCy
+
+>[spaCy](https://spacy.io/)は、プログラミング言語のPythonとCythonで書かれた、高度な自然言語処理のためのオープンソースソフトウェアライブラリです。
+
+## インストールとセットアップ
+
+```bash
+pip install spacy
+```
+
+## テキストスプリッター
+
+[使用例](/docs/modules/data_connection/document_transformers/split_by_token#spacy)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SpacyTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/spacy/langchain_text_splitters.spacy.SpacyTextSplitter.html", "title": "spaCy"}]-->
+from langchain_text_splitters import SpacyTextSplitter
+```
+
+## テキストエンベディングモデル
+
+[使用例](/docs/integrations/text_embedding/spacy_embedding)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SpacyEmbeddings", "source": "langchain_community.embeddings.spacy_embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.spacy_embeddings.SpacyEmbeddings.html", "title": "spaCy"}]-->
+from langchain_community.embeddings.spacy_embeddings import SpacyEmbeddings
+```

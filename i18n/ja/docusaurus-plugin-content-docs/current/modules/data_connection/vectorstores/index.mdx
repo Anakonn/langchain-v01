@@ -1,0 +1,265 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 3
+translated: true
+---
+
+# ベクトルストア
+
+:::info
+サードパーティのベクトルストアとの組み込み統合に関するドキュメントは、[Integrations](/docs/integrations/vectorstores/)を参照してください。
+:::
+
+構造化されていないデータを保存し検索する最も一般的な方法の1つは、それをエンベディングし、得られたエンベディングベクトルを保存し、クエリ時にクエリをエンベディングしてエンベディングベクトルの「最も類似したもの」を検索することです。ベクトルストアは、エンベディングデータの保存とベクトル検索を行います。
+
+![ベクトルストアのプロセスを示す図: 1. ソースデータの読み込み、2. ベクトルストアへのクエリ、3. 「最も類似した」結果の取得。](/img/vector_stores.jpg "ベクトルストアのプロセス図")
+
+## 始めましょう
+
+このチュートリアルでは、ベクトルストアに関する基本的な機能を紹介します。ベクトルストアを使う上で重要なのは、それらに格納するベクトルを作成することです。これは通常、エンベディングを通じて行われます。したがって、このチュートリアルに入る前に、[text embedding model](/docs/modules/data_connection/text_embedding/)インターフェイスに精通しておくことをお勧めします。
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+無料で、オープンソースで、ローカルマシン上で完全に動作するベクトルストアオプションがいくつかあります。多くの素晴らしいホスティングサービスの統合も確認してください。
+
+<Tabs>
+  <TabItem value="chroma" label="Chroma" default>
+
+このチュートリアルでは、ローカルマシン上のライブラリとして動作する `chroma` ベクトルデータベースを使用します。
+
+```bash
+pip install langchain-chroma
+```
+
+OpenAIEmbeddingsを使用したいので、OpenAI APIキーを取得する必要があります。
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_chroma import Chroma
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = Chroma.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+  <TabItem value="faiss" label="FAISS">
+
+このチュートリアルでは、Facebook AI Similarity Search (FAISS)ライブラリを使用する `FAISS` ベクトルデータベースを使用します。
+
+```bash
+pip install faiss-cpu
+```
+
+OpenAIEmbeddingsを使用したいので、OpenAI APIキーを取得する必要があります。
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = FAISS.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+  <TabItem value="lance" label="Lance">
+
+このノートブックでは、Lance データ形式に基づいた LanceDB ベクトルデータベースの機能の使用方法を示します。
+
+```bash
+pip install lancedb
+```
+
+OpenAIEmbeddingsを使用したいので、OpenAI APIキーを取得する必要があります。
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "LanceDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lancedb.LanceDB.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.vectorstores import LanceDB
+
+import lancedb
+
+db = lancedb.connect("/tmp/lancedb")
+table = db.create_table(
+    "my_table",
+    data=[
+        {
+            "vector": embeddings.embed_query("Hello World"),
+            "text": "Hello World",
+            "id": "1",
+        }
+    ],
+    mode="overwrite",
+)
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = LanceDB.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+</Tabs>
+
+### 類似検索
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+docs = db.similarity_search(query)
+print(docs[0].page_content)
+```
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+### ベクトルによる類似検索
+
+与えられた埋め込みベクトルに類似したドキュメントを検索することも可能です。その場合は `similarity_search_by_vector` を使用し、文字列ではなくベクトルをパラメータとして渡します。
+
+```python
+embedding_vector = OpenAIEmbeddings().embed_query(query)
+docs = db.similarity_search_by_vector(embedding_vector)
+print(docs[0].page_content)
+```
+
+クエリは同じなので、結果も同じです。
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+## 非同期操作
+
+ベクトルストアは通常、別のサービスとして実行され、I/O操作を必要とするため、非同期的に呼び出される可能性があります。これにより、外部サービスからの応答を待つ時間を無駄にせずに、パフォーマンスの向上が期待できます。また、[FastAPI](https://fastapi.tiangolo.com/)のような非同期フレームワークで作業する場合にも重要です。
+
+LangChainは、ベクトルストアの非同期操作をサポートしています。すべてのメソッドは、`a`プレフィックスを付けた非同期版で呼び出すことができます。
+
+`Qdrant`はベクトルストアの1つで、すべての非同期操作をサポートしているため、このチュートリアルで使用します。
+
+```bash
+pip install qdrant-client
+```
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Vector stores"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+### 非同期にベクトルストアを作成する
+
+```python
+db = await Qdrant.afrom_documents(documents, embeddings, "http://localhost:6333")
+```
+
+### 類似検索
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+docs = await db.asimilarity_search(query)
+print(docs[0].page_content)
+```
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+### ベクトルによる類似検索
+
+```python
+embedding_vector = embeddings.embed_query(query)
+docs = await db.asimilarity_search_by_vector(embedding_vector)
+```
+
+## 最大限の限界関連性検索 (MMR)
+
+最大限の限界関連性は、クエリに対する類似性と選択されたドキュメントの多様性の両方を最適化します。非同期APIでもサポートされています。
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+found_docs = await qdrant.amax_marginal_relevance_search(query, k=2, fetch_k=10)
+for i, doc in enumerate(found_docs):
+    print(f"{i + 1}.", doc.page_content, "\n")
+```
+
+```output
+1. Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+
+2. We can’t change how divided we’ve been. But we can change how we move forward—on COVID-19 and other issues we must face together.
+
+I recently visited the New York City Police Department days after the funerals of Officer Wilbert Mora and his partner, Officer Jason Rivera.
+
+They were responding to a 9-1-1 call when a man shot and killed them with a stolen gun.
+
+Officer Mora was 27 years old.
+
+Officer Rivera was 22.
+
+Both Dominican Americans who’d grown up on the same streets they later chose to patrol as police officers.
+
+I spoke with their families and told them that we are forever in debt for their sacrifice, and we will carry on their mission to restore the trust and safety every community deserves.
+
+I’ve worked on these issues a long time.
+
+I know what works: Investing in crime prevention and community police officers who’ll walk the beat, who’ll know the neighborhood, and who can restore trust and safety.
+```

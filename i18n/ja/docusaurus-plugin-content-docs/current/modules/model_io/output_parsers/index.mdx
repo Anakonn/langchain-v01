@@ -1,0 +1,46 @@
+---
+hide_table_of_contents: true
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# 出力パーサー
+
+出力パーサーは、LLMの出力を、より適切な形式に変換する責任があります。これは、LLMを使用して構造化データを生成する場合に非常に便利です。
+
+出力パーサーの豊富なコレクションを持つことに加えて、LangChain OutputParsersの大きな利点の1つは、多くのものがストリーミングをサポートしていることです。
+
+## [クイックスタート](./quick_start)
+
+出力パーサーの概要と使用方法については、[このクイックスタートガイド](./quick_start)を参照してください。
+
+## 出力パーサーの種類
+
+LangChainには様々な種類の`出力パーサー`があります。
+
+テーブルの列:
+
+- **名称**: 出力パーサーの名称
+- **ストリーミングをサポート**: 出力パーサーがストリーミングをサポートしているかどうか。
+- **フォーマット指示があるか**: 出力パーサーにフォーマット指示があるかどうか。これは通常利用可能ですが、(a) 所望のスキーマがプロンプトではなく他のパラメーターで指定されている場合(OpenAI関数呼び出しなど)、または(b) OutputParserが別のOutputParserをラップしている場合は例外です。
+- **LLMを呼び出す**: このOutput Parserが自身でLLMを呼び出すかどうか。これは通常、出力を修正しようとするOutput Parserでのみ行われます。
+- **入力タイプ**: 期待される入力タイプ。ほとんどのOutput Parserはstring型とMessageオブジェクトの両方で動作しますが、一部(OpenAI Functionsなど)は特定のkwargsを持つMessageオブジェクトを必要とします。
+- **出力タイプ**: パーサーが返すオブジェクトの出力タイプ。
+- **説明**: このOutput Parserについての解説と使用時期。
+
+| 名称            | ストリーミングをサポート | フォーマット指示があるか       | LLMを呼び出す | 入力タイプ                       | 出力タイプ          | 説明                                                                                                                                                                                                                                              |
+|-----------------|--------------------|-------------------------------|-----------|----------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [OpenAITools](./types/openai_tools) |                   | (モデルに`tools`を渡す) |           | `Message` (with `tool_choice`)   | JSONオブジェクト          | 最新のOpenAI関数呼び出し引数の`tools`と`tool_choice`を使ってリターン出力を構造化します。関数呼び出しをサポートするモデルを使用している場合、これが最も信頼できる方法です。                                                                                        |
+| [OpenAIFunctions](./types/openai_functions) | ✅                  | (モデルに`functions`を渡す) |           | `Message` (with `function_call`) | JSONオブジェクト          | 旧式のOpenAI関数呼び出し引数の`functions`と`function_call`を使ってリターン出力を構造化します。                                                        |
+| [JSON](./types/json)            | ✅                  | ✅                             |           | `str` \| `Message`               | JSONオブジェクト          | 指定したPydanticモデルに従ってJSONオブジェクトを返します。関数呼び出しを使わずに構造化データを取得する際に最も信頼できるOutput Parserです。                                    |
+| [XML](./types/xml)            | ✅                  | ✅                             |           | `str` \| `Message`                 | `dict`               | タグの辞書を返します。XMLの出力が必要な場合に使用します。XMLを書くのが得意なモデル(Anthropicなど)と併せて使用します。                                                                                                                            |
+| [CSV](./types/csv)           | ✅                  | ✅                             |           | `str` \| `Message`                 | `List[str]`          | カンマ区切りの値のリストを返します。                                                                                                                                                                                                                |
+| [OutputFixing](./types/output_fixing)    |                    |                               | ✅         | `str` \| `Message`                 |                      | 別のOutput Parserをラップします。そのOutput Parserでエラーが発生した場合、エラーメッセージと不良出力をLLMに渡して出力を修正させます。                                                                                              |
+| [RetryWithError](./types/retry)  |                    |                               | ✅         | `str` \| `Message`                 |                      | 別のOutput Parserをラップします。そのOutput Parserでエラーが発生した場合、オリジナルの入力、不良出力、エラーメッセージをLLMに渡して修正させます。`OutputFixingParser`と比べて、オリジナルの指示も送信します。 |
+| [Pydantic](./types/pydantic)        |                    | ✅                             |           | `str` \| `Message`                 | `pydantic.BaseModel` | ユーザー定義のPydanticモデルを取り、そのフォーマットでデータを返します。                                                                                                                                                                                     |
+| [YAML](./types/yaml)        |                    | ✅                             |           | `str` \| `Message`                 | `pydantic.BaseModel` | ユーザー定義のPydanticモデルを取り、YAMLでエンコードされたデータを返します。                                                                                                                                                                                    |
+| [PandasDataFrame](./types/pandas_dataframe) |                    | ✅                             |           | `str` \| `Message`                 | `dict`               | Pandas DataFrameを使った操作に便利です。                                                                                                                                                                                                      |
+| [Enum](./types/enum)            |                    | ✅                             |           | `str` \| `Message`                 | `Enum`               | レスポンスを提供された列挙型の値の1つとしてパースします。                                                                                                                                                                                                    |
+| [Datetime](./types/datetime)        |                    | ✅                             |           | `str` \| `Message`                 | `datetime.datetime`  | レスポンスをdatetime文字列としてパースします。                                                                                                                                                                                                  |
+| [Structured](./types/structured)      |                    | ✅                             |           | `str` \| `Message`                 | `Dict[str, str]`     | 構造化された情報を返す出力パーサーです。フィールドが文字列のみに制限されるため、他の出力パーサーほど強力ではありません。小さなLLMで作業する際に便利です。                                            |

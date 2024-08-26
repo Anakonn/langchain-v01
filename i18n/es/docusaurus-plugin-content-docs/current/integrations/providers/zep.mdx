@@ -1,0 +1,98 @@
+---
+translated: true
+---
+
+# Zep
+
+> Recuerda, comprende y extrae datos de los historiales de chat. Potencia experiencias de IA personalizadas.
+
+>[Zep](https://www.getzep.com) es un servicio de memoria a largo plazo para aplicaciones de asistentes de IA.
+> Con Zep, puedes proporcionar a los asistentes de IA la capacidad de recordar conversaciones pasadas, sin importar cuán distantes sean,
+> al mismo tiempo que se reducen las alucinaciones, la latencia y el costo.
+
+## Cómo funciona Zep
+
+Zep persiste y recuerda los historiales de chat, y genera automáticamente resúmenes y otros artefactos a partir de estos historiales de chat.
+También incrusta mensajes y resúmenes, lo que te permite buscar en Zep el contexto relevante de conversaciones pasadas.
+Zep hace todo esto de forma asincrónica, asegurando que estas operaciones no afecten la experiencia de chat de tus usuarios.
+Los datos se almacenan en una base de datos, lo que te permite escalar cuando el crecimiento lo exija.
+
+Zep también proporciona una abstracción simple y fácil de usar para la búsqueda de vectores de documentos llamada Document Collections.
+Esto está diseñado para complementar las características principales de memoria de Zep, pero no está diseñado para ser una base de datos de vectores de propósito general.
+
+Zep te permite ser más intencional al construir tu solicitud:
+- agregar automáticamente algunos mensajes recientes, con el número personalizado para tu aplicación;
+- un resumen de las conversaciones recientes antes de los mensajes anteriores;
+- y/o resúmenes o mensajes relevantes del contexto extraídos de toda la sesión de chat.
+- y/o datos empresariales relevantes de las Zep Document Collections.
+
+## ¿Qué es Zep Cloud?
+
+[Zep Cloud](https://www.getzep.com) es un servicio administrado con Zep Open Source en su núcleo.
+Además de las características de gestión de la memoria de Zep Open Source, Zep Cloud ofrece:
+- **Extracción de hechos**: Construye automáticamente tablas de hechos a partir de conversaciones, sin tener que definir un esquema de datos por adelantado.
+- **Clasificación de diálogos**: Clasifica instantánea y precisamente el diálogo de chat. Comprende la intención y la emoción del usuario, segmenta a los usuarios y más. Enruta cadenas basadas en el contexto semántico y desencadena eventos.
+- **Extracción de datos estructurados**: Extrae rápidamente datos empresariales de conversaciones de chat utilizando un esquema que defines. Entiende lo que tu Asistente debería preguntar a continuación para completar su tarea.
+
+> ¿Interesado en Zep Cloud? Consulta la [Guía de instalación de Zep Cloud](https://help.getzep.com/sdks), el [Ejemplo de historial de mensajes de Zep Cloud](https://help.getzep.com/langchain/examples/messagehistory-example), el [Ejemplo de Vector Store de Zep Cloud](https://help.getzep.com/langchain/examples/vectorstore-example)
+
+## Instalación y configuración de código abierto
+
+> Proyecto Zep Open Source: [https://github.com/getzep/zep](https://github.com/getzep/zep)
+>
+> Documentación de Zep Open Source: [https://docs.getzep.com/](https://docs.getzep.com/)
+
+1. Instala el servicio Zep. Consulta la [Guía de inicio rápido de Zep](https://docs.getzep.com/deployment/quickstart/).
+
+2. Instala el SDK de Python de Zep:
+
+```bash
+pip install zep_python
+```
+
+## Memoria
+
+La [API de memoria de Zep](https://docs.getzep.com/sdk/chat_history/) persiste el historial de chat y los metadatos de tu aplicación en una Sesión, enriquece la memoria, genera automáticamente resúmenes y permite la búsqueda de similitud vectorial sobre mensajes de chat históricos y resúmenes.
+
+Hay dos enfoques para poblar tu solicitud con el historial de chat:
+
+1. Recupera los N mensajes más recientes (y potencialmente un resumen) de una Sesión y úsalos para construir tu solicitud.
+2. Busca en el historial de chat de la Sesión los mensajes relevantes y úsalos para construir tu solicitud.
+
+Ambos enfoques pueden ser útiles, siendo el primero el que proporciona al LLM el contexto de las interacciones más recientes con un ser humano. El segundo enfoque te permite mirar más atrás en el historial de chat y recuperar mensajes relevantes para la conversación actual de una manera eficiente en términos de tokens.
+
+```python
+<!--IMPORTS:[{"imported": "ZepMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain_community.memory.zep_memory.ZepMemory.html", "title": "Zep"}]-->
+from langchain.memory import ZepMemory
+```
+
+Consulta un [ejemplo de aplicación RAG aquí](/docs/integrations/memory/zep_memory).
+
+## Recuperador
+
+El Recuperador de memoria de Zep es un Recuperador de LangChain que te permite recuperar mensajes de una Sesión de Zep y usarlos para construir tu solicitud.
+
+El Recuperador admite la búsqueda tanto de mensajes individuales como de resúmenes de conversaciones. Este último es útil para proporcionar un contexto rico pero conciso al LLM sobre las conversaciones pasadas relevantes.
+
+El Recuperador de memoria de Zep admite tanto la búsqueda de similitud como el [reordenamiento de Relevancia Marginal Máxima (MMR)](https://docs.getzep.com/sdk/search_query/). La búsqueda de MMR es útil para asegurarse de que los mensajes recuperados sean diversos y no demasiado similares entre sí.
+
+Consulta un [ejemplo de uso](/docs/integrations/retrievers/zep_memorystore).
+
+```python
+<!--IMPORTS:[{"imported": "ZepRetriever", "source": "langchain_community.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.zep.ZepRetriever.html", "title": "Zep"}]-->
+from langchain_community.retrievers import ZepRetriever
+```
+
+## Almacén de vectores
+
+La [API de Document VectorStore de Zep](https://docs.getzep.com/sdk/documents/) te permite almacenar y recuperar documentos utilizando la búsqueda de similitud vectorial. Zep no requiere que entiendas las funciones de distancia, los tipos de incrustaciones o las mejores prácticas de indexación. Simplemente envías tus documentos divididos en fragmentos, y Zep se encarga del resto.
+
+Zep admite tanto la búsqueda de similitud como el [reordenamiento de Relevancia Marginal Máxima (MMR)](https://docs.getzep.com/sdk/search_query/).
+La búsqueda de MMR es útil para asegurarse de que los documentos recuperados sean diversos y no demasiado similares entre sí.
+
+```python
+<!--IMPORTS:[{"imported": "ZepVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.zep.ZepVectorStore.html", "title": "Zep"}]-->
+from langchain_community.vectorstores import ZepVectorStore
+```
+
+Consulta un [ejemplo de uso](/docs/integrations/vectorstores/zep).

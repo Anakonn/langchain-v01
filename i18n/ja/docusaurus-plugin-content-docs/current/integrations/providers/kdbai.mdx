@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# KDB.AI
+
+>[KDB.AI](https://kdb.ai)は、リアルタイムデータを使用して、高度な検索、推奨、パーソナライゼーションを提供することで、スケーラブルで信頼性の高いAIアプリケーションを構築できる強力な知識ベースのベクトルデータベースおよび検索エンジンです。
+
+## インストールとセットアップ
+
+PythonのSDKをインストールします:
+
+```bash
+pip install kdbai-client
+```
+
+## ベクトルストア
+
+KDB.AIインデックスを囲むラッパーが存在し、セマンティック検索や例の選択のためにベクトルストアとして使用できます。
+
+```python
+<!--IMPORTS:[{"imported": "KDBAI", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.kdbai.KDBAI.html", "title": "KDB.AI"}]-->
+from langchain_community.vectorstores import KDBAI
+```
+
+KDB.AIベクトルストアの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/kdbai)を参照してください。

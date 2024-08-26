@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# langchain
+
+## 0.1.0 (5 janvier 2024)
+
+#### Supprimé
+
+Aucune suppression.
+
+#### Déprécié
+
+Les classes et méthodes dépréciées seront supprimées dans la version 0.2.0.
+
+| Déprécié                        | Alternative                       | Raison                                         |
+|---------------------------------|-----------------------------------|------------------------------------------------|
+| ChatVectorDBChain               | ConversationalRetrievalChain      | Plus général pour tous les récupérateurs       |
+| create_ernie_fn_chain           | create_ernie_fn_runnable          | Utiliser LCEL sous le capot                    |
+| created_structured_output_chain | create_structured_output_runnable | Utiliser LCEL sous le capot                    |
+| NatBotChain                     |                                   | Non utilisé                                    |
+| create_openai_fn_chain          | create_openai_fn_runnable         | Utiliser LCEL sous le capot                    |
+| create_structured_output_chain  | create_structured_output_runnable | Utiliser LCEL sous le capot                    |
+| load_query_constructor_chain    | load_query_constructor_runnable   | Utiliser LCEL sous le capot                    |
+| VectorDBQA                      | RetrievalQA                       | Plus général pour tous les récupérateurs       |
+| Sequential Chain                | LCEL                              | Obsolète par LCEL                              |
+| SimpleSequentialChain           | LCEL                              | Obsolète par LCEL                              |
+| TransformChain                  | LCEL/RunnableLambda               | Obsolète par LCEL                              |
+| create_tagging_chain            | create_structured_output_runnable | Utiliser LCEL sous le capot                    |
+| ChatAgent                       | create_react_agent                | Utiliser le constructeur LCEL sur une classe   |
+| ConversationalAgent             | create_react_agent                | Utiliser le constructeur LCEL sur une classe   |
+| ConversationalChatAgent         | create_json_chat_agent            | Utiliser le constructeur LCEL sur une classe   |
+| initialize_agent                | Méthodes de création d'agent individuelles | Méthodes de création d'agent individuelles sont plus claires |
+| ZeroShotAgent                   | create_react_agent                | Utiliser le constructeur LCEL sur une classe   |
+| OpenAIFunctionsAgent            | create_openai_functions_agent     | Utiliser le constructeur LCEL sur une classe   |
+| OpenAIMultiFunctionsAgent       | create_openai_tools_agent         | Utiliser le constructeur LCEL sur une classe   |
+| SelfAskWithSearchAgent          | create_self_ask_with_search       | Utiliser le constructeur LCEL sur une classe   |
+| StructuredChatAgent             | create_structured_chat_agent      | Utiliser le constructeur LCEL sur une classe   |
+| XMLAgent                        | create_xml_agent                  | Utiliser le constructeur LCEL sur une classe   |

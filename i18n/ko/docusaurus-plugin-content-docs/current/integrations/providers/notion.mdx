@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# Notion DB
+
+>[Notion](https://www.notion.so/)은 kanban 보드, 작업, 위키 및 데이터베이스를 통합하는 수정된 Markdown 지원 협업 플랫폼입니다. 이것은 메모 작성, 지식 및 데이터 관리, 프로젝트 및 작업 관리를 위한 올인원 작업 공간입니다.
+
+## 설치 및 설정
+
+모든 지침은 아래 예제에 나와 있습니다.
+
+## 문서 로더
+
+우리는 두 가지 다른 로더가 있습니다: `NotionDirectoryLoader` 및 `NotionDBLoader`.
+
+[NotionDirectoryLoader 사용 예제](/docs/integrations/document_loaders/notion)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "NotionDirectoryLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notion.NotionDirectoryLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDirectoryLoader
+```
+
+[NotionDBLoader 사용 예제](/docs/integrations/document_loaders/notiondb)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "NotionDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.notiondb.NotionDBLoader.html", "title": "Notion DB"}]-->
+from langchain_community.document_loaders import NotionDBLoader
+```

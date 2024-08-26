@@ -1,0 +1,43 @@
+---
+translated: true
+---
+
+# Stack Exchange
+
+>[Stack Exchange](https://en.wikipedia.org/wiki/Stack_Exchange)は、さまざまな分野の質問と回答(Q&A)ウェブサイトのネットワークで、各サイトが特定のトピックをカバーし、質問、回答、ユーザーが評判プロセスの対象となっています。
+
+このページでは、LangChainでStack Exchange APIを使う方法について説明します。
+
+## インストールとセットアップ
+
+- 以下のコマンドで必要なライブラリをインストールします。
+
+```bash
+pip install stackapi
+```
+
+## ラッパー
+
+### ユーティリティ
+
+Stack Exchange APIを包むユーティリティ `StackExchangeAPIWrapper` が存在します。このユーティリティをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "StackExchangeAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.stackexchange.StackExchangeAPIWrapper.html", "title": "Stack Exchange"}]-->
+from langchain_community.utilities import StackExchangeAPIWrapper
+```
+
+このラッパーの詳細なウォークスルーは、[このノートブック](/docs/integrations/tools/stackexchange)を参照してください。
+
+### ツール
+
+このラッパーをツール(Agentで使用するため)としても簡単にロードできます。
+以下のように行います:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Stack Exchange"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["stackexchange"])
+```
+
+ツールの詳細については、[このページ](/docs/modules/tools/)を参照してください。

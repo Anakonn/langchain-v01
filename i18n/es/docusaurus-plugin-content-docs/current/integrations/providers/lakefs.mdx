@@ -1,0 +1,22 @@
+---
+translated: true
+---
+
+# lakeFS
+
+>[lakeFS](https://docs.lakefs.io/) proporciona control de versiones escalable sobre
+> el lago de datos y utiliza semántica similar a Git para crear y acceder a esas versiones.
+
+## Instalación y configuración
+
+Obtenga el `ENDPOINT`, `LAKEFS_ACCESS_KEY` y `LAKEFS_SECRET_KEY`.
+Puede encontrar las instrucciones de instalación [aquí](https://docs.lakefs.io/quickstart/launch.html).
+
+## Cargador de documentos
+
+Consulte un [ejemplo de uso](/docs/integrations/document_loaders/lakefs).
+
+```python
+<!--IMPORTS:[{"imported": "LakeFSLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.lakefs.LakeFSLoader.html", "title": "lakeFS"}]-->
+from langchain_community.document_loaders import LakeFSLoader
+```

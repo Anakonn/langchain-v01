@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# मिल्वस
+
+>[मिल्वस](https://milvus.io/docs/overview.md) एक डेटाबेस है जो गहन न्यूरल नेटवर्क और अन्य मशीन लर्निंग (एमएल) मॉडल द्वारा उत्पन्न विशाल एम्बेडिंग वेक्टर को संग्रहीत, इंडेक्स और प्रबंधित करता है।
+
+## स्थापना और सेटअप
+
+पायथन एसडीके स्थापित करें:
+
+```bash
+pip install pymilvus
+```
+
+## वेक्टर स्टोर
+
+`मिल्वस` इंडेक्स के इर्द-गिर्द एक रैपर मौजूद है, जिससे आप इसका उपयोग एक वेक्टर स्टोर के रूप में कर सकते हैं, चाहे वह语义 खोज या उदाहरण चयन के लिए हो।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Milvus"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+`मिल्वस` रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/milvus) देखें

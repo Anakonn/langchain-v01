@@ -1,0 +1,54 @@
+---
+translated: true
+---
+
+# IBM
+
+Las integraciones de `LangChain` relacionadas con la plataforma [IBM watsonx.ai](https://www.ibm.com/products/watsonx-ai).
+
+IBM® watsonx.ai™ AI studio es parte de la plataforma de IA y datos [watsonx](https://www.ibm.com/watsonx)™ de IBM, que reúne nuevas capacidades de IA generativa
+impulsadas por [modelos de fundación](https://www.ibm.com/products/watsonx-ai/foundation-models) y aprendizaje automático (ML) tradicional
+en un poderoso estudio que abarca el ciclo de vida de la IA. Ajuste y guíe los modelos con los datos de su empresa para satisfacer sus necesidades con herramientas fáciles de usar para
+construir y refinar indicaciones eficaces. Con watsonx.ai, puede construir aplicaciones de IA en una fracción del tiempo y con una fracción de los datos.
+Watsonx.ai ofrece:
+
+- **Variedad y flexibilidad de varios modelos:** Elija entre modelos desarrollados por IBM, de código abierto y de terceros, o construya su propio modelo.
+- **Protección diferenciada del cliente:** IBM respalda los modelos desarrollados por IBM e indemniza al cliente contra reclamaciones de propiedad intelectual de terceros.
+- **Gobernanza de IA de extremo a extremo:** Las empresas pueden escalar y acelerar el impacto de la IA con datos confiables en todo el negocio, utilizando datos donde residan.
+- **Implementaciones híbridas y de múltiples nubes:** IBM ofrece la flexibilidad de integrar y implementar sus cargas de trabajo de IA en la pila de nube híbrida de su elección.
+
+## Instalación y configuración
+
+Instale el paquete de integración con
+
+```bash
+pip install -qU langchain-ibm
+```
+
+Obtenga una clave de API de IBM watsonx.ai y configúrela como una variable de entorno (`WATSONX_APIKEY`)
+
+```python
+import os
+
+os.environ["WATSONX_APIKEY"] = "your IBM watsonx.ai api key"
+```
+
+## LLMs
+
+### WatsonxLLM
+
+Consulte un [ejemplo de uso](/docs/integrations/llms/ibm_watsonx).
+
+```python
+from langchain_ibm import WatsonxLLM
+```
+
+## Modelos de incrustación
+
+### WatsonxEmbeddings
+
+Consulte un [ejemplo de uso](/docs/integrations/text_embedding/ibm_watsonx).
+
+```python
+from langchain_ibm import WatsonxEmbeddings
+```

@@ -1,0 +1,39 @@
+---
+translated: true
+---
+
+# TiDB
+
+> [TiDB Cloud](https://tidbcloud.com/)は、専用およびサーバーレスのオプションを提供する包括的なデータベースアズアサービス(DBaaS)ソリューションです。`TiDB Serverless`は現在、MySQL ランドスケープに組み込みのベクトル検索を統合しています。この機能強化により、新しいデータベースや追加の技術スタックを必要とせずに、`TiDB Serverless`を使ってAIアプリケーションを開発できるようになりました。[プライベートベータ版のウェイティングリスト](https://tidb.cloud/ai)に参加して、この機能を初めて体験してみてください。
+
+## インストールとセットアップ
+
+TiDBデータベースの接続詳細を取得する必要があります。
+[TiDB Cloud](https://tidbcloud.com/)にアクセスして、接続詳細を取得してください。
+
+## ドキュメントローダー
+
+```python
+<!--IMPORTS:[{"imported": "TiDBLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.tidb.TiDBLoader.html", "title": "TiDB"}]-->
+from langchain_community.document_loaders import TiDBLoader
+```
+
+詳細については[こちら](/docs/integrations/document_loaders/tidb)を参照してください。
+
+## ベクトルストア
+
+```python
+<!--IMPORTS:[{"imported": "TiDBVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.tidb_vector.TiDBVectorStore.html", "title": "TiDB"}]-->
+from langchain_community.vectorstores import TiDBVectorStore
+```
+
+詳細については[こちら](/docs/integrations/vectorstores/tidb_vector)を参照してください。
+
+## メモリ
+
+```python
+<!--IMPORTS:[{"imported": "TiDBChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.tidb.TiDBChatMessageHistory.html", "title": "TiDB"}]-->
+from langchain_community.chat_message_histories import TiDBChatMessageHistory
+```
+
+詳細については[こちら](/docs/integrations/memory/tidb_chat_message_history)を参照してください。

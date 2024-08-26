@@ -1,0 +1,72 @@
+---
+translated: true
+---
+
+# क्षण
+
+> [क्षण कैश](https://docs.momentohq.com/) दुनिया का पहला वास्तव में सर्वरलेस कैशिंग सेवा है, जो तत्काल लचीलापन, शून्य तक पैमाने की क्षमता और तेज प्रदर्शन प्रदान करता है।
+>
+> [क्षण वेक्टर इंडेक्स](https://docs.momentohq.com/vector-index) सबसे उत्पादक, सबसे आसान-इस्तेमाल करने योग्य, पूरी तरह से सर्वरलेस वेक्टर इंडेक्स के रूप में उभरकर आया है।
+>
+> दोनों सेवाओं के लिए, बस SDK लें, एक API कुंजी प्राप्त करें, अपने कोड में कुछ पंक्तियां इनपुट करें, और आप चलने के लिए तैयार हैं। साथ में, वे आपके एलएलएम डेटा की जरूरतों के लिए एक व्यापक समाधान प्रदान करते हैं।
+
+यह पृष्ठ LangChain में [क्षण](https://gomomento.com) पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+- यहाँ [से](https://console.gomomento.com/) एक मुफ्त खाता साइन अप करें ताकि आप एक API कुंजी प्राप्त कर सकें
+- `pip install momento` के साथ क्षण पायथन SDK स्थापित करें
+
+## कैश
+
+एलएलएम प्रोम्प्ट और प्रतिक्रियाओं के लिए एक सर्वरलेस, वितरित, कम-लेटेंसी कैश के रूप में क्षण का उपयोग करें। मानक कैश क्षण उपयोगकर्ताओं के किसी भी वातावरण में प्राथमिक उपयोग मामला है।
+
+अपने एप्लिकेशन में क्षण कैश को एकीकृत करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "MomentoCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.MomentoCache.html", "title": "Momento"}]-->
+from langchain.cache import MomentoCache
+```
+
+फिर, निम्नलिखित कोड के साथ इसे सेट अप करें:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Momento"}]-->
+from datetime import timedelta
+from momento import CacheClient, Configurations, CredentialProvider
+from langchain.globals import set_llm_cache
+
+# Instantiate the Momento client
+cache_client = CacheClient(
+    Configurations.Laptop.v1(),
+    CredentialProvider.from_environment_variable("MOMENTO_API_KEY"),
+    default_ttl=timedelta(days=1))
+
+# Choose a Momento cache name of your choice
+cache_name = "langchain"
+
+# Instantiate the LLM cache
+set_llm_cache(MomentoCache(cache_client, cache_name))
+```
+
+## मेमोरी
+
+क्षण का उपयोग एलएलएम के लिए एक वितरित मेमोरी स्टोर के रूप में किया जा सकता है।
+
+चैट संदेश इतिहास के लिए क्षण का उपयोग करने के तरीके का एक वॉकथ्रू के लिए [यह नोटबुक](/docs/integrations/memory/momento_chat_message_history) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "MomentoChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.momento.MomentoChatMessageHistory.html", "title": "Momento"}]-->
+from langchain.memory import MomentoChatMessageHistory
+```
+
+## वेक्टर स्टोर
+
+क्षण वेक्टर इंडेक्स (एमवीआई) को एक वेक्टर स्टोर के रूप में उपयोग किया जा सकता है।
+
+एमवीआई को एक वेक्टर स्टोर के रूप में उपयोग करने के तरीके का एक वॉकथ्रू के लिए [यह नोटबुक](/docs/integrations/vectorstores/momento_vector_index) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "MomentoVectorIndex", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.momento_vector_index.MomentoVectorIndex.html", "title": "Momento"}]-->
+from langchain_community.vectorstores import MomentoVectorIndex
+```

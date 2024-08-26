@@ -1,0 +1,46 @@
+---
+hide_table_of_contents: true
+sidebar_class_name: hidden
+sidebar_position: 5
+translated: true
+---
+
+# 출력 파서
+
+출력 파서는 LLM의 출력을 더 적합한 형식으로 변환하는 역할을 합니다. 이는 LLM을 사용하여 구조화된 데이터를 생성할 때 매우 유용합니다.
+
+다양한 유형의 출력 파서를 많이 보유하고 있다는 것 외에도 LangChain OutputParsers의 또 다른 장점은 많은 경우 스트리밍을 지원한다는 것입니다.
+
+## [빠른 시작](./quick_start)
+
+출력 파서에 대한 소개와 사용 방법은 [이 빠른 시작 가이드](./quick_start)를 참조하세요.
+
+## 출력 파서 유형
+
+LangChain에는 다양한 유형의 `출력 파서`가 있습니다.
+
+테이블 열:
+
+- **이름**: 출력 파서의 이름
+- **스트리밍 지원**: 출력 파서가 스트리밍을 지원하는지 여부
+- **형식 지침 있음**: 출력 파서에 형식 지침이 있는지 여부. 일반적으로 (a) 원하는 스키마가 프롬프트에 지정되지 않고 다른 매개변수(예: OpenAI 함수 호출)에 지정되거나 (b) OutputParser가 다른 OutputParser를 래핑할 때는 사용할 수 없습니다.
+- **LLM 호출**: 이 출력 파서 자체가 LLM을 호출하는지 여부. 일반적으로 잘못 형식화된 출력을 수정하려는 출력 파서에서만 수행됩니다.
+- **입력 유형**: 예상되는 입력 유형. 대부분의 출력 파서는 문자열과 메시지 모두에서 작동하지만 일부(예: OpenAI Functions)는 특정 kwargs가 있는 메시지가 필요합니다.
+- **출력 유형**: 파서에 의해 반환되는 객체의 출력 유형.
+- **설명**: 이 출력 파서에 대한 설명과 사용 시기.
+
+| 이름            | 스트리밍 지원 | 형식 지침 제공       | LLM 호출 | 입력 유형                       | 출력 유형          | 설명                                                                                                                                                                                                                                              |
+|-----------------|--------------------|-------------------------------|-----------|----------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [OpenAITools](./types/openai_tools) |                   | (모델에 `tools` 전달) |           | `Message` (with `tool_choice`)   | JSON 객체          | 최신 OpenAI 함수 호출 인수 `tools` 및 `tool_choice`를 사용하여 반환 출력을 구조화합니다. 함수 호출을 지원하는 모델을 사용하는 경우 이 방법이 일반적으로 가장 안정적입니다.                                                                                        |
+| [OpenAIFunctions](./types/openai_functions) | ✅                  | (모델에 `functions` 전달) |           | `Message` (with `function_call`) | JSON 객체          | 레거시 OpenAI 함수 호출 인수 `functions` 및 `function_call`을 사용하여 반환 출력을 구조화합니다.                                                                                        |
+| [JSON](./types/json)            | ✅                  | ✅                             |           | `str` \| `Message`               | JSON 객체          | 지정된 Pydantic 모델에 대한 JSON 객체를 반환합니다. 함수 호출을 사용하지 않는 구조화된 데이터를 얻는 가장 안정적인 출력 파서일 것입니다.                                    |
+| [XML](./types/xml)            | ✅                  | ✅                             |           | `str` \| `Message`                 | `dict`               | 태그 사전을 반환합니다. XML 출력이 필요할 때 사용하세요. (Anthropic의 것과 같은) XML 작성에 능숙한 모델과 함께 사용하세요.                                                                                                                            |
+| [CSV](./types/csv)           | ✅                  | ✅                             |           | `str` \| `Message`                 | `List[str]`          | 쉼표로 구분된 값 목록을 반환합니다.                                                                                                                                                                                                                |
+| [OutputFixing](./types/output_fixing)    |                    |                               | ✅         | `str` \| `Message`                 |                      | 다른 출력 파서를 래핑합니다. 해당 출력 파서에 오류가 발생하면 오류 메시지와 잘못된 출력을 LLM에 전달하여 출력을 수정하도록 요청합니다.                                                                                              |
+| [RetryWithError](./types/retry)  |                    |                               | ✅         | `str` \| `Message`                 |                      | 다른 출력 파서를 래핑합니다. 해당 출력 파서에 오류가 발생하면 원래 입력, 잘못된 출력 및 오류 메시지를 LLM에 전달하여 수정하도록 요청합니다. `OutputFixingParser`와 비교하면 원래 지침도 보냅니다. |
+| [Pydantic](./types/pydantic)        |                    | ✅                             |           | `str` \| `Message`                 | `pydantic.BaseModel` | 사용자 정의 Pydantic 모델을 사용하여 데이터를 해당 형식으로 반환합니다.                                                                                                                                                                                     |
+| [YAML](./types/yaml)        |                    | ✅                             |           | `str` \| `Message`                 | `pydantic.BaseModel` | 사용자 정의 Pydantic 모델을 사용하여 데이터를 YAML 형식으로 반환합니다.                                                                                                                                                                                    |
+| [PandasDataFrame](./types/pandas_dataframe) |                    | ✅                             |           | `str` \| `Message`                 | `dict`               | Pandas DataFrame 작업에 유용합니다.                                                                                                                                                                                                      |
+| [Enum](./types/enum)            |                    | ✅                             |           | `str` \| `Message`                 | `Enum`               | 응답을 제공된 enum 값 중 하나로 구문 분석합니다.                                                                                                                                                                                                    |
+| [Datetime](./types/datetime)        |                    | ✅                             |           | `str` \| `Message`                 | `datetime.datetime`  | 응답을 datetime 문자열로 구문 분석합니다.                                                                                                                                                                                                                  |
+| [Structured](./types/structured)      |                    | ✅                             |           | `str` \| `Message`                 | `Dict[str, str]`     | 구조화된 정보를 반환하는 출력 파서입니다. 필드가 문자열만 허용되므로 다른 출력 파서보다 강력하지 않습니다. 더 작은 LLM을 사용할 때 유용합니다.                                            |

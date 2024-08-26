@@ -1,0 +1,169 @@
+---
+keywords:
+- gemini
+- GoogleGenerativeAI
+- gemini-pro
+translated: true
+---
+
+# Google AI
+
+구글 제너레이티브 AI [Google Generative AI](https://developers.generativeai.google/) 모델을 Langchain으로 사용하는 방법에 대한 가이드입니다. 참고: 이것은 구글 클라우드 Vertex AI [integration](/docs/integrations/llms/google_vertex_ai_palm)과는 별도입니다.
+
+## 설정하기
+
+구글 제너레이티브 AI를 사용하려면 `langchain-google-genai` Python 패키지를 설치하고 API 키를 생성해야 합니다. [자세한 내용](https://developers.generativeai.google/)을 확인하세요.
+
+```python
+%pip install --upgrade --quiet  langchain-google-genai
+```
+
+```python
+from langchain_google_genai import GoogleGenerativeAI
+```
+
+```python
+from getpass import getpass
+
+api_key = getpass()
+```
+
+```python
+llm = GoogleGenerativeAI(model="models/text-bison-001", google_api_key=api_key)
+print(
+    llm.invoke(
+        "What are some of the pros and cons of Python as a programming language?"
+    )
+)
+```
+
+```output
+**Pros of Python:**
+
+* **Easy to learn:** Python is a very easy-to-learn programming language, even for beginners. Its syntax is simple and straightforward, and there are a lot of resources available to help you get started.
+* **Versatile:** Python can be used for a wide variety of tasks, including web development, data science, and machine learning. It's also a good choice for beginners because it can be used for a variety of projects, so you can learn the basics and then move on to more complex tasks.
+* **High-level:** Python is a high-level programming language, which means that it's closer to human language than other programming languages. This makes it easier to read and understand, which can be a big advantage for beginners.
+* **Open-source:** Python is an open-source programming language, which means that it's free to use and there are a lot of resources available to help you learn it.
+* **Community:** Python has a large and active community of developers, which means that there are a lot of people who can help you if you get stuck.
+
+**Cons of Python:**
+
+* **Slow:** Python is a relatively slow programming language compared to some other languages, such as C++. This can be a disadvantage if you're working on computationally intensive tasks.
+* **Not as performant:** Python is not as performant as some other programming languages, such as C++ or Java. This can be a disadvantage if you're working on projects that require high performance.
+* **Dynamic typing:** Python is a dynamically typed programming language, which means that the type of a variable can change during runtime. This can be a disadvantage if you need to ensure that your code is type-safe.
+* **Unmanaged memory:** Python uses a garbage collection system to manage memory. This can be a disadvantage if you need to have more control over memory management.
+
+Overall, Python is a very good programming language for beginners. It's easy to learn, versatile, and has a large community of developers. However, it's important to be aware of its limitations, such as its slow performance and lack of performance.
+```
+
+```python
+llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+print(
+    llm.invoke(
+        "What are some of the pros and cons of Python as a programming language?"
+    )
+)
+```
+
+```output
+**Pros:**
+
+* **Simplicity and Readability:** Python is known for its simple and easy-to-read syntax, which makes it accessible to beginners and reduces the chance of errors. It uses indentation to define blocks of code, making the code structure clear and visually appealing.
+
+* **Versatility:** Python is a general-purpose language, meaning it can be used for a wide range of tasks, including web development, data science, machine learning, and desktop applications. This versatility makes it a popular choice for various projects and industries.
+
+* **Large Community:** Python has a vast and active community of developers, which contributes to its growth and popularity. This community provides extensive documentation, tutorials, and open-source libraries, making it easy for Python developers to find support and resources.
+
+* **Extensive Libraries:** Python offers a rich collection of libraries and frameworks for various tasks, such as data analysis (NumPy, Pandas), web development (Django, Flask), machine learning (Scikit-learn, TensorFlow), and many more. These libraries provide pre-built functions and modules, allowing developers to quickly and efficiently solve common problems.
+
+* **Cross-Platform Support:** Python is cross-platform, meaning it can run on various operating systems, including Windows, macOS, and Linux. This allows developers to write code that can be easily shared and used across different platforms.
+
+**Cons:**
+
+* **Speed and Performance:** Python is generally slower than compiled languages like C++ or Java due to its interpreted nature. This can be a disadvantage for performance-intensive tasks, such as real-time systems or heavy numerical computations.
+
+* **Memory Usage:** Python programs tend to consume more memory compared to compiled languages. This is because Python uses a dynamic memory allocation system, which can lead to memory fragmentation and higher memory usage.
+
+* **Lack of Static Typing:** Python is a dynamically typed language, which means that data types are not explicitly defined for variables. This can make it challenging to detect type errors during development, which can lead to unexpected behavior or errors at runtime.
+
+* **GIL (Global Interpreter Lock):** Python uses a global interpreter lock (GIL) to ensure that only one thread can execute Python bytecode at a time. This can limit the scalability and parallelism of Python programs, especially in multi-threaded or multiprocessing scenarios.
+
+* **Package Management:** While Python has a vast ecosystem of libraries and packages, managing dependencies and package versions can be challenging. The Python Package Index (PyPI) is the official repository for Python packages, but it can be difficult to ensure compatibility and avoid conflicts between different versions of packages.
+```
+
+## 체인에서 사용하기
+
+```python
+from langchain_core.prompts import PromptTemplate
+```
+
+```python
+template = """Question: {question}
+
+Answer: Let's think step by step."""
+prompt = PromptTemplate.from_template(template)
+
+chain = prompt | llm
+
+question = "How much is 2+2?"
+print(chain.invoke({"question": question}))
+```
+
+```output
+4
+```
+
+## 스트리밍 호출
+
+```python
+import sys
+
+for chunk in llm.stream("Tell me a short poem about snow"):
+    sys.stdout.write(chunk)
+    sys.stdout.flush()
+```
+
+```output
+In winter's embrace, a silent ballet,
+Snowflakes descend, a celestial display.
+Whispering secrets, they softly fall,
+A blanket of white, covering all.
+
+With gentle grace, they paint the land,
+Transforming the world into a winter wonderland.
+Trees stand adorned in icy splendor,
+A glistening spectacle, a sight to render.
+
+Snowflakes twirl, like dancers on a stage,
+Creating a symphony, a winter montage.
+Their silent whispers, a sweet serenade,
+As they dance and twirl, a snowy cascade.
+
+In the hush of dawn, a frosty morn,
+Snow sparkles bright, like diamonds reborn.
+Each flake unique, in its own design,
+A masterpiece crafted by the divine.
+
+So let us revel in this wintry bliss,
+As snowflakes fall, with a gentle kiss.
+For in their embrace, we find a peace profound,
+A frozen world, with magic all around.
+```
+
+### 안전성 설정
+
+Gemini 모델에는 기본 안전성 설정이 있으며, 이를 재정의할 수 있습니다. 모델에서 "안전성 경고"를 많이 받는 경우, `safety_settings` 속성을 조정해 볼 수 있습니다. 예를 들어, 위험한 콘텐츠에 대한 안전성 차단을 끄려면 다음과 같이 LLM을 구성할 수 있습니다:
+
+```python
+from langchain_google_genai import GoogleGenerativeAI, HarmBlockThreshold, HarmCategory
+
+llm = GoogleGenerativeAI(
+    model="gemini-pro",
+    google_api_key=api_key,
+    safety_settings={
+        HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+    },
+)
+```
+
+사용 가능한 범주와 임계값에 대한 자세한 내용은 구글의 [안전성 설정 유형](https://ai.google.dev/api/python/google/generativeai/types/SafetySettingDict)을 참조하세요.

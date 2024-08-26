@@ -1,0 +1,718 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# Inicio rápido
+
+En este inicio rápido te mostraremos cómo:
+- Configurarte con LangChain, LangSmith y LangServe
+- Usar los componentes más básicos y comunes de LangChain: plantillas de prompts, modelos y analizadores de salida
+- Usar LangChain Expression Language, el protocolo sobre el cual se construye LangChain y que facilita la cadena de componentes
+- Construir una aplicación simple con LangChain
+- Rastrear tu aplicación con LangSmith
+- Servir tu aplicación con LangServe
+
+¡Es bastante lo que vamos a cubrir! Vamos a sumergirnos.
+
+## Configuración
+
+### Jupyter Notebook
+
+Esta guía (y la mayoría de las otras guías en la documentación) usa [Jupyter notebooks](https://jupyter.org/) y asume que el lector también lo hace. Los Jupyter notebooks son perfectos para aprender a trabajar con sistemas LLM porque a menudo pueden surgir problemas (salida inesperada, API caída, etc.) y seguir las guías en un entorno interactivo es una excelente manera de entenderlas mejor.
+
+NO necesitas seguir la guía en un Jupyter Notebook, pero se recomienda. Consulta [aquí](https://jupyter.org/install) para obtener instrucciones sobre cómo instalarlo.
+
+### Instalación
+
+Para instalar LangChain ejecuta:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs>
+  <TabItem value="pip" label="Pip" default>
+    <CodeBlock language="bash">pip install langchain</CodeBlock>
+  </TabItem>
+  <TabItem value="conda" label="Conda">
+    <CodeBlock language="bash">conda install langchain -c conda-forge</CodeBlock>
+  </TabItem>
+</Tabs>
+
+Para más detalles, consulta nuestra [guía de instalación](/docs/get_started/installation).
+
+### LangSmith
+
+Muchas de las aplicaciones que construyas con LangChain contendrán múltiples pasos con múltiples invocaciones de llamadas LLM.
+A medida que estas aplicaciones se vuelven más y más complejas, se vuelve crucial poder inspeccionar qué exactamente está pasando dentro de tu cadena o agente.
+La mejor manera de hacerlo es con [LangSmith](https://smith.langchain.com).
+
+Ten en cuenta que LangSmith no es necesario, pero es útil.
+Si deseas usar LangSmith, después de registrarte en el enlace anterior, asegúrate de configurar tus variables de entorno para comenzar a registrar trazas:
+
+```shell
+export LANGCHAIN_TRACING_V2="true"
+export LANGCHAIN_API_KEY="..."
+```
+
+## Construyendo con LangChain
+
+LangChain permite construir aplicaciones que conectan fuentes externas de datos y computación con LLMs.
+En este inicio rápido, repasaremos algunas formas diferentes de hacerlo.
+Comenzaremos con una cadena LLM simple, que solo se basa en la información en la plantilla de prompt para responder.
+Luego, construiremos una cadena de recuperación, que obtiene datos de una base de datos separada y los pasa a la plantilla de prompt.
+Luego añadiremos historial de chat, para crear una cadena de recuperación de conversación. Esto te permite interactuar de manera conversacional con este LLM, de modo que recuerde preguntas anteriores.
+Finalmente, construiremos un agente, que utiliza un LLM para determinar si necesita o no obtener datos para responder preguntas.
+Cubriremos estos temas a un alto nivel, ¡pero hay muchos detalles en todos ellos!
+Enlazaremos la documentación relevante.
+
+## Cadena LLM
+
+Mostraremos cómo usar modelos disponibles vía API, como OpenAI, y modelos locales de código abierto, usando integraciones como Ollama.
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+
+Primero necesitaremos importar el paquete de integración LangChain x OpenAI.
+
+```shell
+pip install langchain-openai
+```
+
+Acceder a la API requiere una clave API, que puedes obtener creando una cuenta y dirigiéndote [aquí](https://platform.openai.com/account/api-keys). Una vez que tengamos una clave, querrás configurarla como una variable de entorno ejecutando:
+
+```shell
+export OPENAI_API_KEY="..."
+```
+
+Podemos entonces inicializar el modelo:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI()
+```
+
+Si prefieres no configurar una variable de entorno, puedes pasar la clave directamente a través del parámetro `api_key` al iniciar la clase OpenAI LLM:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="local" label="Local (utilizando Ollama)">
+
+[Ollama](https://ollama.ai/) te permite ejecutar modelos de lenguaje grande de código abierto, como Llama 2, localmente.
+
+Primero, sigue [estas instrucciones](https://github.com/jmorganca/ollama) para configurar y ejecutar una instancia local de Ollama:
+
+* [Descargar](https://ollama.ai/download)
+* Obtener un modelo vía `ollama pull llama2`
+
+Luego, asegúrate de que el servidor Ollama esté en funcionamiento. Después de eso, puedes hacer:
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Quickstart"}]-->
+from langchain_community.llms import Ollama
+llm = Ollama(model="llama2")
+```
+
+  </TabItem>
+  <TabItem value="anthropic" label="Anthropic">
+
+Primero necesitaremos importar el paquete LangChain x Anthropic.
+
+```shell
+pip install langchain-anthropic
+```
+
+Acceder a la API requiere una clave API, que puedes obtener creando una cuenta [aquí](https://claude.ai/login). Una vez que tengamos una clave, querrás configurarla como una variable de entorno ejecutando:
+
+```shell
+export ANTHROPIC_API_KEY="..."
+```
+
+Podemos entonces inicializar el modelo:
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnthropic", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html", "title": "Quickstart"}]-->
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024)
+```
+
+Si prefieres no configurar una variable de entorno, puedes pasar la clave directamente a través del parámetro `api_key` al iniciar la clase Anthropic Chat Model:
+
+```python
+llm = ChatAnthropic(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+Primero necesitaremos importar el paquete SDK de Cohere.
+
+```shell
+pip install langchain-cohere
+```
+
+Acceder a la API requiere una clave API, que puedes obtener creando una cuenta y dirigiéndote [aquí](https://dashboard.cohere.com/api-keys). Una vez que tengamos una clave, querrás configurarla como una variable de entorno ejecutando:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+Podemos entonces inicializar el modelo:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+llm = ChatCohere()
+```
+
+Si prefieres no configurar una variable de entorno, puedes pasar la clave directamente a través del parámetro `cohere_api_key` al iniciar la clase Cohere LLM:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+llm = ChatCohere(cohere_api_key="...")
+```
+
+  </TabItem>
+</Tabs>
+
+Una vez que hayas instalado e inicializado el LLM de tu elección, ¡podemos intentar usarlo!
+Vamos a preguntarle qué es LangSmith: esto es algo que no estaba presente en los datos de entrenamiento, por lo que no debería tener una muy buena respuesta.
+
+```python
+llm.invoke("how can langsmith help with testing?")
+```
+
+También podemos guiar su respuesta con una plantilla de prompt.
+Las plantillas de prompt convierten la entrada de usuario en bruto en una mejor entrada para el LLM.
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts import ChatPromptTemplate
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a world class technical documentation writer."),
+    ("user", "{input}")
+])
+```
+
+Ahora podemos combinar estos en una simple cadena LLM:
+
+```python
+chain = prompt | llm
+```
+
+Ahora podemos invocarlo y hacer la misma pregunta. Todavía no sabrá la respuesta, ¡pero debería responder en un tono más adecuado para un escritor técnico!
+
+```python
+chain.invoke({"input": "how can langsmith help with testing?"})
+```
+
+La salida de un ChatModel (y por lo tanto, de esta cadena) es un mensaje. Sin embargo, a menudo es mucho más conveniente trabajar con cadenas. Añadamos un simple analizador de salida para convertir el mensaje de chat en una cadena.
+
+```python
+<!--IMPORTS:[{"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Quickstart"}]-->
+from langchain_core.output_parsers import StrOutputParser
+
+output_parser = StrOutputParser()
+```
+
+Ahora podemos añadir esto a la cadena anterior:
+
+```python
+chain = prompt | llm | output_parser
+```
+
+Ahora podemos invocarlo y hacer la misma pregunta. La respuesta ahora será una cadena (en lugar de un ChatMessage).
+
+```python
+chain.invoke({"input": "how can langsmith help with testing?"})
+```
+
+### Profundizando
+
+Ahora hemos configurado con éxito una cadena LLM básica. Solo tocamos lo básico de los prompts, modelos y analizadores de salida: para una inmersión más profunda en todo lo mencionado aquí, consulta [esta sección de la documentación](/docs/modules/model_io).
+
+## Cadena de Recuperación
+
+Para responder adecuadamente a la pregunta original ("¿cómo puede LangSmith ayudar con las pruebas?"), necesitamos proporcionar contexto adicional al LLM.
+Podemos hacer esto a través de la *recuperación*.
+La recuperación es útil cuando tienes **demasiados datos** para pasarlos directamente al LLM.
+Puedes entonces usar un recuperador para obtener solo las piezas más relevantes y pasarlas.
+
+En este proceso, buscaremos documentos relevantes de un *Retriever* y luego los pasaremos al prompt.
+Un Retriever puede estar respaldado por cualquier cosa: una tabla SQL, internet, etc., pero en este caso, poblaremos una tienda de vectores y la usaremos como recuperador. Para más información sobre las tiendas de vectores, consulta [esta documentación](/docs/modules/data_connection/vectorstores).
+
+Primero, necesitamos cargar los datos que queremos indexar. Para hacer esto, utilizaremos el WebBaseLoader. Esto requiere instalar [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/):
+
+```shell
+pip install beautifulsoup4
+```
+
+Después de eso, podemos importar y usar WebBaseLoader.
+
+```python
+<!--IMPORTS:[{"imported": "WebBaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html", "title": "Quickstart"}]-->
+from langchain_community.document_loaders import WebBaseLoader
+loader = WebBaseLoader("https://docs.smith.langchain.com/user_guide")
+
+docs = loader.load()
+```
+
+A continuación, necesitamos indexarlo en una tienda de vectores. Esto requiere algunos componentes, a saber, un [modelo de incrustación](/docs/modules/data_connection/text_embedding) y una [tienda de vectores](/docs/modules/data_connection/vectorstores).
+
+Para los modelos de incrustación, nuevamente proporcionamos ejemplos para acceder vía API o ejecutando modelos locales.
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI (API)" default>
+
+Asegúrate de tener el paquete `langchain_openai` instalado y las variables de entorno adecuadas configuradas (estas son las mismas que se necesitan para el LLM).
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings()
+```
+
+</TabItem>
+<TabItem value="local" label="Local (usando Ollama)">
+
+Asegúrate de tener Ollama en funcionamiento (misma configuración que con el LLM).
+
+```python
+<!--IMPORTS:[{"imported": "OllamaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.ollama.OllamaEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_community.embeddings import OllamaEmbeddings
+
+embeddings = OllamaEmbeddings()
+```
+
+  </TabItem>
+<TabItem value="cohere" label="Cohere (API)" default>
+
+Asegúrate de tener el paquete `cohere` instalado y las variables de entorno adecuadas configuradas (estas son las mismas que se necesitan para el LLM).
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Quickstart"}]-->
+from langchain_cohere.embeddings import CohereEmbeddings
+
+embeddings = CohereEmbeddings()
+```
+
+</TabItem>
+</Tabs>
+
+Ahora, podemos usar este modelo de incrustación para ingerir documentos en una tienda de vectores.
+Usaremos una tienda de vectores local simple, [FAISS](/docs/integrations/vectorstores/faiss), por simplicidad.
+
+Primero necesitamos instalar los paquetes necesarios para eso:
+
+```shell
+pip install faiss-cpu
+```
+
+Luego podemos construir nuestro índice:
+
+```python
+<!--IMPORTS:[{"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Quickstart"}, {"imported": "RecursiveCharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html", "title": "Quickstart"}]-->
+from langchain_community.vectorstores import FAISS
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter()
+documents = text_splitter.split_documents(docs)
+vector = FAISS.from_documents(documents, embeddings)
+```
+
+Ahora que tenemos estos datos indexados en una tienda de vectores, crearemos una cadena de recuperación.
+Esta cadena tomará una pregunta entrante, buscará documentos relevantes, luego pasará esos documentos junto con la pregunta original a un LLM y le pedirá que responda la pregunta original.
+
+Primero, configuremos la cadena que toma una pregunta y los documentos recuperados y genera una respuesta.
+
+```python
+<!--IMPORTS:[{"imported": "create_stuff_documents_chain", "source": "langchain.chains.combine_documents", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.combine_documents.stuff.create_stuff_documents_chain.html", "title": "Quickstart"}]-->
+from langchain.chains.combine_documents import create_stuff_documents_chain
+
+prompt = ChatPromptTemplate.from_template("""Answer the following question based only on the provided context:
+
+<context>
+{context}
+</context>
+
+Question: {input}""")
+
+document_chain = create_stuff_documents_chain(llm, prompt)
+```
+
+Si quisiéramos, podríamos ejecutar esto nosotros mismos pasando documentos directamente:
+
+```python
+<!--IMPORTS:[{"imported": "Document", "source": "langchain_core.documents", "docs": "https://api.python.langchain.com/en/latest/documents/langchain_core.documents.base.Document.html", "title": "Quickstart"}]-->
+from langchain_core.documents import Document
+
+document_chain.invoke({
+    "input": "how can langsmith help with testing?",
+    "context": [Document(page_content="langsmith can let you visualize test results")]
+})
+```
+
+Sin embargo, queremos que los documentos provengan primero del recuperador que acabamos de configurar.
+De esa manera, podemos usar el recuperador para seleccionar dinámicamente los documentos más relevantes y pasarlos para una pregunta dada.
+
+```python
+<!--IMPORTS:[{"imported": "create_retrieval_chain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.retrieval.create_retrieval_chain.html", "title": "Quickstart"}]-->
+from langchain.chains import create_retrieval_chain
+
+retriever = vector.as_retriever()
+retrieval_chain = create_retrieval_chain(retriever, document_chain)
+```
+
+Ahora podemos invocar esta cadena. Esto devuelve un diccionario: la respuesta del LLM está en la clave `answer`.
+
+```python
+response = retrieval_chain.invoke({"input": "how can langsmith help with testing?"})
+print(response["answer"])
+
+# LangSmith offers several features that can help with testing:...
+
+```
+
+¡Esta respuesta debería ser mucho más precisa!
+
+### Profundizando Más
+
+Ahora hemos configurado con éxito una cadena de recuperación básica. Solo tocamos lo básico de la recuperación: para una inmersión más profunda en todo lo mencionado aquí, consulta [esta sección de la documentación](/docs/modules/data_connection).
+
+## Cadena de Recuperación de Conversación
+
+La cadena que hemos creado hasta ahora solo puede responder preguntas individuales. Uno de los principales tipos de aplicaciones de LLM que las personas están construyendo son los chat bots. Entonces, ¿cómo convertimos esta cadena en una que pueda responder preguntas de seguimiento?
+
+Aún podemos usar la función `create_retrieval_chain`, pero necesitamos cambiar dos cosas:
+
+1. El método de recuperación ahora no solo debería funcionar con la entrada más reciente, sino que también debería tener en cuenta todo el historial.
+2. La última cadena de LLM también debería tener en cuenta todo el historial.
+
+**Actualizando la Recuperación**
+
+Para actualizar la recuperación, crearemos una nueva cadena. Esta cadena tomará la entrada más reciente (`input`) y el historial de la conversación (`chat_history`) y usará un LLM para generar una consulta de búsqueda.
+
+```python
+<!--IMPORTS:[{"imported": "create_history_aware_retriever", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.history_aware_retriever.create_history_aware_retriever.html", "title": "Quickstart"}, {"imported": "MessagesPlaceholder", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.MessagesPlaceholder.html", "title": "Quickstart"}]-->
+from langchain.chains import create_history_aware_retriever
+from langchain_core.prompts import MessagesPlaceholder
+
+# First we need a prompt that we can pass into an LLM to generate this search query
+
+prompt = ChatPromptTemplate.from_messages([
+    MessagesPlaceholder(variable_name="chat_history"),
+    ("user", "{input}"),
+    ("user", "Given the above conversation, generate a search query to look up to get information relevant to the conversation")
+])
+retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
+```
+
+Podemos probar esto pasando una instancia donde el usuario haga una pregunta de seguimiento.
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Quickstart"}, {"imported": "AIMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.ai.AIMessage.html", "title": "Quickstart"}]-->
+from langchain_core.messages import HumanMessage, AIMessage
+
+chat_history = [HumanMessage(content="Can LangSmith help test my LLM applications?"), AIMessage(content="Yes!")]
+retriever_chain.invoke({
+    "chat_history": chat_history,
+    "input": "Tell me how"
+})
+```
+
+Deberías ver que esto devuelve documentos sobre pruebas en LangSmith. Esto se debe a que el LLM generó una nueva consulta, combinando el historial de chat con la pregunta de seguimiento.
+
+Ahora que tenemos este nuevo recuperador, podemos crear una nueva cadena para continuar la conversación con estos documentos recuperados en mente.
+
+```python
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "Answer the user's questions based on the below context:\n\n{context}"),
+    MessagesPlaceholder(variable_name="chat_history"),
+    ("user", "{input}"),
+])
+document_chain = create_stuff_documents_chain(llm, prompt)
+
+retrieval_chain = create_retrieval_chain(retriever_chain, document_chain)
+```
+
+Ahora podemos probar esto de principio a fin:
+
+```python
+chat_history = [HumanMessage(content="Can LangSmith help test my LLM applications?"), AIMessage(content="Yes!")]
+retrieval_chain.invoke({
+    "chat_history": chat_history,
+    "input": "Tell me how"
+})
+```
+
+Podemos ver que esto da una respuesta coherente: ¡hemos convertido con éxito nuestra cadena de recuperación en un chatbot!
+
+## Agente
+
+Hasta ahora hemos creado ejemplos de cadenas, donde cada paso se conoce de antemano.
+Lo último que crearemos es un agente, donde el LLM decide qué pasos tomar.
+
+**NOTA: para este ejemplo solo mostraremos cómo crear un agente utilizando modelos de OpenAI, ya que los modelos locales aún no son lo suficientemente confiables.**
+
+Una de las primeras cosas que hacer al construir un agente es decidir a qué herramientas debe tener acceso.
+Para este ejemplo, daremos al agente acceso a dos herramientas:
+
+1. El recuperador que acabamos de crear. Esto le permitirá responder fácilmente preguntas sobre LangSmith.
+2. Una herramienta de búsqueda. Esto le permitirá responder fácilmente preguntas que requieran información actualizada.
+
+Primero, configuremos una herramienta para el recuperador que acabamos de crear:
+
+```python
+<!--IMPORTS:[{"imported": "create_retriever_tool", "source": "langchain.tools.retriever", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.create_retriever_tool.html", "title": "Quickstart"}]-->
+from langchain.tools.retriever import create_retriever_tool
+
+retriever_tool = create_retriever_tool(
+    retriever,
+    "langsmith_search",
+    "Search for information about LangSmith. For any questions about LangSmith, you must use this tool!",
+)
+```
+
+La herramienta de búsqueda que utilizaremos es [Tavily](/docs/integrations/retrievers/tavily). Esto requerirá una clave API (tienen un nivel gratuito generoso). Después de crearla en su plataforma, debes configurarla como una variable de entorno:
+
+```shell
+export TAVILY_API_KEY=...
+```
+
+Si no deseas configurar una clave API, puedes omitir la creación de esta herramienta.
+
+```python
+<!--IMPORTS:[{"imported": "TavilySearchResults", "source": "langchain_community.tools.tavily_search", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.tavily_search.tool.TavilySearchResults.html", "title": "Quickstart"}]-->
+from langchain_community.tools.tavily_search import TavilySearchResults
+
+search = TavilySearchResults()
+```
+
+Ahora podemos crear una lista de las herramientas con las que queremos trabajar:
+
+```python
+tools = [retriever_tool, search]
+```
+
+Ahora que tenemos las herramientas, podemos crear un agente para usarlas. Lo repasaremos rápidamente: para una inmersión más profunda en lo que exactamente está sucediendo, consulta la [documentación de inicio rápido del Agente](/docs/modules/agents).
+
+Primero instala langchain hub
+
+```bash
+pip install langchainhub
+```
+
+Instala el paquete langchain-openai
+Para interactuar con OpenAI necesitamos usar langchain-openai que se conecta con OpenAI SDK[https://github.com/langchain-ai/langchain/tree/master/libs/partners/openai].
+
+```bash
+pip install langchain-openai
+```
+
+Ahora podemos usarlo para obtener un prompt predefinido
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}, {"imported": "create_openai_functions_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html", "title": "Quickstart"}, {"imported": "AgentExecutor", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+from langchain import hub
+from langchain.agents import create_openai_functions_agent
+from langchain.agents import AgentExecutor
+
+# Get the prompt to use - you can modify this!
+
+prompt = hub.pull("hwchase17/openai-functions-agent")
+
+# You need to set OPENAI_API_KEY environment variable or pass it as argument `api_key`.
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+agent = create_openai_functions_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+```
+
+Ahora podemos invocar al agente y ver cómo responde. Podemos hacerle preguntas sobre LangSmith:
+
+```python
+agent_executor.invoke({"input": "how can langsmith help with testing?"})
+```
+
+Podemos preguntarle sobre el clima:
+
+```python
+agent_executor.invoke({"input": "what is the weather in SF?"})
+```
+
+Podemos tener conversaciones con él:
+
+```python
+chat_history = [HumanMessage(content="Can LangSmith help test my LLM applications?"), AIMessage(content="Yes!")]
+agent_executor.invoke({
+    "chat_history": chat_history,
+    "input": "Tell me how"
+})
+```
+
+### Profundizando Más
+
+Ahora hemos configurado con éxito un agente básico. Solo tocamos lo básico de los agentes: para una inmersión más profunda en todo lo mencionado aquí, consulta [esta sección de la documentación](/docs/modules/agents).
+
+## Servir con LangServe
+
+Ahora que hemos construido una aplicación, necesitamos servirla. Ahí es donde entra LangServe.
+LangServe ayuda a los desarrolladores a desplegar cadenas de LangChain como una API REST. No necesitas usar LangServe para usar LangChain, pero en esta guía mostraremos cómo puedes desplegar tu aplicación con LangServe.
+
+Mientras que la primera parte de esta guía estaba destinada a ejecutarse en un Jupyter Notebook, ahora saldremos de eso. Crearemos un archivo Python y luego interactuaremos con él desde la línea de comandos.
+
+Instala con:
+
+```bash
+pip install "langserve[all]"
+```
+
+### Servidor
+
+Para crear un servidor para nuestra aplicación, haremos un archivo `serve.py`. Este contendrá nuestra lógica para servir nuestra aplicación. Consiste en tres cosas:
+1. La definición de nuestra cadena que acabamos de crear arriba
+2. Nuestra aplicación FastAPI
+3. Una definición de una ruta desde la cual servir la cadena, lo cual se hace con `langserve.add_routes`.
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Quickstart"}, {"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}, {"imported": "WebBaseLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html", "title": "Quickstart"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Quickstart"}, {"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Quickstart"}, {"imported": "RecursiveCharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html", "title": "Quickstart"}, {"imported": "create_retriever_tool", "source": "langchain.tools.retriever", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.create_retriever_tool.html", "title": "Quickstart"}, {"imported": "TavilySearchResults", "source": "langchain_community.tools.tavily_search", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.tavily_search.tool.TavilySearchResults.html", "title": "Quickstart"}, {"imported": "create_openai_functions_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.openai_functions_agent.base.create_openai_functions_agent.html", "title": "Quickstart"}, {"imported": "AgentExecutor", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html", "title": "Quickstart"}, {"imported": "BaseMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.base.BaseMessage.html", "title": "Quickstart"}]-->
+#!/usr/bin/env python
+from typing import List
+
+from fastapi import FastAPI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.tools.retriever import create_retriever_tool
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain import hub
+from langchain.agents import create_openai_functions_agent
+from langchain.agents import AgentExecutor
+from langchain.pydantic_v1 import BaseModel, Field
+from langchain_core.messages import BaseMessage
+from langserve import add_routes
+
+# 1. Load Retriever
+
+loader = WebBaseLoader("https://docs.smith.langchain.com/user_guide")
+docs = loader.load()
+text_splitter = RecursiveCharacterTextSplitter()
+documents = text_splitter.split_documents(docs)
+embeddings = OpenAIEmbeddings()
+vector = FAISS.from_documents(documents, embeddings)
+retriever = vector.as_retriever()
+
+# 2. Create Tools
+
+retriever_tool = create_retriever_tool(
+    retriever,
+    "langsmith_search",
+    "Search for information about LangSmith. For any questions about LangSmith, you must use this tool!",
+)
+search = TavilySearchResults()
+tools = [retriever_tool, search]
+
+# 3. Create Agent
+
+prompt = hub.pull("hwchase17/openai-functions-agent")
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+agent = create_openai_functions_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+# 4. App definition
+
+app = FastAPI(
+  title="LangChain Server",
+  version="1.0",
+  description="A simple API server using LangChain's Runnable interfaces",
+)
+
+# 5. Adding chain route
+
+# We need to add these input/output schemas because the current AgentExecutor
+
+# is lacking in schemas.
+
+class Input(BaseModel):
+    input: str
+    chat_history: List[BaseMessage] = Field(
+        ...,
+        extra={"widget": {"type": "chat", "input": "location"}},
+    )
+
+class Output(BaseModel):
+    output: str
+
+add_routes(
+    app,
+    agent_executor.with_types(input_type=Input, output_type=Output),
+    path="/agent",
+)
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="localhost", port=8000)
+```
+
+Y eso es todo. Si ejecutamos este archivo:
+
+```bash
+python serve.py
+```
+
+deberíamos ver nuestra cadena siendo servida en localhost:8000.
+
+### Playground
+
+Cada servicio de LangServe viene con una interfaz de usuario incorporada simple para configurar e invocar la aplicación con salida de streaming y visibilidad en los pasos intermedios.
+Dirígete a http://localhost:8000/agent/playground/ para probarlo. Pasa la misma pregunta que antes - "¿cómo puede LangSmith ayudar con las pruebas?" - y debería responder igual que antes.
+
+### Cliente
+
+Ahora configuremos un cliente para interactuar programáticamente con nuestro servicio. Podemos hacer esto fácilmente con el `[langserve.RemoteRunnable](/docs/langserve#client)`.
+Usando esto, podemos interactuar con la cadena servida como si estuviera ejecutándose del lado del cliente.
+
+```python
+from langserve import RemoteRunnable
+
+remote_chain = RemoteRunnable("http://localhost:8000/agent/")
+remote_chain.invoke({
+    "input": "how can langsmith help with testing?",
+    "chat_history": []  # Providing an empty list as this is the first call
+})
+```
+
+Para aprender más sobre las muchas otras características de LangServe, [dirígete aquí](/docs/langserve).
+
+## Próximos pasos
+
+Hemos tocado cómo construir una aplicación con LangChain, cómo rastrearla con LangSmith y cómo servirla con LangServe.
+Hay muchas más características en los tres de las que podemos cubrir aquí.
+Para continuar con tu viaje, te recomendamos que leas lo siguiente (en orden):
+
+- Todas estas características están respaldadas por [LangChain Expression Language (LCEL)](/docs/expression_language), una forma de encadenar estos componentes juntos. Consulta esa documentación para entender mejor cómo crear cadenas personalizadas.
+- [Model IO](/docs/modules/model_io) cubre más detalles de los prompts, LLMs y parsers de salida.
+- [Retrieval](/docs/modules/data_connection) cubre más detalles de todo lo relacionado con la recuperación
+- [Agents](/docs/modules/agents) cubre detalles de todo lo relacionado con los agentes
+- Explora casos de uso comunes [de extremo a extremo](/docs/use_cases/) y [aplicaciones de plantilla](/docs/templates)
+- [Lee sobre LangSmith](/docs/langsmith/), la plataforma para depuración, pruebas, monitoreo y más
+- Aprende más sobre cómo servir tus aplicaciones con [LangServe](/docs/langserve)

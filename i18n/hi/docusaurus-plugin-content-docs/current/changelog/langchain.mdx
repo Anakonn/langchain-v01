@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# langchain
+
+## 0.1.0 (5 जनवरी, 2024)
+
+#### हटाया गया
+
+कोई हटाव नहीं।
+
+#### डिप्रीकेटेड
+
+0.2.0 में इन डिप्रीकेटेड क्लासों और मेथड को हटा दिया जाएगा
+
+| डिप्रीकेटेड                | वैकल्पिक                       | कारण                                         |
+|---------------------------------|-----------------------------------|------------------------------------------------|
+| ChatVectorDBChain               | ConversationalRetrievalChain      | सभी रिट्रीवर्स के लिए अधिक सामान्य             |
+| create_ernie_fn_chain           | create_ernie_fn_runnable          | LCEL का उपयोग करें                        |
+| created_structured_output_chain | create_structured_output_runnable | LCEL का उपयोग करें                        |
+| NatBotChain                     |                                   | उपयोग में नहीं                                       |
+| create_openai_fn_chain          | create_openai_fn_runnable         | LCEL का उपयोग करें                        |
+| create_structured_output_chain  | create_structured_output_runnable | LCEL का उपयोग करें                        |
+| load_query_constructor_chain    | load_query_constructor_runnable   | LCEL का उपयोग करें                        |
+| VectorDBQA                      | RetrievalQA                       | सभी रिट्रीवर्स के लिए अधिक सामान्य             |
+| Sequential Chain                | LCEL                              | LCEL से प्रतिस्थापित                               |
+| SimpleSequentialChain           | LCEL                              | LCEL से प्रतिस्थापित                               |
+| TransformChain                  | LCEL/RunnableLambda               | LCEL से प्रतिस्थापित                               |
+| create_tagging_chain            | create_structured_output_runnable | LCEL का उपयोग करें                        |
+| ChatAgent                       | create_react_agent                | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| ConversationalAgent             | create_react_agent                | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| ConversationalChatAgent         | create_json_chat_agent            | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| initialize_agent                | Individual create agent methods   | व्यक्तिगत create agent methods अधिक स्पष्ट हैं |
+| ZeroShotAgent                   | create_react_agent                | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| OpenAIFunctionsAgent            | create_openai_functions_agent     | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| OpenAIMultiFunctionsAgent       | create_openai_tools_agent         | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| SelfAskWithSearchAgent          | create_self_ask_with_search       | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| StructuredChatAgent             | create_structured_chat_agent      | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |
+| XMLAgent                        | create_xml_agent                  | क्लास के बजाय LCEL बिल्डर का उपयोग करें                  |

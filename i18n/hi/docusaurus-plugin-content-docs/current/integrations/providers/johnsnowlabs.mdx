@@ -1,0 +1,92 @@
+---
+translated: true
+---
+
+# जॉनस्नोलैब्स
+
+[johnsnowlabs](https://www.johnsnowlabs.com/) के उद्यम एनएलपी लाइब्रेरी के पारिस्थितिकी तंत्र तक पहुंच प्राप्त करें
+200 से अधिक भाषाओं में 21,000 से अधिक उद्यम एनएलपी मॉडल के साथ ओपन सोर्स `johnsnowlabs` लाइब्रेरी के साथ।
+24,000+ मॉडलों के लिए, [John Snow Labs मॉडल मॉडल हब](https://nlp.johnsnowlabs.com/models) देखें
+
+## स्थापना और सेटअप
+
+```bash
+pip install johnsnowlabs
+```
+
+[उद्यम सुविधाएं स्थापित करने](https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick) के लिए, चलाएं:
+
+```python
+# for more details see https://nlp.johnsnowlabs.com/docs/en/jsl/install_licensed_quick
+nlp.install()
+```
+
+आप अपने क्वेरी और दस्तावेज़ों को `gpu`, `cpu`, `apple_silicon`, `aarch` आधारित अनुकूलित बाइनरी के साथ एम्बेड कर सकते हैं।
+डिफ़ॉल्ट रूप से सीपीयू बाइनरी का उपयोग किया जाता है।
+एक सत्र शुरू होने के बाद, आपको जीपीयू या सीपीयू के बीच स्विच करने के लिए अपने नोटबुक को पुनः प्रारंभ करना होगा, अन्यथा कोई प्रभाव नहीं होगा।
+
+## सीपीयू के साथ क्वेरी एम्बेड करें:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert')
+output = embedding.embed_query(document)
+```
+
+## जीपीयू के साथ क्वेरी एम्बेड करें:
+
+```python
+document = "foo bar"
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_query(document)
+```
+
+## एप्पल सिलिकॉन (M1, M2 आदि) के साथ क्वेरी एम्बेड करें:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_query(document)
+```
+
+## AARCH के साथ क्वेरी एम्बेड करें:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_query(document)
+```
+
+## सीपीयू के साथ दस्तावेज़ एम्बेड करें:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## जीपीयू के साथ दस्तावेज़ एम्बेड करें:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','gpu')
+output = embedding.embed_documents(documents)
+```
+
+## एप्पल सिलिकॉन (M1, M2 आदि) के साथ दस्तावेज़ एम्बेड करें:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','apple_silicon')
+output = embedding.embed_documents(documents)
+```
+
+## AARCH के साथ दस्तावेज़ एम्बेड करें:
+
+```python
+documents = ["foo bar", 'bar foo']
+embedding = JohnSnowLabsEmbeddings('embed_sentence.bert','aarch')
+output = embedding.embed_documents(documents)
+```
+
+मॉडल [nlp.load](https://nlp.johnsnowlabs.com/docs/en/jsl/load_api) के साथ लोड किए जाते हैं और स्पार्क सत्र [nlp.start()](https://nlp.johnsnowlabs.com/docs/en/jsl/start-a-sparksession) के तहत प्रारंभ किया जाता है।

@@ -1,0 +1,45 @@
+---
+translated: true
+---
+
+# AI21 प्रयोगशाला
+
+>[AI21 प्रयोगशाला](https://www.ai21.com/about) प्राकृतिक भाषा प्रसंस्करण (एनएलपी) में विशेषज्ञ कंपनी है, जो ऐसे AI प्रणाली विकसित करती है जो प्राकृतिक भाषा को समझ और उत्पन्न कर सकती है।
+
+यह पृष्ठ `LangChain` में `AI21` पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+
+## स्थापना और सेटअप
+
+- एक AI21 api कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`AI21_API_KEY`) के रूप में सेट करें
+- Python पैकेज स्थापित करें:
+
+```bash
+pip install langchain-ai21
+```
+
+## एलएलएम
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/ai21) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AI21", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ai21.AI21.html", "title": "AI21 Labs"}]-->
+from langchain_community.llms import AI21
+```
+
+## चैट मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/chat/ai21) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatAI21", "source": "langchain_ai21", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_ai21.chat_models.ChatAI21.html", "title": "AI21 Labs"}]-->
+from langchain_ai21 import ChatAI21
+```
+
+## एम्बेडिंग मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/ai21) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AI21Embeddings", "source": "langchain_ai21", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_ai21.embeddings.AI21Embeddings.html", "title": "AI21 Labs"}]-->
+from langchain_ai21 import AI21Embeddings
+```

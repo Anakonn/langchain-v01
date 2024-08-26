@@ -1,0 +1,147 @@
+---
+translated: true
+---
+
+# रेडिस
+
+>[रेडिस (रिमोट डिक्शनरी सर्वर)](https://en.wikipedia.org/wiki/Redis) एक ओपन-सोर्स इन-मेमोरी स्टोरेज है,
+> जिसका उपयोग वितरित, इन-मेमोरी कुंजी-मूल्य डेटाबेस, कैश और संदेश ब्रोकर के रूप में किया जाता है, वैकल्पिक स्थायित्व के साथ।
+> क्योंकि यह सभी डेटा को मेमोरी में रखता है और अपने डिज़ाइन के कारण, `रेडिस` कम-लेटेंसी पठन और लेखन प्रदान करता है,
+> जिससे यह विशेष रूप से कैश की आवश्यकता वाले उपयोग मामलों के लिए उपयुक्त है। रेडिस सबसे लोकप्रिय NoSQL डेटाबेस है,
+> और समग्र रूप से सबसे लोकप्रिय डेटाबेसों में से एक है।
+
+यह पृष्ठ LangChain में [रेडिस](https://redis.com) पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाक्त है: स्थापना और सेटअप, और फिर विशिष्ट रेडिस रैपर संदर्भ।
+
+## स्थापना और सेटअप
+
+पायथन एसडीके स्थापित करें:
+
+```bash
+pip install redis
+```
+
+स्थानीय रूप से रेडिस चलाने के लिए, आप Docker का उपयोग कर सकते हैं:
+
+```bash
+docker run --name langchain-redis -d -p 6379:6379 redis redis-server --save 60 1 --loglevel warning
+```
+
+कंटेनर को रोकने के लिए:
+
+```bash
+docker stop langchain-redis
+```
+
+और इसे फिर से शुरू करने के लिए:
+
+```bash
+docker start langchain-redis
+```
+
+### कनेक्शन
+
+हमें डेटाबेस से कनेक्ट करने के लिए एक रेडिस यूआरएल कनेक्शन स्ट्रिंग की आवश्यकता है जो स्टैंडअलोन रेडिस सर्वर या रिप्लिकेशन और रेडिस सेंटिनेल के साथ उच्च-उपलब्धता सेटअप का समर्थन करता है।
+
+#### रेडिस स्टैंडअलोन कनेक्शन यूआरएल
+
+स्टैंडअलोन `रेडिस` सर्वर के लिए, आधिकारिक रेडिस कनेक्शन यूआरएल प्रारूप पायथन रेडिस मॉड्यूल "from_url()" विधि [Redis.from_url](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url) में वर्णित के रूप में उपयोग किया जा सकता है।
+
+उदाहरण: `redis_url = "redis://:secret-pass@localhost:6379/0"`
+
+#### रेडिस सेंटिनेल कनेक्शन यूआरएल
+
+[रेडिस सेंटिनेल सेटअप](https://redis.io/docs/management/sentinel/) के लिए कनेक्शन योजना "redis+sentinel" है।
+यह आधिकारिक IANA पंजीकृत प्रोटोकॉल योजनाओं का एक अनौपचारिक विस्तार है क्योंकि सेंटिनेल के लिए कोई कनेक्शन यूआरएल उपलब्ध नहीं है।
+
+उदाहरण: `redis_url = "redis+sentinel://:secret-pass@sentinel-host:26379/mymaster/0"`
+
+प्रारूप है `redis+sentinel://[[username]:[password]]@[host-or-ip]:[port]/[service-name]/[db-number]`
+जहां "service-name = mymaster" और "db-number = 0" डिफ़ॉल्ट मान हैं यदि स्पष्ट रूप से सेट नहीं किए गए हैं।
+सेवा-नाम सेंटिनेल में कॉन्फ़िगर किए गए रेडिस सर्वर निगरानी समूह का नाम है।
+
+वर्तमान यूआरएल प्रारूप केवल एक सेंटिनेल होस्ट तक सीमित है (कोई सूची नहीं दी जा सकती) और
+दोनों रेडिस सर्वर और सेंटिनेल को एक ही पासवर्ड सेट होना चाहिए (यदि उपयोग किया जाता है)।
+
+#### रेडिस क्लस्टर कनेक्शन यूआरएल
+
+रेडिस क्लस्टर अभी तक "redis_url" पैरामीटर की आवश्यकता वाली सभी विधियों के लिए समर्थित नहीं है।
+रेडिस क्लस्टर का उपयोग करने का एकमात्र तरीका पूर्व-कॉन्फ़िगर किए गए रेडिस क्लाइंट जैसे `RedisCache` (नीचे उदाहरण) के साथ LangChain वर्गों का उपयोग करना है।
+
+## कैश
+
+कैश रैपर [रेडिस](https://redis.io) का उपयोग LLM प्रॉम्प्ट और प्रतिक्रियाओं के लिए एक दूरस्थ, कम-लेटेंसी, इन-मेमोरी कैश के रूप में करने की अनुमति देता है।
+
+### मानक कैश
+
+मानक कैश उत्पादन में दोनों [ओपन-सोर्स](https://redis.io) और [उद्यम](https://redis.com) उपयोगकर्ताओं के लिए रेडिस का रोटी और मक्खन का उपयोग मामला है।
+
+```python
+<!--IMPORTS:[{"imported": "RedisCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisCache
+```
+
+अपने LLM के साथ इस कैश का उपयोग करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+redis_client = redis.Redis.from_url(...)
+set_llm_cache(RedisCache(redis_client))
+```
+
+### सेमांटिक कैश
+
+सेमांटिक कैशिंग उपयोगकर्ताओं को पहले से कैश किए गए परिणामों के बीच सेमांटिक समानता के आधार पर कैश किए गए प्रॉम्प्ट को पुनः प्राप्त करने की अनुमति देता है। इसके तहत यह रेडिस को एक कैश और एक वेक्टर स्टोर दोनों के रूप में मिश्रित करता है।
+
+```python
+<!--IMPORTS:[{"imported": "RedisSemanticCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisSemanticCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisSemanticCache
+```
+
+अपने LLM के साथ इस कैश का उपयोग करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+redis_url = "redis://localhost:6379"
+
+set_llm_cache(RedisSemanticCache(
+    embedding=FakeEmbeddings(),
+    redis_url=redis_url
+))
+```
+
+## वेक्टर स्टोर
+
+वेक्टर स्टोर रैपर रेडिस को सेमांटिक खोज या LLM सामग्री पुनर्प्राप्ति के लिए एक कम-लेटेंसी [वेक्टर डेटाबेस](https://redis.com/solutions/use-cases/vector-database/) में बदल देता है।
+
+```python
+<!--IMPORTS:[{"imported": "Redis", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.redis.base.Redis.html", "title": "Redis"}]-->
+from langchain_community.vectorstores import Redis
+```
+
+रेडिस वेक्टर स्टोर रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/vectorstores/redis) देखें।
+
+## रिट्रीवर
+
+रेडिस वेक्टर स्टोर रिट्रीवर रैपर वेक्टर स्टोर वर्ग को सामान्यीकृत करता है ताकि कम-लेटेंसी दस्तावेज़ पुनर्प्राप्ति किया जा सके। रिट्रीवर बनाने के लिए, बस `.as_retriever()` को आधारभूत वेक्टर स्टोर वर्ग पर कॉल करें।
+
+## मेमोरी
+
+रेडिस का उपयोग LLM वार्तालाप को बनाए रखने के लिए किया जा सकता है।
+
+### वेक्टर स्टोर रिट्रीवर मेमोरी
+
+`VectorStoreRetrieverMemory` रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/modules/memory/types/vectorstore_retriever_memory) देखें।
+
+### चैट संदेश इतिहास मेमोरी
+
+वार्तालाप संदेश इतिहास को कैश करने के लिए रेडिस के एक विस्तृत उदाहरण के लिए, [यह नोटबुक](/docs/integrations/memory/redis_chat_message_history) देखें।

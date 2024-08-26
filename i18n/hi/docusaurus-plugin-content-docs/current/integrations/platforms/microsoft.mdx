@@ -1,0 +1,358 @@
+---
+translated: true
+---
+
+# माइक्रोसॉफ्ट
+
+`माइक्रोसॉफ्ट एज़्योर` और अन्य `माइक्रोसॉफ्ट` उत्पादों से संबंधित सभी कार्यक्षमता।
+
+## एलएलएम
+
+### एज़्योर एमएल
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/azure_ml) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureMLOnlineEndpoint", "source": "langchain_community.llms.azureml_endpoint", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.azureml_endpoint.AzureMLOnlineEndpoint.html", "title": "Microsoft"}]-->
+from langchain_community.llms.azureml_endpoint import AzureMLOnlineEndpoint
+```
+
+### एज़्योर ओपनएआई
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/azure_openai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.azure.AzureOpenAI.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureOpenAI
+```
+
+## चैट मॉडल
+
+### एज़्योर ओपनएआई
+
+>[माइक्रोसॉफ्ट एज़्योर](https://en.wikipedia.org/wiki/Microsoft_Azure), जिसे `एज़्योर` के रूप में भी जाना जाता है, एक क्लाउड कंप्यूटिंग प्लेटफॉर्म है जो `माइक्रोसॉफ्ट` द्वारा संचालित है, जो वैश्विक डेटा केंद्रों के माध्यम से एप्लिकेशन और सेवाओं की पहुंच, प्रबंधन और विकास प्रदान करता है। यह कई क्षमताओं का समर्थन करता है, जिनमें सॉफ्टवेयर के रूप में सेवा (SaaS), प्लेटफॉर्म के रूप में सेवा (PaaS) और बुनियादी ढांचे के रूप में सेवा (IaaS) शामिल हैं। `माइक्रोसॉफ्ट एज़्योर` कई प्रोग्रामिंग भाषाओं, उपकरणों और फ्रेमवर्क का समर्थन करता है, जिनमें माइक्रोसॉफ्ट-विशिष्ट और तृतीय-पक्ष सॉफ्टवेयर और प्रणाली शामिल हैं।
+
+>[एज़्योर ओपनएआई](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) एक `एज़्योर` सेवा है जो `ओपनएआई` से शक्तिशाली भाषा मॉडल प्रदान करता है, जिनमें `जीपीटी-3`, `कोडेक्स` और `एम्बेडिंग मॉडल` श्रृंखला शामिल हैं जो सामग्री उत्पादन, सारांश, सेमेंटिक खोज और प्राकृतिक भाषा से कोड अनुवाद के लिए हैं।
+
+```bash
+pip install langchain-openai
+```
+
+`एज़्योर ओपनएआई` सेवा तक पहुंचने के लिए वातावरण चर सेट करें।
+
+```python
+import os
+
+os.environ["AZURE_OPENAI_ENDPOINT"] = "https://<your-endpoint.openai.azure.com/"
+os.environ["AZURE_OPENAI_API_KEY"] = "your AzureOpenAI key"
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/chat/azure_chat_openai) देखें
+
+```python
+<!--IMPORTS:[{"imported": "AzureChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureChatOpenAI
+```
+
+## एम्बेडिंग मॉडल
+
+### एज़्योर ओपनएआई
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/azureopenai) देखें
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.azure.AzureOpenAIEmbeddings.html", "title": "Microsoft"}]-->
+from langchain_openai import AzureOpenAIEmbeddings
+```
+
+## दस्तावेज़ लोडर
+
+### एज़्योर एआई डेटा
+
+>[एज़्योर एआई स्टूडियो](https://ai.azure.com/) क्लाउड स्टोरेज में डेटा संपत्तियों को अपलोड करने और निम्नलिखित स्रोतों से मौजूदा डेटा संपत्तियों को पंजीकृत करने की क्षमता प्रदान करता है:
+>
+>- `माइक्रोसॉफ्ट वनलेक`
+>- `एज़्योर ब्लॉब स्टोरेज`
+>- `एज़्योर डेटा लेक जेन 2`
+
+पहले, आपको कुछ पायथन पैकेज स्थापित करने की आवश्यकता है।
+
+```bash
+pip install azureml-fsspec, azure-ai-generative
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/azure_ai_data) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDataLoader", "source": "langchain.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_ai_data.AzureAIDataLoader.html", "title": "Microsoft"}]-->
+from langchain.document_loaders import AzureAIDataLoader
+```
+
+### एज़्योर एआई डॉक्यूमेंट इंटेलिजेंस
+
+>[एज़्योर एआई डॉक्यूमेंट इंटेलिजेंस](https://aka.ms/doc-intelligence) (पहले `एज़्योर फॉर्म रिकॉग्नाइज़र` के रूप में जाना जाता था) एक मशीन-लर्निंग आधारित सेवा है जो डिजिटल या स्कैन किए गए पीडीएफ, छवियों, ऑफ़िस और एचटीएमएल फ़ाइलों से पाठ (हस्तलिखित सहित), तालिकाएं, दस्तावेज़ संरचनाएं और कुंजी-मूल्य-युग्म निकालती है।
+>
+> डॉक्यूमेंट इंटेलिजेंस `पीडीएफ`, `जेपीईजी/जेपीजी`, `पीएनजी`, `बीएमपी`, `टीआईएफएफ`, `एचईआईएफ`, `डीओसीएक्स`, `एक्सएलएसएक्स`, `पीपीटीएक्स` और `एचटीएमएल` का समर्थन करता है।
+
+पहले, आपको एक पायथन पैकेज स्थापित करने की आवश्यकता है।
+
+```bash
+pip install azure-ai-documentintelligence
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/azure_document_intelligence) देखें।
+
+```python
+from langchain.document_loaders import AzureAIDocumentIntelligenceLoader
+```
+
+### एज़्योर ब्लॉब स्टोरेज
+
+>[एज़्योर ब्लॉब स्टोरेज](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) माइक्रोसॉफ्ट का क्लाउड के लिए ऑब्जेक्ट स्टोरेज समाधान है। ब्लॉब स्टोरेज असंरचित डेटा की भारी मात्रा को संग्रहीत करने के लिए अनुकूलित है। असंरचित डेटा वह डेटा है जो किसी विशिष्ट डेटा मॉडल या परिभाषा का पालन नहीं करता है, जैसे पाठ या बाइनरी डेटा।
+
+>[एज़्योर फ़ाइल्स](https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction) उद्योग मानक सर्वर संदेश ब्लॉक (`एसएमबी`) प्रोटोकॉल, नेटवर्क फ़ाइल प्रणाली (`एनएफएस`) प्रोटोकॉल और `एज़्योर फ़ाइल्स आरईएसटी एपीआई` के माध्यम से पूरी तरह से प्रबंधित क्लाउड फ़ाइल साझा प्रदान करता है। `एज़्योर फ़ाइल्स` `एज़्योर ब्लॉब स्टोरेज` पर आधारित हैं।
+
+`एज़्योर ब्लॉब स्टोरेज` निम्नलिखित के लिए डिज़ाइन किया गया है:
+- ब्राउज़र के लिए सीधे छवियों या दस्तावेजों को सर्व करना।
+- वितरित पहुंच के लिए फ़ाइलों को संग्रहीत करना।
+- वीडियो और ऑडियो स्ट्रीमिंग।
+- लॉग फ़ाइलों में लिखना।
+- बैकअप और पुनर्स्थापना, आपदा प्रतिकार और संग्रहण के लिए डेटा संग्रहीत करना।
+- ऑन-प्रीमाइसेस या एज़्योर-होस्टेड सेवा द्वारा विश्लेषण के लिए डेटा संग्रहीत करना।
+
+```bash
+pip install azure-storage-blob
+```
+
+एक [उपयोग उदाहरण एज़्योर ब्लॉब स्टोरेज के लिए](/docs/integrations/document_loaders/azure_blob_storage_container) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureBlobStorageContainerLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_blob_storage_container.AzureBlobStorageContainerLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import AzureBlobStorageContainerLoader
+```
+
+एक [उपयोग उदाहरण एज़्योर फ़ाइल्स के लिए](/docs/integrations/document_loaders/azure_blob_storage_file) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureBlobStorageFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.azure_blob_storage_file.AzureBlobStorageFileLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import AzureBlobStorageFileLoader
+```
+
+### माइक्रोसॉफ्ट वनड्राइव
+
+>[माइक्रोसॉफ्ट वनड्राइव](https://en.wikipedia.org/wiki/OneDrive) (पहले `स्काईड्राइव`) माइक्रोसॉफ्ट द्वारा संचालित एक फ़ाइल-होस्टिंग सेवा है।
+
+पहले, आपको एक पायथन पैकेज स्थापित करने की आवश्यकता है।
+
+```bash
+pip install o365
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_onedrive) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OneDriveLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.onedrive.OneDriveLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import OneDriveLoader
+```
+
+### माइक्रोसॉफ्ट वर्ड
+
+>[माइक्रोसॉफ्ट वर्ड](https://www.microsoft.com/en-us/microsoft-365/word) माइक्रोसॉफ्ट द्वारा विकसित एक वर्ड प्रोसेसर है।
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_word) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredWordDocumentLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.word_document.UnstructuredWordDocumentLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
+```
+
+### माइक्रोसॉफ्ट एक्सेल
+
+>[माइक्रोसॉफ्ट एक्सेल](https://en.wikipedia.org/wiki/Microsoft_Excel) माइक्रोसॉफ्ट द्वारा विकसित एक स्प्रेडशीट संपादक है जो विंडोज, मैकओएस, एंड्रॉइड, आईओएस और आईपैडओएस के लिए है।
+> इसमें गणना या कंप्यूटेशन क्षमताएं, ग्राफिक्स उपकरण, पिवोट तालिकाएं और वीबीए नामक एक मैक्रो प्रोग्रामिंग भाषा शामिल हैं। एक्सेल माइक्रोसॉफ्ट 365 सॉफ्टवेयर सूट का हिस्सा है।
+
+`UnstructuredExcelLoader` का उपयोग `माइक्रोसॉफ्ट एक्सेल` फ़ाइलों को लोड करने के लिए किया जाता है। लोडर `.xlsx` और `.xls` दोनों फ़ाइलों के साथ काम करता है।
+पृष्ठ सामग्री एक्सेल फ़ाइल का कच्चा पाठ होगा। यदि आप लोडर को `"elements"` मोड में उपयोग करते हैं, तो दस्तावेज़ मेटाडेटा में `text_as_html` कुंजी के तहत एक्सेल फ़ाइल का एचटीएमएल प्रतिनिधित्व उपलब्ध होगा।
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_excel) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredExcelLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.excel.UnstructuredExcelLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredExcelLoader
+```
+
+### Microsoft SharePoint
+
+>[Microsoft SharePoint](https://en.wikipedia.org/wiki/SharePoint) एक वेबसाइट-आधारित सहयोग प्रणाली है
+> जो कार्यप्रवाह अनुप्रयोगों, "सूची" डेटाबेस और अन्य वेब पार्ट्स और सुरक्षा सुविधाओं का उपयोग करके
+> माइक्रोसॉफ्ट द्वारा विकसित व्यावसायिक टीमों को एक साथ काम करने में सक्षम बनाता है।
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_sharepoint) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SharePointLoader", "source": "langchain_community.document_loaders.sharepoint", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.sharepoint.SharePointLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders.sharepoint import SharePointLoader
+```
+
+### Microsoft PowerPoint
+
+>[Microsoft PowerPoint](https://en.wikipedia.org/wiki/Microsoft_PowerPoint) माइक्रोसॉफ्ट द्वारा विकसित एक प्रस्तुति कार्यक्रम है।
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_powerpoint) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredPowerPointLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.powerpoint.UnstructuredPowerPointLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
+```
+
+### Microsoft OneNote
+
+पहले, आइए निर्भरताएं स्थापित करें:
+
+```bash
+pip install bs4 msal
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/microsoft_onenote) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "OneNoteLoader", "source": "langchain_community.document_loaders.onenote", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.onenote.OneNoteLoader.html", "title": "Microsoft"}]-->
+from langchain_community.document_loaders.onenote import OneNoteLoader
+```
+
+## वेक्टर स्टोर
+
+### Azure Cosmos DB
+
+>[Azure Cosmos DB for MongoDB vCore](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/) पूर्ण मूल MongoDB समर्थन के साथ एक डेटाबेस बनाना आसान बनाता है।
+> आप अपने MongoDB अनुभव को लागू कर सकते हैं और अपने पसंदीदा MongoDB ड्राइवर, SDK और उपकरणों का उपयोग करना जारी रख सकते हैं क्योंकि आप अपने एप्लिकेशन को MongoDB vCore खाते के कनेक्शन स्ट्रिंग पर इंगित करते हैं।
+> Azure Cosmos DB for MongoDB vCore में वेक्टर खोज का उपयोग करें ताकि आप अपने AI-आधारित अनुप्रयोगों को Azure Cosmos DB में संग्रहीत अपने डेटा के साथ सुचारू रूप से एकीकृत कर सकें।
+
+#### स्थापना और सेटअप
+
+[विस्तृत कॉन्फ़िगरेशन निर्देश](/docs/integrations/vectorstores/azure_cosmos_db) देखें।
+
+हमें `pymongo` पायथन पैकेज स्थापित करना होगा।
+
+```bash
+pip install pymongo
+```
+
+#### Microsoft Azure पर Azure Cosmos DB तैनात करें
+
+MongoDB vCore के लिए Azure Cosmos DB विकासकर्ताओं को नए अनुप्रयोगों को बनाने के लिए एक पूरी तरह से प्रबंधित MongoDB-संगत डेटाबेस सेवा प्रदान करता है।
+
+MongoDB vCore के लिए Cosmos DB के साथ, विकासकर्ता नेटिव Azure एकीकरण, कुल स्वामित्व लागत (TCO) में कमी और मौजूदा अनुप्रयोगों को माइग्रेट करते समय या नए अनुप्रयोगों को बनाते समय परिचित vCore वास्तुकला का लाभ उठा सकते हैं।
+
+[आज ही साइन अप](https://azure.microsoft.com/en-us/free/) करें।
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/azure_cosmos_db) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureCosmosDBVectorSearch", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.azure_cosmos_db.AzureCosmosDBVectorSearch.html", "title": "Microsoft"}]-->
+from langchain_community.vectorstores import AzureCosmosDBVectorSearch
+```
+
+## रिट्रीवर
+
+### Azure AI Search
+
+>[Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search) (पहले `Azure Search` या `Azure Cognitive Search` के रूप में जाना जाता था) एक क्लाउड खोज सेवा है जो विकासकर्ताओं को वेब, मोबाइल और उद्यम अनुप्रयोगों में निजी, विषम सामग्री पर एक समृद्ध खोज अनुभव बनाने के लिए बुनियादी ढांचा, API और उपकरण प्रदान करती है।
+
+>खोज किसी भी ऐसे ऐप के लिए आधारभूत है जो उपयोगकर्ताओं को पाठ प्रदर्शित करता है, जहां आम पृष्ठभूमि में कैटलॉग या दस्तावेज़ खोज, ऑनलाइन खुदरा अनुप्रयोग या स्वामित्व वाली सामग्री पर डेटा अन्वेषण शामिल हैं। जब आप एक खोज सेवा बनाते हैं, तो आप निम्नलिखित क्षमताओं के साथ काम करेंगे:
+>- उपयोगकर्ता-स्वामित्व वाली सामग्री वाले एक खोज सूचकांक पर पूर्ण पाठ खोज के लिए एक खोज इंजन
+>- समृद्ध अनुक्रमण, लेक्सिकल विश्लेषण और वैकल्पिक AI समृद्धि के साथ सामग्री निकालने और रूपांतरण के लिए
+>- पाठ खोज, अस्पष्ट खोज, स्वतः पूरा करना, भू-खोज और अधिक के लिए समृद्ध क्वेरी वाक्यविन्यास
+>- Azure SDK में REST API और क्लाइंट लाइब्रेरी के माध्यम से प्रोग्रामेबिलिटी
+>- डेटा स्तर, मशीन लर्निंग स्तर और AI (AI सेवाएं) पर Azure एकीकरण
+
+[सेटअप निर्देश](https://learn.microsoft.com/en-us/azure/search/search-create-service-portal) देखें।
+
+एक [उपयोग उदाहरण](/docs/integrations/retrievers/azure_ai_search) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AzureAISearchRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.azure_ai_search.AzureAISearchRetriever.html", "title": "Microsoft"}]-->
+from langchain.retrievers import AzureAISearchRetriever
+```
+
+## उपकरण किट
+
+### Azure AI सेवाएं
+
+हमें कई पायथन पैकेज स्थापित करने की आवश्यकता है।
+
+```bash
+pip install azure-ai-formrecognizer azure-cognitiveservices-speech azure-ai-vision-imageanalysis
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/toolkits/azure_ai_services) देखें।
+
+```python
+from langchain_community.agent_toolkits import azure_ai_services
+```
+
+### Microsoft Office 365 ईमेल और कैलेंडर
+
+हमें `O365` पायथन पैकेज स्थापित करना होगा।
+
+```bash
+pip install O365
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/toolkits/office365) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "O365Toolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.office365.toolkit.O365Toolkit.html", "title": "Microsoft"}]-->
+from langchain_community.agent_toolkits import O365Toolkit
+```
+
+### Microsoft Azure PowerBI
+
+हमें `azure-identity` पायथन पैकेज स्थापित करना होगा।
+
+```bash
+pip install azure-identity
+```
+
+एक [उपयोग उदाहरण](/docs/integrations/toolkits/powerbi) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "PowerBIToolkit", "source": "langchain_community.agent_toolkits", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.powerbi.toolkit.PowerBIToolkit.html", "title": "Microsoft"}, {"imported": "PowerBIDataset", "source": "langchain_community.utilities.powerbi", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.powerbi.PowerBIDataset.html", "title": "Microsoft"}]-->
+from langchain_community.agent_toolkits import PowerBIToolkit
+from langchain_community.utilities.powerbi import PowerBIDataset
+```
+
+## उपयोगिताएं
+
+### Bing Search API
+
+>[Microsoft Bing](https://www.bing.com/), आमतौर पर `Bing` या `Bing Search` के रूप में संदर्भित,
+> एक वेब खोज इंजन है जिसका स्वामित्व और संचालन `Microsoft` द्वारा किया जाता है।
+
+एक [उपयोग उदाहरण](/docs/integrations/tools/bing_search) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "BingSearchAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.bing_search.BingSearchAPIWrapper.html", "title": "Microsoft"}]-->
+from langchain_community.utilities import BingSearchAPIWrapper
+```
+
+## अधिक
+
+### Microsoft Presidio
+
+>[Presidio](https://microsoft.github.io/presidio/) (लैटिन प्रैसिडियम 'सुरक्षा, गार्निजन' से उत्पन्न)
+> संवेदनशील डेटा के उचित प्रबंधन और शासन को सुनिश्चित करने में मदद करता है। यह पाठ और छवियों में निजी इकाइयों जैसे क्रेडिट कार्ड नंबर, नाम, स्थान, सामाजिक सुरक्षा नंबर, बिटकॉइन वॉलेट, यूएस फोन नंबर, वित्तीय डेटा और अधिक के लिए तेज पहचान और अनोनीमीकरण मॉड्यूल प्रदान करता है।
+
+पहले, आपको कई पायथन पैकेज स्थापित करने और एक `SpaCy` मॉडल डाउनलोड करने की आवश्यकता है।
+
+```bash
+pip install langchain-experimental openai presidio-analyzer presidio-anonymizer spacy Faker
+python -m spacy download en_core_web_lg
+```
+
+[उपयोग उदाहरण](/docs/guides/productionization/safety/presidio_data_anonymization/) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "PresidioAnonymizer", "source": "langchain_experimental.data_anonymizer", "docs": "https://api.python.langchain.com/en/latest/data_anonymizer/langchain_experimental.data_anonymizer.presidio.PresidioAnonymizer.html", "title": "Microsoft"}, {"imported": "PresidioReversibleAnonymizer", "source": "langchain_experimental.data_anonymizer", "docs": "https://api.python.langchain.com/en/latest/data_anonymizer/langchain_experimental.data_anonymizer.presidio.PresidioReversibleAnonymizer.html", "title": "Microsoft"}]-->
+from langchain_experimental.data_anonymizer import PresidioAnonymizer, PresidioReversibleAnonymizer
+```

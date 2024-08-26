@@ -1,0 +1,33 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# Psychic
+
+:::warning
+Ce fournisseur n'est plus maintenu et peut ne pas fonctionner. Utilisez avec précaution.
+:::
+
+>[Psychic](https://www.psychic.dev/) est une plateforme pour s'intégrer à des outils SaaS comme `Notion`, `Zendesk`,
+> `Confluence` et `Google Drive` via OAuth et synchroniser des documents à partir de ces applications vers votre base de données SQL ou vectorielle. Vous pouvez le considérer comme Plaid pour les données non structurées.
+
+## Installation et configuration
+
+```bash
+pip install psychicapi
+```
+
+Psychic est facile à configurer - vous importez la bibliothèque `react` et la configurez avec votre clé `Sidekick API`, que vous obtenez
+depuis le [tableau de bord Psychic](https://dashboard.psychic.dev/). Lorsque vous connectez les applications, vous
+visualisez ces connexions depuis le tableau de bord et récupérez les données à l'aide des bibliothèques côté serveur.
+
+1. Créez un compte sur le [tableau de bord](https://dashboard.psychic.dev/).
+2. Utilisez la [bibliothèque react](https://docs.psychic.dev/sidekick-link) pour ajouter le modal de lien Psychic à votre application frontend react. Vous l'utiliserez pour connecter les applications SaaS.
+3. Une fois que vous avez créé une connexion, vous pouvez utiliser le `PsychicLoader` en suivant le [exemple de notebook](/docs/integrations/document_loaders/psychic)
+
+## Avantages par rapport aux autres chargeurs de documents
+
+1.	**API universelle :** Au lieu de construire des flux OAuth et d'apprendre les API de chaque application SaaS, vous intégrez Psychic une fois et tirez parti de notre API universelle pour récupérer les données.
+2.	**Synchronisation des données :** Les données dans les applications SaaS de vos clients peuvent devenir obsolètes rapidement. Avec Psychic, vous pouvez configurer des webhooks pour garder vos documents à jour quotidiennement ou en temps réel.
+3.	**Simplification d'OAuth :** Psychic gère OAuth de bout en bout afin que vous n'ayez pas à passer du temps à créer des clients OAuth pour chaque intégration, à garder les jetons d'accès à jour et à gérer la logique de redirection OAuth.

@@ -1,0 +1,83 @@
+---
+translated: true
+---
+
+# Serper - Google Search API
+
+このページでは、LangChainでの[Serper](https://serper.dev) Google Search APIの使用方法について説明します。Serperは低コストのGoogle Search APIで、Google検索からアンサーボックス、ナレッジグラフ、オーガニック検索結果のデータを取得できます。
+セットアップと、特定のGoogle Serperラッパーへの参照の2つの部分に分かれています。
+
+## セットアップ
+
+- [serper.dev](https://serper.dev)にアクセスして無料アカウントに登録する
+- APIキーを取得し、環境変数(`SERPER_API_KEY`)に設定する
+
+## ラッパー
+
+### ユーティリティ
+
+GoogleSerperAPIWrapperユーティリティがこのAPIをラップしています。このユーティリティをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Serper - Google Search API"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+```
+
+Self Ask chainの一部として使用できます:
+
+```python
+<!--IMPORTS:[{"imported": "GoogleSerperAPIWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.google_serper.GoogleSerperAPIWrapper.html", "title": "Serper - Google Search API"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Serper - Google Search API"}, {"imported": "initialize_agent", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html", "title": "Serper - Google Search API"}, {"imported": "Tool", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_core.tools.Tool.html", "title": "Serper - Google Search API"}, {"imported": "AgentType", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html", "title": "Serper - Google Search API"}]-->
+from langchain_community.utilities import GoogleSerperAPIWrapper
+from langchain_openai import OpenAI
+from langchain.agents import initialize_agent, Tool
+from langchain.agents import AgentType
+
+import os
+
+os.environ["SERPER_API_KEY"] = ""
+os.environ['OPENAI_API_KEY'] = ""
+
+llm = OpenAI(temperature=0)
+search = GoogleSerperAPIWrapper()
+tools = [
+    Tool(
+        name="Intermediate Answer",
+        func=search.run,
+        description="useful for when you need to ask with search"
+    )
+]
+
+self_ask_with_search = initialize_agent(tools, llm, agent=AgentType.SELF_ASK_WITH_SEARCH, verbose=True)
+self_ask_with_search.run("What is the hometown of the reigning men's U.S. Open champion?")
+```
+
+#### 出力
+
+```output
+Entering new AgentExecutor chain...
+ Yes.
+Follow up: Who is the reigning men's U.S. Open champion?
+Intermediate answer: Current champions Carlos Alcaraz, 2022 men's singles champion.
+Follow up: Where is Carlos Alcaraz from?
+Intermediate answer: El Palmar, Spain
+So the final answer is: El Palmar, Spain
+
+> Finished chain.
+
+'El Palmar, Spain'
+```
+
+このラッパーの詳細なウォークスルーは、[このノートブック](/docs/integrations/tools/google_serper)を参照してください。
+
+### ツール
+
+このラッパーをツールとしても簡単に読み込めます(Agentで使用するため)。
+次のように行うことができます:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Serper - Google Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["google-serper"])
+```
+
+ツールの詳細については、[このページ](/docs/modules/tools/)を参照してください。

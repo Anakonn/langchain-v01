@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Nuclia
+
+>[Nuclia](https://nuclia.com) は、内部および外部のあらゆる情報源から非構造化データを自動的にインデックス化し、最適化された検索結果と生成された回答を提供します。
+> 動画や音声の文字起こし、画像コンテンツの抽出、文書の解析にも対応しています。
+
+>`Nuclia Understanding API` のドキュメントトランスフォーマーは、テキストを段落や文に分割し、
+> エンティティを識別し、テキストの要約を提供し、すべての文のエンベディングを生成します。
+
+## インストールとセットアップ
+
+`Nuclia Understanding API` を使用するには、`nucliadb-protos` パッケージをインストールする必要があります。
+
+```bash
+pip install nucliadb-protos
+```
+
+`Nuclia Understanding API` を使用するには、`Nuclia アカウント`が必要です。
+[https://nuclia.cloud](https://nuclia.cloud) で無料で作成でき、
+その後、[NUA キーを作成](https://docs.nuclia.dev/docs/docs/using/understanding/intro)する必要があります。
+
+Nuclia ドキュメントトランスフォーマーを使用するには、`enable_ml` を `True` に設定して `NucliaUnderstandingAPI` ツールをインスタンス化する必要があります:
+
+```python
+<!--IMPORTS:[{"imported": "NucliaUnderstandingAPI", "source": "langchain_community.tools.nuclia", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.nuclia.tool.NucliaUnderstandingAPI.html", "title": "Nuclia"}]-->
+from langchain_community.tools.nuclia import NucliaUnderstandingAPI
+
+nua = NucliaUnderstandingAPI(enable_ml=True)
+```
+
+## ドキュメントトランスフォーマー
+
+[使用例](/docs/integrations/document_transformers/nuclia_transformer)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "NucliaTextTransformer", "source": "langchain_community.document_transformers.nuclia_text_transform", "docs": "https://api.python.langchain.com/en/latest/document_transformers/langchain_community.document_transformers.nuclia_text_transform.NucliaTextTransformer.html", "title": "Nuclia"}]-->
+from langchain_community.document_transformers.nuclia_text_transform import NucliaTextTransformer
+```

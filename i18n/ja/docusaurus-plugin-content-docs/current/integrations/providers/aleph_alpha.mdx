@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Aleph Alpha
+
+>[Aleph Alpha](https://docs.aleph-alpha.com/)は2019年に設立され、強力なAIの時代の基盤技術の研究と構築を使命としています。国際的な科学者、エンジニア、イノベーターからなるチームが、大規模な言語モデルやマルチモーダルモデルなどの変革的なAIの研究、開発、展開を行い、欧州最速のコマーシャルAIクラスターを運営しています。
+
+>[The Luminous series](https://docs.aleph-alpha.com/docs/introduction/luminous/)は大規模な言語モデルのファミリーです。
+
+## インストールとセットアップ
+
+```bash
+pip install aleph-alpha-client
+```
+
+新しいトークンを作成する必要があります。[instructions](https://docs.aleph-alpha.com/docs/account/#create-a-new-token)をご覧ください。
+
+```python
+from getpass import getpass
+
+ALEPH_ALPHA_API_KEY = getpass()
+```
+
+## LLM
+
+[usage example](/docs/integrations/llms/aleph_alpha)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlpha", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.aleph_alpha.AlephAlpha.html", "title": "Aleph Alpha"}]-->
+from langchain_community.llms import AlephAlpha
+```
+
+## Text Embedding Models
+
+[usage example](/docs/integrations/text_embedding/aleph_alpha)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlphaSymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaSymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}, {"imported": "AlephAlphaAsymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaAsymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}]-->
+from langchain_community.embeddings import AlephAlphaSymmetricSemanticEmbedding, AlephAlphaAsymmetricSemanticEmbedding
+```

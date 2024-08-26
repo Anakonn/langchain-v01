@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# Apify
+
+>[Apify](https://apify.com) वेब स्क्रैपिंग और डेटा निकालने के लिए एक क्लाउड प्लेटफॉर्म है,
+>जो विभिन्न स्क्रैपिंग, क्रॉलिंग और निकालने के उपयोग मामलों के लिए *Actors* कहे जाने वाले एक हजार से अधिक तैयार ऐप्स का एक [पारिस्थितिकी तंत्र](https://apify.com/store) प्रदान करता है।
+
+[![Apify Actors](/img/ApifyActors.png)](https://apify.com/store)
+
+यह एकीकरण आपको `Apify` प्लेटफॉर्म पर Actors को चलाने और उनके परिणामों को LangChain में लोड करने में सक्षम बनाता है, ताकि आप अपने वेक्टर
+इंडेक्स को वेबसाइटों, ब्लॉगों या ज्ञान आधारों से दस्तावेजों और डेटा से फीड कर सकें, उदाहरण के लिए वेबसाइटों से जवाब उत्पन्न करने के लिए।
+
+## स्थापना और सेटअप
+
+- `pip install apify-client` के साथ Python के लिए Apify API क्लाइंट को स्थापित करें
+- अपना [Apify API टोकन](https://console.apify.com/account/integrations) प्राप्त करें और या तो इसे एक पर्यावरण चर (`APIFY_API_TOKEN`) के रूप में सेट करें या `ApifyWrapper` को `apify_api_token` के रूप में निर्माता में पारित करें।
+
+## उपयोगिता
+
+आप `ApifyWrapper` का उपयोग कर सकते हैं Apify प्लेटफॉर्म पर Actors को चलाने के लिए।
+
+```python
+<!--IMPORTS:[{"imported": "ApifyWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.apify.ApifyWrapper.html", "title": "Apify"}]-->
+from langchain_community.utilities import ApifyWrapper
+```
+
+इस रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/tools/apify) देखें।
+
+## दस्तावेज लोडर
+
+आप `ApifyDatasetLoader` का भी उपयोग कर सकते हैं Apify डेटासेट से डेटा प्राप्त करने के लिए।
+
+```python
+<!--IMPORTS:[{"imported": "ApifyDatasetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.apify_dataset.ApifyDatasetLoader.html", "title": "Apify"}]-->
+from langchain_community.document_loaders import ApifyDatasetLoader
+```
+
+इस लोडर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/document_loaders/apify_dataset) देखें।

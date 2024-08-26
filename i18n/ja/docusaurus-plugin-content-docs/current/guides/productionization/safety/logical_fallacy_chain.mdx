@@ -1,0 +1,84 @@
+---
+translated: true
+---
+
+# 論理的誤謬のチェーン
+
+このサンプルでは、モデルの出力から論理的誤謬を除去する方法を示します。
+
+## 論理的誤謬
+
+`論理的誤謬`とは、モデルの出力の妥当性を損なう可能性のある、欠陥のある推論や偽りの議論です。
+
+例としては、循環論法、二元論、ad hominem攻撃などがあります。機械学習モデルは、正確性、困惑度、損失などの特定のメトリックを最適化するように設計されています。しかし、メトリックのみを最適化しても、論理的に健全な推論を保証するものではありません。
+
+言語モデルは、論理的な誤謬を利用して、論理的に無効な議論を生成することができます。モデルが誤謬に頼る場合、メトリックが高得点であっても、その出力は信頼できないものになります。ユーザーはそのような出力に依存することはできません。論理的誤謬を伝播させると、誤情報を広めたり、ユーザーを混乱させたり、モデルがプロダクトやサービスに導入された際に有害な現実世界の結果を招く可能性があります。
+
+論理的な欠陥をモニタリングおよびテストすることは、他の品質問題とは異なり、非常に困難です。これには、パターンマッチングではなく、議論について推論することが必要です。
+
+したがって、メトリックの最適化後に、モデル開発者が論理的誤謬に積極的に取り組むことが重要です。因果モデリング、ロバスト性テスト、バイアス軽減などの専門的な手法を使うことで、欠陥のある推論を回避できます。全体として、論理的な欠陥を放置したままにすると、モデルがより安全で倫理的でなくなります。誤謬を排除することで、モデルの出力が論理的に有効で、人間の推論に合致したものになります。これにより、ユーザーの信頼を維持し、リスクを軽減することができます。
+
+## 例
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Logical Fallacy chain"}, {"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Logical Fallacy chain"}, {"imported": "LLMChain", "source": "langchain.chains.llm", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.llm.LLMChain.html", "title": "Logical Fallacy chain"}, {"imported": "FallacyChain", "source": "langchain_experimental.fallacy_removal.base", "docs": "https://api.python.langchain.com/en/latest/fallacy_removal/langchain_experimental.fallacy_removal.base.FallacyChain.html", "title": "Logical Fallacy chain"}]-->
+# Imports
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains.llm import LLMChain
+from langchain_experimental.fallacy_removal.base import FallacyChain
+```
+
+```python
+# Example of a model output being returned with a logical fallacy
+misleading_prompt = PromptTemplate(
+    template="""You have to respond by using only logical fallacies inherent in your answer explanations.
+
+Question: {question}
+
+Bad answer:""",
+    input_variables=["question"],
+)
+
+llm = OpenAI(temperature=0)
+misleading_chain = LLMChain(llm=llm, prompt=misleading_prompt)
+misleading_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+    'The earth is round because my professor said it is, and everyone believes my professor'
+```
+
+```python
+fallacies = FallacyChain.get_fallacies(["correction"])
+fallacy_chain = FallacyChain.from_llm(
+    chain=misleading_chain,
+    logical_fallacies=fallacies,
+    llm=llm,
+    verbose=True,
+)
+
+fallacy_chain.run(question="How do I know the earth is round?")
+```
+
+```output
+
+
+    > Entering new FallacyChain chain...
+    Initial response:  The earth is round because my professor said it is, and everyone believes my professor.
+
+    Applying correction...
+
+    Fallacy Critique: The model's response uses an appeal to authority and ad populum (everyone believes the professor). Fallacy Critique Needed.
+
+    Updated response: You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.
+
+
+    > Finished chain.
+
+
+
+
+
+    'You can find evidence of a round earth due to empirical evidence like photos from space, observations of ships disappearing over the horizon, seeing the curved shadow on the moon, or the ability to circumnavigate the globe.'
+```

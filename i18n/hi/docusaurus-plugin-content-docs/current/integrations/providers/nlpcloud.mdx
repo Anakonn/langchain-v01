@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# एनएलपीक्लाउड
+
+>[एनएलपी क्लाउड](https://docs.nlpcloud.com/#introduction) एक कृत्रिम बुद्धिमत्ता प्लेटफॉर्म है जो आपको सबसे उन्नत एआई इंजनों का उपयोग करने और अपने डेटा के साथ अपने स्वयं के इंजनों को प्रशिक्षित करने की अनुमति देता है।
+
+## स्थापना और सेटअप
+
+- `nlpcloud` पैकेज स्थापित करें।
+
+```bash
+pip install nlpcloud
+```
+
+- एक एनएलपीक्लाउड एपीआई कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`NLPCLOUD_API_KEY`) के रूप में सेट करें।
+
+## एलएलएम
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/nlpcloud) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloud", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.nlpcloud.NLPCloud.html", "title": "NLPCloud"}]-->
+from langchain_community.llms import NLPCloud
+```
+
+## पाठ एम्बेडिंग मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/nlp_cloud) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "NLPCloudEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.nlpcloud.NLPCloudEmbeddings.html", "title": "NLPCloud"}]-->
+from langchain_community.embeddings import NLPCloudEmbeddings
+```

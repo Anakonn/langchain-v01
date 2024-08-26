@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Yeager.ai
+
+이 페이지에서는 [Yeager.ai](https://yeager.ai)를 사용하여 LangChain 도구와 에이전트를 생성하는 방법을 다룹니다.
+
+## Yeager.ai란 무엇인가요?
+
+Yeager.ai는 AI 에이전트와 도구를 생성하는 과정을 간소화하기 위해 설계된 생태계입니다.
+
+yAgents라는 No-code LangChain Agent Builder를 특징으로 하며, 이를 통해 사용자는 AI 솔루션을 쉽게 구축, 테스트 및 배포할 수 있습니다. LangChain 프레임워크를 활용하여 yAgents는 다양한 언어 모델 및 리소스와의 seamless 통합을 지원하므로, 개발자, 연구원 및 다양한 애플리케이션의 AI 애호가에게 적합합니다.
+
+## yAgents
+
+LangChain 도구를 쉽게 구축, 프로토타이핑 및 배포할 수 있도록 지원하는 저코드 생성 에이전트입니다.
+
+### 사용 방법
+
+```bash
+pip install yeagerai-agent
+yeagerai-agent
+```
+
+http://127.0.0.1:7860으로 이동하세요.
+
+이를 통해 필요한 종속성을 설치하고 시스템에 yAgents를 설정할 수 있습니다. 첫 실행 후, yAgents는 OpenAI API 키를 입력할 수 있는 .env 파일을 생성합니다. Gradio 인터페이스의 "Settings" 탭에서 직접 동일한 작업을 수행할 수 있습니다.
+
+`OPENAI_API_KEY=<your_openai_api_key_here>`
+
+GPT-4를 사용하는 것이 좋습니다. 그러나 문제가 충분히 세분화된 경우 GPT-3로도 작동할 수 있습니다.
+
+### yAgents를 사용한 도구 생성 및 실행
+
+yAgents를 사용하면 AI 기반 도구를 쉽게 생성하고 실행할 수 있습니다. 프로세스 개요는 다음과 같습니다:
+1. 도구 생성: 도구를 생성하려면 yAgents에 자연어 프롬프트를 제공하세요. 프롬프트에는 도구의 목적과 기능이 명확히 설명되어야 합니다. 예: 
+`n번째 소수를 반환하는 도구를 만들어주세요`
+
+2. 도구를 툴킷에 로드하기: 도구를 yAgents에 로드하려면 간단히 해당 명령을 제공하세요. 예:
+`방금 만든 도구를 툴킷에 로드해주세요`
+
+3. 도구 실행하기: 도구나 에이전트를 실행하려면 도구 이름과 필요한 매개변수를 포함한 명령을 yAgents에 제공하세요. 예:
+`50번째 소수를 생성해주세요`
+
+작동 과정을 보여주는 동영상은 [여기](https://www.youtube.com/watch?v=KA5hCM3RaWE)에서 확인할 수 있습니다.
+
+yAgents에 익숙해짐에 따라 더 복잡한 도구와 에이전트를 만들어 업무를 자동화하고 생산성을 높일 수 있습니다.
+
+자세한 내용은 [yAgents' Github](https://github.com/yeagerai/yeagerai-agent) 또는 [문서](https://yeagerai.gitbook.io/docs/general/welcome-to-yeager.ai)를 참조하세요.

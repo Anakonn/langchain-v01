@@ -1,0 +1,80 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 4
+title: Récupérateurs
+translated: true
+---
+
+# Récupérateurs
+
+Un récupérateur est une interface qui renvoie des documents en fonction d'une requête non structurée. Il est plus général qu'un magasin de vecteurs.
+Un récupérateur n'a pas besoin de pouvoir stocker des documents, il doit seulement pouvoir les renvoyer (ou les récupérer). Les magasins de vecteurs peuvent être utilisés
+comme base d'un récupérateur, mais il existe d'autres types de récupérateurs.
+
+Les récupérateurs acceptent une chaîne de caractères `query` en entrée et renvoient une liste de `Document`'s en sortie.
+
+## Types de récupération avancés
+
+Colonnes du tableau :
+
+- **Nom** : Nom de l'algorithme de récupération.
+- **Type d'index** : Sur quel type d'index (le cas échéant) cela s'appuie.
+- **Utilise un LLM** : Si cette méthode de récupération utilise un LLM.
+- **Quand l'utiliser** : Notre commentaire sur les cas où vous devriez envisager d'utiliser cette méthode de récupération.
+- **Description** : Description de ce que fait cet algorithme de récupération.
+
+| Nom                      | Type d'index                   | Utilise un LLM               | Quand l'utiliser                                                                                                                                   | Description                                                                                                                                                                                                                                                                                       |
+|---------------------------|------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Vectorstore](./vectorstore)               | Magasin de vecteurs                  | Non                        | Si vous débutez et que vous cherchez quelque chose de rapide et facile.                                                                     | Il s'agit de la méthode la plus simple et la plus facile à mettre en place. Il crée des embeddings pour chaque morceau de texte.                                                                                                                                                                        |
+| [ParentDocument](./parent_document_retriever)            | Magasin de vecteurs + Magasin de documents | Non                        | Si vos pages ont beaucoup de petits morceaux d'informations distinctes qui sont mieux indexés individuellement, mais mieux récupérés ensemble.       | Cela indexe plusieurs morceaux pour chaque document. Ensuite, vous trouvez les morceaux les plus similaires dans l'espace des embeddings, mais vous récupérez le document parent complet et le renvoyez (plutôt que des morceaux individuels).                                                                                    |
+| [Multi Vector](multi_vector)              | Magasin de vecteurs + Magasin de documents | Parfois pendant l'indexation | Si vous êtes en mesure d'extraire des informations des documents que vous pensez être plus pertinentes à indexer que le texte lui-même.                          | Cela crée plusieurs vecteurs pour chaque document. Chaque vecteur pourrait être créé de multiples façons - par exemple, des résumés du texte et des questions hypothétiques.                                                                                                                            |
+| [Self Query](./self_query)               | Magasin de vecteurs                  | Oui                       | Si les utilisateurs posent des questions qui sont mieux répondues en récupérant des documents en fonction des métadonnées plutôt que de la similarité avec le texte.          | Cela utilise un LLM pour transformer l'entrée de l'utilisateur en deux choses : (1) une chaîne de caractères à rechercher sémantiquement, (2) un filtre de métadonnées à utiliser avec. Cela est utile car souvent les questions portent sur les MÉTADONNÉES des documents (et non sur leur contenu).                                               |
+| [Contextual Compression](./contextual_compression)    | Tout                          | Parfois                 | Si vous constatez que les documents récupérés contiennent trop d'informations non pertinentes et distraient le LLM.                         | Cela ajoute une étape de post-traitement sur un autre récupérateur et n'extrait que les informations les plus pertinentes des documents récupérés. Cela peut se faire avec des embeddings ou un LLM.                                                                                                                |
+| [Time-Weighted Vectorstore](./time_weighted_vectorstore) | Magasin de vecteurs                  | Non                        | Si vous avez des horodatages associés à vos documents et que vous voulez récupérer les plus récents                                          | Cela récupère les documents en fonction d'une combinaison de similarité sémantique (comme dans la récupération vectorielle normale) et de récence (en examinant les horodatages des documents indexés)                                                                                                                                     |
+| [Multi-Query Retriever](./MultiQueryRetriever)     | Tout                          | Oui                       | Si les utilisateurs posent des questions complexes nécessitant plusieurs informations distinctes pour y répondre                                 | Cela utilise un LLM pour générer plusieurs requêtes à partir de la requête d'origine. Cela est utile lorsque la requête d'origine nécessite des informations sur plusieurs sujets pour y répondre correctement. En générant plusieurs requêtes, nous pouvons ensuite récupérer des documents pour chacune d'entre elles.                              |
+| [Ensemble](./ensemble)                  | Tout                          | Non                        | Si vous avez plusieurs méthodes de récupération et que vous voulez les combiner.                                                                        | Cela récupère des documents à partir de plusieurs récupérateurs, puis les combine.                                                                                                                                                                                                                    |
+| [Long-Context Reorder](./long_context_reorder)      | Tout                          | Non                        | Si vous travaillez avec un modèle à long contexte et que vous remarquez qu'il ne prête pas attention aux informations au milieu des documents récupérés. | Cela récupère des documents à partir d'un récupérateur sous-jacent, puis les réordonne de sorte que les plus similaires se trouvent au début et à la fin. Cela est utile car il a été démontré que pour les modèles à contexte plus long, ils ne prêtent parfois pas attention aux informations au milieu de la fenêtre de contexte. |
+
+## [Intégrations tierces](/docs/integrations/retrievers/)
+
+LangChain s'intègre également à de nombreux services de récupération tiers. Pour une liste complète de ces intégrations, consultez [cette liste](/docs/integrations/retrievers/) de toutes les intégrations.
+
+## Utilisation des récupérateurs dans LCEL
+
+Puisque les récupérateurs sont des `Runnable`'s, nous pouvons facilement les composer avec d'autres objets `Runnable` :
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Retrievers"}, {"imported": "ChatPromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Retrievers"}, {"imported": "StrOutputParser", "source": "langchain_core.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.string.StrOutputParser.html", "title": "Retrievers"}, {"imported": "RunnablePassthrough", "source": "langchain_core.runnables", "docs": "https://api.python.langchain.com/en/latest/runnables/langchain_core.runnables.passthrough.RunnablePassthrough.html", "title": "Retrievers"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+template = """Answer the question based only on the following context:
+
+{context}
+
+Question: {question}
+"""
+prompt = ChatPromptTemplate.from_template(template)
+model = ChatOpenAI()
+
+
+def format_docs(docs):
+    return "\n\n".join([d.page_content for d in docs])
+
+
+chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | model
+    | StrOutputParser()
+)
+
+chain.invoke("What did the president say about technology?")
+
+```
+
+## Récupérateur personnalisé
+
+Consultez la [documentation ici](/docs/modules/data_connection/retrievers/custom_retriever) pour mettre en œuvre un récupérateur personnalisé.

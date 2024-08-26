@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# SQLite
+
+>[SQLite](https://en.wikipedia.org/wiki/SQLite) एक डेटाबेस इंजन है जो सी प्रोग्रामिंग भाषा में लिखा गया है। यह एक स्टैंडअलोन ऐप नहीं है; बल्कि, यह एक लाइब्रेरी है जिसे सॉफ्टवेयर डेवलपर्स अपने ऐप्स में एम्बेड करते हैं। इस प्रकार, यह एम्बेडेड डेटाबेस परिवार से संबंधित है। यह सबसे व्यापक रूप से तैनात डेटाबेस इंजन है, क्योंकि यह कई शीर्ष वेब ब्राउज़रों, ऑपरेटिंग सिस्टमों, मोबाइल फोनों और अन्य एम्बेडेड सिस्टमों द्वारा उपयोग किया जाता है।
+
+## इंस्टॉलेशन और सेटअप
+
+हमें `SQLAlchemy` पायथन पैकेज को इंस्टॉल करना होगा।
+
+```bash
+pip install SQLAlchemy
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/sqlitevss) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SQLiteVSS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sqlitevss.SQLiteVSS.html", "title": "SQLite"}]-->
+from langchain_community.vectorstores import SQLiteVSS
+```
+
+## मेमोरी
+
+एक [उपयोग उदाहरण](/docs/integrations/memory/sqlite) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SQLChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.sql.SQLChatMessageHistory.html", "title": "SQLite"}]-->
+from langchain_community.chat_message_histories import SQLChatMessageHistory
+```

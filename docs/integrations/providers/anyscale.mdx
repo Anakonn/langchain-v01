@@ -1,0 +1,50 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/anyscale
+translated: false
+---
+
+# Anyscale
+
+>[Anyscale](https://www.anyscale.com) is a platform to run, fine tune and scale LLMs via production-ready APIs.
+> [Anyscale Endpoints](https://docs.anyscale.com/endpoints/overview) serve many open-source models in a cost-effective way.
+
+`Anyscale` also provides [an example](https://docs.anyscale.com/endpoints/model-serving/examples/langchain-integration)
+how to setup `LangChain` with `Anyscale` for advanced chat agents.
+
+## Installation and Setup
+
+- Get an Anyscale Service URL, route and API key and set them as environment variables (`ANYSCALE_SERVICE_URL`,`ANYSCALE_SERVICE_ROUTE`, `ANYSCALE_SERVICE_TOKEN`).
+- Please see [the Anyscale docs](https://www.anyscale.com/get-started) for more details.
+
+We have to install the `openai` package:
+
+```bash
+pip install openai
+```
+
+## LLM
+
+See a [usage example](/docs/integrations/llms/anyscale).
+
+```python
+<!--IMPORTS:[{"imported": "Anyscale", "source": "langchain_community.llms.anyscale", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.anyscale.Anyscale.html", "title": "Anyscale"}]-->
+from langchain_community.llms.anyscale import Anyscale
+```
+
+## Chat Models
+
+See a [usage example](/docs/integrations/chat/anyscale).
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnyscale", "source": "langchain_community.chat_models.anyscale", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.anyscale.ChatAnyscale.html", "title": "Anyscale"}]-->
+from langchain_community.chat_models.anyscale import ChatAnyscale
+```
+
+## Embeddings
+
+See a [usage example](/docs/integrations/text_embedding/anyscale).
+
+```python
+<!--IMPORTS:[{"imported": "AnyscaleEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.anyscale.AnyscaleEmbeddings.html", "title": "Anyscale"}]-->
+from langchain_community.embeddings import AnyscaleEmbeddings
+```

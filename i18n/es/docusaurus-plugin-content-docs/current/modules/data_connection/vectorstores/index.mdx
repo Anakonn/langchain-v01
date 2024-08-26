@@ -1,0 +1,263 @@
+---
+translated: true
+---
+
+# Almacenes de vectores
+
+:::info
+Dirígete a [Integraciones](/docs/integrations/vectorstores/) para obtener documentación sobre las integraciones incorporadas con almacenes de vectores de terceros.
+:::
+
+Una de las formas más comunes de almacenar y buscar datos no estructurados es incorporarlos y almacenar los vectores de incrustación resultantes, y luego, en el momento de la consulta, incorporar la consulta no estructurada y recuperar los vectores de incrustación que son 'más similares' a la consulta incorporada. Un almacén de vectores se encarga de almacenar los datos incorporados y realizar la búsqueda de vectores por ti.
+
+![Diagrama que ilustra el proceso de los almacenes de vectores: 1. Cargar datos de origen, 2. Consultar el almacén de vectores, 3. Recuperar los resultados 'más similares'.](/img/vector_stores.jpg "Diagrama del proceso del almacén de vectores")
+
+## Empezar
+
+Este tutorial muestra la funcionalidad básica relacionada con los almacenes de vectores. Una parte clave del trabajo con almacenes de vectores es crear el vector para colocarlos, que suele crearse a través de incrustaciones. Por lo tanto, se recomienda que te familiarices con las interfaces del [modelo de incrustación de texto](/docs/modules/data_connection/text_embedding/) antes de sumergirte en esto.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Hay muchas y excelentes opciones de almacenes de vectores, aquí hay algunas que son gratuitas, de código abierto y se ejecutan completamente en tu máquina local. Revisa todas las integraciones para muchas excelentes ofertas alojadas.
+
+<Tabs>
+  <TabItem value="chroma" label="Chroma" default>
+
+Este tutorial utiliza la base de datos de vectores `chroma`, que se ejecuta en tu máquina local como una biblioteca.
+
+```bash
+pip install langchain-chroma
+```
+
+Queremos usar OpenAIEmbeddings, así que tenemos que obtener la clave API de OpenAI.
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_chroma import Chroma
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = Chroma.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+  <TabItem value="faiss" label="FAISS">
+
+Este tutorial utiliza la base de datos de vectores `FAISS`, que hace uso de la biblioteca Facebook AI Similarity Search (FAISS).
+
+```bash
+pip install faiss-cpu
+```
+
+Queremos usar OpenAIEmbeddings, así que tenemos que obtener la clave API de OpenAI.
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "FAISS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.faiss.FAISS.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = FAISS.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+  <TabItem value="lance" label="Lance">
+
+Este cuaderno muestra cómo usar la funcionalidad relacionada con la base de datos de vectores LanceDB basada en el formato de datos Lance.
+
+```bash
+pip install lancedb
+```
+
+Queremos usar OpenAIEmbeddings, así que tenemos que obtener la clave API de OpenAI.
+
+```python
+import os
+import getpass
+
+os.environ['OPENAI_API_KEY'] = getpass.getpass('OpenAI API Key:')
+```
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Vector stores"}, {"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Vector stores"}, {"imported": "CharacterTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "Vector stores"}, {"imported": "LanceDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lancedb.LanceDB.html", "title": "Vector stores"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import CharacterTextSplitter
+from langchain_community.vectorstores import LanceDB
+
+import lancedb
+
+db = lancedb.connect("/tmp/lancedb")
+table = db.create_table(
+    "my_table",
+    data=[
+        {
+            "vector": embeddings.embed_query("Hello World"),
+            "text": "Hello World",
+            "id": "1",
+        }
+    ],
+    mode="overwrite",
+)
+
+# Load the document, split it into chunks, embed each chunk and load it into the vector store.
+raw_documents = TextLoader('../../../state_of_the_union.txt').load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+documents = text_splitter.split_documents(raw_documents)
+db = LanceDB.from_documents(documents, OpenAIEmbeddings())
+```
+
+  </TabItem>
+</Tabs>
+
+### Búsqueda de similitud
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+docs = db.similarity_search(query)
+print(docs[0].page_content)
+```
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+### Búsqueda de similitud por vector
+
+También es posible realizar una búsqueda de documentos similares a un vector de incrustación dado utilizando `similarity_search_by_vector`, que acepta un vector de incrustación como parámetro en lugar de una cadena.
+
+```python
+embedding_vector = OpenAIEmbeddings().embed_query(query)
+docs = db.similarity_search_by_vector(embedding_vector)
+print(docs[0].page_content)
+```
+
+La consulta es la misma, y por lo tanto el resultado también es el mismo.
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+## Operaciones asincrónicas
+
+Los almacenes de vectores suelen ejecutarse como un servicio independiente que requiere algunas operaciones de E/S, y por lo tanto pueden llamarse de forma asincrónica. Eso proporciona beneficios de rendimiento, ya que no se pierde tiempo esperando las respuestas de los servicios externos. Esto también podría ser importante si trabajas con un marco asincrónico, como [FastAPI](https://fastapi.tiangolo.com/).
+
+LangChain admite operaciones asincrónicas en los almacenes de vectores. Todos los métodos se pueden llamar utilizando sus homólogos asíncronos, con el prefijo `a`, lo que significa `async`.
+
+`Qdrant` es un almacén de vectores que admite todas las operaciones asincrónicas, por lo que se utilizará en este tutorial.
+
+```bash
+pip install qdrant-client
+```
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Vector stores"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+### Crear un almacén de vectores de forma asincrónica
+
+```python
+db = await Qdrant.afrom_documents(documents, embeddings, "http://localhost:6333")
+```
+
+### Búsqueda de similitud
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+docs = await db.asimilarity_search(query)
+print(docs[0].page_content)
+```
+
+```output
+    Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+    Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+    One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+    And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+```
+
+### Búsqueda de similitud por vector
+
+```python
+embedding_vector = embeddings.embed_query(query)
+docs = await db.asimilarity_search_by_vector(embedding_vector)
+```
+
+## Búsqueda de relevancia marginal máxima (MMR)
+
+La relevancia marginal máxima optimiza la similitud con la consulta **y** la diversidad entre los documentos seleccionados. También se admite en la API asincrónica.
+
+```python
+query = "What did the president say about Ketanji Brown Jackson"
+found_docs = await qdrant.amax_marginal_relevance_search(query, k=2, fetch_k=10)
+for i, doc in enumerate(found_docs):
+    print(f"{i + 1}.", doc.page_content, "\n")
+```
+
+```output
+1. Tonight. I call on the Senate to: Pass the Freedom to Vote Act. Pass the John Lewis Voting Rights Act. And while you’re at it, pass the Disclose Act so Americans can know who is funding our elections.
+
+Tonight, I’d like to honor someone who has dedicated his life to serve this country: Justice Stephen Breyer—an Army veteran, Constitutional scholar, and retiring Justice of the United States Supreme Court. Justice Breyer, thank you for your service.
+
+One of the most serious constitutional responsibilities a President has is nominating someone to serve on the United States Supreme Court.
+
+And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketanji Brown Jackson. One of our nation’s top legal minds, who will continue Justice Breyer’s legacy of excellence.
+
+2. We can’t change how divided we’ve been. But we can change how we move forward—on COVID-19 and other issues we must face together.
+
+I recently visited the New York City Police Department days after the funerals of Officer Wilbert Mora and his partner, Officer Jason Rivera.
+
+They were responding to a 9-1-1 call when a man shot and killed them with a stolen gun.
+
+Officer Mora was 27 years old.
+
+Officer Rivera was 22.
+
+Both Dominican Americans who’d grown up on the same streets they later chose to patrol as police officers.
+
+I spoke with their families and told them that we are forever in debt for their sacrifice, and we will carry on their mission to restore the trust and safety every community deserves.
+
+I’ve worked on these issues a long time.
+
+I know what works: Investing in crime prevention and community police officers who’ll walk the beat, who’ll know the neighborhood, and who can restore trust and safety.
+```

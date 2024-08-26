@@ -1,0 +1,76 @@
+---
+translated: true
+---
+
+# कैसेंड्रा
+
+> [Apache Cassandra®](https://cassandra.apache.org/) एक NoSQL, पंक्ति-उन्मुख, अत्यधिक स्केलेबल और अत्यधिक उपलब्ध डेटाबेस है।
+> संस्करण 5.0 से शुरू, डेटाबेस में [वेक्टर खोज क्षमताएं](https://cassandra.apache.org/doc/trunk/cassandra/vector-search/overview.html) शामिल हैं।
+
+इस पृष्ठ में वर्णित एकीकरण का उपयोग `Cassandra` के साथ-साथ अन्य CQL-संगत डेटाबेसों के साथ भी किया जा सकता है,
+यानी जो `Cassandra Query Language` प्रोटोकॉल का उपयोग करते हैं।
+
+## स्थापना और सेटअप
+
+निम्नलिखित Python पैकेज स्थापित करें:
+
+```bash
+pip install "cassio>=0.1.6"
+```
+
+## वेक्टर स्टोर
+
+```python
+<!--IMPORTS:[{"imported": "Cassandra", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.cassandra.Cassandra.html", "title": "Cassandra"}]-->
+from langchain_community.vectorstores import Cassandra
+```
+
+[उदाहरण नोटबुक](/docs/integrations/vectorstores/cassandra) में और अधिक जानें।
+
+## चैट संदेश इतिहास
+
+```python
+<!--IMPORTS:[{"imported": "CassandraChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.cassandra.CassandraChatMessageHistory.html", "title": "Cassandra"}]-->
+from langchain_community.chat_message_histories import CassandraChatMessageHistory
+```
+
+[उदाहरण नोटबुक](/docs/integrations/memory/cassandra_chat_message_history) में और अधिक जानें।
+
+## LLM कैश
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraCache
+set_llm_cache(CassandraCache())
+```
+
+[उदाहरण नोटबुक](/docs/integrations/llms/llm_caching#cassandra-caches) में और अधिक जानें (कैसेंड्रा अनुभाग तक स्क्रॉल करें)।
+
+## सेमांटिक LLM कैश
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraSemanticCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraSemanticCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraSemanticCache
+set_llm_cache(CassandraSemanticCache(
+    embedding=my_embedding,
+    table_name="my_store",
+))
+```
+
+[उदाहरण नोटबुक](/docs/integrations/llms/llm_caching#cassandra-caches) में और अधिक जानें (उचित अनुभाग तक स्क्रॉल करें)।
+
+## दस्तावेज़ लोडर
+
+```python
+<!--IMPORTS:[{"imported": "CassandraLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.cassandra.CassandraLoader.html", "title": "Cassandra"}]-->
+from langchain_community.document_loaders import CassandraLoader
+```
+
+[उदाहरण नोटबुक](/docs/integrations/document_loaders/cassandra) में और अधिक जानें।
+
+#### एट्रिब्यूशन बयान
+
+> Apache Cassandra, Cassandra और Apache संयुक्त राज्य अमेरिका और/या अन्य देशों में
+> [Apache Software Foundation](http://www.apache.org/) के पंजीकृत ट्रेडमार्क या ट्रेडमार्क हैं।

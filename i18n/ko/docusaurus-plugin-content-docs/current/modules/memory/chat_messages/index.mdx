@@ -1,0 +1,35 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# 채팅 메시지
+
+:::info
+3rd 파티 데이터베이스 및 도구와의 기본 메모리 통합에 대한 문서는 [Integrations](/docs/integrations/memory/)를 참조하세요.
+:::
+
+대부분의 메모리 모듈(모든 모듈이라고 해도 무방)의 핵심 유틸리티 클래스는 `ChatMessageHistory` 클래스입니다.
+이는 HumanMessages, AIMessages를 저장하고 가져오는 편리한 메서드를 제공하는 매우 가벼운 래퍼입니다.
+
+체인 외부에서 메모리를 관리하는 경우 이 클래스를 직접 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "ChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_core.chat_history.ChatMessageHistory.html", "title": "Chat Messages"}]-->
+from langchain.memory import ChatMessageHistory
+
+history = ChatMessageHistory()
+
+history.add_user_message("hi!")
+
+history.add_ai_message("whats up?")
+```
+
+```python
+history.messages
+```
+
+```output
+    [HumanMessage(content='hi!', additional_kwargs={}),
+     AIMessage(content='whats up?', additional_kwargs={})]
+```

@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# नुक्लिया
+
+>[नुक्लिया](https://nuclia.com) किसी भी आंतरिक और बाहरी स्रोत से आपके अरचनात्मक डेटा को स्वचालित रूप से सूचीबद्ध करता है, जो अनुकूलित खोज परिणाम और उत्पादक उत्तर प्रदान करता है। यह वीडियो और ऑडियो प्रतिलेखन, छवि सामग्री निकालना, और दस्तावेज़ पार्सिंग को संभाल सकता है।
+
+>`नुक्लिया समझ एपीआई` दस्तावेज़ रूपांतरक पाठ को अनुच्छेद और वाक्यों में विभाजित करता है, इकाइयों की पहचान करता है, पाठ का सारांश प्रदान करता है और सभी वाक्यों के लिए एम्बेडिंग्स उत्पन्न करता है।
+
+## स्थापना और सेटअप
+
+हमें `नुक्लिया-प्रोटोस` पैकेज को स्थापित करने की आवश्यकता है ताकि हम `नुक्लिया समझ एपीआई` का उपयोग कर सकें।
+
+```bash
+pip install nucliadb-protos
+```
+
+`नुक्लिया समझ एपीआई` का उपयोग करने के लिए, हमारे पास एक `नुक्लिया खाता` होना चाहिए। हम [https://nuclia.cloud](https://nuclia.cloud) पर मुफ्त में एक बना सकते हैं, और फिर एक [एनयूए कुंजी बना सकते हैं](https://docs.nuclia.dev/docs/docs/using/understanding/intro)।
+
+नुक्लिया दस्तावेज़ रूपांतरक का उपयोग करने के लिए, हमें एक `NucliaUnderstandingAPI` उपकरण को `enable_ml` को `True` पर सेट करके प्रारंभ करना होगा:
+
+```python
+<!--IMPORTS:[{"imported": "NucliaUnderstandingAPI", "source": "langchain_community.tools.nuclia", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.nuclia.tool.NucliaUnderstandingAPI.html", "title": "Nuclia"}]-->
+from langchain_community.tools.nuclia import NucliaUnderstandingAPI
+
+nua = NucliaUnderstandingAPI(enable_ml=True)
+```
+
+## दस्तावेज़ रूपांतरक
+
+[उपयोग उदाहरण](/docs/integrations/document_transformers/nuclia_transformer) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "NucliaTextTransformer", "source": "langchain_community.document_transformers.nuclia_text_transform", "docs": "https://api.python.langchain.com/en/latest/document_transformers/langchain_community.document_transformers.nuclia_text_transform.NucliaTextTransformer.html", "title": "Nuclia"}]-->
+from langchain_community.document_transformers.nuclia_text_transform import NucliaTextTransformer
+```

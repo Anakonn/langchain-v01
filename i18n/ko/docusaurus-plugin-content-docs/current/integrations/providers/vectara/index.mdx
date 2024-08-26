@@ -1,0 +1,96 @@
+---
+translated: true
+---
+
+# Vectara
+
+>[Vectara](https://vectara.com/)는 개발자를 위한 신뢰할 수 있는 GenAI 플랫폼입니다. 의미 검색 또는 RAG(Retrieval Augmented Generation)를 위한 GenAI 애플리케이션 구축을 위한 간단한 API를 제공합니다.
+
+**Vectara 개요:**
+- `Vectara`는 신뢰할 수 있는 GenAI 애플리케이션 구축을 위한 개발자 중심 API 플랫폼입니다.
+- Vectara를 사용하려면 먼저 [가입](https://vectara.com/integrations/langchain)하고 계정을 만드세요. 그런 다음 색인화 및 검색을 위한 코퍼스와 API 키를 만드세요.
+- Vectara의 [색인 API](https://docs.vectara.com/docs/indexing-apis/indexing)를 사용하여 문서를 Vectara 색인에 추가할 수 있습니다.
+- Vectara의 [검색 API](https://docs.vectara.com/docs/search-apis/search)를 사용하여 Vectara 색인을 쿼리할 수 있습니다(하이브리드 검색도 암시적으로 지원).
+
+## 설치 및 설정
+
+LangChain에서 `Vectara`를 사용하려면 특별한 설치 단계가 필요하지 않습니다.
+시작하려면 [가입](https://vectara.com/integrations/langchain)하고 [빠른 시작](https://docs.vectara.com/docs/quickstart) 가이드를 따라 코퍼스와 API 키를 만드세요.
+이를 확보하면 Vectara 벡터 저장소에 인수로 제공하거나 환경 변수로 설정할 수 있습니다.
+
+- `VECTARA_CUSTOMER_ID`="your_customer_id" 내보내기
+- `VECTARA_CORPUS_ID`="your_corpus_id" 내보내기
+- `VECTARA_API_KEY`="your-vectara-api-key" 내보내기
+
+## 벡터 저장소로서의 Vectara
+
+Vectara 플랫폼을 래핑하는 래퍼가 있어 의미 검색이나 예제 선택을 위해 벡터 저장소로 사용할 수 있습니다.
+
+이 벡터 저장소를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "Vectara", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vectara.Vectara.html", "title": "Vectara"}]-->
+from langchain_community.vectorstores import Vectara
+```
+
+Vectara 벡터 저장소의 인스턴스를 만들려면:
+
+```python
+vectara = Vectara(
+    vectara_customer_id=customer_id,
+    vectara_corpus_id=corpus_id,
+    vectara_api_key=api_key
+)
+```
+
+customer_id, corpus_id 및 api_key는 선택 사항이며, 제공되지 않으면 각각 `VECTARA_CUSTOMER_ID`, `VECTARA_CORPUS_ID` 및 `VECTARA_API_KEY` 환경 변수에서 읽습니다.
+
+벡터 저장소를 얻은 후에는 표준 `VectorStore` 인터페이스에 따라 `add_texts` 또는 `add_documents`를 사용할 수 있습니다. 예를 들면:
+
+```python
+vectara.add_texts(["to be or not to be", "that is the question"])
+```
+
+Vectara는 파일 업로드를 지원하므로 파일(PDF, TXT, HTML, PPT, DOC 등)을 직접 파일로 업로드할 수 있는 기능도 추가했습니다. 이 방법을 사용하면 파일이 Vectara 백엔드에 직접 업로드되고 최적으로 처리 및 청크되므로 LangChain 문서 로더나 청크 메커니즘을 사용할 필요가 없습니다.
+
+예를 들면:
+
+```python
+vectara.add_files(["path/to/file1.pdf", "path/to/file2.pdf",...])
+```
+
+벡터 저장소를 쿼리하려면 `similarity_search` 메서드(또는 `similarity_search_with_score`)를 사용할 수 있습니다. 이 메서드는 쿼리 문자열을 받아 관련 문서 목록을 반환합니다.
+
+```python
+results = vectara.similarity_score("what is LangChain?")
+```
+
+결과는 관련 문서 목록과 각 문서의 관련성 점수로 반환됩니다.
+
+이 경우 기본 검색 매개변수를 사용했지만 `similarity_search` 또는 `similarity_search_with_score`에서 다음과 같은 추가 인수를 지정할 수도 있습니다:
+- `k`: 반환할 결과 수(기본값 5)
+- `lambda_val`: 하이브리드 검색에 대한 [어휘 일치](https://docs.vectara.com/docs/api-reference/search-apis/lexical-matching) 요인(기본값 0.025)
+- `filter`: 결과에 적용할 [필터](https://docs.vectara.com/docs/common-use-cases/filtering-by-metadata/filter-overview)(기본값 None)
+- `n_sentence_context`: 실제 일치 세그먼트 앞/뒤에 포함할 문장 수. 기본값은 2입니다.
+- `mmr_config`: 쿼리에서 MMR 모드를 지정하는 데 사용할 수 있습니다.
+   - `is_enabled`: True 또는 False
+   - `mmr_k`: MMR 재순위화에 사용할 결과 수
+   - `diversity_bias`: 0 = 다양성 없음, 1 = 완전한 다양성. MMR 공식의 lambda 매개변수이며 0...1 범위입니다.
+
+## Vectara를 통한 Retrieval Augmented Generation(RAG)
+
+Vectara는 생성 요약을 포함한 전체 RAG 파이프라인을 제공합니다.
+이 파이프라인을 사용하려면 `similarity_search` 또는 `similarity_search_with_score`에서 `summary_config` 인수를 다음과 같이 지정할 수 있습니다:
+
+- `summary_config`: RAG에 대한 LLM 요약을 요청하는 데 사용할 수 있습니다.
+   - `is_enabled`: True 또는 False
+   - `max_results`: 요약 생성에 사용할 결과 수
+   - `response_lang`: 응답 요약의 언어, ISO 639-2 형식(예: 'en', 'fr', 'de' 등)
+
+## 예제 노트북
+
+Vectara를 사용하는 보다 자세한 예는 다음 예제를 참조하세요:
+* [이 노트북](/docs/integrations/vectorstores/vectara)에서는 Vectara를 벡터 저장소로 사용하는 방법을 보여줍니다.
+* [이 노트북](/docs/integrations/providers/vectara/vectara_chat)에서는 Langchain과 Vectara를 사용하여 채팅봇을 구축하는 방법을 보여줍니다.
+* [이 노트북](/docs/integrations/providers/vectara/vectara_summary)에서는 생성 요약을 포함한 전체 Vectara RAG 파이프라인을 사용하는 방법을 보여줍니다.
+* [이 노트북](/docs/integrations/retrievers/self_query/vectara_self_query)에서는 Vectara를 사용한 자체 쿼리 기능을 보여줍니다.

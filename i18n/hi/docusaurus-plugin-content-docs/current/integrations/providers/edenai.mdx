@@ -1,0 +1,69 @@
+---
+translated: true
+---
+
+# एडेन एआई
+
+>[एडेन एआई](https://docs.edenai.co/docs/getting-started-with-eden-ai) उपयोगकर्ता इंटरफ़ेस (यूआई)
+> एआई परियोजनाओं को संभालने के लिए डिज़ाइन किया गया है। `एडेन एआई पोर्टल` के साथ,
+> आप बाज़ार के सर्वश्रेष्ठ इंजनों का उपयोग करके कोड-रहित एआई का उपयोग कर सकते हैं।
+
+## स्थापना और सेटअप
+
+एडेन एआई एपीआई का उपयोग करने के लिए एक एपीआई कुंजी की आवश्यकता होती है, जिसे आप
+[खाता बनाकर](https://app.edenai.run/user/register) और
+[यहाँ](https://app.edenai.run/admin/account/settings) जाकर प्राप्त कर सकते हैं।
+
+## एलएलएम
+
+एक [उपयोग उदाहरण](/docs/integrations/llms/edenai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "EdenAI", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.edenai.EdenAI.html", "title": "Eden AI"}]-->
+from langchain_community.llms import EdenAI
+
+```
+
+## चैट मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/chat/edenai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "ChatEdenAI", "source": "langchain_community.chat_models.edenai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.edenai.ChatEdenAI.html", "title": "Eden AI"}]-->
+from langchain_community.chat_models.edenai import ChatEdenAI
+```
+
+## एम्बेडिंग मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/edenai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "EdenAiEmbeddings", "source": "langchain_community.embeddings.edenai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.edenai.EdenAiEmbeddings.html", "title": "Eden AI"}]-->
+from langchain_community.embeddings.edenai import EdenAiEmbeddings
+```
+
+## उपकरण
+
+एडेन एआई आपके एजेंट को कई कार्य करने की क्षमता प्रदान करने वाली उपकरणों की एक सूची प्रदान करता है, जैसे:
+* स्पीच टू टेक्स्ट
+* टेक्स्ट टू स्पीच
+* टेक्स्ट एक्सप्लिसिट सामग्री का पता लगाना
+* छवि एक्सप्लिसिट सामग्री का पता लगाना
+* वस्तु का पता लगाना
+* ओसीआर इनवॉयस पार्सिंग
+* ओसीआर आईडी पार्सिंग
+
+एक [उपयोग उदाहरण](/docs/integrations/tools/edenai_tools) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "EdenAiExplicitImageTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.image_explicitcontent.EdenAiExplicitImageTool.html", "title": "Eden AI"}, {"imported": "EdenAiObjectDetectionTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.image_objectdetection.EdenAiObjectDetectionTool.html", "title": "Eden AI"}, {"imported": "EdenAiParsingIDTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.ocr_identityparser.EdenAiParsingIDTool.html", "title": "Eden AI"}, {"imported": "EdenAiParsingInvoiceTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.ocr_invoiceparser.EdenAiParsingInvoiceTool.html", "title": "Eden AI"}, {"imported": "EdenAiSpeechToTextTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.audio_speech_to_text.EdenAiSpeechToTextTool.html", "title": "Eden AI"}, {"imported": "EdenAiTextModerationTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.text_moderation.EdenAiTextModerationTool.html", "title": "Eden AI"}, {"imported": "EdenAiTextToSpeechTool", "source": "langchain_community.tools.edenai", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.edenai.audio_text_to_speech.EdenAiTextToSpeechTool.html", "title": "Eden AI"}]-->
+from langchain_community.tools.edenai import (
+    EdenAiExplicitImageTool,
+    EdenAiObjectDetectionTool,
+    EdenAiParsingIDTool,
+    EdenAiParsingInvoiceTool,
+    EdenAiSpeechToTextTool,
+    EdenAiTextModerationTool,
+    EdenAiTextToSpeechTool,
+)
+```

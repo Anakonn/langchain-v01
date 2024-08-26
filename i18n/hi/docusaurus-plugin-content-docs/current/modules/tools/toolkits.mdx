@@ -1,0 +1,23 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# उपकरण किट
+
+उपकरण किट उन उपकरणों का संग्रह हैं जो विशिष्ट कार्यों के लिए एक साथ उपयोग करने के लिए डिज़ाइन किए गए हैं। उनके पास सुविधाजनक लोडिंग विधियाँ हैं।
+उपलब्ध तैयार किए गए उपकरण किटों की पूर्ण सूची के लिए, [एकीकरण](/docs/integrations/toolkits/) पर जाएं।
+
+सभी उपकरण किट एक `get_tools` विधि को एक्सपोज़ करते हैं जो उपकरणों की एक सूची लौटाता है।
+इसलिए आप यह कर सकते हैं:
+
+```python
+# Initialize a toolkit
+toolkit = ExampleTookit(...)
+
+# Get list of tools
+tools = toolkit.get_tools()
+
+# Create agent
+agent = create_agent_method(llm, tools, prompt)
+```

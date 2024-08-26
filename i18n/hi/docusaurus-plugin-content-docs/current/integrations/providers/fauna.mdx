@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# फ़ौना
+
+>[फ़ौना](https://fauna.com/) एक वितरित दस्तावेज़-संबंधी डेटाबेस है
+> जो दस्तावेजों की लचीलापन को संबंधी, ACID अनुपालन वाले डेटाबेस की शक्ति के साथ जोड़ता है जो क्षेत्रों, क्लाउड या विश्व भर में स्केल करता है।
+
+## इंस्टॉलेशन और सेटअप
+
+हमें गुप्त कुंजी प्राप्त करनी होगी।
+विस्तृत [गाइड](https://docs.fauna.com/fauna/current/learn/security_model/) देखें।
+
+हमें `fauna` पैकेज इंस्टॉल करना होगा।
+
+```bash
+pip install -U fauna
+```
+
+## दस्तावेज़ लोडर
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/fauna) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "FaunaLoader", "source": "langchain_community.document_loaders.fauna", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.fauna.FaunaLoader.html", "title": "Fauna"}]-->
+from langchain_community.document_loaders.fauna import FaunaLoader
+```

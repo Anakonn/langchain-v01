@@ -1,0 +1,33 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 0
+translated: true
+---
+
+# Cargadores de documentos
+
+:::info
+Dirígete a [Integraciones](/docs/integrations/document_loaders/) para obtener documentación sobre las integraciones de cargadores de documentos integrados con herramientas de terceros.
+:::
+
+Utiliza los cargadores de documentos para cargar datos de una fuente como `Documento`s. Un `Documento` es un fragmento de texto y metadatos asociados. Por ejemplo, existen cargadores de documentos para cargar un archivo `.txt` simple, para cargar el contenido de texto de cualquier página web o incluso para cargar una transcripción de un video de YouTube.
+
+Los cargadores de documentos proporcionan un método "load" para cargar datos como documentos desde una fuente configurada. También implementan una "carga diferida" para cargar datos en memoria de forma diferida.
+
+## Comenzar
+
+El cargador más sencillo lee un archivo como texto y lo coloca todo en un documento.
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "Document loaders"}]-->
+from langchain_community.document_loaders import TextLoader
+
+loader = TextLoader("./index.md")
+loader.load()
+```
+
+```output
+[
+    Document(page_content='---\nsidebar_position: 0\n---\n# Document loaders\n\nUse document loaders to load data from a source as `Document`\'s. A `Document` is a piece of text\nand associated metadata. For example, there are document loaders for loading a simple `.txt` file, for loading the text\ncontents of any web page, or even for loading a transcript of a YouTube video.\n\nEvery document loader exposes two methods:\n1. "Load": load documents from the configured source\n2. "Load and split": load documents from the configured source and split them using the passed in text splitter\n\nThey optionally implement:\n\n3. "Lazy load": load documents into memory lazily\n', metadata={'source': '../docs/docs/modules/data_connection/document_loaders/index.md'})
+]
+```

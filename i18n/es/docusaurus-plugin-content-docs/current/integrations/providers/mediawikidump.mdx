@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# MediaWikiDump
+
+>[Volcados XML de MediaWiki](https://www.mediawiki.org/wiki/Manual:Importing_XML_dumps) contienen el contenido de un wiki
+> (páginas wiki con todas sus revisiones), sin los datos relacionados con el sitio. Un volcado XML no crea una copia de seguridad completa
+> de la base de datos wiki, el volcado no contiene cuentas de usuario, imágenes, registros de edición, etc.
+
+## Instalación y configuración
+
+Necesitamos instalar varios paquetes de python.
+
+El `mediawiki-utilities` admite el esquema XML 0.11 en ramas sin fusionar.
+
+```bash
+pip install -qU git+https://github.com/mediawiki-utilities/python-mwtypes@updates_schema_0.11
+```
+
+El `mediawiki-utilities mwxml` tiene un error, PR de corrección pendiente.
+
+```bash
+pip install -qU git+https://github.com/gdedrouas/python-mwxml@xml_format_0.11
+pip install -qU mwparserfromhell
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/mediawikidump).
+
+```python
+<!--IMPORTS:[{"imported": "MWDumpLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.mediawikidump.MWDumpLoader.html", "title": "MediaWikiDump"}]-->
+from langchain_community.document_loaders import MWDumpLoader
+```

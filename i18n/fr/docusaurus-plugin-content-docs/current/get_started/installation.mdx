@@ -1,0 +1,99 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# Installation
+
+## Version officielle
+
+Pour installer LangChain, exécutez :
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs>
+  <TabItem value="pip" label="Pip" default>
+    <CodeBlock language="bash">pip install langchain</CodeBlock>
+  </TabItem>
+  <TabItem value="conda" label="Conda">
+    <CodeBlock language="bash">conda install langchain -c conda-forge</CodeBlock>
+  </TabItem>
+</Tabs>
+
+Cela installera les exigences minimales de LangChain.
+Une grande partie de la valeur de LangChain provient de son intégration avec divers fournisseurs de modèles, de magasins de données, etc.
+Par défaut, les dépendances nécessaires pour faire cela NE SONT PAS installées. Vous devrez installer les dépendances pour les intégrations spécifiques séparément.
+
+## À partir de la source
+
+Si vous voulez installer à partir de la source, vous pouvez le faire en clonant le dépôt et en vous assurant que le répertoire est `PATH/TO/REPO/langchain/libs/langchain` en exécutant :
+
+```bash
+pip install -e .
+```
+
+## Noyau LangChain
+
+Le package `langchain-core` contient les abstractions de base que le reste de l'écosystème LangChain utilise, ainsi que le langage d'expression LangChain. Il est automatiquement installé par `langchain`, mais peut également être utilisé séparément. Installez avec :
+
+```bash
+pip install langchain-core
+```
+
+## Communauté LangChain
+
+Le package `langchain-community` contient des intégrations tierces. Il est automatiquement installé par `langchain`, mais peut également être utilisé séparément. Installez avec :
+
+```bash
+pip install langchain-community
+```
+
+## Expérimental LangChain
+
+Le package `langchain-experimental` contient du code LangChain expérimental, destiné à la recherche et à des utilisations expérimentales.
+Installez avec :
+
+```bash
+pip install langchain-experimental
+```
+
+## LangGraph
+
+`langgraph` est une bibliothèque pour construire des applications multi-acteurs avec état avec des LLM, construite sur (et destinée à être utilisée avec) LangChain.
+Installez avec :
+
+```bash
+pip install langgraph
+```
+
+## LangServe
+
+LangServe aide les développeurs à déployer les runnables et les chaînes LangChain en tant qu'API REST.
+LangServe est automatiquement installé par LangChain CLI.
+Si vous n'utilisez pas LangChain CLI, installez avec :
+
+```bash
+pip install "langserve[all]"
+```
+
+pour les dépendances client et serveur. Ou `pip install "langserve[client]"` pour le code client et `pip install "langserve[server]"` pour le code serveur.
+
+## LangChain CLI
+
+Le LangChain CLI est utile pour travailler avec les modèles LangChain et d'autres projets LangServe.
+Installez avec :
+
+```bash
+pip install langchain-cli
+```
+
+## LangSmith SDK
+
+Le LangSmith SDK est automatiquement installé par LangChain.
+Si vous n'utilisez pas LangChain, installez avec :
+
+```bash
+pip install langsmith
+```

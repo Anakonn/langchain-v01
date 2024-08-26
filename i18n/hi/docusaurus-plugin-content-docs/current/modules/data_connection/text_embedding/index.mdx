@@ -1,0 +1,132 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 2
+translated: true
+---
+
+# पाठ एम्बेडिंग मॉडल
+
+:::info
+[एकीकरण](/docs/integrations/text_embedding/) पर दस्तावेज़ के लिए पाठ एम्बेडिंग मॉडल प्रदाताओं के साथ बनाए गए एकीकरणों के बारे में जानकारी प्राप्त करें।
+:::
+
+Embeddings क्लास पाठ एम्बेडिंग मॉडल के साथ इंटरफ़ेस करने के लिए डिज़ाइन की गई एक क्लास है। कई एम्बेडिंग मॉडल प्रदाता (OpenAI, Cohere, Hugging Face आदि) हैं - यह क्लास उनमें से सभी के लिए एक मानक इंटरफ़ेस प्रदान करने के लिए डिज़ाइन की गई है।
+
+एम्बेडिंग्स पाठ के एक टुकड़े का वेक्टर प्रतिनिधित्व बनाते हैं। यह इसलिए उपयोगी है क्योंकि इसका मतलब है कि हम पाठ को वेक्टर स्पेस में सोच सकते हैं, और ऐसी चीजें कर सकते हैं जैसे सेमांटिक खोज जहां हम वेक्टर स्पेस में सबसे समान टुकड़ों को ढूंढते हैं।
+
+LangChain में आधारभूत Embeddings क्लास दो विधियां प्रदान करती है: एक दस्तावेज़ों को एम्बेड करने के लिए और एक क्वेरी को एम्बेड करने के लिए। पहला कई पाठों को इनपुट के रूप में लेता है, जबकि दूसरा एक पाठ को लेता है। इन्हें दो अलग-अलग विधियों के रूप में रखने का कारण यह है कि कुछ एम्बेडिंग प्रदाताओं के पास दस्तावेज़ों (खोजे जाने वाले) और क्वेरी (खोज क्वेरी स्वयं) के लिए अलग-अलग एम्बेडिंग विधियां होती हैं।
+
+## शुरू करना
+
+### सेटअप
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+शुरू करने के लिए हमें OpenAI साझेदार पैकेज को स्थापित करने की आवश्यकता होगी:
+
+```bash
+pip install langchain-openai
+```
+
+API का उपयोग करने के लिए एक API कुंजी की आवश्यकता होती है, जिसे आप एक खाता बनाकर और [यहाँ](https://platform.openai.com/account/api-keys) जाकर प्राप्त कर सकते हैं। एक बार जब हमारे पास कुंजी हो जाती है, तो हमें इसे निम्नलिखित कमांड चलाकर एक पर्यावरण चर के रूप में सेट करना होगा:
+
+```bash
+export OPENAI_API_KEY="..."
+```
+
+यदि आप पर्यावरण चर सेट करना नहीं चाहते हैं, तो आप OpenAI LLM क्लास को प्रारंभ करते समय `api_key` नामित पैरामीटर के माध्यम से कुंजी को सीधे पास कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings(api_key="...")
+```
+
+अन्यथा, आप किसी भी पैरामीटर के बिना प्रारंभ कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_openai import OpenAIEmbeddings
+
+embeddings_model = OpenAIEmbeddings()
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+शुरू करने के लिए हमें Cohere SDK पैकेज को स्थापित करने की आवश्यकता होगी:
+
+```bash
+pip install langchain-cohere
+```
+
+API का उपयोग करने के लिए एक API कुंजी की आवश्यकता होती है, जिसे आप एक खाता बनाकर और [यहाँ](https://dashboard.cohere.com/api-keys) जाकर प्राप्त कर सकते हैं। एक बार जब हमारे पास कुंजी हो जाती है, तो हमें इसे निम्नलिखित कमांड चलाकर एक पर्यावरण चर के रूप में सेट करना होगा:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+यदि आप पर्यावरण चर सेट करना नहीं चाहते हैं, तो आप Cohere LLM क्लास को प्रारंभ करते समय `cohere_api_key` नामित पैरामीटर के माध्यम से कुंजी को सीधे पास कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings(cohere_api_key="...")
+```
+
+अन्यथा, आप किसी भी पैरामीटर के बिना प्रारंभ कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "CohereEmbeddings", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_cohere.embeddings.CohereEmbeddings.html", "title": "Text embedding models"}]-->
+from langchain_cohere import CohereEmbeddings
+
+embeddings_model = CohereEmbeddings()
+```
+
+  </TabItem>
+</Tabs>
+
+### `embed_documents`
+
+#### पाठों की सूची को एम्बेड करना
+
+```python
+embeddings = embeddings_model.embed_documents(
+    [
+        "Hi there!",
+        "Oh, hello!",
+        "What's your name?",
+        "My friends call me World",
+        "Hello World!"
+    ]
+)
+len(embeddings), len(embeddings[0])
+```
+
+```output
+(5, 1536)
+```
+
+### `embed_query`
+
+#### एकल क्वेरी को एम्बेड करना
+
+अन्य एम्बेड किए गए पाठों के साथ तुलना करने के उद्देश्य से एक अकेले पाठ को एम्बेड करें।
+
+```python
+embedded_query = embeddings_model.embed_query("What was the name mentioned in the conversation?")
+embedded_query[:5]
+```
+
+```output
+[0.0053587136790156364,
+ -0.0004999046213924885,
+ 0.038883671164512634,
+ -0.003001077566295862,
+ -0.00900818221271038]
+```

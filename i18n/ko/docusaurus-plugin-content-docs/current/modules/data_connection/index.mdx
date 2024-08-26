@@ -1,0 +1,67 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# 검색
+
+많은 LLM 애플리케이션에는 모델의 학습 세트에 포함되지 않은 사용자 특정 데이터가 필요합니다.
+이를 달성하는 주요 방법은 Retrieval Augmented Generation (RAG)입니다.
+이 프로세스에서는 외부 데이터가 *검색*되고 *생성* 단계에서 LLM에 전달됩니다.
+
+LangChain은 RAG 애플리케이션을 위한 모든 구성 요소를 제공합니다 - 간단한 것부터 복잡한 것까지.
+이 문서의 섹션은 *검색* 단계와 관련된 모든 것을 다룹니다 - 예를 들어 데이터 가져오기.
+이것이 간단해 보일 수 있지만, 미묘한 복잡성이 있습니다.
+이것은 여러 가지 핵심 모듈을 포함합니다.
+
+![데이터 연결 프로세스를 보여주는 설명 다이어그램. 단계: 소스, 로드, 변환, 임베딩, 저장, 검색.](/img/data_connection.jpg "데이터 연결 프로세스 다이어그램")
+
+## [문서 로더](/docs/modules/data_connection/document_loaders/)
+
+**문서 로더**는 다양한 소스에서 문서를 로드합니다.
+LangChain은 100개 이상의 다양한 문서 로더와 AirByte 및 Unstructured와 같은 다른 주요 공급자와의 통합을 제공합니다.
+LangChain은 모든 유형의 문서(HTML, PDF, 코드)를 모든 유형의 위치(프라이빗 S3 버킷, 공개 웹사이트)에서 로드할 수 있는 통합을 제공합니다.
+
+## [텍스트 분할](/docs/modules/data_connection/document_transformers/)
+
+검색의 핵심 부분은 관련 문서 부분만 가져오는 것입니다.
+이를 위해서는 문서를 검색할 수 있도록 준비하는 여러 변환 단계가 필요합니다.
+여기서 주요 단계 중 하나는 큰 문서를 더 작은 청크로 분할(또는 청크화)하는 것입니다.
+LangChain은 이를 수행하기 위한 여러 변환 알고리즘과 특정 문서 유형(코드, 마크다운 등)에 최적화된 논리를 제공합니다.
+
+## [텍스트 임베딩 모델](/docs/modules/data_connection/text_embedding/)
+
+검색의 또 다른 핵심 부분은 문서에 대한 임베딩을 만드는 것입니다.
+임베딩은 텍스트의 의미론적 의미를 캡처하여 유사한 텍스트 조각을 빠르고 효율적으로 찾을 수 있습니다.
+LangChain은 오픈 소스에서 독점 API까지 25개 이상의 다양한 임베딩 공급자 및 방법과의 통합을 제공하여 사용자의 요구에 가장 적합한 것을 선택할 수 있습니다.
+LangChain은 표준 인터페이스를 제공하여 모델 간에 쉽게 전환할 수 있습니다.
+
+## [벡터 스토어](/docs/modules/data_connection/vectorstores/)
+
+임베딩의 등장으로 이러한 임베딩을 효율적으로 저장하고 검색할 수 있는 데이터베이스가 필요해졌습니다.
+LangChain은 오픈 소스 로컬 제품부터 클라우드 호스팅 독점 제품까지 50개 이상의 다양한 벡터 스토어와의 통합을 제공하여 사용자의 요구에 가장 적합한 것을 선택할 수 있습니다.
+LangChain은 표준 인터페이스를 노출하여 벡터 스토어 간에 쉽게 전환할 수 있습니다.
+
+## [검색기](/docs/modules/data_connection/retrievers/)
+
+데이터가 데이터베이스에 있으면 여전히 검색해야 합니다.
+LangChain은 많은 다양한 검색 알고리즘을 지원하며, 이는 우리가 가장 많은 가치를 더하는 부분 중 하나입니다.
+LangChain은 시작하기 쉬운 기본 방법, 즉 단순한 의미 검색을 지원합니다.
+그러나 우리는 성능을 높이기 위해 이 위에 다양한 알고리즘을 추가했습니다.
+이에는 다음이 포함됩니다:
+
+- [Parent Document Retriever](/docs/modules/data_connection/retrievers/parent_document_retriever): 이를 통해 부모 문서당 여러 개의 임베딩을 만들 수 있어 더 작은 청크를 조회할 수 있지만 더 큰 컨텍스트를 반환할 수 있습니다.
+- [Self Query Retriever](/docs/modules/data_connection/retrievers/self_query): 사용자 질문에는 단순히 의미론적인 것이 아니라 메타데이터 필터로 가장 잘 표현될 수 있는 논리가 포함되어 있는 경우가 있습니다. Self-query를 통해 질문의 *의미론적* 부분과 질문에 존재하는 다른 *메타데이터 필터*를 구분할 수 있습니다.
+- [Ensemble Retriever](/docs/modules/data_connection/retrievers/ensemble): 때로는 여러 다른 소스에서 문서를 검색하거나 여러 다른 알고리즘을 사용하여 검색해야 할 수 있습니다. Ensemble retriever를 사용하면 이를 쉽게 수행할 수 있습니다.
+- 그리고 더 많은 것들!
+
+## [인덱싱](/docs/modules/data_connection/indexing)
+
+LangChain **인덱싱 API**는 모든 소스의 데이터를 벡터 스토어에 동기화하여 다음을 도와줍니다:
+
+- 벡터 스토어에 중복 콘텐츠 작성 방지
+- 변경되지 않은 콘텐츠 재작성 방지
+- 변경되지 않은 콘텐츠에 대한 임베딩 재계산 방지
+
+이 모두는 시간과 비용을 절약하고 벡터 검색 결과를 개선할 수 있습니다.

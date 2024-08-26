@@ -1,0 +1,82 @@
+---
+translated: true
+---
+
+# टैविली सर्च एपीआई
+
+>[टैविली की सर्च एपीआई](https://tavily.com) एक खोज इंजन है जो विशेष रूप से एआई एजेंटों (एलएलएम) के लिए बनाया गया है, जो वास्तविक समय, सटीक और तथ्यात्मक परिणाम तेजी से प्रदान करता है।
+
+हम इसका उपयोग [रिट्रीवर](/docs/modules/data_connection/retrievers) के रूप में कर सकते हैं। यह इस एकीकरण के लिए विशिष्ट कार्यक्षमता दिखाएगा। इसके माध्यम से जाने के बाद, [प्रासंगिक उपयोग मामले पृष्ठों](/docs/use_cases/question_answering) का अन्वेषण करना उपयोगी हो सकता है ताकि आप इस वेक्टर स्टोर का उपयोग एक बड़ी श्रृंखला के हिस्से के रूप में कैसे कर सकते हैं।
+
+## सेटअप
+
+एकीकरण `langchain-community` पैकेज में मौजूद है। हमें `tavily-python` पैकेज को भी स्थापित करना होगा।
+
+```bash
+pip install -U langchain-community tavily-python
+```
+
+हमें अपने टैविली एपीआई कुंजी को भी सेट करना होगा।
+
+```python
+import getpass
+import os
+
+os.environ["TAVILY_API_KEY"] = getpass.getpass()
+```
+
+[LangSmith](https://smith.langchain.com/) को सर्वश्रेष्ठ-इन-क्लास अवलोकनीयता के लिए सेट करना भी उपयोगी (लेकिन आवश्यक नहीं) है।
+
+```python
+# os.environ["LANGCHAIN_TRACING_V2"] = "true"
+# os.environ["LANGCHAIN_API_KEY"] = getpass.getpass()
+```
+
+## उपयोग
+
+```python
+from langchain_community.retrievers import TavilySearchAPIRetriever
+
+retriever = TavilySearchAPIRetriever(k=3)
+
+retriever.invoke("what year was breath of the wild released?")
+```
+
+```output
+[Document(page_content='Trending topics\nTrending topics\nThe Legend of Zelda™: Breath of the Wild\nSelect a product\nThe Legend of Zelda™: Breath of the Wild\nThe Legend of Zelda™: Breath of the Wild\nThe Legend of Zelda™: Breath of the Wild and The Legend of Zelda™: Breath of the Wild Expansion Pass Bundle\nThis item will be sent to your system automatically after purchase or Nintendo Switch Game Voucher redemption. The Legend of Zelda: Breath of the Wild Expansion Pass\nMore like this\nSuper Mario Odyssey™\nThe Legend of Zelda™: Tears of the Kingdom\nMario + Rabbids® Kingdom Battle\nThe Legend of Zelda™: Link’s Awakening\nHollow Knight\nThe Legend of Zelda™: Skyward Sword HD\nStarlink: Battle for Atlas™ Digital Edition\nDRAGON QUEST BUILDERS™ 2\nDragon Quest Builders™\nWARNING: If you have epilepsy or have had seizures or other unusual reactions to flashing lights or patterns, consult a doctor before playing video games. Saddle up with a herd of horse-filled games!\nESRB rating\nSupported play modes\nTV\nTabletop\nHandheld\nProduct information\nRelease date\nNo. of players\nGenre\nPublisher\nESRB rating\nSupported play modes\nGame file size\nSupported languages\nPlay online, access classic NES™ and Super NES™ games, and more with a Nintendo Switch Online membership.\n Two Game Boy games are now available for Nintendo Switch Online members\n02/01/23\nNintendo Switch Online member exclusive: Save on two digital games\n09/13/22\nOut of the Shadows … the Legend of Zelda: About Nintendo\nShop\nMy Nintendo Store orders\nSupport\nParents\nCommunity\nPrivacy\n© Nintendo.', metadata={'title': 'The Legend of Zelda™: Breath of the Wild - Nintendo', 'source': 'https://www.nintendo.com/us/store/products/the-legend-of-zelda-breath-of-the-wild-switch/', 'score': 0.97451, 'images': None}),
+ Document(page_content='The Legend of Zelda: Breath of the Wild is a masterpiece of open-world design and exploration, released on March 3, 2017 for Nintendo Switch. Find out the latest news, reviews, guides, videos, and more for this award-winning game on IGN.', metadata={'title': 'The Legend of Zelda: Breath of the Wild - IGN', 'source': 'https://www.ign.com/games/the-legend-of-zelda-breath-of-the-wild', 'score': 0.94496, 'images': None}),
+ Document(page_content='Reviewers also commented on the unexpected permutations of interactions between Link, villagers, pets, and enemies,[129][130][131] many of which were shared widely on social media.[132] A tribute to former Nintendo president Satoru Iwata, who died during development, also attracted praise.[129][134]\nJim Sterling was more critical than most, giving Breath of the Wild a 7/10 score, criticizing the difficulty, weapon durability, and level design, but praising the open world and variety of content.[135] Other criticism focused on the unstable frame rate and the low resolution of 900p;[136] updates addressed some of these problems.[137][138]\nSales\nBreath of the Wild broke sales records for a Nintendo launch game in multiple regions.[139][140] In Japan, the Switch and Wii U versions sold a combined 230,000 copies in the first week of release, with the Switch version becoming the top-selling game released that week.[141] Nintendo reported that Breath of the Wild sold more than one million copies in the US that month—925,000 of which were for Switch, outselling the Switch itself.[145][146][147][148] Nintendo president Tatsumi Kimishima said that the attach rate on the Switch was "unprecedented".[149] Breath of the Wild had sold 31.15 million copies on the Switch by September 2023 and 1.70 million copies on the Wii U by December 2020.[150][151]\nAwards\nFollowing its demonstration at E3 2016, Breath of the Wild received several accolades from the Game Critics Awards[152] and from publications such as IGN and Destructoid.[153][154] It was listed among the best games at E3 by Eurogamer,[81] The game, he continued, would challenge the series\' conventions, such as the requirement that players complete dungeons in a set order.[2][73] The next year, Nintendo introduced the game\'s high-definition, cel-shaded visual style with in-game footage at its E3 press event.[74][75] Once planned for release in 2015, the game was delayed early in the year and did not show at that year\'s E3.[76][77] Zelda series creator Shigeru Miyamoto reaffirmed that the game would still release for the Wii U despite the development of Nintendo\'s next console, the Nintendo Switch.[78] The Switch version also has higher-quality environmental sounds.[53][54] Certain ideas that were planned for the game, like flying and underground dungeons were not implemented due to the Wii U’s limitations; they would eventually resurface in the game\'s sequel.[55] Aonuma stated that the art design was inspired by gouache and en plein air art to help identify the vast world.[56] Takizawa has also cited the Jōmon period as an inspiration for the ancient Sheikah technology and architecture that is found in the game, due to the mystery surrounding the period.[57] Journalists commented on unexpected interactions between game elements,[129][130][131] with serendipitous moments proving popular on social media.[132] Chris Plante of The Verge predicted that whereas prior open-world games tended to feature prescribed challenges, Zelda would influence a new generation of games with open-ended problem-solving.[132] Digital Trends wrote that the game\'s level of experimentation allowed players to interact with and exploit the environment in creative ways, resulting in various "tricks" still discovered years after release.[127]\nReviewers lauded the sense of detail and immersion.[133][129] Kotaku recommended turning off UI elements in praise of the indirect cues that contextually indicate the same information, such as Link shivering in the cold or waypoints appearing when using the scope.[133]', metadata={'title': 'The Legend of Zelda: Breath of the Wild - Wikipedia', 'source': 'https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Breath_of_the_Wild', 'score': 0.93348, 'images': None})]
+```
+
+## श्रृंखला बनाना
+
+हम इस रिट्रीवर को आसानी से एक श्रृंखला में जोड़ सकते हैं।
+
+```python
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_openai import ChatOpenAI
+
+prompt = ChatPromptTemplate.from_template(
+    """Answer the question based only on the context provided.
+
+Context: {context}
+
+Question: {question}"""
+)
+chain = (
+    RunnablePassthrough.assign(context=(lambda x: x["question"]) | retriever)
+    | prompt
+    | ChatOpenAI(model="gpt-4-1106-preview")
+    | StrOutputParser()
+)
+```
+
+```python
+chain.invoke({"question": "how many units did bretch of the wild sell in 2020"})
+```
+
+```output
+'As of the end of 2020, "The Legend of Zelda: Breath of the Wild" sold over 21.45 million copies worldwide.'
+```

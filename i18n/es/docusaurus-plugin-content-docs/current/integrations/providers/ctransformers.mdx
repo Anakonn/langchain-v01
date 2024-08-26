@@ -1,0 +1,62 @@
+---
+translated: true
+---
+
+# Transformadores C
+
+Esta página cubre cómo usar la biblioteca [C Transformers](https://github.com/marella/ctransformers) dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego referencias a envolturas específicas de C Transformers.
+
+## Instalación y configuración
+
+- Instala el paquete de Python con `pip install ctransformers`
+- Descarga un [modelo GGML](https://huggingface.co/TheBloke) compatible (ver [Modelos compatibles](https://github.com/marella/ctransformers#supported-models))
+
+## Envolturas
+
+### LLM
+
+Existe un wrapper LLM de CTransformers, al que se puede acceder con:
+
+```python
+<!--IMPORTS:[{"imported": "CTransformers", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ctransformers.CTransformers.html", "title": "C Transformers"}]-->
+from langchain_community.llms import CTransformers
+```
+
+Proporciona una interfaz unificada para todos los modelos:
+
+```python
+llm = CTransformers(model='/path/to/ggml-gpt-2.bin', model_type='gpt2')
+
+print(llm.invoke('AI is going to'))
+```
+
+Si obtienes el error `illegal instruction`, intenta usar `lib='avx'` o `lib='basic'`:
+
+```py
+llm = CTransformers(model='/path/to/ggml-gpt-2.bin', model_type='gpt2', lib='avx')
+```
+
+Se puede usar con modelos alojados en el Hugging Face Hub:
+
+```py
+llm = CTransformers(model='marella/gpt-2-ggml')
+```
+
+Si un repositorio de modelos tiene varios archivos de modelos (archivos `.bin`), especifica un archivo de modelo usando:
+
+```py
+llm = CTransformers(model='marella/gpt-2-ggml', model_file='ggml-model.bin')
+```
+
+Se pueden pasar parámetros adicionales usando el parámetro `config`:
+
+```py
+config = {'max_new_tokens': 256, 'repetition_penalty': 1.1}
+
+llm = CTransformers(model='marella/gpt-2-ggml', config=config)
+```
+
+Consulta la [Documentación](https://github.com/marella/ctransformers#config) para ver una lista de los parámetros disponibles.
+
+Para una guía más detallada de esto, consulta [este cuaderno](/docs/integrations/llms/ctransformers).

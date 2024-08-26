@@ -1,0 +1,146 @@
+---
+translated: true
+---
+
+# レディス (Redis)
+
+>[Redis (Remote Dictionary Server)](https://en.wikipedia.org/wiki/Redis) はオープンソースのインメモリストレージで、
+> 分散インメモリのキー・バリュー型データベース、キャッシュ、メッセージブローカーとして使用され、オプションで永続性を持ちます。
+> 全てのデータをメモリに保持し、その設計により、`Redis` は低レイテンシの読み書きを提供し、
+> キャッシュが必要なユースケースに特に適しています。Redisは最も人気のあるNoSQLデータベースであり、
+> 全体的に見ても最も人気のあるデータベースの一つです。
+
+このページでは、LangChain内で[Redis](https://redis.com)エコシステムを使用する方法を説明します。
+インストールとセットアップ、そして特定のRedisラッパーへの参照の二部に分かれています。
+
+## インストールとセットアップ
+
+Python SDKをインストールします:
+
+```bash
+pip install redis
+```
+
+Redisをローカルで実行するには、Dockerを使用できます:
+
+```bash
+docker run --name langchain-redis -d -p 6379:6379 redis redis-server --save 60 1 --loglevel warning
+```
+
+コンテナを停止するには:
+
+```bash
+docker stop langchain-redis
+```
+
+再度開始するには:
+
+```bash
+docker start langchain-redis
+```
+
+### 接続
+
+データベースに接続するためには、スタンドアロンのRedisサーバーまたはレプリケーションとRedisセンチネルを備えた高可用性セットアップをサポートするredis url接続文字列が必要です。
+
+#### Redis スタンドアロン接続URL
+
+スタンドアロンの`Redis`サーバーの場合、Pythonのredisモジュールの"from_url()"メソッド[Redis.from_url](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)で説明されている公式のredis接続URL形式を使用できます。
+
+例: `redis_url = "redis://:secret-pass@localhost:6379/0"`
+
+#### Redis Sentinel接続URL
+
+[Redis sentinel setups](https://redis.io/docs/management/sentinel/)の場合、接続スキームは"redis+sentinel"です。
+これはSentinels用の接続URLが利用できない限り、公式IANA登録プロトコルスキームへの非公式な拡張です。
+
+例: `redis_url = "redis+sentinel://:secret-pass@sentinel-host:26379/mymaster/0"`
+
+形式は `redis+sentinel://[[username]:[password]]@[host-or-ip]:[port]/[service-name]/[db-number]`
+で、明示的に設定されていない場合、デフォルト値は"service-name = mymaster"および"db-number = 0"です。
+service-nameはSentinel内で設定されたredisサーバーの監視グループ名です。
+
+現在のURL形式では、接続文字列は一つのsentinelホストにのみ制限されており（リストを指定することはできません）、Redisサーバーとsentinelの両方が同じパスワードを設定している必要があります（使用する場合）。
+
+#### Redis クラスタ接続URL
+
+Redisクラスタは、"redis_url"パラメータを必要とするすべてのメソッドで現在サポートされていません。
+Redisクラスタを使用する唯一の方法は、`RedisCache`（下記の例）などの事前に設定されたRedisクライアントを受け入れるLangChainクラスを使用することです。
+
+## キャッシュ
+
+キャッシュラッパーを使用すると、[Redis](https://redis.io)をLLMプロンプトと応答のためのリモート低レイテンシのインメモリキャッシュとして使用できます。
+
+### 標準キャッシュ
+
+標準キャッシュは、グローバルで[オープンソース](https://redis.io)および[エンタープライズ](https://redis.com)ユーザーの両方の生産用ユースケースのRedisの基本です。
+
+```python
+<!--IMPORTS:[{"imported": "RedisCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisCache
+```
+
+このキャッシュをLLMで使用するには:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+redis_client = redis.Redis.from_url(...)
+set_llm_cache(RedisCache(redis_client))
+```
+
+### セマンティックキャッシュ
+
+セマンティックキャッシュを使用すると、ユーザーはユーザー入力と以前にキャッシュされた結果のセマンティックな類似性に基づいてキャッシュされたプロンプトを取得できます。内部的には、Redisをキャッシュとベクターストアの両方として使用します。
+
+```python
+<!--IMPORTS:[{"imported": "RedisSemanticCache", "source": "langchain.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.RedisSemanticCache.html", "title": "Redis"}]-->
+from langchain.cache import RedisSemanticCache
+```
+
+このキャッシュをLLMで使用するには:
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Redis"}]-->
+from langchain.globals import set_llm_cache
+import redis
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+redis_url = "redis://localhost:6379"
+
+set_llm_cache(RedisSemanticCache(
+    embedding=FakeEmbeddings(),
+    redis_url=redis_url
+))
+```
+
+## ベクターストア
+
+ベクターストアラッパーは、Redisをセマンティック検索やLLMコンテンツ取得のための低レイテンシ[ベクターデータベース](https://redis.com/solutions/use-cases/vector-database/)に変えます。
+
+```python
+<!--IMPORTS:[{"imported": "Redis", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.redis.base.Redis.html", "title": "Redis"}]-->
+from langchain_community.vectorstores import Redis
+```
+
+Redisベクターストアラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/redis)を参照してください。
+
+## レトリーバー
+
+Redisベクターストアレトリーバーラッパーは、ベクターストアクラスを一般化して低レイテンシのドキュメント取得を行います。レトリーバーを作成するには、単にベースベクターストアクラスで`.as_retriever()`を呼び出します。
+
+## メモリ
+
+RedisはLLM会話を永続化するために使用できます。
+
+### ベクターストアレトリーバーメモリ
+
+`VectorStoreRetrieverMemory`ラッパーの詳細なウォークスルーについては、[このノートブック](/docs/modules/memory/types/vectorstore_retriever_memory)を参照してください。
+
+### チャットメッセージ履歴メモリ
+
+会話メッセージ履歴をキャッシュするためのRedisの詳細な例については、[このノートブック](/docs/integrations/memory/redis_chat_message_history)を参照してください。

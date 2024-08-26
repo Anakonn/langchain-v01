@@ -1,0 +1,70 @@
+---
+translated: true
+---
+
+यह पृष्ठ MyScale वेक्टर डेटाबेस का LangChain में उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट MyScale रैपरों के संदर्भ।
+
+MyScale के साथ, आप संरचित और अरचित (वेक्टराइज्ड) दोनों प्रकार के डेटा का प्रबंधन कर सकते हैं, और SQL का उपयोग करके दोनों प्रकार के डेटा पर संयुक्त क्वेरी और विश्लेषण कर सकते हैं। इसके अलावा, MyScale का क्लाउड-नेटिव OLAP वास्तुकला, जो ClickHouse पर निर्मित है, विशाल डेटासेट पर भी तेज़ी से डेटा प्रसंस्करण सक्षम करता है।
+
+## परिचय
+
+[MyScale और उच्च प्रदर्शन वेक्टर खोज का अवलोकन](https://docs.myscale.com/en/overview/)
+
+अब आप हमारे SaaS पर पंजीकरण कर सकते हैं और [अब क्लस्टर शुरू कर सकते हैं!](https://docs.myscale.com/en/quickstart/)
+
+यदि आप यह भी जानना चाहते हैं कि हमने SQL और वेक्टर को कैसे एकीकृत किया, तो कृपया [इस दस्तावेज़](https://docs.myscale.com/en/vector-reference/) में अधिक वाक्य संदर्भ के लिए देखें।
+
+हम हग्गिंगफेस पर भी लाइव डेमो के साथ आते हैं! कृपया हमारे [हग्गिंगफेस स्पेस](https://huggingface.co/myscale) की जांच करें! वे एक झलक में लाखों वेक्टर खोजते हैं!
+
+## स्थापना और सेटअप
+
+- `pip install clickhouse-connect` के साथ Python SDK स्थापित करें
+
+### वातावरण सेट करना
+
+myscale इंडेक्स के लिए पैरामीटर सेट करने के दो तरीके हैं।
+
+1. पर्यावरण चर
+
+    ऐप चलाने से पहले, कृपया `export` के साथ पर्यावरण चर सेट करें:
+    `export MYSCALE_HOST='<your-endpoints-url>' MYSCALE_PORT=<your-endpoints-port> MYSCALE_USERNAME=<your-username> MYSCALE_PASSWORD=<your-password> ...`
+
+    आप आसानी से अपने खाते, पासवर्ड और अन्य जानकारी हमारे SaaS पर पा सकते हैं। विवरण के लिए कृपया [इस दस्तावेज़](https://docs.myscale.com/en/cluster-management/) देखें।
+    `MyScaleSettings` के तहत प्रत्येक गुण `MYSCALE_` उपसर्ग के साथ सेट किया जा सकता है और यह केस-इन्सेंसिटिव है।
+
+2. `MyScaleSettings` ऑब्जेक्ट बनाएं पैरामीटर के साथ
+
+    ```python
+    from langchain_community.vectorstores import MyScale, MyScaleSettings
+    config = MyScaleSetting(host="<your-backend-url>", port=8443, ...)
+    index = MyScale(embedding_function, config)
+    index.add_documents(...)
+    ```
+
+## रैपर
+
+समर्थित कार्य:
+- `add_texts`
+- `add_documents`
+- `from_texts`
+- `from_documents`
+- `similarity_search`
+- `asimilarity_search`
+- `similarity_search_by_vector`
+- `asimilarity_search_by_vector`
+- `similarity_search_with_relevance_scores`
+- `delete`
+
+### वेक्टर स्टोर
+
+MyScale डेटाबेस के इर्द-गिर्द एक रैपर मौजूद है, जो आपको इसका उपयोग वेक्टर स्टोर के रूप में करने की अनुमति देता है, चाहे वह语义搜索हो या समान उदाहरण पुनर्प्राप्ति।
+
+इस वेक्टर स्टोर को आयात करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "MyScale", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.myscale.MyScale.html", "title": "MyScale"}]-->
+from langchain_community.vectorstores import MyScale
+```
+
+MyScale रैपर के बारे में अधिक विस्तृत वॉकथ्रू के लिए, [इस नोटबुक](/docs/integrations/vectorstores/myscale) देखें

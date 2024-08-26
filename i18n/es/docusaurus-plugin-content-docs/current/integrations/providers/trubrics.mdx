@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# Trubrics
+
+>[Trubrics](https://trubrics.com) es una plataforma de análisis de usuarios de LLM que le permite recopilar, analizar y administrar los
+indicaciones y comentarios de los usuarios sobre los modelos de IA.
+>
+>Consulte el [repositorio de Trubrics](https://github.com/trubrics/trubrics-sdk) para obtener más información sobre `Trubrics`.
+
+## Instalación y configuración
+
+Necesitamos instalar el paquete de Python `trubrics`:
+
+```bash
+pip install trubrics
+```
+
+## Callbacks
+
+Consulte un [ejemplo de uso](/docs/integrations/callbacks/trubrics).
+
+```python
+<!--IMPORTS:[{"imported": "TrubricsCallbackHandler", "source": "langchain.callbacks", "docs": "https://api.python.langchain.com/en/latest/callbacks/langchain_community.callbacks.trubrics_callback.TrubricsCallbackHandler.html", "title": "Trubrics"}]-->
+from langchain.callbacks import TrubricsCallbackHandler
+```

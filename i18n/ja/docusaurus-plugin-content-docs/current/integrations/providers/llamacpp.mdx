@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Llama.cpp
+
+このページでは、LangChain内で[llama.cpp](https://github.com/ggerganov/llama.cpp)を使用する方法について説明します。
+これは、インストールと設定、そして特定のLlama-cppラッパーへの参照の2つの部分に分かれています。
+
+## インストールと設定
+
+- `pip install llama-cpp-python`でPythonパッケージをインストールします
+- [サポートされているモデル](https://github.com/ggerganov/llama.cpp#description)の1つをダウンロードし、[instructions](https://github.com/ggerganov/llama.cpp)に従ってllama.cppフォーマットに変換します
+
+## ラッパー
+
+### LLM
+
+LlamaCpp LLMラッパーが存在し、これにアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCpp", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.llamacpp.LlamaCpp.html", "title": "Llama.cpp"}]-->
+from langchain_community.llms import LlamaCpp
+```
+
+この詳細なウォークスルーについては、[このノートブック](/docs/integrations/llms/llamacpp)を参照してください
+
+### Embeddings
+
+LlamaCpp Embeddingsラッパーが存在し、これにアクセスできます。
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCppEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.llamacpp.LlamaCppEmbeddings.html", "title": "Llama.cpp"}]-->
+from langchain_community.embeddings import LlamaCppEmbeddings
+```
+
+この詳細なウォークスルーについては、[このノートブック](/docs/integrations/text_embedding/llamacpp)を参照してください

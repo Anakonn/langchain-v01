@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# डिफ़बॉट
+
+>[डिफ़बॉट](https://docs.diffbot.com/docs) वेब पृष्ठों को पढ़ने की एक सेवा है। परंपरागत वेब स्क्रैपिंग उपकरणों से अलग,
+> `डिफ़बॉट` किसी भी नियमों की आवश्यकता नहीं है कि एक पृष्ठ पर सामग्री को पढ़ें।
+>यह कंप्यूटर दृश्य से शुरू होता है, जो एक पृष्ठ को 20 संभावित प्रकारों में से एक में वर्गीकृत करता है। सामग्री को फिर एक मशीन लर्निंग मॉडल द्वारा व्याख्या किया जाता है जो एक पृष्ठ के प्रकार के आधार पर प्रमुख विशेषताओं को पहचानने के लिए प्रशिक्षित है।
+>परिणाम एक वेबसाइट है जो साफ-संरचित डेटा (जैसे JSON या CSV) में बदल गई है, आपके अनुप्रयोग के लिए तैयार।
+
+## स्थापना और सेटअप
+
+[निर्देश](https://docs.diffbot.com/reference/authentication) पढ़ें कि Diffbot API टोकन कैसे प्राप्त करें।
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/diffbot) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "DiffbotLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.diffbot.DiffbotLoader.html", "title": "Diffbot"}]-->
+from langchain_community.document_loaders import DiffbotLoader
+```

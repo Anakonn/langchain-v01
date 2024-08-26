@@ -1,0 +1,42 @@
+---
+translated: true
+---
+
+# 黄金
+
+>[黄金](https://golden.com)は、Golden Knowledge Graphを使用してクエリと強化を行うための一連の自然言語APIを提供しています。例えば、`OpenAIからの製品`、`シリーズAファンディングを受けた生成的AIカンパニー`、`投資するラッパー`などのクエリを使用して、関連するエンティティに関する構造化データを取得できます。
+
+>`golden-query` langchainツールは、[Golden Query API](https://docs.golden.com/reference/query-api)の上に構築されたラッパーで、これらの結果にプログラムでアクセスできます。
+>[Golden Query APIドキュメント](https://docs.golden.com/reference/query-api)で詳細を確認してください。
+
+## インストールとセットアップ
+
+- [Golden APIドキュメント](https://docs.golden.com/)に行って、Golden APIの概要を確認してください。
+- [Golden API設定](https://golden.com/settings/api)ページからAPIキーを取得してください。
+- APIキーをGOLDEN_API_KEY環境変数に保存してください。
+
+## ラッパー
+
+### ユーティリティ
+
+GoldenQueryAPIWrapperユーティリティが存在し、このAPIをラップしています。このユーティリティをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "GoldenQueryAPIWrapper", "source": "langchain_community.utilities.golden_query", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.golden_query.GoldenQueryAPIWrapper.html", "title": "Golden"}]-->
+from langchain_community.utilities.golden_query import GoldenQueryAPIWrapper
+```
+
+このラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/tools/golden_query)を参照してください。
+
+### ツール
+
+このラッパーをツールとしても簡単にロードできます(Agentで使用するため)。
+次のように行うことができます:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Golden"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["golden-query"])
+```
+
+ツールの詳細については、[このページ](/docs/modules/tools/)を参照してください。

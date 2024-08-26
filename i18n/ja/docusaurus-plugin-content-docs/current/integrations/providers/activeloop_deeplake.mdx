@@ -1,0 +1,40 @@
+---
+translated: true
+---
+
+# Activeloop Deep Lake
+
+>[Activeloop Deep Lake](https://docs.activeloop.ai/)は、ベクトルストアとしての使用を可能にするDeep Learningアプリケーション用のデータレイクです。
+
+## なぜDeep Lakeなのか?
+
+- (マルチモーダルな)ベクトルストアだけではありません。独自のLLMモデルのファインチューニングにデータセットを使用できます。
+- エンベディングだけでなく、自動バージョン管理付きの元のデータも保存できます。
+- 本当にサーバーレス。別のサービスを必要とせず、主要なクラウドプロバイダー(`AWS S3`、`GCS`など)で使用できます。
+
+`Activeloop Deep Lake`は`SelfQuery Retrieval`をサポートしています:
+[Activeloop Deep Lake Self Query Retrieval](/docs/integrations/retrievers/self_query/activeloop_deeplake_self_query)
+
+## その他のリソース
+
+1. [Ultimate Guide to LangChain & Deep Lake: Build ChatGPT to Answer Questions on Your Financial Data](https://www.activeloop.ai/resources/ultimate-guide-to-lang-chain-deep-lake-build-chat-gpt-to-answer-questions-on-your-financial-data/)
+2. [Twitter the-algorithm codebase analysis with Deep Lake](https://github.com/langchain-ai/langchain/blob/master/cookbook/twitter-the-algorithm-analysis-deeplake.ipynb)
+3. こちらが[ホワイトペーパー](https://www.deeplake.ai/whitepaper)と[学術論文](https://arxiv.org/pdf/2209.10785.pdf)です
+4. [Deep Lake](https://github.com/activeloopai/deeplake)、[Get started](https://docs.activeloop.ai/getting-started)、[Tutorials](https://docs.activeloop.ai/hub-tutorials)にも追加のリソースがあります
+
+## インストールとセットアップ
+
+Pythonパッケージをインストールします:
+
+```bash
+pip install deeplake
+```
+
+## VectorStore
+
+```python
+<!--IMPORTS:[{"imported": "DeepLake", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.deeplake.DeepLake.html", "title": "Activeloop Deep Lake"}]-->
+from langchain_community.vectorstores import DeepLake
+```
+
+[使用例](/docs/integrations/vectorstores/activeloop_deeplake)をご覧ください。

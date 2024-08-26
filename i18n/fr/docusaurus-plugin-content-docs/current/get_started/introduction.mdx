@@ -1,0 +1,110 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 0
+translated: true
+---
+
+# Introduction
+
+**LangChain** est un cadre de développement d'applications alimentées par des modèles de langage de grande taille (LLM).
+
+LangChain simplifie chaque étape du cycle de vie des applications LLM :
+- **Développement** : Construisez vos applications à l'aide des [blocs de construction](/docs/expression_language/) et des [composants](/docs/modules/) open-source de LangChain. Démarrez rapidement à l'aide des [intégrations tierces](/docs/integrations/platforms/) et des [modèles](/docs/templates).
+- **Mise en production** : Utilisez [LangSmith](/docs/langsmith/) pour inspecter, surveiller et évaluer vos chaînes, afin de pouvoir les optimiser et les déployer en toute confiance.
+- **Déploiement** : Transformez n'importe quelle chaîne en une API avec [LangServe](/docs/langserve).
+
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+<ThemedImage
+  alt="Diagram outlining the hierarchical organization of the LangChain framework, displaying the interconnected parts across multiple layers."
+  sources={{
+    light: useBaseUrl('/svg/langchain_stack.svg'),
+    dark: useBaseUrl('/svg/langchain_stack_dark.svg'),
+  }}
+  title="Aperçu du cadre LangChain"
+/>
+
+Concrètement, le cadre se compose des bibliothèques open-source suivantes :
+
+- **`langchain-core`** : Abstractions de base et langage d'expression LangChain.
+- **`langchain-community`** : Intégrations tierces.
+  - Packages partenaires (par exemple **`langchain-openai`**, **`langchain-anthropic`**, etc.) : Certaines intégrations ont été davantage divisées en leurs propres packages légers qui ne dépendent que de **`langchain-core`**.
+- **`langchain`** : Chaînes, agents et stratégies de récupération qui constituent l'architecture cognitive d'une application.
+- **[langgraph](/docs/langgraph)** : Construisez des applications multi-acteurs robustes et avec état avec des LLM en modélisant les étapes sous forme de nœuds et d'arêtes dans un graphe.
+- **[langserve](/docs/langserve)** : Déployez les chaînes LangChain sous forme d'API REST.
+
+L'écosystème plus large comprend :
+
+- **[LangSmith](/docs/langsmith)** : Une plateforme de développement qui vous permet de déboguer, tester, évaluer et surveiller les applications LLM et s'intègre de manière transparente à LangChain.
+
+## Démarrer
+
+Nous vous recommandons de suivre notre [guide de démarrage rapide](/docs/get_started/quickstart) pour vous familiariser avec le cadre en construisant votre première application LangChain.
+
+[Cliquez ici](/docs/get_started/installation) pour obtenir des instructions sur l'installation de LangChain, la configuration de votre environnement et le début de la construction.
+
+:::note
+
+Ces documents se concentrent sur la bibliothèque LangChain Python. [Rendez-vous ici](https://js.langchain.com) pour la documentation de la bibliothèque LangChain JavaScript.
+
+:::
+
+## Cas d'utilisation
+
+Si vous cherchez à construire quelque chose de spécifique ou si vous êtes plus un apprenant pratique, consultez nos [cas d'utilisation](/docs/use_cases).
+Ce sont des guides pratiques et des techniques pour des tâches de bout en bout courantes, telles que :
+
+- [Répondre aux questions avec RAG](/docs/use_cases/question_answering/)
+- [Extraction de sortie structurée](/docs/use_cases/extraction/)
+- [Chatbots](/docs/use_cases/chatbots/)
+- et plus encore !
+
+## Langage d'expression
+
+Le langage d'expression LangChain (LCEL) est le fondement de nombreux composants de LangChain et est un moyen déclaratif de composer des chaînes. LCEL a été conçu dès le départ pour permettre de mettre des prototypes en production, sans aucun changement de code, de la chaîne "prompt + LLM" la plus simple aux chaînes les plus complexes.
+
+- **[Démarrer](/docs/expression_language/)** : LCEL et ses avantages
+- **[Interface exécutable](/docs/expression_language/interface)** : L'interface standard pour les objets LCEL
+- **[Primitives](/docs/expression_language/primitives)** : En savoir plus sur les primitives incluses dans LCEL
+- et plus encore !
+
+## Écosystème
+
+### [🦜🛠️ LangSmith](/docs/langsmith)
+
+Tracez et évaluez vos applications de modèles de langage et vos agents intelligents pour vous aider à passer du prototype à la production.
+
+### [🦜🕸️ LangGraph](/docs/langgraph)
+
+Construisez des applications multi-acteurs avec état avec des LLM, basées sur (et destinées à être utilisées avec) les primitives LangChain.
+
+### [🦜🏓 LangServe](/docs/langserve)
+
+Déployez les runnables et les chaînes LangChain sous forme d'API REST.
+
+## [Sécurité](/docs/security)
+
+Lisez nos meilleures pratiques en matière de [sécurité](/docs/security) pour vous assurer que vous développez en toute sécurité avec LangChain.
+
+## Ressources supplémentaires
+
+### [Composants](/docs/modules/)
+
+LangChain fournit des interfaces standard et extensibles et des intégrations pour de nombreux composants différents, notamment :
+
+### [Intégrations](/docs/integrations/providers/)
+
+LangChain fait partie d'un riche écosystème d'outils qui s'intègrent à notre cadre et s'appuient dessus. Consultez notre liste croissante d'[intégrations](/docs/integrations/providers/).
+
+### [Guides](/docs/guides/)
+
+Meilleures pratiques pour le développement avec LangChain.
+
+### [Référence de l'API](https://api.python.langchain.com)
+
+Rendez-vous dans la section de référence pour la documentation complète de toutes les classes et méthodes des packages Python LangChain et LangChain Experimental.
+
+### [Contribution](/docs/contributing)
+
+Consultez le guide du développeur pour obtenir des directives sur la contribution et de l'aide pour configurer votre environnement de développement.

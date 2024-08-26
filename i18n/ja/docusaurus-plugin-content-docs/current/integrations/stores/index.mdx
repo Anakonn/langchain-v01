@@ -1,0 +1,25 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# ストア
+
+多くの異なるアプリケーションで、何らかの形のキーバリューストレージが役立ちます。
+このセクションでは、`ByteStore`インターフェースの実装を使って、いくつかの異なる方法でキーバリューペアを保存する方法を見ていきます。
+
+## 機能(ネイティブでサポートされている)
+
+すべての`ByteStore`は、**複数の**キーバリューペアを一度に変更するために使用される以下の関数をサポートしています:
+
+- `mget(key: Sequence[str]) -> List[Optional[bytes]]`: 複数のキーの内容を取得し、キーが存在しない場合は`None`を返す
+- `mset(key_value_pairs: Sequence[Tuple[str, bytes]]) -> None`: 複数のキーの内容を設定する
+- `mdelete(key: Sequence[str]) -> None`: 複数のキーを削除する
+- `yield_keys(prefix: Optional[str] = None) -> Iterator[str]`: ストア内のすべてのキーを返す(オプションでプレフィックスでフィルタリングできる)
+
+## どれを選ぶべきか
+
+`ByteStore`は互換性を持つように設計されています。デフォルトでは、ほとんどの依存関係のあるインテグレーションは`InMemoryByteStore`を使用しています。これは単純なメモリ内キーバリューストアです。
+
+ただし、大規模なスケーラビリティや永続性などの他の要件が必要になった場合は、このセクションで文書化されている他の`ByteStore`実装に切り替えることができます。

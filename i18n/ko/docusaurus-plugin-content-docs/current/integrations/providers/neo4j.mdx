@@ -1,0 +1,64 @@
+---
+translated: true
+---
+
+# Neo4j
+
+>What is `Neo4j`?
+
+>- Neo4j는 그래프 데이터베이스 기술을 전문으로 하는 `오픈 소스 데이터베이스 관리 시스템`입니다.
+>- Neo4j를 사용하면 노드와 엣지를 사용하여 데이터를 표현하고 저장할 수 있어, 연결된 데이터와 관계를 처리하는 데 적합합니다.
+>- Neo4j는 `Cypher 쿼리 언어`를 제공하여 그래프 데이터와 상호 작용하고 쿼리하기 쉽습니다.
+>- Neo4j를 사용하면 생산 수준 시스템에 적합한 `고성능 그래프 탐색 및 쿼리`를 달성할 수 있습니다.
+
+>Neo4j 시작하기: [공식 웹사이트](https://neo4j.com/)를 방문하세요.
+
+## 설치 및 설정
+
+- `pip install neo4j`로 Python SDK를 설치하세요.
+
+## VectorStore
+
+Neo4j 벡터 인덱스는 의미 검색 또는 예제 선택을 위한 벡터 저장소로 사용됩니다.
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jVector", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.neo4j_vector.Neo4jVector.html", "title": "Neo4j"}]-->
+from langchain_community.vectorstores import Neo4jVector
+```
+
+[사용 예제](/docs/integrations/vectorstores/neo4jvector)를 참고하세요.
+
+## GraphCypherQAChain
+
+Neo4j 그래프 데이터베이스를 래핑하는 도구가 있어, 사용자 입력을 기반으로 Cypher 문을 생성하고 데이터베이스에서 관련 정보를 검색할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html", "title": "Neo4j"}, {"imported": "GraphCypherQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.cypher.GraphCypherQAChain.html", "title": "Neo4j"}]-->
+from langchain_community.graphs import Neo4jGraph
+from langchain.chains import GraphCypherQAChain
+```
+
+[사용 예제](/docs/integrations/graphs/neo4j_cypher)를 참고하세요.
+
+## 텍스트에서 지식 그래프 구축하기
+
+텍스트 데이터에는 다양한 관계와 통찰력이 포함되어 있어, 분석, 추천 엔진 또는 지식 관리 애플리케이션에 유용할 수 있습니다.
+Diffbot의 NLP API를 사용하면 비정형 텍스트 데이터에서 엔티티, 관계 및 의미를 추출할 수 있습니다.
+Diffbot의 NLP API와 Neo4j 그래프 데이터베이스를 결합하면 텍스트에서 추출된 정보를 기반으로 강력하고 동적인 그래프 구조를 만들 수 있습니다.
+이러한 그래프 구조는 완전히 쿼리 가능하며 다양한 애플리케이션에 통합될 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html", "title": "Neo4j"}, {"imported": "DiffbotGraphTransformer", "source": "langchain_experimental.graph_transformers.diffbot", "docs": "https://api.python.langchain.com/en/latest/graph_transformers/langchain_experimental.graph_transformers.diffbot.DiffbotGraphTransformer.html", "title": "Neo4j"}]-->
+from langchain_community.graphs import Neo4jGraph
+from langchain_experimental.graph_transformers.diffbot import DiffbotGraphTransformer
+```
+
+[사용 예제](/docs/integrations/graphs/diffbot)를 참고하세요.
+
+## Memory
+
+[사용 예제](/docs/integrations/memory/neo4j_chat_message_history)를 참고하세요.
+
+```python
+from langchain.memory import Neo4jChatMessageHistory
+```

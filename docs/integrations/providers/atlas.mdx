@@ -1,0 +1,23 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/integrations/providers/atlas
+translated: false
+---
+
+# Atlas
+
+>[Nomic Atlas](https://docs.nomic.ai/index.html) is a platform for interacting with both
+> small and internet scale unstructured datasets.
+
+## Installation and Setup
+
+- Install the Python package with `pip install nomic`
+- `Nomic` is also included in langchains poetry extras `poetry install -E all`
+
+## VectorStore
+
+See a [usage example](/docs/integrations/vectorstores/atlas).
+
+```python
+<!--IMPORTS:[{"imported": "AtlasDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.atlas.AtlasDB.html", "title": "Atlas"}]-->
+from langchain_community.vectorstores import AtlasDB
+```

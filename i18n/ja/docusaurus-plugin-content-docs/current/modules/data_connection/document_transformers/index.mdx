@@ -1,0 +1,56 @@
+---
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# テキストスプリッター
+
+ドキュメントをロードした後、アプリケーションに合わせてそれらを変換することが多くあります。最も単純な例は、長いドキュメントを小さな塊に分割して、モデルのコンテキストウィンドウに収まるようにすることです。LangChainには、ドキュメントを分割、結合、フィルタリング、その他の操作を簡単に行うための組み込みのドキュメント変換機能があります。
+
+長文のテキストを扱う場合は、そのテキストを塊に分割する必要があります。
+これは簡単に聞こえますが、ここには多くの複雑さが潜んでいます。理想的には、意味的に関連する部分をまとめて保ちたいです。「意味的に関連する」とは、テキストの種類によって異なる可能性があります。
+このノートブックでは、それを行う方法をいくつか紹介します。
+
+高レベルでは、テキストスプリッターは以下のように動作します:
+
+1. テキストを小さな意味的に意味のある塊(多くの場合は文)に分割する。
+2. これらの小さな塊を徐々に大きな塊に結合していき、ある一定のサイズ(ある関数で測定した)に達したら、その塊を1つのテキストとして扱う。そして新しい塊の作成を開始する(塊間のコンテキストを維持するために重複を持つ)。
+
+つまり、テキストスプリッターをカスタマイズできる2つの軸があります:
+
+1. テキストの分割方法
+2. チャンクサイズの測定方法
+
+## テキストスプリッターの種類
+
+LangChainには多くの種類の`text splitters`が用意されています。
+これらはすべて`langchain-text-splitters`パッケージに含まれています。
+
+テーブルの列:
+
+- **Name**: テキストスプリッターの名称
+- **Classes**: このテキストスプリッターを実装するクラス
+- **Splits On**: このテキストスプリッターがテキストをどのように分割するか
+- **Adds Metadata**: このテキストスプリッターがメタデータを追加するかどうか
+- **Description**: スプリッターの説明、いつ使うべきかの推奨
+
+| Name     | Classes                                                                                                                                                                                                             | Splits On                                                   | Adds Metadata | Description                                                                                                                                                                                                                                                                  |
+|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Recursive | [RecursiveCharacterTextSplitter](/docs/modules/data_connection/document_transformers/recursive_text_splitter), [RecursiveJsonSplitter](/docs/modules/data_connection/document_transformers/recursive_json_splitter) | ユーザー定義の文字のリスト     |               | 再帰的にテキストを分割します。この分割は、関連する部分を隣接させようとしています。これは、テキストを分割する`推奨される方法`です。                                                                                                                    |
+| HTML      | [HTMLHeaderTextSplitter](/docs/modules/data_connection/document_transformers/HTML_header_metadata), [HTMLSectionSplitter](/docs/modules/data_connection/document_transformers/HTML_section_aware_splitter)          | HTML固有の文字                                                                                                 | ✅             | HTMLの特殊な文字に基づいてテキストを分割します。特に、その塊がどこから来たかに関する関連情報(HTMLに基づいて)を追加します                                                                                                                               |
+| Markdown  | [MarkdownHeaderTextSplitter](/docs/modules/data_connection/document_transformers/markdown_header_metadata)                                                                                                          | Markdown固有の文字                                                                                    | ✅             | Markdownの特殊な文字に基づいてテキストを分割します。特に、その塊がどこから来たかに関する関連情報(Markdownに基づいて)を追加します                                                                                                                       |
+| Code      | [多数の言語](/docs/modules/data_connection/document_transformers/code_splitter)                                                                                                                                 | コード(Python、JS)固有の文字                                                                           |               | コーディング言語の特殊な文字に基づいてテキストを分割します。15の異なる言語から選択できます。                                                                                                                                                           |
+| Token    | [多数のクラス](/docs/modules/data_connection/document_transformers/split_by_token)                                                                                                                                  | トークン                                                                                                          |               | トークンに基づいてテキストを分割します。トークンを測定する方法がいくつか存在します。                                                                                                                                                                                                   |
+| Character  | [CharacterTextSplitter](/docs/modules/data_connection/document_transformers/character_text_splitter)                                                                                                                | ユーザー定義の文字                                                                                        |               | ユーザー定義の文字に基づいてテキストを分割します。最も単純な方法の1つです。                                                                                                                                                                                                   |
+| [Experimental] Semantic Chunker | [SemanticChunker](/docs/modules/data_connection/document_transformers/semantic-chunker)                                                                                                                             | 文                                                                                                       |               | まず文に基づいて分割し、次に隣接する文が十分に意味的に類似している場合に結合します。[Greg Kamradt](https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb)から提案されたものです |
+| AI21 Semantic Text Splitter | [AI21SemanticTextSplitter](/docs/integrations/document_transformers/ai21_semantic_text_splitter)                                                                                                                    |    ✅           | 一貫したトピックを形成する明確な部分に分割します。                                                                                                                                                                                         |
+
+## テキストスプリッターの評価
+
+[Chunkviz ユーティリティ](https://www.chunkviz.com/)を使ってテキストスプリッターを評価できます。これは`Greg Kamradt`が作成したツールです。
+`Chunkviz`は、テキストスプリッターの動作を視覚化するのに最適なツールです。テキストがどのように分割されているかを示し、分割パラメーターの調整に役立ちます。
+
+## その他のドキュメント変換
+
+テキスト分割は、LLMに渡す前にドキュメントに行う変換の1つの例にすぎません。[Integrations](/docs/integrations/document_transformers/)のドキュメントで、3rd-partyツールとの組み込みドキュメント変換機能について確認できます。

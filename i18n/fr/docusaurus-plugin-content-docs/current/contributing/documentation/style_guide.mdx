@@ -1,0 +1,137 @@
+---
+sidebar_label: Guide de style
+translated: true
+---
+
+# Guide de style de la documentation LangChain
+
+## Introduction
+
+Alors que LangChain continue de se développer, la surface de documentation requise pour le couvrir continue également de croître.
+Cette page fournit des lignes directrices pour toute personne rédigeant de la documentation pour LangChain, ainsi que certaines de nos philosophies concernant
+l'organisation et la structure.
+
+## Philosophie
+
+La documentation de LangChain aspire à suivre le cadre [Diataxis](https://diataxis.fr).
+Dans ce cadre, toute la documentation relève de l'une des quatre catégories suivantes :
+
+- **Tutoriels** : Leçons qui guident le lecteur étape par étape à travers une série d'étapes conceptuelles pour réaliser un projet.
+  - Un exemple de cela est notre [guide de streaming LCEL](/docs/expression_language/streaming).
+  - Nos guides sur les [composants personnalisés](/docs/modules/model_io/chat/custom_chat_model) en sont un autre.
+- **Guides pratiques** : Guides qui guident le lecteur à travers les étapes nécessaires pour résoudre un problème du monde réel.
+  - Les exemples les plus clairs de cela sont nos pages de démarrage rapide [Cas d'utilisation](/docs/use_cases/).
+- **Référence** : Descriptions techniques de la machinerie et de la façon de l'utiliser.
+  - Notre page sur l'[interface Runnable](/docs/expression_language/interface) en est un exemple.
+  - Les [pages de référence de l'API](https://api.python.langchain.com/) en sont un autre.
+- **Explication** : Explications qui clarifient et éclairent un sujet particulier.
+  - Les pages [Primitives LCEL](/docs/expression_language/primitives/sequence) en sont un exemple.
+
+Chaque catégorie sert un objectif distinct et nécessite une approche spécifique pour la rédaction et la structuration du contenu.
+
+## Taxonomie
+
+Gardant à l'esprit ce qui précède, nous avons classé la documentation de LangChain en catégories. Il est utile de penser dans ces termes
+lors de la contribution de nouvelle documentation :
+
+### Démarrage
+
+La section [démarrage](/docs/get_started/introduction) inclut une introduction générale à LangChain, un démarrage rapide qui
+présente les différentes fonctionnalités de LangChain, et des instructions logistiques sur l'installation et la configuration du projet.
+
+Il contient des éléments de **Guides pratiques** et d'**Explications**.
+
+### Cas d'utilisation
+
+Les [cas d'utilisation](/docs/use_cases/) sont des guides destinés à montrer comment utiliser LangChain pour accomplir une tâche spécifique (RAG, extraction d'informations, etc.).
+Les démarrages rapides devraient être de bons points d'entrée pour les développeurs LangChain débutants qui préfèrent apprendre en prototypant quelque chose de pratique,
+puis en démontant les pièces rétrospectivement. Ceux-ci devraient refléter les points forts de LangChain.
+
+Les pages de démarrage rapide ici devraient correspondre à la catégorie **Guides pratiques**, les autres pages étant destinées à être des **Explications** de concepts et de stratégies plus
+approfondis qui accompagnent les principaux parcours.
+
+:::note
+Les sections ci-dessous sont répertoriées dans un ordre approximatif d'abstraction croissante.
+:::
+
+### Expression Language
+
+[LangChain Expression Language (LCEL)](/docs/expression_language/) est la manière fondamentale dont la plupart des composants LangChain s'assemblent, et cette section est conçue pour enseigner
+aux développeurs comment l'utiliser pour construire efficacement avec les primitives de LangChain.
+
+Cette section devrait contenir des **Tutoriels** qui enseignent comment diffuser et utiliser les primitives LCEL pour des tâches plus abstraites, des **Explications** de comportements spécifiques,
+et quelques **Références** sur la façon d'utiliser différentes méthodes dans l'interface Runnable.
+
+### Composants
+
+La section [composants](/docs/modules) couvre des concepts à un niveau d'abstraction plus élevé que LCEL.
+Les classes de base abstraites comme `BaseChatModel` et `BaseRetriever` devraient être couvertes ici, ainsi que les implémentations de base de ces classes de base,
+comme `ChatPromptTemplate` et `RecursiveCharacterTextSplitter`. Les guides de personnalisation appartiennent également à cette section.
+
+Cette section devrait contenir principalement des **Tutoriels** conceptuels, des **Références** et des **Explications** des composants qu'elle couvre.
+
+:::note
+En règle générale, tout ce qui est couvert dans les sections `Expression Language` et `Composants` (à l'exception de la section `Composition` des composants) ne devrait
+couvrir que les composants qui existent dans `langchain_core`.
+:::
+
+### Intégrations
+
+Les [intégrations](/docs/integrations/platforms/) sont des implémentations spécifiques de composants. Ceux-ci impliquent souvent des API et des services tiers.
+Si c'est le cas, en règle générale, ceux-ci sont maintenus par le partenaire tiers.
+
+Cette section devrait contenir principalement des **Explications** et des **Références**, bien que le contenu réel ici soit plus flexible que dans d'autres sections et plus à la
+discrétion du fournisseur tiers.
+
+:::note
+Les concepts couverts dans `Intégrations` devraient généralement exister dans `langchain_community` ou dans des packages partenaires spécifiques.
+:::
+
+### Guides et écosystème
+
+Les sections [Guides](/docs/guides) et [Écosystème](/docs/langsmith/) devraient contenir des guides qui abordent des problèmes de niveau supérieur aux sections ci-dessus.
+Cela inclut, sans s'y limiter, les considérations liées à la mise en production et aux workflows de développement.
+
+Ceux-ci devraient contenir principalement des **Guides pratiques**, des **Explications** et des **Tutoriels**.
+
+### Références de l'API
+
+Références de l'API de LangChain. Devraient agir comme des **Références** (comme le nom l'indique) avec un certain contenu axé sur l'**Explication** également.
+
+## Parcours de développement d'exemple
+
+Nous avons configuré nos documents pour aider un nouveau développeur à LangChain. Parcourons le chemin prévu :
+
+- Le développeur atterrit sur https://python.langchain.com, et lit l'introduction et le diagramme.
+- S'ils sont simplement curieux, ils peuvent être attirés par le [Démarrage rapide](/docs/get_started/quickstart) pour avoir un aperçu général de ce que contient LangChain.
+- S'ils ont une tâche spécifique à accomplir, ils seront attirés par la section Cas d'utilisation. Le cas d'utilisation devrait fournir un bon point d'entrée concret montrant la valeur que LangChain peut leur apporter et être un bon point d'entrée dans le cadre.
+- Ils peuvent ensuite en apprendre davantage sur les fondamentaux de LangChain à travers les sections Langage d'expression.
+- Ensuite, ils peuvent en apprendre davantage sur les différents composants et intégrations de LangChain.
+- Enfin, ils peuvent acquérir des connaissances supplémentaires à travers les Guides.
+
+Ceci n'est bien sûr qu'un idéal - les sections feront inévitablement référence à des concepts de niveau inférieur ou supérieur qui sont documentés dans d'autres sections.
+
+## Lignes directrices
+
+Voici quelques autres lignes directrices auxquelles vous devriez réfléchir lors de la rédaction et de l'organisation de la documentation.
+
+### Liens vers d'autres sections
+
+Étant donné que les sections de la documentation n'existent pas dans un vide, il est important de faire des liens vers d'autres sections aussi souvent que possible pour permettre à un développeur d'en apprendre davantage sur un sujet inconnu en ligne.
+
+Cela inclut les liens vers les références d'API ainsi que les sections conceptuelles !
+
+### Concision
+
+En général, adoptez une approche "moins c'est mieux". Si une section avec une bonne explication d'un concept existe déjà, vous devriez y faire référence plutôt que de le réexpliquer, à moins que le concept que vous documentez ne présente une nouvelle nuance.
+
+Soyez concis, y compris dans les exemples de code.
+
+### Style général
+
+- Utilisez la voix active et le temps présent chaque fois que possible.
+- Utilisez des exemples et des extraits de code pour illustrer les concepts et l'utilisation.
+- Utilisez des niveaux d'en-tête appropriés (`#`, `##`, `###`, etc.) pour organiser le contenu de manière hiérarchique.
+- Utilisez des puces et des listes numérotées pour décomposer les informations en morceaux facilement digestibles.
+- Utilisez des tableaux (en particulier pour les sections **Référence**) et des diagrammes souvent pour présenter les informations de manière visuelle.
+- Incluez la table des matières pour les pages de documentation plus longues afin d'aider les lecteurs à naviguer dans le contenu, mais masquez-la pour les pages plus courtes.

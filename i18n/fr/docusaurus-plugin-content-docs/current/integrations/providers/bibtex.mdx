@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# BibTeX
+
+>[BibTeX](https://www.ctan.org/pkg/bibtex) est un format de fichier et un système de gestion des références couramment utilisé conjointement avec la composition typographique `LaTeX`. Il sert à organiser et à stocker les informations bibliographiques pour les documents académiques et de recherche.
+
+## Installation et configuration
+
+Nous devons installer les packages `bibtexparser` et `pymupdf`.
+
+```bash
+pip install bibtexparser pymupdf
+```
+
+## Chargeur de documents
+
+Voir un [exemple d'utilisation](/docs/integrations/document_loaders/bibtex).
+
+```python
+<!--IMPORTS:[{"imported": "BibtexLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.bibtex.BibtexLoader.html", "title": "BibTeX"}]-->
+from langchain_community.document_loaders import BibtexLoader
+```

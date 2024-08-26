@@ -1,0 +1,35 @@
+---
+translated: true
+---
+
+# AssemblyAI
+
+>[AssemblyAI](https://www.assemblyai.com/) स्पीच AI मॉडल बनाता है जैसे कि
+स्पीच-टू-टेक्स्ट, स्पीकर डायरिजेशन, स्पीच सारांश, और अधिक।
+> `AssemblyAI's` स्पीच AI मॉडल में शामिल हैं वॉयस डेटा के लिए सटीक स्पीच-टू-टेक्स्ट
+> (जैसे कॉल, वर्चुअल मीटिंग और पॉडकास्ट), स्पीकर पहचान, भावना विश्लेषण,
+> अध्याय पहचान, PII रेडैक्शन।
+
+## इंस्टॉलेशन और सेटअप
+
+अपना [API कुंजी](https://www.assemblyai.com/dashboard/signup) प्राप्त करें।
+
+`assemblyai` पैकेज इंस्टॉल करें।
+
+```bash
+pip install -U assemblyai
+```
+
+## डॉक्यूमेंट लोडर
+
+###  AssemblyAI ऑडियो ट्रांसक्रिप्ट
+
+`AssemblyAIAudioTranscriptLoader` `AssemblyAI API` के साथ ऑडियो फ़ाइलों को ट्रांसक्राइब करता है
+और ट्रांसक्राइब किया गया पाठ दस्तावेजों में लोड करता है।
+
+[उपयोग उदाहरण](/docs/integrations/document_loaders/assemblyai) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "AssemblyAIAudioTranscriptLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.assemblyai.AssemblyAIAudioTranscriptLoader.html", "title": "AssemblyAI"}]-->
+from langchain_community.document_loaders import AssemblyAIAudioTranscriptLoader
+```

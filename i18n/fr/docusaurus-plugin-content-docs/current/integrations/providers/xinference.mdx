@@ -1,0 +1,91 @@
+---
+translated: true
+---
+
+# Xorbits Inference (Xinference)
+
+Cette page montre comment utiliser [Xinference](https://github.com/xorbitsai/inference) avec LangChain.
+
+`Xinference` est une bibliothèque puissante et polyvalente conçue pour servir les LLM, les modèles de reconnaissance vocale et les modèles multimodaux, même sur votre ordinateur portable. Avec Xorbits Inference, vous pouvez déployer et servir vos modèles ou les modèles intégrés de pointe en utilisant une seule commande.
+
+## Installation et configuration
+
+Xinference peut être installé via pip à partir de PyPI :
+
+```bash
+pip install "xinference[all]"
+```
+
+## LLM
+
+Xinference prend en charge divers modèles compatibles avec GGML, notamment chatglm, baichuan, whisper, vicuna et orca. Pour afficher les modèles intégrés, exécutez la commande :
+
+```bash
+xinference list --all
+```
+
+### Wrapper pour Xinference
+
+Vous pouvez démarrer une instance locale de Xinference en exécutant :
+
+```bash
+xinference
+```
+
+Vous pouvez également déployer Xinference dans un cluster distribué. Pour ce faire, commencez par démarrer un superviseur Xinference sur le serveur où vous voulez l'exécuter :
+
+```bash
+xinference-supervisor -H "${supervisor_host}"
+```
+
+Ensuite, démarrez les workers Xinference sur chacun des autres serveurs où vous voulez les exécuter :
+
+```bash
+xinference-worker -e "http://${supervisor_host}:9997"
+```
+
+Vous pouvez également démarrer une instance locale de Xinference en exécutant :
+
+```bash
+xinference
+```
+
+Une fois que Xinference est en cours d'exécution, un point de terminaison sera accessible pour la gestion des modèles via l'interface de ligne de commande (CLI) ou le client Xinference.
+
+Pour le déploiement local, le point de terminaison sera http://localhost:9997.
+
+Pour le déploiement en cluster, le point de terminaison sera http://$\{supervisor_host}:9997.
+
+Ensuite, vous devez lancer un modèle. Vous pouvez spécifier les noms des modèles et d'autres attributs, notamment model_size_in_billions et quantization. Vous pouvez utiliser l'interface de ligne de commande (CLI) pour le faire. Par exemple,
+
+```bash
+xinference launch -n orca -s 3 -q q4_0
+```
+
+Un uid de modèle sera renvoyé.
+
+Exemple d'utilisation :
+
+```python
+<!--IMPORTS:[{"imported": "Xinference", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.xinference.Xinference.html", "title": "Xorbits Inference (Xinference)"}]-->
+from langchain_community.llms import Xinference
+
+llm = Xinference(
+    server_url="http://0.0.0.0:9997",
+    model_uid = {model_uid} # replace model_uid with the model UID return from launching the model
+)
+
+llm(
+    prompt="Q: where can we visit in the capital of France? A:",
+    generate_config={"max_tokens": 1024, "stream": True},
+)
+
+```
+
+### Utilisation
+
+Pour plus d'informations et d'exemples détaillés, reportez-vous à l'[exemple pour les LLM xinference](/docs/integrations/llms/xinference).
+
+### Embeddings
+
+Xinference prend également en charge les requêtes d'intégration et les documents. Consultez l'[exemple pour les embeddings xinference](/docs/integrations/text_embedding/xinference) pour une démonstration plus détaillée.

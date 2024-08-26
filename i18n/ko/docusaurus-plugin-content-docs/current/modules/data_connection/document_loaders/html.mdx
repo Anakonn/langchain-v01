@@ -1,0 +1,128 @@
+---
+translated: true
+---
+
+# HTML
+
+>[HTML(HyperText Markup Language)는](https://en.wikipedia.org/wiki/HTML) 웹 브라우저에 표시하도록 설계된 문서의 표준 마크업 언어입니다.
+
+이는 문서 형식으로 `HTML` 문서를 로드하는 방법을 다룹니다.
+
+```python
+<!--IMPORTS:[{"imported": "UnstructuredHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html.UnstructuredHTMLLoader.html", "title": "HTML"}]-->
+from langchain_community.document_loaders import UnstructuredHTMLLoader
+```
+
+```python
+loader = UnstructuredHTMLLoader("example_data/fake-content.html")
+```
+
+```python
+data = loader.load()
+```
+
+```python
+data
+```
+
+```output
+    [Document(page_content='My First Heading\n\nMy first paragraph.', lookup_str='', metadata={'source': 'example_data/fake-content.html'}, lookup_index=0)]
+```
+
+## BeautifulSoup4를 사용하여 HTML 로드하기
+
+`BSHTMLLoader`를 사용하여 `BeautifulSoup4`로 HTML 문서를 로드할 수 있습니다. 이렇게 하면 HTML에서 텍스트를 `page_content`로, 페이지 제목을 `metadata`의 `title`로 추출할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "BSHTMLLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.html_bs.BSHTMLLoader.html", "title": "HTML"}]-->
+from langchain_community.document_loaders import BSHTMLLoader
+```
+
+```python
+loader = BSHTMLLoader("example_data/fake-content.html")
+data = loader.load()
+data
+```
+
+```output
+    [Document(page_content='\n\nTest Title\n\n\nMy First Heading\nMy first paragraph.\n\n\n', metadata={'source': 'example_data/fake-content.html', 'title': 'Test Title'})]
+```
+
+## SpiderLoader를 사용하여 HTML 로드하기
+
+[Spider](https://spider.cloud/?ref=langchain)는 [가장 빠른](https://github.com/spider-rs/spider/blob/main/benches/BENCHMARKS.md#benchmark-results) 크롤러입니다. 웹사이트를 순수 HTML, 마크다운, 메타데이터 또는 텍스트로 변환하며, AI를 사용하여 사용자 지정 작업으로 크롤링할 수 있습니다.
+
+Spider를 사용하면 탐지를 방지하기 위해 고성능 프록시를 사용할 수 있으며, AI 작업을 캐시하고, 크롤링 상태에 대한 웹후크, 예약된 크롤링 등을 사용할 수 있습니다.
+
+## 전제 조건
+
+이 로더를 사용하려면 Spider API 키가 필요합니다. [spider.cloud](https://spider.cloud)에서 받을 수 있습니다.
+
+```python
+%pip install --upgrade --quiet  langchain langchain-community spider-client
+```
+
+```python
+<!--IMPORTS:[{"imported": "SpiderLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.spider.SpiderLoader.html", "title": "HTML"}]-->
+from langchain_community.document_loaders import SpiderLoader
+
+loader = SpiderLoader(
+    api_key="YOUR_API_KEY", url="https://spider.cloud", mode="crawl"
+)
+
+data = loader.load()
+```
+
+가이드와 문서는 [Spider](https://spider.cloud/docs/api)를 참조하세요.
+
+## FireCrawlLoader를 사용하여 HTML 로드하기
+
+[FireCrawl](https://firecrawl.dev/?ref=langchain)은 웹사이트를 마크다운으로 크롤링하고 변환합니다. 모든 접근 가능한 하위 페이지를 크롤링하고 각각에 대한 깨끗한 마크다운과 메타데이터를 제공합니다.
+
+FireCrawl은 역방향 프록시, 캐싱, 속도 제한, JavaScript로 차단된 콘텐츠와 같은 복잡한 작업을 처리합니다.
+
+### 전제 조건
+
+이 로더를 사용하려면 FireCrawl API 키가 필요합니다. [FireCrawl](https://firecrawl.dev/?ref=langchainpy)에 가입하여 받을 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "FireCrawlLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.firecrawl.FireCrawlLoader.html", "title": "HTML"}]-->
+%pip install --upgrade --quiet  langchain langchain-community firecrawl-py
+
+from langchain_community.document_loaders import FireCrawlLoader
+
+
+loader = FireCrawlLoader(
+    api_key="YOUR_API_KEY", url="https://firecrawl.dev", mode="crawl"
+)
+
+data = loader.load()
+```
+
+FireCrawl 사용에 대한 자세한 내용은 [FireCrawl](https://firecrawl.dev/?ref=langchainpy)을 참조하세요.
+
+## AzureAIDocumentIntelligenceLoader를 사용하여 HTML 로드하기
+
+[Azure AI Document Intelligence](https://aka.ms/doc-intelligence)(이전 `Azure Form Recognizer`)는 디지털 또는 스캔된 PDF, 이미지, Office 및 HTML 파일에서 텍스트(필기 포함), 테이블, 문서 구조(예: 제목, 섹션 제목 등) 및 키-값 쌍을 추출하는 기계 학습 기반 서비스입니다. Document Intelligence는 `PDF`, `JPEG/JPG`, `PNG`, `BMP`, `TIFF`, `HEIF`, `DOCX`, `XLSX`, `PPTX` 및 `HTML`을 지원합니다.
+
+이 [현재 구현](https://aka.ms/di-langchain)의 로더는 `Document Intelligence`를 사용하여 콘텐츠를 페이지 단위로 통합하고 LangChain 문서로 변환할 수 있습니다. 기본 출력 형식은 마크다운이며, `MarkdownHeaderTextSplitter`와 쉽게 연결할 수 있습니다. `mode="single"` 또는 `mode="page"`를 사용하여 단일 페이지 또는 페이지별로 분할된 순수 텍스트를 반환할 수도 있습니다.
+
+### 전제 조건
+
+**East US**, **West US2**, **West Europe** 중 하나의 미리 보기 지역에 Azure AI Document Intelligence 리소스가 필요합니다. [이 문서](https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource?view=doc-intel-4.0.0)를 따라 없는 경우 만들 수 있습니다. `<endpoint>` 및 `<key>`를 매개변수로 전달해야 합니다.
+
+```python
+<!--IMPORTS:[{"imported": "AzureAIDocumentIntelligenceLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.doc_intelligence.AzureAIDocumentIntelligenceLoader.html", "title": "HTML"}]-->
+%pip install --upgrade --quiet  langchain langchain-community azure-ai-documentintelligence
+
+from langchain_community.document_loaders import AzureAIDocumentIntelligenceLoader
+
+file_path = "<filepath>"
+endpoint = "<endpoint>"
+key = "<key>"
+loader = AzureAIDocumentIntelligenceLoader(
+    api_endpoint=endpoint, api_key=key, file_path=file_path, api_model="prebuilt-layout"
+)
+
+documents = loader.load()
+```

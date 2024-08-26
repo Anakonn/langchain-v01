@@ -1,0 +1,93 @@
+---
+translated: true
+---
+
+यह पृष्ठ SearxNG खोज API का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट SearxNG API रैपर के संदर्भ।
+
+## स्थापना और सेटअप
+
+जबकि यह संभव है कि रैपर का उपयोग [सार्वजनिक searx उदाहरणों](https://searx.space/) के साथ किया जा सके, लेकिन ये उदाहरण अक्सर API पहुंच की अनुमति नहीं देते हैं (आउटपुट प्रारूप पर नोट देखें) और अनुरोधों की आवृत्ति पर सीमाएं हैं। स्वयं होस्ट किए गए उदाहरण का चयन करना अनुशंसित है।
+
+### स्वयं होस्ट किया गया उदाहरण:
+
+स्थापना निर्देशों के लिए [यह पृष्ठ](https://searxng.github.io/searxng/admin/installation.html) देखें।
+
+जब आप SearxNG स्थापित करते हैं, तो डिफ़ॉल्ट रूप से केवल HTML प्रारूप सक्रिय होता है।
+API का उपयोग करने के लिए आपको `json` प्रारूप को सक्रिय करना होगा। यह `settings.yml` फ़ाइल में निम्नलिखित पंक्ति जोड़कर किया जा सकता है:
+
+```yaml
+search:
+    formats:
+        - html
+        - json
+```
+
+आप सुनिश्चित कर सकते हैं कि API काम कर रहा है, इसके लिए API एंडपॉइंट पर एक curl अनुरोध जारी करें:
+
+`curl -kLX GET --data-urlencode q='langchain' -d format=json http://localhost:8888`
+
+इससे एक JSON ऑब्जेक्ट के साथ परिणाम वापस आना चाहिए।
+
+## रैपर
+
+### उपयोगिता
+
+रैपर का उपयोग करने के लिए हमें SearxNG उदाहरण की होस्ट को रैपर में निम्नलिखित के साथ पास करना होगा:
+    1. जब इंस्टेंस बनाते समय `searx_host` नामित पैरामीटर।
+    2. `SEARXNG_HOST` पर्यावरण चर निर्यात करना।
+
+आप SearxNG उदाहरण से परिणाम प्राप्त करने के लिए रैपर का उपयोग कर सकते हैं।
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searx_search.SearxSearchWrapper.html", "title": "SearxNG Search API"}]-->
+from langchain_community.utilities import SearxSearchWrapper
+s = SearxSearchWrapper(searx_host="http://localhost:8888")
+s.run("what is a large language model?")
+```
+
+### उपकरण
+
+आप इस रैपर को एक उपकरण के रूप में भी लोड कर सकते हैं (एजेंट के साथ उपयोग करने के लिए)।
+
+आप इसे निम्नलिखित के साथ कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "SearxNG Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["searx-search"],
+                    searx_host="http://localhost:8888",
+                    engines=["github"])
+```
+
+ध्यान दें कि हम *वैकल्पिक रूप से* कस्टम इंजन पास कर सकते हैं।
+
+यदि आप मेटाडेटा के साथ *json* में परिणाम प्राप्त करना चाहते हैं, तो आप इसका उपयोग कर सकते हैं:
+
+```python
+tools = load_tools(["searx-search-results-json"],
+                    searx_host="http://localhost:8888",
+                    num_results=5)
+```
+
+#### उपकरण को तेजी से बनाना
+
+यह उदाहरण एक ही रैपर से कई उपकरण बनाने का एक त्वरित तरीका दिखाता है।
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchResults", "source": "langchain_community.tools.searx_search.tool", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.searx_search.tool.SearxSearchResults.html", "title": "SearxNG Search API"}]-->
+from langchain_community.tools.searx_search.tool import SearxSearchResults
+
+wrapper = SearxSearchWrapper(searx_host="**")
+github_tool = SearxSearchResults(name="Github", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["github"],
+                                })
+
+arxiv_tool = SearxSearchResults(name="Arxiv", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["arxiv"]
+                                })
+```
+
+उपकरणों के बारे में अधिक जानकारी के लिए, [यह पृष्ठ](/docs/modules/tools/) देखें।

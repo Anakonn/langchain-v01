@@ -1,0 +1,48 @@
+---
+translated: true
+---
+
+# Wolfram Alpha
+
+>[WolframAlpha](https://en.wikipedia.org/wiki/WolframAlpha)は、`Wolfram Research`によって開発された回答エンジンです。
+> 外部のデータソースから回答を計算することで、事実に基づく問い合わせに答えます。
+
+このページでは、LangChainで`Wolfram Alpha API`を使う方法について説明します。
+
+## インストールとセットアップ
+
+- 以下のコマンドでライブラリをインストールします。
+
+```bash
+pip install wolframalpha
+```
+
+- Wolfram Alphaにアクセスし、開発者アカウントを作成します[here](https://developer.wolframalpha.com/)
+- アプリを作成し、`APP ID`を取得します
+- `APP ID`を環境変数`WOLFRAM_ALPHA_APPID`に設定します
+
+## ラッパー
+
+### ユーティリティ
+
+このAPIをラップするWolframAlphaAPIWrapperユーティリティが用意されています。このユーティリティをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "WolframAlphaAPIWrapper", "source": "langchain_community.utilities.wolfram_alpha", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.wolfram_alpha.WolframAlphaAPIWrapper.html", "title": "Wolfram Alpha"}]-->
+from langchain_community.utilities.wolfram_alpha import WolframAlphaAPIWrapper
+```
+
+このラッパーの詳細な使い方については、[このノートブック](/docs/integrations/tools/wolfram_alpha)を参照してください。
+
+### ツール
+
+このラッパーをツールとしても簡単に読み込むことができます(Agentで使用するため)。
+以下のように行います:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "Wolfram Alpha"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["wolfram-alpha"])
+```
+
+ツールの詳細については、[このページ](/docs/modules/tools/)を参照してください。

@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# मीडियाविकी डंप
+
+>[मीडियाविकी XML डंप](https://www.mediawiki.org/wiki/Manual:Importing_XML_dumps) में एक विकि का सामग्री (सभी संशोधनों के साथ विकि पृष्ठ) शामिल होती है, साइट से संबंधित डेटा के बिना। XML डंप विकि डेटाबेस का पूर्ण बैकअप नहीं बनाता, डंप में उपयोगकर्ता खाते, छवियां, संपादन लॉग आदि शामिल नहीं हैं।
+
+## स्थापना और सेटअप
+
+हमें कई पायथन पैकेज स्थापित करने की आवश्यकता है।
+
+`mediawiki-utilities` XML स्कीमा 0.11 का समर्थन करता है अविलंबित शाखाओं में।
+
+```bash
+pip install -qU git+https://github.com/mediawiki-utilities/python-mwtypes@updates_schema_0.11
+```
+
+`mediawiki-utilities mwxml` में एक बग है, PR लंबित है।
+
+```bash
+pip install -qU git+https://github.com/gdedrouas/python-mwxml@xml_format_0.11
+pip install -qU mwparserfromhell
+```
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/mediawikidump) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "MWDumpLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.mediawikidump.MWDumpLoader.html", "title": "MediaWikiDump"}]-->
+from langchain_community.document_loaders import MWDumpLoader
+```

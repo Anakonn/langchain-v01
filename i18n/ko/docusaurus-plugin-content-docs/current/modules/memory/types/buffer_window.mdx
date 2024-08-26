@@ -1,0 +1,166 @@
+---
+translated: true
+---
+
+# 대화 버퍼 창
+
+`ConversationBufferWindowMemory`는 시간에 따른 대화 상호 작용 목록을 유지합니다. 마지막 K개의 상호 작용만 사용합니다. 이를 통해 가장 최근 상호 작용의 슬라이딩 창을 유지할 수 있어 버퍼가 너무 커지지 않습니다.
+
+이 유형의 메모리의 기본 기능을 먼저 살펴보겠습니다.
+
+```python
+<!--IMPORTS:[{"imported": "ConversationBufferWindowMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.buffer_window.ConversationBufferWindowMemory.html", "title": "Conversation Buffer Window"}]-->
+from langchain.memory import ConversationBufferWindowMemory
+```
+
+```python
+memory = ConversationBufferWindowMemory( k=1)
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+memory.save_context({"input": "not much you"}, {"output": "not much"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': 'Human: not much you\nAI: not much'}
+```
+
+또한 메시지 목록으로 기록을 가져올 수 있습니다(채팅 모델과 함께 사용하는 데 유용함).
+
+```python
+memory = ConversationBufferWindowMemory( k=1, return_messages=True)
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+memory.save_context({"input": "not much you"}, {"output": "not much"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': [HumanMessage(content='not much you', additional_kwargs={}),
+      AIMessage(content='not much', additional_kwargs={})]}
+```
+
+## 체인에서 사용하기
+
+다시 `verbose=True`로 설정하여 프롬프트를 볼 수 있도록 예제를 살펴보겠습니다.
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Conversation Buffer Window"}, {"imported": "ConversationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.conversation.base.ConversationChain.html", "title": "Conversation Buffer Window"}]-->
+from langchain_openai import OpenAI
+from langchain.chains import ConversationChain
+conversation_with_summary = ConversationChain(
+    llm=OpenAI(temperature=0),
+    # We set a low k=2, to only keep the last 2 interactions in memory
+    memory=ConversationBufferWindowMemory(k=2),
+    verbose=True
+)
+conversation_with_summary.predict(input="Hi, what's up?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    Human: Hi, what's up?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Hi there! I'm doing great. I'm currently helping a customer with a technical issue. How about you?"
+```
+
+```python
+conversation_with_summary.predict(input="What's their issues?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+    Human: Hi, what's up?
+    AI:  Hi there! I'm doing great. I'm currently helping a customer with a technical issue. How about you?
+    Human: What's their issues?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " The customer is having trouble connecting to their Wi-Fi network. I'm helping them troubleshoot the issue and get them connected."
+```
+
+```python
+conversation_with_summary.predict(input="Is it going well?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+    Human: Hi, what's up?
+    AI:  Hi there! I'm doing great. I'm currently helping a customer with a technical issue. How about you?
+    Human: What's their issues?
+    AI:  The customer is having trouble connecting to their Wi-Fi network. I'm helping them troubleshoot the issue and get them connected.
+    Human: Is it going well?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Yes, it's going well so far. We've already identified the problem and are now working on a solution."
+```
+
+```python
+# Notice here that the first interaction does not appear.
+conversation_with_summary.predict(input="What's the solution?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+    Human: What's their issues?
+    AI:  The customer is having trouble connecting to their Wi-Fi network. I'm helping them troubleshoot the issue and get them connected.
+    Human: Is it going well?
+    AI:  Yes, it's going well so far. We've already identified the problem and are now working on a solution.
+    Human: What's the solution?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " The solution is to reset the router and reconfigure the settings. We're currently in the process of doing that."
+```

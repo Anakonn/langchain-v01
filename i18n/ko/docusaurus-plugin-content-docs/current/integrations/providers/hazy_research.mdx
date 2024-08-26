@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# 흐릿한 연구
+
+이 페이지는 LangChain 내에서 Hazy Research 생태계를 사용하는 방법을 다룹니다.
+두 부분으로 나뉩니다: 설치 및 설정, 그리고 특정 Hazy Research 래퍼에 대한 참조.
+
+## 설치 및 설정
+
+- `manifest`를 사용하려면 `pip install manifest-ml`로 설치하세요.
+
+## 래퍼
+
+### LLM
+
+Hazy Research의 `manifest` 라이브러리를 둘러싼 LLM 래퍼가 있습니다.
+`manifest`는 많은 모델 공급자를 둘러싼 래퍼이며, 캐싱, 기록 등을 추가합니다.
+
+이 래퍼를 사용하려면:
+
+```python
+<!--IMPORTS:[{"imported": "ManifestWrapper", "source": "langchain_community.llms.manifest", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.manifest.ManifestWrapper.html", "title": "Hazy Research"}]-->
+from langchain_community.llms.manifest import ManifestWrapper
+```

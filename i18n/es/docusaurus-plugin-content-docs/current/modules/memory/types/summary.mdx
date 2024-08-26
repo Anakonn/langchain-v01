@@ -1,0 +1,183 @@
+---
+translated: true
+---
+
+# Resumen de la conversación
+
+Ahora veamos cómo usar un tipo de memoria un poco más complejo: `ConversationSummaryMemory`. Este tipo de memoria crea un resumen de la conversación a lo largo del tiempo. Esto puede ser útil para condensar la información de la conversación a lo largo del tiempo.
+La memoria de resumen de la conversación resume la conversación a medida que sucede y almacena el resumen actual en la memoria. Esta memoria se puede usar para inyectar el resumen de la conversación hasta el momento en un prompt/cadena. Esta memoria es más útil para conversaciones más largas, donde mantener el historial de mensajes pasados en el prompt literal consumiría demasiados tokens.
+
+Exploremos primero la funcionalidad básica de este tipo de memoria.
+
+```python
+<!--IMPORTS:[{"imported": "ConversationSummaryMemory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/memory/langchain.memory.summary.ConversationSummaryMemory.html", "title": "Conversation Summary"}, {"imported": "ChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_core.chat_history.ChatMessageHistory.html", "title": "Conversation Summary"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Conversation Summary"}]-->
+from langchain.memory import ConversationSummaryMemory, ChatMessageHistory
+from langchain_openai import OpenAI
+```
+
+```python
+memory = ConversationSummaryMemory(llm=OpenAI(temperature=0))
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': '\nThe human greets the AI, to which the AI responds.'}
+```
+
+También podemos obtener el historial como una lista de mensajes (esto es útil si lo estás usando con un modelo de chat).
+
+```python
+memory = ConversationSummaryMemory(llm=OpenAI(temperature=0), return_messages=True)
+memory.save_context({"input": "hi"}, {"output": "whats up"})
+```
+
+```python
+memory.load_memory_variables({})
+```
+
+```output
+    {'history': [SystemMessage(content='\nThe human greets the AI, to which the AI responds.', additional_kwargs={})]}
+```
+
+También podemos utilizar el método `predict_new_summary` directamente.
+
+```python
+messages = memory.chat_memory.messages
+previous_summary = ""
+memory.predict_new_summary(messages, previous_summary)
+```
+
+```output
+    '\nThe human greets the AI, to which the AI responds.'
+```
+
+## Inicialización con mensajes/resumen existente
+
+Si tienes mensajes fuera de esta clase, puedes inicializar fácilmente la clase con `ChatMessageHistory`. Durante la carga, se calculará un resumen.
+
+```python
+history = ChatMessageHistory()
+history.add_user_message("hi")
+history.add_ai_message("hi there!")
+```
+
+```python
+memory = ConversationSummaryMemory.from_messages(
+    llm=OpenAI(temperature=0),
+    chat_memory=history,
+    return_messages=True
+)
+```
+
+```python
+memory.buffer
+```
+
+```output
+    '\nThe human greets the AI, to which the AI responds with a friendly greeting.'
+```
+
+Opcionalmente, puedes acelerar la inicialización usando un resumen generado previamente y evitar volver a generar el resumen inicializando directamente.
+
+```python
+memory = ConversationSummaryMemory(
+    llm=OpenAI(temperature=0),
+    buffer="The human asks what the AI thinks of artificial intelligence. The AI thinks artificial intelligence is a force for good because it will help humans reach their full potential.",
+    chat_memory=history,
+    return_messages=True
+)
+```
+
+## Uso en una cadena
+
+Recorramos un ejemplo de uso en una cadena, volviendo a establecer `verbose=True` para que podamos ver el prompt.
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Conversation Summary"}, {"imported": "ConversationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.conversation.base.ConversationChain.html", "title": "Conversation Summary"}]-->
+from langchain_openai import OpenAI
+from langchain.chains import ConversationChain
+llm = OpenAI(temperature=0)
+conversation_with_summary = ConversationChain(
+    llm=llm,
+    memory=ConversationSummaryMemory(llm=OpenAI()),
+    verbose=True
+)
+conversation_with_summary.predict(input="Hi, what's up?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    Human: Hi, what's up?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Hi there! I'm doing great. I'm currently helping a customer with a technical issue. How about you?"
+```
+
+```python
+conversation_with_summary.predict(input="Tell me more about it!")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    The human greeted the AI and asked how it was doing. The AI replied that it was doing great and was currently helping a customer with a technical issue.
+    Human: Tell me more about it!
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " Sure! The customer is having trouble with their computer not connecting to the internet. I'm helping them troubleshoot the issue and figure out what the problem is. So far, we've tried resetting the router and checking the network settings, but the issue still persists. We're currently looking into other possible solutions."
+```
+
+```python
+conversation_with_summary.predict(input="Very cool -- what is the scope of the project?")
+```
+
+```output
+
+
+    > Entering new ConversationChain chain...
+    Prompt after formatting:
+    The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+
+    The human greeted the AI and asked how it was doing. The AI replied that it was doing great and was currently helping a customer with a technical issue where their computer was not connecting to the internet. The AI was troubleshooting the issue and had already tried resetting the router and checking the network settings, but the issue still persisted and they were looking into other possible solutions.
+    Human: Very cool -- what is the scope of the project?
+    AI:
+
+    > Finished chain.
+
+
+
+
+
+    " The scope of the project is to troubleshoot the customer's computer issue and find a solution that will allow them to connect to the internet. We are currently exploring different possibilities and have already tried resetting the router and checking the network settings, but the issue still persists."
+```

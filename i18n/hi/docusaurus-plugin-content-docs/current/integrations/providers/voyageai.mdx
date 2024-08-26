@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# VoyageAI
+
+VoyageAI से संबंधित सभी कार्यक्षमता
+
+>[VoyageAI](https://www.voyageai.com/) Voyage AI आपके डोमेन और कंपनी के लिए अनुकूलित एम्बेडिंग मॉडल बनाता है, बेहतर पुनर्प्राप्ति गुणवत्ता के लिए।
+
+## स्थापना और सेटअप
+
+एकीकरण पैकेज को इंस्टॉल करें
+
+```bash
+pip install langchain-voyageai
+```
+
+एक VoyageAI API कुंजी प्राप्त करें और इसे एक पर्यावरण चर (`VOYAGE_API_KEY`) के रूप में सेट करें
+
+## पाठ एम्बेडिंग मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/voyageai) देखें
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIEmbeddings", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_voyageai.embeddings.VoyageAIEmbeddings.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIEmbeddings
+```
+
+## पुनः रैंकिंग
+
+एक [उपयोग उदाहरण](/docs/integrations/document_transformers/voyageai-reranker) देखें
+
+```python
+<!--IMPORTS:[{"imported": "VoyageAIRerank", "source": "langchain_voyageai", "docs": "https://api.python.langchain.com/en/latest/rerank/langchain_voyageai.rerank.VoyageAIRerank.html", "title": "VoyageAI"}]-->
+from langchain_voyageai import VoyageAIRerank
+```

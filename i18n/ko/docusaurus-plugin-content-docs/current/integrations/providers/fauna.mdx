@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# 파우나 (Fauna)
+
+>[파우나](https://fauna.com/)는 문서의 유연성과 관계형, ACID 준수 데이터베이스의 강력함을 결합한 분산 문서-관계형 데이터베이스입니다. 이는 지역, 클라우드 또는 전 세계에 걸쳐 확장될 수 있습니다.
+
+## 설치 및 설정
+
+비밀 키를 얻어야 합니다.
+자세한 [가이드](https://docs.fauna.com/fauna/current/learn/security_model/)를 참조하세요.
+
+`fauna` 패키지를 설치해야 합니다.
+
+```bash
+pip install -U fauna
+```
+
+## 문서 로더
+
+[사용 예제](/docs/integrations/document_loaders/fauna)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "FaunaLoader", "source": "langchain_community.document_loaders.fauna", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.fauna.FaunaLoader.html", "title": "Fauna"}]-->
+from langchain_community.document_loaders.fauna import FaunaLoader
+```

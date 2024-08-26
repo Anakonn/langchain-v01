@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# Pinecone
+
+>[Pinecone](https://docs.pinecone.io/docs/overview) es una base de datos de vectores con una amplia funcionalidad.
+
+## Instalación y configuración
+
+Instala el SDK de Python:
+
+```bash
+pip install langchain-pinecone
+```
+
+## Almacén de vectores
+
+Existe un wrapper alrededor de los índices de Pinecone, lo que te permite usarlo como un vectorstore,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+```python
+<!--IMPORTS:[{"imported": "PineconeVectorStore", "source": "langchain_pinecone", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_pinecone.vectorstores.PineconeVectorStore.html", "title": "Pinecone"}]-->
+from langchain_pinecone import PineconeVectorStore
+```
+
+Para obtener una guía más detallada del vectorstore de Pinecone, consulta [este cuaderno](/docs/integrations/vectorstores/pinecone)
+
+## Recuperadores
+
+### Búsqueda híbrida de Pinecone
+
+```bash
+pip install pinecone-client pinecone-text
+```
+
+```python
+<!--IMPORTS:[{"imported": "PineconeHybridSearchRetriever", "source": "langchain_community.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.pinecone_hybrid_search.PineconeHybridSearchRetriever.html", "title": "Pinecone"}]-->
+from langchain_community.retrievers import (
+    PineconeHybridSearchRetriever,
+)
+```
+
+Para obtener más información detallada, consulta [este cuaderno](/docs/integrations/retrievers/pinecone_hybrid_search).
+
+### Recuperador de autoconsula
+
+El almacén de vectores de Pinecone se puede usar como un recuperador para la autoconsulta.
+
+Para obtener más información detallada, consulta [este cuaderno](/docs/integrations/retrievers/self_query/pinecone).

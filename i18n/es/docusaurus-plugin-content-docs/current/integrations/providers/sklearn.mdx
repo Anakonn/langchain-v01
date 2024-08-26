@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# scikit-learn
+
+>[scikit-learn](https://scikit-learn.org/stable/) es una colección de código abierto de algoritmos de aprendizaje automático,
+> incluyendo algunas implementaciones del [k nearest neighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html). `SKLearnVectorStore` envuelve esta implementación y agrega la posibilidad de persistir el vector store en formato json, bson (json binario) o Apache Parquet.
+
+## Instalación y configuración
+
+- Instala el paquete de Python con `pip install scikit-learn`
+
+## Vector Store
+
+`SKLearnVectorStore` proporciona un simple envoltorio alrededor de la implementación de vecinos más cercanos en el
+paquete scikit-learn, lo que te permite usarlo como un vector store.
+
+Para importar este vector store:
+
+```python
+<!--IMPORTS:[{"imported": "SKLearnVectorStore", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.sklearn.SKLearnVectorStore.html", "title": "scikit-learn"}]-->
+from langchain_community.vectorstores import SKLearnVectorStore
+```
+
+Para una guía más detallada del envoltorio SKLearnVectorStore, consulta [este cuaderno](/docs/integrations/vectorstores/sklearn).

@@ -1,0 +1,49 @@
+---
+translated: true
+---
+
+# Anyscale
+
+>[Anyscale](https://www.anyscale.com) est une plateforme pour exécuter, affiner et mettre à l'échelle les LLM via des API prêtes pour la production.
+> [Anyscale Endpoints](https://docs.anyscale.com/endpoints/overview) servent de nombreux modèles open-source de manière rentable.
+
+`Anyscale` fournit également [un exemple](https://docs.anyscale.com/endpoints/model-serving/examples/langchain-integration)
+de la façon de configurer `LangChain` avec `Anyscale` pour des agents de chat avancés.
+
+## Installation et configuration
+
+- Obtenez une URL de service Anyscale, une route et une clé API, puis définissez-les comme variables d'environnement (`ANYSCALE_SERVICE_URL`,`ANYSCALE_SERVICE_ROUTE`, `ANYSCALE_SERVICE_TOKEN`).
+- Veuillez consulter [la documentation Anyscale](https://www.anyscale.com/get-started) pour plus de détails.
+
+Nous devons installer le package `openai` :
+
+```bash
+pip install openai
+```
+
+## LLM
+
+Voir un [exemple d'utilisation](/docs/integrations/llms/anyscale).
+
+```python
+<!--IMPORTS:[{"imported": "Anyscale", "source": "langchain_community.llms.anyscale", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.anyscale.Anyscale.html", "title": "Anyscale"}]-->
+from langchain_community.llms.anyscale import Anyscale
+```
+
+## Modèles de chat
+
+Voir un [exemple d'utilisation](/docs/integrations/chat/anyscale).
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnyscale", "source": "langchain_community.chat_models.anyscale", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.anyscale.ChatAnyscale.html", "title": "Anyscale"}]-->
+from langchain_community.chat_models.anyscale import ChatAnyscale
+```
+
+## Embeddings
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/anyscale).
+
+```python
+<!--IMPORTS:[{"imported": "AnyscaleEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.anyscale.AnyscaleEmbeddings.html", "title": "Anyscale"}]-->
+from langchain_community.embeddings import AnyscaleEmbeddings
+```

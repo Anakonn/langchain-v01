@@ -1,0 +1,58 @@
+---
+translated: true
+---
+
+# Elasticsearch
+
+> [Elasticsearch](https://www.elastic.co/elasticsearch/)는 분산된 RESTful 검색 및 분석 엔진입니다.
+> HTTP 웹 인터페이스와 스키마 없는 JSON 문서를 가진 분산된 다중 테넌트 지원 전체 텍스트 검색 엔진을 제공합니다.
+
+## 설치 및 설정
+
+Elasticsearch를 시작하는 두 가지 방법이 있습니다:
+
+#### 로컬 머신에 Docker를 통해 Elasticsearch 설치하기
+
+예시: 보안이 비활성화된 단일 노드 Elasticsearch 인스턴스 실행. 이는 프로덕션 사용을 위해 권장되지 않습니다.
+
+```bash
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.http.ssl.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+```
+
+#### Elastic Cloud에 Elasticsearch 배포하기
+
+Elastic Cloud는 관리형 Elasticsearch 서비스입니다. [무료 평가판](https://cloud.elastic.co/registration?utm_source=langchain&utm_content=documentation)에 가입하세요.
+
+### 클라이언트 설치
+
+```bash
+pip install elasticsearch
+pip install langchain-elasticsearch
+```
+
+## 임베딩 모델
+
+[사용 예시](/docs/integrations/text_embedding/elasticsearch)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ElasticsearchEmbeddings", "source": "langchain_elasticsearch.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.html", "title": "Elasticsearch"}]-->
+from langchain_elasticsearch.embeddings import ElasticsearchEmbeddings
+```
+
+## 벡터 스토어
+
+[사용 예시](/docs/integrations/vectorstores/elasticsearch)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ElasticsearchStore", "source": "langchain_elasticsearch.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_elasticsearch.vectorstores.ElasticsearchStore.html", "title": "Elasticsearch"}]-->
+from langchain_elasticsearch.vectorstores import ElasticsearchStore
+```
+
+## 메모리
+
+[사용 예시](/docs/integrations/memory/elasticsearch_chat_message_history)를 참고하세요.
+
+```python
+<!--IMPORTS:[{"imported": "ElasticsearchChatMessageHistory", "source": "langchain_elasticsearch.chat_history", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory.html", "title": "Elasticsearch"}]-->
+from langchain_elasticsearch.chat_history import ElasticsearchChatMessageHistory
+```

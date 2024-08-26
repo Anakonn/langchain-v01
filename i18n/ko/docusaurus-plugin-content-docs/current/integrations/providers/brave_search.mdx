@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# 브레이브 검색
+
+>[브레이브 검색](https://en.wikipedia.org/wiki/Brave_Search)은 브레이브 소프트웨어가 개발한 검색 엔진입니다.
+> - `브레이브 검색`은 자체 웹 인덱스를 사용합니다. 2022년 5월 기준, 100억 페이지 이상을 다루고 있으며 92%의 검색 결과를 제3자에 의존하지 않고 제공하고 있습니다. 나머지는 Bing API 또는 (선택적으로) Google에서 서버 측에서 검색됩니다. 브레이브에 따르면 인덱스는 스팸 및 기타 저품질 콘텐츠를 피하기 위해 "Google이나 Bing보다 의도적으로 작게 유지"되고 있으며, 이로 인해 "브레이브 검색은 장기 쿼리를 복구하는 데 아직 Google만큼 좋지 않습니다."
+>- `브레이브 검색 프리미엄`: 2023년 4월 현재 브레이브 검색은 광고 없는 웹사이트이지만 광고가 포함된 새로운 모델로 전환될 것입니다. 프리미엄 사용자는 광고 없는 경험을 받게 됩니다. 사용자 데이터, IP 주소 등은 기본적으로 수집되지 않습니다. 선택적 데이터 수집을 위해서는 프리미엄 계정이 필요합니다.
+
+## 설치 및 설정
+
+브레이브 검색 API에 액세스하려면 [계정을 만들고 API 키를 받아야 합니다](https://api.search.brave.com/app/dashboard).
+
+## 문서 로더
+
+[사용 예시](/docs/integrations/document_loaders/brave_search)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearchLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.brave_search.BraveSearchLoader.html", "title": "Brave Search"}]-->
+from langchain_community.document_loaders import BraveSearchLoader
+```
+
+## 도구
+
+[사용 예시](/docs/integrations/tools/brave_search)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearch", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.brave_search.tool.BraveSearch.html", "title": "Brave Search"}]-->
+from langchain.tools import BraveSearch
+```

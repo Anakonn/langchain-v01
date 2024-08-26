@@ -1,0 +1,50 @@
+---
+translated: true
+---
+
+# पाइनकोन
+
+>[पाइनकोन](https://docs.pinecone.io/docs/overview) एक व्यापक कार्यक्षमता वाला वेक्टर डेटाबेस है।
+
+## स्थापना और सेटअप
+
+पायथन एसडीके स्थापित करें:
+
+```bash
+pip install langchain-pinecone
+```
+
+## वेक्टर स्टोर
+
+पाइनकोन इंडेक्स के लिए एक रैपर मौजूद है, जिससे आप इसका उपयोग वेक्टर स्टोर के रूप में कर सकते हैं,
+चाहे वह语义 खोज या उदाहरण चयन के लिए हो।
+
+```python
+<!--IMPORTS:[{"imported": "PineconeVectorStore", "source": "langchain_pinecone", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_pinecone.vectorstores.PineconeVectorStore.html", "title": "Pinecone"}]-->
+from langchain_pinecone import PineconeVectorStore
+```
+
+पाइनकोन वेक्टर स्टोर के बारे में अधिक विस्तृत जानकारी के लिए, [यह नोटबुक](/docs/integrations/vectorstores/pinecone) देखें
+
+## रिट्रीवर्स
+
+### पाइनकोन हाइब्रिड खोज
+
+```bash
+pip install pinecone-client pinecone-text
+```
+
+```python
+<!--IMPORTS:[{"imported": "PineconeHybridSearchRetriever", "source": "langchain_community.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.pinecone_hybrid_search.PineconeHybridSearchRetriever.html", "title": "Pinecone"}]-->
+from langchain_community.retrievers import (
+    PineconeHybridSearchRetriever,
+)
+```
+
+अधिक विस्तृत जानकारी के लिए, [यह नोटबुक](/docs/integrations/retrievers/pinecone_hybrid_search) देखें।
+
+### सेल्फ क्वेरी रिट्रीवर
+
+पाइनकोन वेक्टर स्टोर को सेल्फ-क्वेरी के लिए एक रिट्रीवर के रूप में उपयोग किया जा सकता है।
+
+अधिक विस्तृत जानकारी के लिए, [यह नोटबुक](/docs/integrations/retrievers/self_query/pinecone) देखें।

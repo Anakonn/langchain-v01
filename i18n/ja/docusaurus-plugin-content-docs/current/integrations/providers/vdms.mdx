@@ -1,0 +1,63 @@
+---
+translated: true
+---
+
+# VDMS
+
+> [VDMS](https://github.com/IntelLabs/vdms/blob/master/README.md)は、関連するビジュアルデータをビジュアルメタデータグラフで検索し、ビジュアルデータへのより高速なアクセスを可能にするためのマシンフレンドリーな拡張機能を提供することで、クラウドスケールを目指すビッグ "ビジュアル"データのためのストレージソリューションです。
+
+## インストールとセットアップ
+
+### クライアントのインストール
+
+```bash
+pip install vdms
+```
+
+### データベースのインストール
+
+VDMSを始めるには2つの方法があります:
+
+#### ローカルマシンにVDMSをdockerでインストールする
+
+```bash
+    docker run -d -p 55555:55555 intellabs/vdms:latest
+```
+
+#### ローカルマシンにVDMSを直接インストールする
+
+[インストール手順](https://github.com/IntelLabs/vdms/blob/master/INSTALL.md)をご覧ください。
+
+## VectorStore
+
+ベクトルストアはVDMSの単純なラッパーです。データの保存と取得のためのシンプルなインターフェイスを提供します。
+
+```python
+<!--IMPORTS:[{"imported": "TextLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.text.TextLoader.html", "title": "VDMS"}, {"imported": "CharacterTextSplitter", "source": "langchain.text_splitter", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "VDMS"}, {"imported": "VDMS", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vdms.VDMS.html", "title": "VDMS"}, {"imported": "VDMS_Client", "source": "langchain_community.vectorstores.vdms", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.vdms.VDMS_Client.html", "title": "VDMS"}, {"imported": "HuggingFaceEmbeddings", "source": "langchain_community.embeddings.huggingface", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.huggingface.HuggingFaceEmbeddings.html", "title": "VDMS"}]-->
+from langchain_community.document_loaders import TextLoader
+from langchain.text_splitter import CharacterTextSplitter
+
+loader = TextLoader("./state_of_the_union.txt")
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+
+from langchain_community.vectorstores import VDMS
+from langchain_community.vectorstores.vdms import VDMS_Client
+from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+
+client = VDMS_Client("localhost", 55555)
+vectorstore = VDMS.from_documents(
+    docs,
+    client=client,
+    collection_name="langchain-demo",
+    embedding_function=HuggingFaceEmbeddings(),
+    engine="FaissFlat"
+    distance_strategy="L2",
+)
+
+query = "What did the president say about Ketanji Brown Jackson"
+results = vectorstore.similarity_search(query)
+```
+
+VDMSラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/vdms)をご覧ください。

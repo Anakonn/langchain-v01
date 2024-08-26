@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# MediaWikiDump
+
+>[MediaWiki XML Dumps](https://www.mediawiki.org/wiki/Manual:Importing_XML_dumps) 는 wiki의 내용(모든 개정판의 wiki 페이지)을 포함하지만 사이트 관련 데이터는 포함하지 않습니다. XML 덤프에는 사용자 계정, 이미지, 편집 로그 등이 포함되지 않습니다.
+
+## 설치 및 설정
+
+몇 가지 python 패키지를 설치해야 합니다.
+
+`mediawiki-utilities`는 병합되지 않은 브랜치에서 XML 스키마 0.11을 지원합니다.
+
+```bash
+pip install -qU git+https://github.com/mediawiki-utilities/python-mwtypes@updates_schema_0.11
+```
+
+`mediawiki-utilities mwxml`에는 버그가 있으며 PR이 보류 중입니다.
+
+```bash
+pip install -qU git+https://github.com/gdedrouas/python-mwxml@xml_format_0.11
+pip install -qU mwparserfromhell
+```
+
+## 문서 로더
+
+[사용 예제](/docs/integrations/document_loaders/mediawikidump)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "MWDumpLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.mediawikidump.MWDumpLoader.html", "title": "MediaWikiDump"}]-->
+from langchain_community.document_loaders import MWDumpLoader
+```

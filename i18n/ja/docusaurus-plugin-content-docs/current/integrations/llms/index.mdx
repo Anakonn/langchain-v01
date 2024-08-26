@@ -1,0 +1,116 @@
+---
+keywords:
+- 互換性
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# LLMs
+
+## 機能 (ネイティブでサポートされている)
+
+すべての LLM は Runnable インターフェースを実装しており、すべてのメソッド (つまり `ainvoke`、`batch`、`abatch`、`stream`、`astream`) のデフォルトの実装が用意されています。これにより、すべての LLM に基本的な非同期、ストリーミング、バッチのサポートが提供されます。デフォルトでは以下のように実装されています:
+- *非同期*サポートは、それぞれの同期メソッドを asyncio のデフォルトのスレッドプールエグゼキューターで呼び出すことになっています。これにより、LLM の実行中に他の非同期関数がプログレスできるようになります。
+- *ストリーミング*サポートは、最終的な結果を返す単一の値の `Iterator` (または非同期ストリーミングの場合は `AsyncIterator`) を返すことになっています。これは、LLM プロバイダーからのネイティブなトークンごとのストリーミングはサポートしていませんが、トークンの反復子を期待するコードが、すべての LLM インテグレーションで動作するようになります。
+- *バッチ*サポートは、スレッドプールエグゼキューター (同期バッチの場合) または `asyncio.gather` (非同期バッチの場合) を使って、各入力を並列に LLM に呼び出すことになっています。並行性は `RunnableConfig` の `max_concurrency` キーで制御できます。
+
+各 LLM インテグレーションは、非同期、ストリーミング、バッチのネイティブな実装を任意で提供できます。プロバイダーがそれをサポートしている場合は、より効率的になります。表には、各インテグレーションでどの機能がネイティブでサポートされているかが示されています。
+
+モデル|呼び出し|非同期呼び出し|ストリーミング|非同期ストリーミング|バッチ|非同期バッチ
+:-|:-:|:-:|:-:|:-:|:-:|:-:
+AI21|✅|❌|❌|❌|❌|❌
+AlephAlpha|✅|❌|❌|❌|❌|❌
+AmazonAPIGateway|✅|❌|❌|❌|❌|❌
+Anthropic|✅|✅|✅|✅|❌|❌
+Anyscale|✅|✅|✅|✅|✅|✅
+Aphrodite|✅|❌|❌|❌|✅|❌
+Arcee|✅|❌|❌|❌|❌|❌
+Aviary|✅|❌|❌|❌|❌|❌
+AzureMLOnlineEndpoint|✅|❌|❌|❌|✅|❌
+AzureOpenAI|✅|✅|✅|✅|✅|✅
+BaichuanLLM|✅|❌|❌|❌|❌|❌
+Banana|✅|❌|❌|❌|❌|❌
+Baseten|✅|❌|❌|❌|❌|❌
+Beam|✅|❌|❌|❌|❌|❌
+Bedrock|✅|✅|✅|✅|❌|❌
+CTransformers|✅|✅|❌|❌|❌|❌
+CTranslate2|✅|❌|❌|❌|✅|❌
+CerebriumAI|✅|❌|❌|❌|❌|❌
+ChatGLM|✅|❌|❌|❌|❌|❌
+Clarifai|✅|❌|❌|❌|❌|❌
+Cohere|✅|✅|❌|❌|❌|❌
+Databricks|✅|❌|❌|❌|❌|❌
+DeepInfra|✅|✅|✅|✅|❌|❌
+DeepSparse|✅|✅|✅|✅|❌|❌
+EdenAI|✅|✅|❌|❌|❌|❌
+Fireworks|✅|✅|✅|✅|✅|✅
+ForefrontAI|✅|❌|❌|❌|❌|❌
+Friendli|✅|✅|✅|✅|❌|❌
+GPT4All|✅|❌|❌|❌|❌|❌
+GigaChat|✅|✅|✅|✅|✅|✅
+GooglePalm|✅|❌|✅|❌|✅|❌
+GooseAI|✅|❌|❌|❌|❌|❌
+GradientLLM|✅|✅|❌|❌|✅|✅
+HuggingFaceEndpoint|✅|✅|✅|✅|❌|❌
+HuggingFaceHub|✅|❌|❌|❌|❌|❌
+HuggingFacePipeline|✅|❌|❌|❌|✅|❌
+HuggingFaceTextGenInference|✅|✅|✅|✅|❌|❌
+HumanInputLLM|✅|❌|❌|❌|❌|❌
+IpexLLM|✅|❌|❌|❌|❌|❌
+JavelinAIGateway|✅|✅|❌|❌|❌|❌
+KoboldApiLLM|✅|❌|❌|❌|❌|❌
+Konko|✅|✅|❌|❌|❌|❌
+LlamaCpp|✅|❌|✅|❌|❌|❌
+Llamafile|✅|❌|✅|❌|❌|❌
+MLXPipeline|✅|❌|✅|❌|❌|❌
+ManifestWrapper|✅|❌|❌|❌|❌|❌
+Minimax|✅|❌|❌|❌|❌|❌
+Mlflow|✅|❌|❌|❌|❌|❌
+MlflowAIGateway|✅|❌|❌|❌|❌|❌
+Modal|✅|❌|❌|❌|❌|❌
+MosaicML|✅|❌|❌|❌|❌|❌
+NIBittensorLLM|✅|❌|❌|❌|❌|❌
+NLPCloud|✅|❌|❌|❌|❌|❌
+Nebula|✅|❌|❌|❌|❌|❌
+OCIGenAI|✅|❌|❌|❌|❌|❌
+OCIModelDeploymentTGI|✅|❌|❌|❌|❌|❌
+OCIModelDeploymentVLLM|✅|❌|❌|❌|❌|❌
+OctoAIEndpoint|✅|✅|✅|✅|✅|✅
+Ollama|✅|❌|❌|❌|❌|❌
+OpaquePrompts|✅|❌|❌|❌|❌|❌
+OpenAI|✅|✅|✅|✅|✅|✅
+OpenLLM|✅|✅|❌|❌|❌|❌
+OpenLM|✅|✅|✅|✅|✅|✅
+PaiEasEndpoint|✅|❌|✅|❌|❌|❌
+Petals|✅|❌|❌|❌|❌|❌
+PipelineAI|✅|❌|❌|❌|❌|❌
+Predibase|✅|❌|❌|❌|❌|❌
+PredictionGuard|✅|❌|❌|❌|❌|❌
+PromptLayerOpenAI|✅|❌|❌|❌|❌|❌
+QianfanLLMEndpoint|✅|✅|✅|✅|❌|❌
+RWKV|✅|❌|❌|❌|❌|❌
+Replicate|✅|❌|✅|❌|❌|❌
+SagemakerEndpoint|✅|❌|❌|❌|❌|❌
+SambaStudio|✅|❌|✅|❌|❌|❌
+Sambaverse|✅|❌|✅|❌|❌|❌
+SelfHostedHuggingFaceLLM|✅|❌|❌|❌|❌|❌
+SelfHostedPipeline|✅|❌|❌|❌|❌|❌
+SparkLLM|✅|❌|✅|❌|❌|❌
+StochasticAI|✅|❌|❌|❌|❌|❌
+TextGen|✅|❌|❌|❌|❌|❌
+TitanTakeoff|✅|❌|✅|❌|❌|❌
+TitanTakeoffPro|✅|❌|✅|❌|❌|❌
+Together|✅|✅|❌|❌|❌|❌
+Tongyi|✅|✅|✅|✅|✅|✅
+VLLM|✅|❌|❌|❌|✅|❌
+VLLMOpenAI|✅|✅|✅|✅|✅|✅
+VertexAI|✅|✅|✅|❌|✅|✅
+VertexAIModelGarden|✅|✅|❌|❌|✅|✅
+VolcEngineMaasLLM|✅|❌|✅|❌|❌|❌
+WatsonxLLM|✅|❌|✅|❌|✅|❌
+WeightOnlyQuantPipeline|✅|❌|❌|❌|❌|❌
+Writer|✅|❌|❌|❌|❌|❌
+Xinference|✅|❌|❌|❌|❌|❌
+YandexGPT|✅|✅|❌|❌|❌|❌
+Yuan2|✅|❌|❌|❌|❌|❌

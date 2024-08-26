@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# spaCy
+
+>[spaCy](https://spacy.io/) est une bibliothèque logicielle open-source pour le traitement avancé du langage naturel, écrite dans les langages de programmation Python et Cython.
+
+## Installation et configuration
+
+```bash
+pip install spacy
+```
+
+## Diviseur de texte
+
+Voir un [exemple d'utilisation](/docs/modules/data_connection/document_transformers/split_by_token#spacy).
+
+```python
+<!--IMPORTS:[{"imported": "SpacyTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/spacy/langchain_text_splitters.spacy.SpacyTextSplitter.html", "title": "spaCy"}]-->
+from langchain_text_splitters import SpacyTextSplitter
+```
+
+## Modèles d'intégration de texte
+
+Voir un [exemple d'utilisation](/docs/integrations/text_embedding/spacy_embedding)
+
+```python
+<!--IMPORTS:[{"imported": "SpacyEmbeddings", "source": "langchain_community.embeddings.spacy_embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.spacy_embeddings.SpacyEmbeddings.html", "title": "spaCy"}]-->
+from langchain_community.embeddings.spacy_embeddings import SpacyEmbeddings
+```

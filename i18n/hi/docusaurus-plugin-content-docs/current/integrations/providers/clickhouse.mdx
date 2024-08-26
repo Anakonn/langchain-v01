@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# ClickHouse
+
+> [ClickHouse](https://clickhouse.com/) वास्तविक समय के ऐप्स और विश्लेषण के लिए तेज और संसाधन कुशल ओपन-सोर्स डेटाबेस है जिसमें पूर्ण SQL समर्थन और विश्लेषणात्मक क्वेरी लिखने में उपयोगकर्ताओं की मदद करने के लिए कई कार्यों का एक व्यापक श्रृंखला है।
+> इसमें डेटा संरचनाएं और दूरी खोज कार्यों (जैसे `L2Distance`) के साथ-साथ
+> [लगभग निकटतम पड़ोसी खोज सूचकांक](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes)
+> जो ClickHouse को SQL के साथ वेक्टर को संग्रहीत और खोजने के लिए उच्च प्रदर्शन और पैमाने योग्य वेक्टर डेटाबेस के रूप में उपयोग करने में सक्षम बनाता है।
+
+## स्थापना और सेटअप
+
+हमें `clickhouse-connect` पायथन पैकेज स्थापित करना होगा।
+
+```bash
+pip install clickhouse-connect
+```
+
+## वेक्टर स्टोर
+
+एक [उपयोग उदाहरण](/docs/integrations/vectorstores/clickhouse) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "Clickhouse", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clickhouse.Clickhouse.html", "title": "ClickHouse"}, {"imported": "ClickhouseSettings", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.clickhouse.ClickhouseSettings.html", "title": "ClickHouse"}]-->
+from langchain_community.vectorstores import Clickhouse, ClickhouseSettings
+```

@@ -1,0 +1,51 @@
+---
+translated: true
+---
+
+# レプリケート
+
+このページでは、LangChain 内でモデルをレプリケートする方法について説明します。
+
+## インストールとセットアップ
+
+- [Replicate](https://replicate.com) アカウントを作成します。APIキーを取得し、環境変数 (`REPLICATE_API_TOKEN`) として設定します。
+- `pip install replicate` を使用して [Replicate python クライアント](https://github.com/replicate/replicate-python) をインストールします。
+
+## モデルの呼び出し
+
+[Replicate explore page](https://replicate.com/explore) でモデルを見つけてから、モデル名とバージョンを次の形式で貼り付けます: `owner-name/model-name:version`
+
+例えば、この [dolly モデル](https://replicate.com/replicate/dolly-v2-12b) の場合、API タブをクリックします。モデル名/バージョンは次のようになります: `"replicate/dolly-v2-12b:ef0e1aefc61f8e096ebe4db6b2bacc297daf2ef6899f0f7e001ec445893500e5"`
+
+`model` パラメータのみが必須ですが、他のモデルパラメータも `input={model_param: value, ...}` 形式で渡すことができます。
+
+例えば、Stable Diffusion を実行し、画像の寸法を変更したい場合:
+
+```python
+Replicate(model="stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf", input={'image_dimensions': '512x512'})
+```
+
+*モデルの最初の出力のみが返されることに注意してください。*
+ここから、モデルを初期化できます:
+
+```python
+llm = Replicate(model="replicate/dolly-v2-12b:ef0e1aefc61f8e096ebe4db6b2bacc297daf2ef6899f0f7e001ec445893500e5")
+```
+
+そして、それを実行します:
+
+```python
+prompt = """
+Answer the following yes/no question by reasoning step by step.
+Can a dog drive a car?
+"""
+llm(prompt)
+```
+
+この構文を使用して、任意の Replicate モデル（LLM だけでなく）を呼び出すことができます。例えば、[Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion) を呼び出すことができます:
+
+```python
+text2image = Replicate(model="stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf", input={'image_dimensions':'512x512'})
+
+image_output = text2image("A cat riding a motorcycle by Picasso")
+```

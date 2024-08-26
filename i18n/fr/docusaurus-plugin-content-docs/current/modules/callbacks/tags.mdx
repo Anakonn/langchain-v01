@@ -1,0 +1,7 @@
+---
+translated: true
+---
+
+# Étiquettes
+
+Vous pouvez ajouter des étiquettes à vos rappels en passant un argument `tags` aux méthodes `call()`/`run()`/`apply()`. Cela est utile pour filtrer vos journaux, par exemple si vous voulez journaliser toutes les requêtes effectuées à une `LLMChain` spécifique, vous pouvez ajouter une étiquette, puis filtrer vos journaux par cette étiquette. Vous pouvez passer des étiquettes aux rappels du constructeur et de la requête, voir les exemples ci-dessus pour plus de détails. Ces étiquettes sont ensuite transmises à l'argument `tags` des méthodes de rappel "start", c'est-à-dire `on_llm_start`, `on_chat_model_start`, `on_chain_start`, `on_tool_start`.

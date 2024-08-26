@@ -1,0 +1,188 @@
+---
+sidebar_position: 5
+translated: true
+---
+
+# 統合機能の貢献
+
+始めるには、[コードへの貢献](/docs/contributing/code/)ガイドに概説されている依存関係をすべて用意してください。
+
+LangChainに統合機能を貢献できる場所は以下の2つです:
+
+- **コミュニティ**: LangChainとオープンソースコミュニティが主に管理する軽量な統合機能。
+- **パートナーパッケージ**: LangChainとパートナーが共同で管理する独立したパッケージ。
+
+ほとんどの場合、新しい統合機能はコミュニティパッケージに追加されるべきです。パートナーパッケージは別のパッケージとして管理する必要があるため、より多くのメンテナンスが必要です。新しいパートナーパッケージを作成する前に、LangChainチームに確認してください。
+
+以下のセクションでは、架空の企業「Parrot Link AI」の事例を使って、これらのパッケージにどのように貢献するかを説明します。
+
+## コミュニティパッケージ
+
+`langchain-community`パッケージは`libs/community`にあり、ほとんどの統合機能が含まれています。
+
+`pip install langchain-community`でインストールでき、エクスポートされたメンバーは以下のようにインポートできます。
+
+```python
+from langchain_community.chat_models import ChatParrotLink
+from langchain_community.llms import ParrotLinkLLM
+from langchain_community.vectorstores import ParrotLinkVectorStore
+```
+
+`community`パッケージは手動でインストールした依存パッケージに依存しているため、インストールされていないパッケージをインポートしようとするとエラーが発生します。架空の例では、`parrot-link-sdk`をインストールせずに`ParrotLinkLLM`をインポートしようとすると、それをインストールするよう指示する`ImportError`が表示されます。
+
+Parrot Link AIのチャットモデルを実装したい場合は、`libs/community/langchain_community/chat_models/parrot_link.py`に以下のコードを追加します:
+
+```python
+<!--IMPORTS:[{"imported": "BaseChatModel", "source": "langchain_core.language_models.chat_models", "docs": "https://api.python.langchain.com/en/latest/language_models/langchain_core.language_models.chat_models.BaseChatModel.html", "title": "Contribute Integrations"}]-->
+from langchain_core.language_models.chat_models import BaseChatModel
+
+class ChatParrotLink(BaseChatModel):
+    """ChatParrotLink chat model.
+
+    Example:
+        .. code-block:: python
+
+            from langchain_community.chat_models import ChatParrotLink
+
+            model = ChatParrotLink()
+    """
+
+    ...
+```
+
+テストは以下の場所に書きます:
+
+- ユニットテスト: `libs/community/tests/unit_tests/chat_models/test_parrot_link.py`
+- 統合テスト: `libs/community/tests/integration_tests/chat_models/test_parrot_link.py`
+
+ドキュメントは以下の場所に追加します:
+
+- `docs/docs/integrations/chat/parrot_link.ipynb`
+
+## LangChainリポジトリ内のパートナーパッケージ
+
+パートナーパッケージは、LangChainのモノレポ内またはリポジトリ外にホストできます。
+
+LangChainのモノレポ内のパートナーパッケージは`libs/partners/{partner}`に配置され、パッケージのソースコードは`libs/partners/{partner}/langchain_{partner}`にあります。
+
+ユーザーは`pip install langchain-{partner}`でパッケージをインストールし、以下のようにパッケージメンバーをインポートできます:
+
+```python
+from langchain_{partner} import X
+```
+
+### 新しいパッケージの設定
+
+新しいパートナーパッケージを設定するには、最新バージョンのLangChain CLIを使用します。以下のようにインストールまたはアップデートできます:
+
+```bash
+pip install -U langchain-cli
+```
+
+Parrot Link AIという会社のパートナーパッケージを作成したい場合は、以下のコマンドを実行してください:
+
+```bash
+cd libs/partners
+langchain-cli integration new
+> Name: parrot-link
+> Name of integration in PascalCase [ParrotLink]: ParrotLink
+```
+
+これにより、以下の構造の新しいパッケージが`libs/partners/parrot-link`に作成されます:
+
+```text
+libs/partners/parrot-link/
+  langchain_parrot_link/ # folder containing your package
+    ...
+  tests/
+    ...
+  docs/ # bootstrapped docs notebooks, must be moved to /docs in monorepo root
+    ...
+  scripts/ # scripts for CI
+    ...
+  LICENSE
+  README.md # fill out with information about your package
+  Makefile # default commands for CI
+  pyproject.toml # package metadata, mostly managed by Poetry
+  poetry.lock # package lockfile, managed by Poetry
+  .gitignore
+```
+
+### パッケージの実装
+
+まず、パッケージに必要な依存関係(会社のSDKなど)を追加します:
+
+```bash
+poetry add parrot-link-sdk
+```
+
+型チェックのための別の依存関係が必要な場合は、以下のようにして`typing`グループに追加できます:
+
+```bash
+poetry add --group typing types-parrot-link-sdk
+```
+
+次に、`libs/partners/parrot-link/langchain_parrot_link`でパッケージを実装します。
+
+デフォルトでは、チャットモデル、LLM、ベクトルストアのスタブが含まれています。使用しないファイルは削除し、`__init__.py`から削除してください。
+
+### ユニットテストと統合テストの記述
+
+`tests/`ディレクトリにいくつかの基本的なテストが用意されています。パッケージの機能をカバーするためのテストをさらに追加する必要があります。
+
+テストの実行と実装の詳細については、[テストガイド](/docs/contributing/testing/)を参照してください。
+
+### ドキュメントの記述
+
+ドキュメントは、モノレポのルートにある`docs/`ディレクトリのJupyter notebookから生成されます。関連する`docs/docs/integrations`ディレクトリにnotebookを配置する必要があります。
+
+### (必要な場合) コミュニティ統合機能の非推奨化
+
+注意: これは、既存のコミュニティ統合機能をパートナーパッケージに移行する場合にのみ必要です。統合する機能がLangChainに新規の場合(つまり、`community`パッケージにまだ存在しない場合)、この手順はスキップできます。
+
+私たちの`ChatParrotLink`チャットモデルをコミュニティパッケージからパートナーパッケージに移行したと仮定しましょう。その場合、コミュニティパッケージの古いモデルを非推奨にする必要があります。
+
+`libs/community/langchain_community/chat_models/parrot_link.py`で、古いモデルに`@deprecated`デコレーターを追加することで行います。
+
+変更前は以下のようになっていました:
+
+```python
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+変更後は以下のようになります:
+
+```python
+<!--IMPORTS:[{"imported": "deprecated", "source": "langchain_core._api.deprecation", "docs": "https://api.python.langchain.com/en/latest/_api/langchain_core._api.deprecation.deprecated.html", "title": "Contribute Integrations"}]-->
+from langchain_core._api.deprecation import deprecated
+
+@deprecated(
+    since="0.0.<next community version>",
+    removal="0.2.0",
+    alternative_import="langchain_parrot_link.ChatParrotLink"
+)
+class ChatParrotLink(BaseChatModel):
+  ...
+```
+
+パートナーパッケージに移行する各コンポーネントについて、この操作を行う必要があります。
+
+### その他の手順
+
+貢献者の手順:
+
+- [ ] `.github/workflows/_integration_test.yml`の手動統合ワークフローにシークレット名を追加
+- [ ] `.github/workflows/_release.yml`のリリースワークフロー(プレリリーステスト用)にシークレットを追加
+
+メンテナーの手順(貢献者は**行わない**):
+
+- [ ] PyPIとテストPyPIプロジェクトを設定
+- [ ] GitHubアクションに資格情報シークレットを追加
+- [ ] conda-forgeにパッケージを追加
+
+## 外部リポジトリのパートナーパッケージ
+
+外部リポジトリのパートナーパッケージは、LangChainチームとパートナー組織の間で調整する必要があります。これにより、それらが維持および更新されることが保証されます。
+
+外部リポジトリでパートナーパッケージを作成することに興味がある場合は、まずLangChainリポジトリ内でパッケージを作成し、その後LangChainチームに連絡して、外部リポジトリに移動する方法について相談してください。

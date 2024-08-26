@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# LanceDB
+
+このページでは、LangChainでの[LanceDB](https://github.com/lancedb/lancedb)の使用方法について説明します。
+インストールとセットアップ、そして特定のLanceDBラッパーへの参照の2つの部分に分かれています。
+
+## インストールとセットアップ
+
+- `pip install lancedb`でPythonSDKをインストールします
+
+## ラッパー
+
+### VectorStore
+
+LanceDBデータベースを使用するためのラッパーが存在し、セマンティック検索や例の選択のためのベクトルストアとして使用できます。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "LanceDB", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.lancedb.LanceDB.html", "title": "LanceDB"}]-->
+from langchain_community.vectorstores import LanceDB
+```
+
+LanceDBラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/lancedb)を参照してください

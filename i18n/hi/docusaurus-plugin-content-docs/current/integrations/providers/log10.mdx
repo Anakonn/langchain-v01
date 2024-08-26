@@ -1,0 +1,111 @@
+---
+translated: true
+---
+
+# Log10
+
+यह पृष्ठ [Log10](https://log10.io) का उपयोग करने के बारे में कवर करता है जो LangChain के भीतर है।
+
+## Log10 क्या है?
+
+Log10 एक [ओपन-सोर्स](https://github.com/log10-io/log10) प्रॉक्सीलेस एलएलएम डेटा प्रबंधन और एप्लिकेशन विकास प्लेटफॉर्म है जो आपको अपने Langchain कॉल्स को लॉग, डीबग और टैग करने देता है।
+
+## त्वरित शुरुआत
+
+1. [log10.io](https://log10.io) पर अपना मुफ्त खाता बनाएं
+2. सेटिंग्स और संगठन टैब से अपना `LOG10_TOKEN` और `LOG10_ORG_ID` को पर्यावरण चर के रूप में जोड़ें।
+3. `LOG10_URL=https://log10.io` और आपका सामान्य एलएलएम API कुंजी: उदाहरण के लिए `OPENAI_API_KEY` या `ANTHROPIC_API_KEY` को भी अपने पर्यावरण में जोड़ें
+
+## Langchain के लिए Log10 डेटा प्रबंधन कैसे सक्षम करें
+
+Log10 के साथ एकीकरण एक सरल वन-लाइन `log10_callback` एकीकरण है जैसा कि नीचे दिखाया गया है:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Log10"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Log10"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+
+from log10.langchain import Log10Callback
+from log10.llm import Log10Config
+
+log10_callback = Log10Callback(log10_config=Log10Config())
+
+messages = [
+    HumanMessage(content="You are a ping pong machine"),
+    HumanMessage(content="Ping?"),
+]
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", callbacks=[log10_callback])
+```
+
+[Log10 + Langchain + Logs docs](https://github.com/log10-io/log10/blob/main/logging.md#langchain-logger)
+
+[More details + screenshots](https://log10.io/docs/observability/logs) including instructions for self-hosting logs
+
+## Log10 के साथ टैग कैसे उपयोग करें
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Log10"}, {"imported": "ChatAnthropic", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.anthropic.ChatAnthropic.html", "title": "Log10"}, {"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Log10"}, {"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Log10"}]-->
+from langchain_openai import OpenAI
+from langchain_community.chat_models import ChatAnthropic
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+
+from log10.langchain import Log10Callback
+from log10.llm import Log10Config
+
+log10_callback = Log10Callback(log10_config=Log10Config())
+
+messages = [
+    HumanMessage(content="You are a ping pong machine"),
+    HumanMessage(content="Ping?"),
+]
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", callbacks=[log10_callback], temperature=0.5, tags=["test"])
+completion = llm.predict_messages(messages, tags=["foobar"])
+print(completion)
+
+llm = ChatAnthropic(model="claude-2", callbacks=[log10_callback], temperature=0.7, tags=["baz"])
+llm.predict_messages(messages)
+print(completion)
+
+llm = OpenAI(model_name="gpt-3.5-turbo-instruct", callbacks=[log10_callback], temperature=0.5)
+completion = llm.predict("You are a ping pong machine.\nPing?\n")
+print(completion)
+```
+
+आप सीधे OpenAI कॉल और Langchain एलएलएम कॉल को भी मिला सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Log10"}]-->
+import os
+from log10.load import log10, log10_session
+import openai
+from langchain_openai import OpenAI
+
+log10(openai)
+
+with log10_session(tags=["foo", "bar"]):
+    # Log a direct OpenAI call
+    response = openai.Completion.create(
+        model="text-ada-001",
+        prompt="Where is the Eiffel Tower?",
+        temperature=0,
+        max_tokens=1024,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
+    )
+    print(response)
+
+    # Log a call via Langchain
+    llm = OpenAI(model_name="text-ada-001", temperature=0.5)
+    response = llm.predict("You are a ping pong machine.\nPing?\n")
+    print(response)
+```
+
+## Langchain कॉल कैसे डीबग करें
+
+[Example of debugging](https://log10.io/docs/observability/prompt_chain_debugging)
+
+[More Langchain examples](https://github.com/log10-io/log10/tree/main/examples#langchain)

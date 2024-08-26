@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# 크로마
+
+>[크로마](https://docs.trychroma.com/getting-started)는 임베딩을 사용하여 AI 애플리케이션을 구축하기 위한 데이터베이스입니다.
+
+## 설치 및 설정
+
+```bash
+pip install langchain-chroma
+```
+
+## VectorStore
+
+크로마 벡터 데이터베이스를 래핑하는 래퍼가 있어 의미 검색 또는 예제 선택을 위해 벡터 스토어로 사용할 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Chroma"}]-->
+from langchain_chroma import Chroma
+```
+
+크로마 래퍼에 대한 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/chroma)을 참조하세요.
+
+## Retriever
+
+[사용 예제](/docs/integrations/retrievers/self_query/chroma_self_query)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "SelfQueryRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain.retrievers.self_query.base.SelfQueryRetriever.html", "title": "Chroma"}]-->
+from langchain.retrievers import SelfQueryRetriever
+```

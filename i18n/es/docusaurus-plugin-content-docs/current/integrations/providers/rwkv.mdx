@@ -1,0 +1,73 @@
+---
+translated: true
+---
+
+# RWKV-4
+
+Esta página cubre cómo usar el wrapper `RWKV-4` dentro de LangChain.
+Se divide en dos partes: instalación y configuración, y luego uso con un ejemplo.
+
+## Instalación y configuración
+
+- Instala el paquete de Python con `pip install rwkv`
+- Instala el paquete de tokenizador de Python con `pip install tokenizer`
+- Descarga un [modelo RWKV](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main) y colócalo en el directorio que desees
+- Descarga el [archivo de tokens](https://raw.githubusercontent.com/BlinkDL/ChatRWKV/main/20B_tokenizer.json)
+
+## Uso
+
+### RWKV
+
+Para usar el wrapper RWKV, debes proporcionar la ruta al archivo del modelo pre-entrenado y la configuración del tokenizador.
+
+```python
+<!--IMPORTS:[{"imported": "RWKV", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.rwkv.RWKV.html", "title": "RWKV-4"}]-->
+from langchain_community.llms import RWKV
+```
+
+# Prueba el modelo
+
+```python
+
+def generate_prompt(instruction, input=None):
+    if input:
+        return f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+# Instruction:
+{instruction}
+
+# Input:
+{input}
+
+# Response:
+"""
+    else:
+        return f"""Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+# Instruction:
+{instruction}
+
+# Response:
+"""
+
+
+model = RWKV(model="./models/RWKV-4-Raven-3B-v7-Eng-20230404-ctx4096.pth", strategy="cpu fp32", tokens_path="./rwkv/20B_tokenizer.json")
+response = model.invoke(generate_prompt("Once upon a time, "))
+```
+
+## Archivo del modelo
+
+Puedes encontrar enlaces para descargar archivos de modelos en el repositorio [RWKV-4-Raven](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main).
+
+### Modelos Rwkv-4 -> VRAM recomendada
+
+```text
+RWKV VRAM
+Model | 8bit | bf16/fp16 | fp32
+14B   | 16GB | 28GB      | >50GB
+7B    | 8GB  | 14GB      | 28GB
+3B    | 2.8GB| 6GB       | 12GB
+1b5   | 1.3GB| 3GB       | 6GB
+```
+
+Consulta la página [rwkv pip](https://pypi.org/project/rwkv/) para obtener más información sobre estrategias, incluido el streaming y el soporte de CUDA.

@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# Brave Search
+
+>[Brave Search](https://en.wikipedia.org/wiki/Brave_Search)は、Brave Softwareが開発した検索エンジンです。
+> - `Brave Search`は独自のWebインデックスを使用しています。2022年5月時点では、100億ページ以上をカバーし、BingのAPIやオプトインベースのGoogle(クライアントサイド)からの検索結果を除いて、92%の検索結果を提供しています。Braveによると、スパムやその他の低品質なコンテンツを回避するために、インデックスは「Google やBingよりも意図的に小さく」なっているため、「Brave Searchは長尾クエリの回収ではGoogleに及ばない」とのことです。
+>- `Brave Search Premium`: 2023年4月時点では、Brave Searchはアド フリーのウェブサイトですが、広告を含むモデルに移行する予定です。プレミアムユーザーはアド フリーの体験を得られます。ユーザーのIPアドレスを含むユーザーデータは、デフォルトでは収集されません。オプトインデータ収集には、プレミアムアカウントが必要になります。
+
+## インストールとセットアップ
+
+Brave Search APIにアクセスするには、[アカウントを作成してAPIキーを取得する](https://api.search.brave.com/app/dashboard)必要があります。
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/brave_search)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearchLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.brave_search.BraveSearchLoader.html", "title": "Brave Search"}]-->
+from langchain_community.document_loaders import BraveSearchLoader
+```
+
+## ツール
+
+[使用例](/docs/integrations/tools/brave_search)をご覧ください。
+
+```python
+<!--IMPORTS:[{"imported": "BraveSearch", "source": "langchain.tools", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.brave_search.tool.BraveSearch.html", "title": "Brave Search"}]-->
+from langchain.tools import BraveSearch
+```

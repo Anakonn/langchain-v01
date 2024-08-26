@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+translated: true
+---
+
+# 比較評価器
+
+LangChainの比較評価器は、2つの異なるチェーンやLLM出力を測定するのに役立ちます。これらの評価器は、2つの言語モデル間のA/Bテストや、同じモデルの異なるバージョンの比較など、比較分析に役立ちます。また、AI支援型強化学習のための好みのスコアを生成するのにも役立ちます。
+
+これらの評価器は `PairwiseStringEvaluator` クラスを継承しており、2つの文字列、つまり通常は2つの異なるプロンプトやモデル、または同じモデルの2つのバージョンからの出力を比較するためのインターフェースを提供します。本質的に、比較評価器は2つの文字列のペアを評価し、評価スコアとその他の関連する詳細を含む辞書を返します。
+
+カスタムの比較評価器を作成するには、`PairwiseStringEvaluator` クラスを継承し、`_evaluate_string_pairs` メソッドを上書きします。非同期評価が必要な場合は、`_aevaluate_string_pairs` メソッドも上書きします。
+
+比較評価器の主要なメソッドとプロパティは以下の通りです:
+
+- `evaluate_string_pairs`: 出力文字列ペアを評価します。このメソッドはカスタムの評価器を作成する際に上書きする必要があります。
+- `aevaluate_string_pairs`: 非同期的に出力文字列ペアを評価します。非同期評価の場合は、このメソッドを上書きする必要があります。
+- `requires_input`: このプロパティは、この評価器が入力文字列を必要とするかどうかを示します。
+- `requires_reference`: このプロパティは、この評価器が参照ラベルを必要とするかどうかを指定します。
+
+:::note LangSmith サポート
+[run_on_dataset](https://api.python.langchain.com/en/latest/langchain_api_reference.html#module-langchain.smith) 評価メソッドは、1つのモデルのみを評価するように設計されているため、これらの評価器をサポートしていません。
+:::
+
+カスタムの評価器の作成と利用可能な組み込みの比較評価器の詳細については、以下のセクションで説明しています。
+
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />

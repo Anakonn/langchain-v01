@@ -1,0 +1,37 @@
+---
+translated: true
+---
+
+# Llama.cpp
+
+यह पृष्ठ [llama.cpp](https://github.com/ggerganov/llama.cpp) का LangChain में उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट Llama-cpp रैपरों के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `pip install llama-cpp-python` के साथ Python पैकेज स्थापित करें
+- [समर्थित मॉडलों](https://github.com/ggerganov/llama.cpp#description) में से एक डाउनलोड करें और उन्हें [निर्देशों](https://github.com/ggerganov/llama.cpp) के अनुसार llama.cpp प्रारूप में रूपांतरित करें
+
+## रैपर
+
+### LLM
+
+LlamaCpp LLM रैपर मौजूद है, जिसका उपयोग आप इस प्रकार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCpp", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.llamacpp.LlamaCpp.html", "title": "Llama.cpp"}]-->
+from langchain_community.llms import LlamaCpp
+```
+
+इसके बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/llms/llamacpp) देखें
+
+### एम्बेडिंग्स
+
+LlamaCpp एम्बेडिंग्स रैपर मौजूद है, जिसका उपयोग आप इस प्रकार कर सकते हैं:
+
+```python
+<!--IMPORTS:[{"imported": "LlamaCppEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.llamacpp.LlamaCppEmbeddings.html", "title": "Llama.cpp"}]-->
+from langchain_community.embeddings import LlamaCppEmbeddings
+```
+
+इसके बारे में अधिक विस्तृत वॉकथ्रू के लिए, [यह नोटबुक](/docs/integrations/text_embedding/llamacpp) देखें

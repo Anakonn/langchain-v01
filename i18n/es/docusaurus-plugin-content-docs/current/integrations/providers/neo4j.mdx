@@ -1,0 +1,67 @@
+---
+traducido: falso
+translated: true
+---
+
+# Neo4j
+
+>¿Qué es `Neo4j`?
+
+>- Neo4j es un `sistema de gestión de bases de datos de código abierto` que se especializa en tecnología de bases de datos de grafos.
+>- Neo4j le permite representar y almacenar datos en nodos y bordes, lo que lo hace ideal para manejar datos conectados y relaciones.
+>- Neo4j proporciona un `Lenguaje de Consulta Cypher`, lo que facilita la interacción y consulta de sus datos de gráficos.
+>- Con Neo4j, puede lograr `recorridos y consultas de gráficos de alto rendimiento`, adecuados para sistemas de nivel de producción.
+
+>Comience a usar Neo4j visitando [su sitio web](https://neo4j.com/).
+
+## Instalación y configuración
+
+- Instale el SDK de Python con `pip install neo4j`
+
+## VectorStore
+
+El índice de vectores de Neo4j se usa como un vectorstore,
+ya sea para búsqueda semántica o selección de ejemplos.
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jVector", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.neo4j_vector.Neo4jVector.html", "title": "Neo4j"}]-->
+from langchain_community.vectorstores import Neo4jVector
+```
+
+Consulte un [ejemplo de uso](/docs/integrations/vectorstores/neo4jvector)
+
+## GraphCypherQAChain
+
+Existe un wrapper alrededor de la base de datos de gráficos Neo4j que le permite generar declaraciones Cypher en función de la entrada del usuario
+y usarlas para recuperar información relevante de la base de datos.
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html", "title": "Neo4j"}, {"imported": "GraphCypherQAChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.graph_qa.cypher.GraphCypherQAChain.html", "title": "Neo4j"}]-->
+from langchain_community.graphs import Neo4jGraph
+from langchain.chains import GraphCypherQAChain
+```
+
+Consulte un [ejemplo de uso](/docs/integrations/graphs/neo4j_cypher)
+
+## Construir un grafo de conocimiento a partir de texto
+
+Los datos de texto a menudo contienen relaciones e ideas ricas que pueden ser útiles para diversos análisis, motores de recomendación o aplicaciones de gestión del conocimiento.
+La API de NLP de Diffbot permite la extracción de entidades, relaciones y significado semántico de datos de texto no estructurados.
+Al combinar la API de NLP de Diffbot con Neo4j, una base de datos de gráficos, puede crear estructuras de gráficos poderosas y dinámicas basadas en la información extraída del texto.
+Estas estructuras de gráficos son completamente consultables y se pueden integrar en varias aplicaciones.
+
+```python
+<!--IMPORTS:[{"imported": "Neo4jGraph", "source": "langchain_community.graphs", "docs": "https://api.python.langchain.com/en/latest/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html", "title": "Neo4j"}, {"imported": "DiffbotGraphTransformer", "source": "langchain_experimental.graph_transformers.diffbot", "docs": "https://api.python.langchain.com/en/latest/graph_transformers/langchain_experimental.graph_transformers.diffbot.DiffbotGraphTransformer.html", "title": "Neo4j"}]-->
+from langchain_community.graphs import Neo4jGraph
+from langchain_experimental.graph_transformers.diffbot import DiffbotGraphTransformer
+```
+
+Consulte un [ejemplo de uso](/docs/integrations/graphs/diffbot)
+
+## Memoria
+
+Consulte un [ejemplo de uso](/docs/integrations/memory/neo4j_chat_message_history).
+
+```python
+from langchain.memory import Neo4jChatMessageHistory
+```

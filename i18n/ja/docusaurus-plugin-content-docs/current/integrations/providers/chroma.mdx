@@ -1,0 +1,33 @@
+---
+translated: true
+---
+
+# Chroma
+
+>[Chroma](https://docs.trychroma.com/getting-started)は、エンベディングを使ってAIアプリケーションを構築するためのデータベースです。
+
+## インストールとセットアップ
+
+```bash
+pip install langchain-chroma
+```
+
+## VectorStore
+
+Chromaベクトルデータベースのラッパーが存在し、セマンティック検索や例の選択に使用できます。
+
+```python
+<!--IMPORTS:[{"imported": "Chroma", "source": "langchain_chroma", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_chroma.vectorstores.Chroma.html", "title": "Chroma"}]-->
+from langchain_chroma import Chroma
+```
+
+Chromaラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/chroma)を参照してください。
+
+## Retriever
+
+[使用例](/docs/integrations/retrievers/self_query/chroma_self_query)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "SelfQueryRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain.retrievers.self_query.base.SelfQueryRetriever.html", "title": "Chroma"}]-->
+from langchain.retrievers import SelfQueryRetriever
+```

@@ -1,0 +1,94 @@
+---
+translated: true
+---
+
+# MongoDB Atlas
+
+>[MongoDB Atlas](https://www.mongodb.com/docs/atlas/) est une base de données cloud entièrement gérée disponible sur AWS, Azure et GCP. Elle dispose désormais d'un support pour la recherche vectorielle native sur les données de documents MongoDB.
+
+## Installation et configuration
+
+Voir les [instructions de configuration détaillées](/docs/integrations/vectorstores/mongodb_atlas).
+
+Nous devons installer le package python `langchain-mongodb`.
+
+```bash
+pip install langchain-mongodb
+```
+
+## Banque de vecteurs
+
+Voir un [exemple d'utilisation](/docs/integrations/vectorstores/mongodb_atlas).
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBAtlasVectorSearch", "source": "langchain_mongodb", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb import MongoDBAtlasVectorSearch
+```
+
+## Caches LLM
+
+### MongoDBCache
+
+Une abstraction pour stocker un cache simple dans MongoDB. Cela n'utilise pas le cache sémantique et ne nécessite pas non plus la création d'un index sur la collection avant la génération.
+
+Pour importer ce cache :
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBCache", "source": "langchain_mongodb.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_mongodb.cache.MongoDBCache.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb.cache import MongoDBCache
+```
+
+Pour utiliser ce cache avec vos LLM :
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain_core.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain_core.globals.set_llm_cache.html", "title": "MongoDB Atlas"}]-->
+from langchain_core.globals import set_llm_cache
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+mongodb_atlas_uri = "<YOUR_CONNECTION_STRING>"
+COLLECTION_NAME="<YOUR_CACHE_COLLECTION_NAME>"
+DATABASE_NAME="<YOUR_DATABASE_NAME>"
+
+set_llm_cache(MongoDBCache(
+    connection_string=mongodb_atlas_uri,
+    collection_name=COLLECTION_NAME,
+    database_name=DATABASE_NAME,
+))
+```
+
+### MongoDBAtlasSemanticCache
+
+Le cache sémantique permet aux utilisateurs de récupérer les invites mises en cache en fonction de la similarité sémantique entre l'entrée de l'utilisateur et les résultats mis en cache précédemment. En interne, il combine MongoDBAtlas à la fois comme un cache et comme une banque de vecteurs.
+Le MongoDBAtlasSemanticCache hérite de `MongoDBAtlasVectorSearch` et nécessite la définition d'un index de recherche vectorielle Atlas pour fonctionner. Veuillez consulter l'[exemple d'utilisation](/docs/integrations/vectorstores/mongodb_atlas) pour savoir comment configurer l'index.
+
+Pour importer ce cache :
+
+```python
+<!--IMPORTS:[{"imported": "MongoDBAtlasSemanticCache", "source": "langchain_mongodb.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_mongodb.cache.MongoDBAtlasSemanticCache.html", "title": "MongoDB Atlas"}]-->
+from langchain_mongodb.cache import MongoDBAtlasSemanticCache
+```
+
+Pour utiliser ce cache avec vos LLM :
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain_core.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain_core.globals.set_llm_cache.html", "title": "MongoDB Atlas"}]-->
+from langchain_core.globals import set_llm_cache
+
+# use any embedding provider...
+from tests.integration_tests.vectorstores.fake_embeddings import FakeEmbeddings
+
+mongodb_atlas_uri = "<YOUR_CONNECTION_STRING>"
+COLLECTION_NAME="<YOUR_CACHE_COLLECTION_NAME>"
+DATABASE_NAME="<YOUR_DATABASE_NAME>"
+
+set_llm_cache(MongoDBAtlasSemanticCache(
+    embedding=FakeEmbeddings(),
+    connection_string=mongodb_atlas_uri,
+    collection_name=COLLECTION_NAME,
+    database_name=DATABASE_NAME,
+))
+```
+
+``

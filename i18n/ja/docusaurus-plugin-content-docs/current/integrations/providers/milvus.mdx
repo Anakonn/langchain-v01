@@ -1,0 +1,28 @@
+---
+translated: true
+---
+
+# Milvus
+
+>[Milvus](https://milvus.io/docs/overview.md)は、深層ニューラルネットワークやその他のマシンラーニング(ML)モデルによって生成された大量の埋め込みベクトルを格納、インデックス化、管理するデータベースです。
+
+## インストールとセットアップ
+
+Pythonの SDKをインストールします:
+
+```bash
+pip install pymilvus
+```
+
+## ベクトルストア
+
+`Milvus`インデックスを使用するためのラッパーが存在し、セマンティック検索や例の選択などに使用できます。
+
+このベクトルストアをインポートするには:
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Milvus"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+`Milvus`ラッパーの詳細なウォークスルーについては、[このノートブック](/docs/integrations/vectorstores/milvus)を参照してください。

@@ -1,0 +1,74 @@
+---
+translated: true
+---
+
+# カサンドラ
+
+> [Apache Cassandra®](https://cassandra.apache.org/) は、NoSQL、行指向、高いスケーラビリティと高可用性を持つデータベースです。
+> バージョン5.0から、データベースには[ベクター検索機能](https://cassandra.apache.org/doc/trunk/cassandra/vector-search/overview.html)が搭載されています。
+
+このページに記載されている統合は、`Cassandra`および他のCQL互換データベース、すなわち`Cassandra Query Language`プロトコルを使用するデータベースで使用できます。
+
+## インストールとセットアップ
+
+以下のPythonパッケージをインストールします:
+
+```bash
+pip install "cassio>=0.1.6"
+```
+
+## ベクターストア
+
+```python
+<!--IMPORTS:[{"imported": "Cassandra", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.cassandra.Cassandra.html", "title": "Cassandra"}]-->
+from langchain_community.vectorstores import Cassandra
+```
+
+詳細は[例のノートブック](/docs/integrations/vectorstores/cassandra)をご覧ください。
+
+## チャットメッセージ履歴
+
+```python
+<!--IMPORTS:[{"imported": "CassandraChatMessageHistory", "source": "langchain_community.chat_message_histories", "docs": "https://api.python.langchain.com/en/latest/chat_message_histories/langchain_community.chat_message_histories.cassandra.CassandraChatMessageHistory.html", "title": "Cassandra"}]-->
+from langchain_community.chat_message_histories import CassandraChatMessageHistory
+```
+
+詳細は[例のノートブック](/docs/integrations/memory/cassandra_chat_message_history)をご覧ください。
+
+## LLMキャッシュ
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraCache
+set_llm_cache(CassandraCache())
+```
+
+詳細は[例のノートブック](/docs/integrations/llms/llm_caching#cassandra-caches)をご覧ください（Cassandraセクションまでスクロールしてください）。
+
+## セマンティックLLMキャッシュ
+
+```python
+<!--IMPORTS:[{"imported": "set_llm_cache", "source": "langchain.globals", "docs": "https://api.python.langchain.com/en/latest/globals/langchain.globals.set_llm_cache.html", "title": "Cassandra"}, {"imported": "CassandraSemanticCache", "source": "langchain_community.cache", "docs": "https://api.python.langchain.com/en/latest/cache/langchain_community.cache.CassandraSemanticCache.html", "title": "Cassandra"}]-->
+from langchain.globals import set_llm_cache
+from langchain_community.cache import CassandraSemanticCache
+set_llm_cache(CassandraSemanticCache(
+    embedding=my_embedding,
+    table_name="my_store",
+))
+```
+
+詳細は[例のノートブック](/docs/integrations/llms/llm_caching#cassandra-caches)をご覧ください（適切なセクションまでスクロールしてください）。
+
+## ドキュメントローダー
+
+```python
+<!--IMPORTS:[{"imported": "CassandraLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.cassandra.CassandraLoader.html", "title": "Cassandra"}]-->
+from langchain_community.document_loaders import CassandraLoader
+```
+
+詳細は[例のノートブック](/docs/integrations/document_loaders/cassandra)をご覧ください。
+
+#### 帰属表示
+
+> Apache Cassandra、CassandraおよびApacheは、[Apache Software Foundation](http://www.apache.org/) の米国および/または他の国における登録商標または商標です。

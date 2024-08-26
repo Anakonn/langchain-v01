@@ -1,0 +1,15 @@
+---
+translated: true
+---
+
+# プライバシーとセーフティ
+
+LLMを使用する際の主な懸念の1つは、プライバイトデータの悪用や有害/非倫理的なテキストの生成です。これは、この分野における活発な研究領域です。ここでは、この研究に触発された組み込みチェーンを紹介します。これらは、LLMの出力をより安全にすることを目的としています。
+
+- [Amazon Comprehend moderation chain](/docs/guides/productionization/safety/amazon_comprehend_chain): [Amazon Comprehend](https://aws.amazon.com/comprehend/)を使用して、個人を特定できる情報(PII)と有害性を検出し、処理します。
+- [Constitutional chain](/docs/guides/productionization/safety/constitutional_chain): モデルの行動を導くべき一連の原則でモデルにプロンプトを与えます。
+- [Hugging Face prompt injection identification](/docs/guides/productionization/safety/hugging_face_prompt_injection): プロンプト・インジェクション攻撃を検出し、処理します。
+- [Layerup Security](/docs/guides/productionization/safety/layerup_security): PIIや機密データをマスキングし、プロンプト・インジェクション、ホーリュシネーション、乱用など、10種類以上のLLMベースの脅威ベクトルを検出・軽減します。
+- [Logical Fallacy chain](/docs/guides/productionization/safety/logical_fallacy_chain): モデルの出力を論理的誤謬に照らし合わせて修正します。
+- [Moderation chain](/docs/guides/productionization/safety/moderation): 出力テキストに有害なものがないかチェックし、フラグ付けします。
+- [Presidio data anonymization](/docs/guides/productionization/safety/presidio_data_anonymization): 機密データの適切な管理と統治を支援します。

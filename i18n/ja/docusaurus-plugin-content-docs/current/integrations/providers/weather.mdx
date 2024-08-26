@@ -1,0 +1,24 @@
+---
+translated: true
+---
+
+# 天気
+
+>[OpenWeatherMap](https://openweathermap.org/)は、オープンソースの気象サービスプロバイダーです。
+
+## インストールと設定
+
+```bash
+pip install pyowm
+```
+
+`OpenWeatherMap APIトークン`を設定する必要があります。
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/weather)を参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "WeatherDataLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.weather.WeatherDataLoader.html", "title": "Weather"}]-->
+from langchain_community.document_loaders import WeatherDataLoader
+```

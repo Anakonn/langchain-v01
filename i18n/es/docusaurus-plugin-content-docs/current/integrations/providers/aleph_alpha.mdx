@@ -1,0 +1,41 @@
+---
+translated: true
+---
+
+# Aleph Alpha
+
+>[Aleph Alpha](https://docs.aleph-alpha.com/) se fundó en 2019 con la misión de investigar y construir la tecnología fundamental para una era de IA fuerte. El equipo de científicos, ingenieros e innovadores internacionales investiga, desarrolla e implementa IA transformadora como modelos de lenguaje y multimodales a gran escala, y ejecuta el clúster comercial de IA europeo más rápido.
+
+>[La serie Luminous](https://docs.aleph-alpha.com/docs/introduction/luminous/) es una familia de modelos de lenguaje a gran escala.
+
+## Instalación y configuración
+
+```bash
+pip install aleph-alpha-client
+```
+
+Tienes que crear un nuevo token. Por favor, consulta las [instrucciones](https://docs.aleph-alpha.com/docs/account/#create-a-new-token).
+
+```python
+from getpass import getpass
+
+ALEPH_ALPHA_API_KEY = getpass()
+```
+
+## LLM
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/aleph_alpha).
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlpha", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.aleph_alpha.AlephAlpha.html", "title": "Aleph Alpha"}]-->
+from langchain_community.llms import AlephAlpha
+```
+
+## Modelos de incrustación de texto
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/aleph_alpha).
+
+```python
+<!--IMPORTS:[{"imported": "AlephAlphaSymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaSymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}, {"imported": "AlephAlphaAsymmetricSemanticEmbedding", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.aleph_alpha.AlephAlphaAsymmetricSemanticEmbedding.html", "title": "Aleph Alpha"}]-->
+from langchain_community.embeddings import AlephAlphaSymmetricSemanticEmbedding, AlephAlphaAsymmetricSemanticEmbedding
+```

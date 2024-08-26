@@ -1,0 +1,19 @@
+---
+sidebar_label: よくある質問
+sidebar_position: 6
+translated: true
+---
+
+# よくある質問
+
+## プルリクエスト (PR)
+
+### メンテナーがPRを編集できるようにするには?
+
+プルリクエストを送信すると、マージする前にさらに変更が必要になることがあります。コードレビューの際に変更を依頼するよりも、メンテナーが直接変更を行う方が効率的な場合が多いです。
+
+デフォルトでは、ほとんどのプルリクエストに `✅ Maintainers are allowed to edit this pull request.` というバッジが右側のサイドバーに表示されます。
+
+このバッジが表示されていない場合は、プルリクエストを送信しているフォークでこの設定がオフになっている可能性があります。詳細は [このGitHubのドキュメントページ](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/allowing-changes-to-a-pull-request-branch-created-from-a-fork) を参照してください。
+
+注意点として、GitHubでは **組織** 内のフォークではこの設定を有効にできません ([issue](https://github.com/orgs/community/discussions/5634)))。組織内で作業する場合は、個人のフォークからプルリクエストを送信することをおすすめします。

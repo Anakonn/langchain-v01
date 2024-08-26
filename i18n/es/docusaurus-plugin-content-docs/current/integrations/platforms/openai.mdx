@@ -1,0 +1,137 @@
+---
+translated: true
+---
+
+# OpenAI
+
+Toda la funcionalidad relacionada con OpenAI
+
+>[OpenAI](https://en.wikipedia.org/wiki/OpenAI) es un laboratorio de investigación de inteligencia artificial (IA) estadounidense
+> que consta de la organización sin fines de lucro `OpenAI Incorporated`
+> y su subsidiaria con fines de lucro `OpenAI Limited Partnership`.
+> `OpenAI` realiza investigación de IA con la intención declarada de promover y desarrollar una IA amigable.
+> Los sistemas de `OpenAI` se ejecutan en una plataforma de supercomputación basada en `Azure` de `Microsoft`.
+
+>La [API de OpenAI](https://platform.openai.com/docs/models) está impulsada por un conjunto diverso de modelos con diferentes capacidades y precios.
+>
+>[ChatGPT](https://chat.openai.com) es el chatbot de Inteligencia Artificial (IA) desarrollado por `OpenAI`.
+
+## Instalación y configuración
+
+Instala el paquete de integración con
+
+```bash
+pip install langchain-openai
+```
+
+Obtén una clave de API de OpenAI y configúrala como una variable de entorno (`OPENAI_API_KEY`)
+
+## LLM
+
+Consulta un [ejemplo de uso](/docs/integrations/llms/openai).
+
+```python
+<!--IMPORTS:[{"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import OpenAI
+```
+
+Si estás utilizando un modelo alojado en `Azure`, deberías usar un wrapper diferente para eso:
+
+```python
+<!--IMPORTS:[{"imported": "AzureOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.azure.AzureOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import AzureOpenAI
+```
+
+Para obtener una guía más detallada del wrapper de `Azure`, consulta [aquí](/docs/integrations/llms/azure_openai)
+
+## Modelo de chat
+
+Consulta un [ejemplo de uso](/docs/integrations/chat/openai).
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import ChatOpenAI
+```
+
+Si estás utilizando un modelo alojado en `Azure`, deberías usar un wrapper diferente para eso:
+
+```python
+<!--IMPORTS:[{"imported": "AzureChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.azure.AzureChatOpenAI.html", "title": "OpenAI"}]-->
+from langchain_openai import AzureChatOpenAI
+```
+
+Para obtener una guía más detallada del wrapper de `Azure`, consulta [aquí](/docs/integrations/chat/azure_chat_openai)
+
+## Modelo de incrustación
+
+Consulta un [ejemplo de uso](/docs/integrations/text_embedding/openai)
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIEmbeddings", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html", "title": "OpenAI"}]-->
+from langchain_openai import OpenAIEmbeddings
+```
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/chatgpt_loader).
+
+```python
+<!--IMPORTS:[{"imported": "ChatGPTLoader", "source": "langchain_community.document_loaders.chatgpt", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.chatgpt.ChatGPTLoader.html", "title": "OpenAI"}]-->
+from langchain_community.document_loaders.chatgpt import ChatGPTLoader
+```
+
+## Recuperador
+
+Consulta un [ejemplo de uso](/docs/integrations/retrievers/chatgpt-plugin).
+
+```python
+<!--IMPORTS:[{"imported": "ChatGPTPluginRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.chatgpt_plugin_retriever.ChatGPTPluginRetriever.html", "title": "OpenAI"}]-->
+from langchain.retrievers import ChatGPTPluginRetriever
+```
+
+## Herramientas
+
+### Generador de imágenes Dall-E
+
+>[OpenAI Dall-E](https://openai.com/dall-e-3) son modelos de texto a imagen desarrollados por `OpenAI`
+> utilizando metodologías de aprendizaje profundo para generar imágenes digitales a partir de descripciones en lenguaje natural,
+> llamadas "indicaciones".
+
+Consulta un [ejemplo de uso](/docs/integrations/tools/dalle_image_generator).
+
+```python
+<!--IMPORTS:[{"imported": "DallEAPIWrapper", "source": "langchain_community.utilities.dalle_image_generator", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.dalle_image_generator.DallEAPIWrapper.html", "title": "OpenAI"}]-->
+from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
+```
+
+## Adaptador
+
+Consulta un [ejemplo de uso](/docs/integrations/adapters/openai).
+
+```python
+from langchain.adapters import openai as lc_openai
+```
+
+## Tokenizador
+
+Hay varios lugares donde puedes usar el tokenizador `tiktoken`. De forma predeterminada, se utiliza para contar tokens
+para los LLM de OpenAI.
+
+También puedes usarlo para contar tokens al dividir documentos con
+
+```python
+<!--IMPORTS:[{"imported": "CharacterTextSplitter", "source": "langchain.text_splitter", "docs": "https://api.python.langchain.com/en/latest/character/langchain_text_splitters.character.CharacterTextSplitter.html", "title": "OpenAI"}]-->
+from langchain.text_splitter import CharacterTextSplitter
+CharacterTextSplitter.from_tiktoken_encoder(...)
+```
+
+Para obtener una guía más detallada de esto, consulta [este cuaderno](/docs/modules/data_connection/document_transformers/split_by_token#tiktoken)
+
+## Cadena
+
+Consulta un [ejemplo de uso](/docs/guides/productionization/safety/moderation).
+
+```python
+<!--IMPORTS:[{"imported": "OpenAIModerationChain", "source": "langchain.chains", "docs": "https://api.python.langchain.com/en/latest/chains/langchain.chains.moderation.OpenAIModerationChain.html", "title": "OpenAI"}]-->
+from langchain.chains import OpenAIModerationChain
+```

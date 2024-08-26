@@ -1,0 +1,38 @@
+---
+translated: true
+---
+
+# Discord
+
+>[Discord](https://discord.com/) は、VoIP およびインスタント メッセージングのソーシャル プラットフォームです。ユーザーは、プライベートチャットや「サーバー」と呼ばれるコミュニティの一部として、音声通話、ビデオ通話、テキストメッセージ、メディア、ファイルを使用して通信することができます。サーバーは、招待リンクを介してアクセスできる、永続的なチャットルームとボイスチャンネルのコレクションです。
+
+## インストールと設定
+
+```bash
+pip install pandas
+```
+
+以下の手順に従って、`Discord` データをダウンロードしてください:
+
+1. **ユーザー設定**に移動します
+2. **プライバシーと安全性**に移動します
+3. **すべてのデータをリクエスト**に移動し、**データをリクエスト**ボタンをクリックします
+
+データを受け取るまでに最大 30 日かかる可能性があります。Discord に登録されているメールアドレスに、ダウンロードボタンが記載されたメールが届きます。
+
+## ドキュメントローダー
+
+[使用例](/docs/integrations/document_loaders/discord)を参照してください。
+
+**注意:** `DiscordChatLoader` は `ChatLoader` ではなく `DocumentLoader` です。
+`Discord` データダンプからデータをロードするために使用されます。
+`ChatLoader` については、以下のチャットローダーのセクションを参照してください。
+
+```python
+<!--IMPORTS:[{"imported": "DiscordChatLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.discord.DiscordChatLoader.html", "title": "Discord"}]-->
+from langchain_community.document_loaders import DiscordChatLoader
+```
+
+## チャットローダー
+
+[使用例](/docs/integrations/chat_loaders/discord)を参照してください。

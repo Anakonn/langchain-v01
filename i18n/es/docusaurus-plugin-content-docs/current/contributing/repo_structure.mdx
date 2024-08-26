@@ -1,0 +1,56 @@
+---
+sidebar_position: 0.5
+translated: true
+---
+
+# Estructura del repositorio
+
+Si planea contribuir al código o la documentación de LangChain, puede ser útil
+entender la estructura de alto nivel del repositorio.
+
+LangChain se organiza como un [monorep](https://en.wikipedia.org/wiki/Monorepo) que contiene múltiples paquetes.
+
+Aquí está la estructura visualizada como un árbol:
+
+```text
+.
+├── cookbook # Tutorials and examples
+├── docs # Contains content for the documentation here: https://python.langchain.com/
+├── libs
+│   ├── langchain # Main package
+│   │   ├── tests/unit_tests # Unit tests (present in each package not shown for brevity)
+│   │   ├── tests/integration_tests # Integration tests (present in each package not shown for brevity)
+│   ├── langchain-community # Third-party integrations
+│   ├── langchain-core # Base interfaces for key abstractions
+│   ├── langchain-experimental # Experimental components and chains
+│   ├── partners
+│       ├── langchain-partner-1
+│       ├── langchain-partner-2
+│       ├── ...
+│
+├── templates # A collection of easily deployable reference architectures for a wide variety of tasks.
+```
+
+El directorio raíz también contiene los siguientes archivos:
+
+* `pyproject.toml`: Dependencias para construir la documentación y el linting de la documentación, el libro de recetas.
+* `Makefile`: Un archivo que contiene accesos directos para construir, hacer linting y documentación y libro de recetas.
+
+Hay otros archivos en el nivel del directorio raíz, pero su presencia debería ser autoexplicativa. ¡Siéntete libre de navegar!
+
+## Documentación
+
+El directorio `/docs` contiene el contenido de la documentación que se muestra
+en https://python.langchain.com/ y la Referencia de API asociada https://api.python.langchain.com/en/latest/langchain_api_reference.html.
+
+Consulta las pautas de [documentación](/docs/contributing/documentation/style_guide) para aprender cómo contribuir a la documentación.
+
+## Código
+
+El directorio `/libs` contiene el código de los paquetes de LangChain.
+
+Para obtener más información sobre cómo contribuir al código, consulta las siguientes pautas:
+
+- [Código](./code.mdx) Aprende cómo desarrollar en la base de código de LangChain.
+- [Integraciones](./integrations.mdx) para aprender cómo contribuir a las integraciones de terceros a langchain-community o para iniciar un nuevo paquete de socio.
+- [Pruebas](./testing.mdx) pautas para aprender a escribir pruebas para los paquetes.

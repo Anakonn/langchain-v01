@@ -1,0 +1,158 @@
+---
+translated: true
+---
+
+# Predibase
+
+[Predibase](https://predibase.com/) vous permet d'entraîner, d'affiner et de déployer n'importe quel modèle ML, de la régression linéaire aux modèles de langage de grande taille.
+
+Cet exemple montre comment utiliser Langchain avec des modèles déployés sur Predibase
+
+# Configuration
+
+Pour exécuter ce notebook, vous aurez besoin d'un [compte Predibase](https://predibase.com/free-trial/?utm_source=langchain) et d'une [clé API](https://docs.predibase.com/sdk-guide/intro).
+
+Vous devrez également installer le package Python Predibase :
+
+```python
+%pip install --upgrade --quiet  predibase
+import os
+
+os.environ["PREDIBASE_API_TOKEN"] = "{PREDIBASE_API_TOKEN}"
+```
+
+## Appel initial
+
+```python
+from langchain_community.llms import Predibase
+
+model = Predibase(
+    model="mistral-7b",
+    predibase_api_key=os.environ.get("PREDIBASE_API_TOKEN"),
+)
+```
+
+```python
+from langchain_community.llms import Predibase
+
+# With a fine-tuned adapter hosted at Predibase (adapter_version must be specified).
+model = Predibase(
+    model="mistral-7b",
+    predibase_api_key=os.environ.get("PREDIBASE_API_TOKEN"),
+    predibase_sdk_version=None,  # optional parameter (defaults to the latest Predibase SDK version if omitted)
+    adapter_id="e2e_nlg",
+    adapter_version=1,
+)
+```
+
+```python
+from langchain_community.llms import Predibase
+
+# With a fine-tuned adapter hosted at HuggingFace (adapter_version does not apply and will be ignored).
+model = Predibase(
+    model="mistral-7b",
+    predibase_api_key=os.environ.get("PREDIBASE_API_TOKEN"),
+    predibase_sdk_version=None,  # optional parameter (defaults to the latest Predibase SDK version if omitted)
+    adapter_id="predibase/e2e_nlg",
+)
+```
+
+```python
+response = model.invoke("Can you recommend me a nice dry wine?")
+print(response)
+```
+
+## Configuration de la chaîne d'appel
+
+```python
+from langchain_community.llms import Predibase
+
+model = Predibase(
+    model="mistral-7b",
+    predibase_api_key=os.environ.get("PREDIBASE_API_TOKEN"),
+    predibase_sdk_version=None,  # optional parameter (defaults to the latest Predibase SDK version if omitted)
+)
+```
+
+```python
+# With a fine-tuned adapter hosted at Predibase (adapter_version must be specified).
+model = Predibase(
+    model="mistral-7b",
+    predibase_api_key=os.environ.get("PREDIBASE_API_TOKEN"),
+    predibase_sdk_version=None,  # optional parameter (defaults to the latest Predibase SDK version if omitted)
+    adapter_id="e2e_nlg",
+    adapter_version=1,
+)
+```
+
+```python
+# With a fine-tuned adapter hosted at HuggingFace (adapter_version does not apply and will be ignored).
+llm = Predibase(
+    model="mistral-7b",
+    predibase_api_key=os.environ.get("PREDIBASE_API_TOKEN"),
+    predibase_sdk_version=None,  # optional parameter (defaults to the latest Predibase SDK version if omitted)
+    adapter_id="predibase/e2e_nlg",
+)
+```
+
+## SequentialChain
+
+```python
+from langchain.chains import LLMChain
+from langchain_core.prompts import PromptTemplate
+```
+
+```python
+# This is an LLMChain to write a synopsis given a title of a play.
+template = """You are a playwright. Given the title of play, it is your job to write a synopsis for that title.
+
+Title: {title}
+Playwright: This is a synopsis for the above play:"""
+prompt_template = PromptTemplate(input_variables=["title"], template=template)
+synopsis_chain = LLMChain(llm=llm, prompt=prompt_template)
+```
+
+```python
+# This is an LLMChain to write a review of a play given a synopsis.
+template = """You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.
+
+Play Synopsis:
+{synopsis}
+Review from a New York Times play critic of the above play:"""
+prompt_template = PromptTemplate(input_variables=["synopsis"], template=template)
+review_chain = LLMChain(llm=llm, prompt=prompt_template)
+```
+
+```python
+# This is the overall chain where we run these two chains in sequence.
+from langchain.chains import SimpleSequentialChain
+
+overall_chain = SimpleSequentialChain(
+    chains=[synopsis_chain, review_chain], verbose=True
+)
+```
+
+```python
+review = overall_chain.run("Tragedy at sunset on the beach")
+```
+
+## LLM affiné (Utilisez votre propre LLM affiné de Predibase)
+
+```python
+from langchain_community.llms import Predibase
+
+model = Predibase(
+    model="my-base-LLM",
+    predibase_api_key=os.environ.get(
+        "PREDIBASE_API_TOKEN"
+    ),  # Adapter argument is optional.
+    predibase_sdk_version=None,  # optional parameter (defaults to the latest Predibase SDK version if omitted)
+    adapter_id="my-finetuned-adapter-id",  # Supports both, Predibase-hosted and HuggingFace-hosted adapter repositories.
+    adapter_version=1,  # required for Predibase-hosted adapters (ignored for HuggingFace-hosted adapters)
+)
+# replace my-base-LLM with the name of your choice of a serverless base model in Predibase
+```
+
+```python
+# response = model.invoke("Can you help categorize the following emails into positive, negative, and neutral?")
+```

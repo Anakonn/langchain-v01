@@ -1,0 +1,27 @@
+---
+translated: true
+---
+
+# 개요
+
+> [Outline](https://www.getoutline.com/)은 팀 정보 공유를 위해 설계된 오픈 소스 협업 지식 베이스 플랫폼입니다.
+
+## 설정
+
+먼저 Outline 인스턴스에 대한 API 키를 [생성해야](https://www.getoutline.com/developers#section/Authentication) 합니다. 그런 다음 다음과 같은 환경 변수를 설정해야 합니다:
+
+```python
+import os
+
+os.environ["OUTLINE_API_KEY"] = "xxx"
+os.environ["OUTLINE_INSTANCE_URL"] = "https://app.getoutline.com"
+```
+
+## Retriever
+
+[사용 예제](/docs/integrations/retrievers/outline)를 참조하세요.
+
+```python
+<!--IMPORTS:[{"imported": "OutlineRetriever", "source": "langchain.retrievers", "docs": "https://api.python.langchain.com/en/latest/retrievers/langchain_community.retrievers.outline.OutlineRetriever.html", "title": "Outline"}]-->
+from langchain.retrievers import OutlineRetriever
+```

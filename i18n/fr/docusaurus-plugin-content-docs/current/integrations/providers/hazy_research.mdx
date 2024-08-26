@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Recherche Floue
+
+Cette page couvre comment utiliser l'écosystème de Recherche Floue dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers spécifiques de Recherche Floue.
+
+## Installation et Configuration
+
+- Pour utiliser le `manifest`, installez-le avec `pip install manifest-ml`
+
+## Wrappers
+
+### LLM
+
+Il existe un wrapper LLM autour de la bibliothèque `manifest` de Recherche Floue.
+`manifest` est une bibliothèque Python qui est elle-même un wrapper autour de nombreux fournisseurs de modèles, et ajoute la mise en cache, l'historique et plus encore.
+
+Pour utiliser ce wrapper :
+
+```python
+<!--IMPORTS:[{"imported": "ManifestWrapper", "source": "langchain_community.llms.manifest", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.manifest.ManifestWrapper.html", "title": "Hazy Research"}]-->
+from langchain_community.llms.manifest import ManifestWrapper
+```

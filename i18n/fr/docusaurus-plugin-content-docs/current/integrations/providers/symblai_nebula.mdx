@@ -1,0 +1,23 @@
+---
+translated: true
+---
+
+# Nébuleuse
+
+Cette page couvre comment utiliser [Nébuleuse](https://symbl.ai/nebula), l'écosystème LLM de [Symbl.ai](https://symbl.ai/) dans LangChain.
+Elle est divisée en deux parties : l'installation et la configuration, puis les références aux wrappers Nébuleuse spécifiques.
+
+## Installation et configuration
+
+- Obtenez une [clé API Nébuleuse](https://info.symbl.ai/Nebula_Private_Beta.html) et définissez-la comme variable d'environnement `NEBULA_API_KEY`
+- Veuillez consulter la [documentation Nébuleuse](https://docs.symbl.ai/docs/nebula-llm) pour plus de détails.
+
+### LLM
+
+Il existe un wrapper LLM Nébuleuse, que vous pouvez accéder avec
+
+```python
+<!--IMPORTS:[{"imported": "Nebula", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.symblai_nebula.Nebula.html", "title": "Nebula"}]-->
+from langchain_community.llms import Nebula
+llm = Nebula()
+```

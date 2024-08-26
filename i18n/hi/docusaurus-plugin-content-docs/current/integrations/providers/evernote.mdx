@@ -1,0 +1,25 @@
+---
+translated: true
+---
+
+# EverNote
+
+>[EverNote](https://evernote.com/) का उद्देश्य तस्वीरों, ऑडियो और सहेजे गए वेब सामग्री को एम्बेड करने वाली नोट्स को संग्रहित और बनाना है। नोट्स को आभासी "नोटबुक" में संग्रहीत किया जाता है और उन्हें टैग किया जा सकता है, व्याख्या की जा सकती है, संपादित किया जा सकता है, खोजा जा सकता है और निर्यात किया जा सकता है।
+
+## स्थापना और सेटअप
+
+पहले, आपको `lxml` और `html2text` पायथन पैकेज इंस्टॉल करने की आवश्यकता है।
+
+```bash
+pip install lxml
+pip install html2text
+```
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/evernote) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "EverNoteLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.evernote.EverNoteLoader.html", "title": "EverNote"}]-->
+from langchain_community.document_loaders import EverNoteLoader
+```

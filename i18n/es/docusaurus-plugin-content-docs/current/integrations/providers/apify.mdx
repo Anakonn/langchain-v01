@@ -1,0 +1,43 @@
+---
+translated: true
+---
+
+# Apify
+
+>[Apify](https://apify.com) es una plataforma en la nube para el raspado web y la extracción de datos,
+>que proporciona un [ecosistema](https://apify.com/store) de más de mil
+>aplicaciones listas para usar llamadas *Actors* para diversos casos de uso de raspado, rastreo y extracción.
+
+[![Apify Actors](/img/ApifyActors.png)](https://apify.com/store)
+
+Esta integración le permite ejecutar Actors en la plataforma `Apify` y cargar sus resultados en LangChain para alimentar sus índices vectoriales
+con documentos y datos de la web, por ejemplo, para generar respuestas a partir de sitios web con documentación,
+blogs o bases de conocimiento.
+
+## Instalación y configuración
+
+- Instale el cliente de la API de Apify para Python con `pip install apify-client`
+- Obtenga su [token de API de Apify](https://console.apify.com/account/integrations) y establézcalo como
+  una variable de entorno (`APIFY_API_TOKEN`) o páselo a `ApifyWrapper` como `apify_api_token` en el constructor.
+
+## Utilidad
+
+Puede usar `ApifyWrapper` para ejecutar Actors en la plataforma Apify.
+
+```python
+<!--IMPORTS:[{"imported": "ApifyWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.apify.ApifyWrapper.html", "title": "Apify"}]-->
+from langchain_community.utilities import ApifyWrapper
+```
+
+Para obtener un recorrido más detallado de este wrapper, consulte [este cuaderno](/docs/integrations/tools/apify).
+
+## Cargador de documentos
+
+También puede usar nuestro `ApifyDatasetLoader` para obtener datos del conjunto de datos de Apify.
+
+```python
+<!--IMPORTS:[{"imported": "ApifyDatasetLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.apify_dataset.ApifyDatasetLoader.html", "title": "Apify"}]-->
+from langchain_community.document_loaders import ApifyDatasetLoader
+```
+
+Para obtener un recorrido más detallado de este cargador, consulte [este cuaderno](/docs/integrations/document_loaders/apify_dataset).

@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Reddit
+
+>[Reddit](https://www.reddit.com) es un sitio web estadounidense de agregación de noticias sociales, calificación de contenido y discusión.
+
+## Instalación y configuración
+
+Primero, necesitas instalar un paquete de python.
+
+```bash
+pip install praw
+```
+
+Crea una [aplicación de Reddit](https://www.reddit.com/prefs/apps/) e inicializa el cargador con tus credenciales de la API de Reddit.
+
+## Cargador de documentos
+
+Consulta un [ejemplo de uso](/docs/integrations/document_loaders/reddit).
+
+```python
+<!--IMPORTS:[{"imported": "RedditPostsLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.reddit.RedditPostsLoader.html", "title": "Reddit"}]-->
+from langchain_community.document_loaders import RedditPostsLoader
+```

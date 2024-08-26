@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# Figma
+
+>[Figma](https://www.figma.com/) एक सहयोगी वेब एप्लिकेशन है जो इंटरफ़ेस डिज़ाइन के लिए है।
+
+## स्थापना और सेटअप
+
+Figma API को एक `access token`, `node_ids`, और एक `file key` की आवश्यकता होती है।
+
+`file key` को URL से प्राप्त किया जा सकता है। https://www.figma.com/file/{filekey}/sampleFilename
+
+`Node IDs` भी URL में उपलब्ध हैं। किसी भी चीज़ पर क्लिक करें और '?node-id=\{node_id}' पैरामीटर को देखें।
+
+`Access token` [निर्देश](https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens)।
+
+## दस्तावेज़ लोडर
+
+एक [उपयोग उदाहरण](/docs/integrations/document_loaders/figma) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "FigmaFileLoader", "source": "langchain_community.document_loaders", "docs": "https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.figma.FigmaFileLoader.html", "title": "Figma"}]-->
+from langchain_community.document_loaders import FigmaFileLoader
+```

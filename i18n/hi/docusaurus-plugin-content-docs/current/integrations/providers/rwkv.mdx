@@ -1,0 +1,73 @@
+---
+translated: true
+---
+
+# RWKV-4
+
+यह पृष्ठ `RWKV-4` रैपर का उपयोग करने के बारे में कवर करता है LangChain में।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर उदाहरण के साथ उपयोग।
+
+## स्थापना और सेटअप
+
+- `pip install rwkv` के साथ पायथन पैकेज स्थापित करें
+- `pip install tokenizer` के साथ tokenizer पायथन पैकेज स्थापित करें
+- एक [RWKV मॉडल](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main) डाउनलोड करें और इसे अपने इच्छित निर्देशिका में रखें
+- [टोकन फ़ाइल](https://raw.githubusercontent.com/BlinkDL/ChatRWKV/main/20B_tokenizer.json) डाउनलोड करें
+
+## उपयोग
+
+### RWKV
+
+RWKV रैपर का उपयोग करने के लिए, आपको पूर्व-प्रशिक्षित मॉडल फ़ाइल का पथ और tokenizer की कॉन्फ़िगरेशन प्रदान करनी होगी।
+
+```python
+<!--IMPORTS:[{"imported": "RWKV", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.rwkv.RWKV.html", "title": "RWKV-4"}]-->
+from langchain_community.llms import RWKV
+```
+
+# मॉडल का परीक्षण करें
+
+```python
+
+def generate_prompt(instruction, input=None):
+    if input:
+        return f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+# Instruction:
+{instruction}
+
+# Input:
+{input}
+
+# Response:
+"""
+    else:
+        return f"""Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+# Instruction:
+{instruction}
+
+# Response:
+"""
+
+
+model = RWKV(model="./models/RWKV-4-Raven-3B-v7-Eng-20230404-ctx4096.pth", strategy="cpu fp32", tokens_path="./rwkv/20B_tokenizer.json")
+response = model.invoke(generate_prompt("Once upon a time, "))
+```
+
+## मॉडल फ़ाइल
+
+आप [RWKV-4-Raven](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main) भंडार पर मॉडल फ़ाइल डाउनलोड लिंक पा सकते हैं।
+
+### Rwkv-4 मॉडल -> अनुशंसित VRAM
+
+```text
+RWKV VRAM
+Model | 8bit | bf16/fp16 | fp32
+14B   | 16GB | 28GB      | >50GB
+7B    | 8GB  | 14GB      | 28GB
+3B    | 2.8GB| 6GB       | 12GB
+1b5   | 1.3GB| 3GB       | 6GB
+```
+
+रणनीतियों के बारे में अधिक जानकारी के लिए [rwkv pip](https://pypi.org/project/rwkv/) पृष्ठ देखें, जिसमें स्ट्रीमिंग और cuda समर्थन शामिल हैं।

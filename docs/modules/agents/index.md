@@ -1,0 +1,37 @@
+---
+canonical: https://python.langchain.com/v0.1/docs/modules/agents
+sidebar_class_name: hidden
+sidebar_position: 4
+title: Agents
+translated: false
+---
+
+The core idea of agents is to use a language model to choose a sequence of actions to take.
+In chains, a sequence of actions is hardcoded (in code).
+In agents, a language model is used as a reasoning engine to determine which actions to take and in which order.
+
+## [Quickstart](/docs/modules/agents/quick_start)
+
+For a quick start to working with agents, please check out [this getting started guide](/docs/modules/agents/quick_start). This covers basics like initializing an agent, creating tools, and adding memory.
+
+## [Concepts](/docs/modules/agents/concepts)
+
+There are several key concepts to understand when building agents: Agents, AgentExecutor, Tools, Toolkits.
+For an in depth explanation, please check out [this conceptual guide](/docs/modules/agents/concepts)
+
+## [Agent Types](/docs/modules/agents/agent_types/)
+
+There are many different types of agents to use. For a overview of the different types and when to use them, please check out [this section](/docs/modules/agents/agent_types/).
+
+## [Tools](/docs/modules/tools/)
+
+Agents are only as good as the tools they have. For a comprehensive guide on tools, please see [this section](/docs/modules/tools/).
+
+## How To Guides
+
+Agents have a lot of related functionality! Check out comprehensive guides including:
+
+- [Building a custom agent](/docs/modules/agents/how_to/custom_agent)
+- [Streaming (of both intermediate steps and tokens)](/docs/modules/agents/how_to/streaming)
+- [Building an agent that returns structured output](/docs/modules/agents/how_to/agent_structured)
+- Lots functionality around using AgentExecutor, including: [using it as an iterator](/docs/modules/agents/how_to/agent_iter), [handle parsing errors](/docs/modules/agents/how_to/handle_parsing_errors), [returning intermediate steps](/docs/modules/agents/how_to/intermediate_steps), [capping the max number of iterations](/docs/modules/agents/how_to/max_iterations), and [timeouts for agents](/docs/modules/agents/how_to/max_time_limit)

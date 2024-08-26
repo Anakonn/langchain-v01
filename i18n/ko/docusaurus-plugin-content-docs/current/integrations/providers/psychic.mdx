@@ -1,0 +1,30 @@
+---
+sidebar_class_name: hidden
+translated: true
+---
+
+# 심리학
+
+:::warning
+이 공급자는 더 이상 유지되지 않으며 작동하지 않을 수 있습니다. 주의해서 사용하십시오.
+:::
+
+>[Psychic](https://www.psychic.dev/)은 `Notion`, `Zendesk`, `Confluence`, `Google Drive` 등의 SaaS 도구와 OAuth를 통해 통합하고 이러한 애플리케이션에서 문서를 SQL 또는 벡터 데이터베이스로 동기화하는 플랫폼입니다. 이를 비정형 데이터에 대한 Plaid로 생각할 수 있습니다.
+
+## 설치 및 설정
+
+```bash
+pip install psychicapi
+```
+
+Psychic은 설정하기 쉽습니다. `react` 라이브러리를 가져오고 [Psychic 대시보드](https://dashboard.psychic.dev/)에서 받은 `Sidekick API` 키로 구성합니다. 애플리케이션을 연결하면 대시보드에서 이러한 연결을 볼 수 있고 서버 측 라이브러리를 사용하여 데이터를 검색할 수 있습니다.
+
+1. [대시보드](https://dashboard.psychic.dev/)에서 계정을 만드세요.
+2. [react 라이브러리](https://docs.psychic.dev/sidekick-link)를 사용하여 Psychic 링크 모달을 프런트엔드 react 앱에 추가하세요. 이를 사용하여 SaaS 앱을 연결합니다.
+3. 연결을 만든 후 [예제 노트북](/docs/integrations/document_loaders/psychic)을 따라 `PsychicLoader`를 사용할 수 있습니다.
+
+## 다른 문서 로더와 비교한 장점
+
+1.	**범용 API:** 각 SaaS 앱에 대한 OAuth 흐름을 구축하고 API를 배우는 대신 Psychic을 한 번 통합하고 범용 API를 활용하여 데이터를 검색할 수 있습니다.
+2.	**데이터 동기화:** 고객의 SaaS 앱의 데이터는 빠르게 오래될 수 있습니다. Psychic을 사용하면 일일 또는 실시간 기반으로 문서를 최신 상태로 유지하도록 웹후크를 구성할 수 있습니다.
+3.	**간소화된 OAuth:** Psychic은 OAuth를 엔드투엔드로 처리하므로 각 통합을 위한 OAuth 클라이언트를 만들고, 액세스 토큰을 새로 고치고, OAuth 리디렉션 로직을 처리할 필요가 없습니다.

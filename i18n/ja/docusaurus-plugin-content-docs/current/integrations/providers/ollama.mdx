@@ -1,0 +1,56 @@
+---
+translated: true
+---
+
+# Ollama
+
+>[Ollama](https://ollama.ai/)は、Pythonライブラリです。LLaMA2などのオープンソースの大規模言語モデルをローカルで実行することができます。
+
+>`Ollama`は、Modelfileで定義された単一のパッケージにモデルの重み、設定、およびデータをバンドルします。
+>セットアップと構成の詳細、GPU使用を最適化します。
+>サポートされているモデルとモデルバリアントの完全なリストについては、[Ollamaモデルライブラリ](https://ollama.ai/library)を参照してください。
+
+`Ollama`をLangChainで使用する方法の詳細については、[このガイド](/docs/guides/development/local_llms#quickstart)を参照してください。
+
+## インストールとセットアップ
+
+ローカルのOllamaインスタンスを設定して実行するには、[これらの手順](https://github.com/jmorganca/ollama?tab=readme-ov-file#ollama)に従ってください。
+使用するには、`ANYSCALE_API_BASE`と`ANYSCALE_API_KEY`の環境変数を設定する必要があります。
+
+## LLM
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Ollama"}]-->
+from langchain_community.llms import Ollama
+```
+
+ノートブックの例については、[こちら](/docs/integrations/llms/ollama)を参照してください。
+
+## チャットモデル
+
+### Chat Ollama
+
+```python
+<!--IMPORTS:[{"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Ollama"}]-->
+from langchain_community.chat_models import ChatOllama
+```
+
+ノートブックの例については、[こちら](/docs/integrations/chat/ollama)を参照してください。
+
+### Ollamaの機能
+
+```python
+<!--IMPORTS:[{"imported": "OllamaFunctions", "source": "langchain_experimental.llms.ollama_functions", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_experimental.llms.ollama_functions.OllamaFunctions.html", "title": "Ollama"}]-->
+from langchain_experimental.llms.ollama_functions import OllamaFunctions
+```
+
+ノートブックの例については、[こちら](/docs/integrations/chat/ollama_functions)を参照してください。
+
+## 埋め込みモデル
+
+```python
+<!--IMPORTS:[{"imported": "OllamaEmbeddings", "source": "langchain_community.embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.ollama.OllamaEmbeddings.html", "title": "Ollama"}]-->
+from langchain_community.embeddings import OllamaEmbeddings
+```
+
+ノートブックの例については、[こちら](/docs/integrations/text_embedding/ollama)を参照してください。

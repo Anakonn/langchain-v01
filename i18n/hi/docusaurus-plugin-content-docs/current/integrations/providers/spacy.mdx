@@ -1,0 +1,31 @@
+---
+translated: true
+---
+
+# spaCy
+
+>[spaCy](https://spacy.io/) एक उन्नत प्राकृतिक भाषा प्रसंस्करण के लिए एक ओपन-सोर्स सॉफ्टवेयर लाइब्रेरी है, जिसे प्रोग्रामिंग भाषाओं Python और Cython में लिखा गया है।
+
+## इंस्टॉलेशन और सेटअप
+
+```bash
+pip install spacy
+```
+
+## टेक्स्ट स्प्लिटर
+
+एक [उपयोग उदाहरण](/docs/modules/data_connection/document_transformers/split_by_token#spacy) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SpacyTextSplitter", "source": "langchain_text_splitters", "docs": "https://api.python.langchain.com/en/latest/spacy/langchain_text_splitters.spacy.SpacyTextSplitter.html", "title": "spaCy"}]-->
+from langchain_text_splitters import SpacyTextSplitter
+```
+
+## टेक्स्ट एम्बेडिंग मॉडल
+
+एक [उपयोग उदाहरण](/docs/integrations/text_embedding/spacy_embedding) देखें।
+
+```python
+<!--IMPORTS:[{"imported": "SpacyEmbeddings", "source": "langchain_community.embeddings.spacy_embeddings", "docs": "https://api.python.langchain.com/en/latest/embeddings/langchain_community.embeddings.spacy_embeddings.SpacyEmbeddings.html", "title": "spaCy"}]-->
+from langchain_community.embeddings.spacy_embeddings import SpacyEmbeddings
+```

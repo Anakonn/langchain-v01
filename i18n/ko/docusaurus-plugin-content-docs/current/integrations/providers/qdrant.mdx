@@ -1,0 +1,29 @@
+---
+translated: true
+---
+
+# Qdrant
+
+>[Qdrant](https://qdrant.tech/documentation/) (읽기: 쿼드란트)는 벡터 유사성 검색 엔진입니다.
+> 포인트 - 추가 페이로드가 있는 벡터를 저장, 검색 및 관리하기 위한 편리한 API를 제공하는 프로덕션 준비 서비스입니다. `Qdrant`는 확장된 필터링 지원에 맞춰져 있습니다.
+
+## 설치 및 설정
+
+Python SDK를 설치하세요:
+
+```bash
+pip install qdrant-client
+```
+
+## 벡터 저장소
+
+`Qdrant` 인덱스를 래핑하는 래퍼가 있어, 의미 검색 또는 예제 선택을 위해 이를 벡터 저장소로 사용할 수 있습니다.
+
+이 벡터 저장소를 가져오려면:
+
+```python
+<!--IMPORTS:[{"imported": "Qdrant", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.qdrant.Qdrant.html", "title": "Qdrant"}]-->
+from langchain_community.vectorstores import Qdrant
+```
+
+Qdrant 래퍼에 대한 더 자세한 연습은 [이 노트북](/docs/integrations/vectorstores/qdrant)을 참조하세요.

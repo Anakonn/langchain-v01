@@ -1,0 +1,269 @@
+---
+sidebar_position: 0
+translated: true
+---
+
+# クイックスタート
+
+このクイックスタートでは、言語モデルの基本的な使い方を説明します。LLMとChatModelの2つのモデルタイプについて紹介し、PromptTemplatesを使ってこれらのモデルへの入力をフォーマットする方法、OutputParsersを使って出力を処理する方法について説明します。
+
+## モデル
+
+このスタートガイドでは、いくつかのオプションを提供します: AnthropicやOpenAIのようなAPIの使用、またはOllamaを使ったローカルのオープンソースモデルの使用です。
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from "@theme/CodeBlock";
+
+<Tabs>
+  <TabItem value="openai" label="OpenAI" default>
+
+まずはOpenAIのパートナーパッケージをインストールする必要があります:
+
+```shell
+pip install langchain-openai
+```
+
+APIにアクセスするには、アカウントを作成し[こちら](https://platform.openai.com/account/api-keys)からAPIキーを取得する必要があります。キーを取得したら、以下のコマンドで環境変数に設定します:
+
+```shell
+export OPENAI_API_KEY="..."
+```
+
+その後、モデルを初期化できます:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}, {"imported": "OpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_openai.llms.base.OpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAI
+
+llm = OpenAI()
+chat_model = ChatOpenAI(model="gpt-3.5-turbo-0125")
+```
+
+環境変数を設定したくない場合は、OpenAI LLMクラスのインスタンス化時に`api_key`パラメーターを直接渡すこともできます:
+
+```python
+<!--IMPORTS:[{"imported": "ChatOpenAI", "source": "langchain_openai", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html", "title": "Quickstart"}]-->
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="local" label="ローカル (Ollamaを使用)">
+
+[Ollama](https://ollama.ai/)を使うと、Llama 2などのオープンソースの大規模言語モデルをローカルで実行できます。
+
+まず、[これらの手順](https://github.com/jmorganca/ollama)に従ってローカルのOllamaインスタンスを設定・実行してください:
+
+* [ダウンロード](https://ollama.ai/download)
+* `ollama pull llama2`でモデルをフェッチ
+
+その後、Ollamaサーバーが起動していることを確認し、以下のように初期化できます:
+
+```python
+<!--IMPORTS:[{"imported": "Ollama", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.ollama.Ollama.html", "title": "Quickstart"}, {"imported": "ChatOllama", "source": "langchain_community.chat_models", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_community.chat_models.ollama.ChatOllama.html", "title": "Quickstart"}]-->
+from langchain_community.llms import Ollama
+from langchain_community.chat_models import ChatOllama
+
+llm = Ollama(model="llama2")
+chat_model = ChatOllama()
+```
+
+  </TabItem>
+  <TabItem value="anthropic" label="Anthropic (ChatModelのみ)">
+
+まずはLangChain x Anthropicパッケージをインポートする必要があります。
+
+```shell
+pip install langchain-anthropic
+```
+
+APIにアクセスするには、[こちら](https://claude.ai/login)からアカウントを作成してAPIキーを取得する必要があります。キーを取得したら、以下のコマンドで環境変数に設定します:
+
+```shell
+export ANTHROPIC_API_KEY="..."
+```
+
+その後、モデルを初期化できます:
+
+```python
+<!--IMPORTS:[{"imported": "ChatAnthropic", "source": "langchain_anthropic", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_anthropic.chat_models.ChatAnthropic.html", "title": "Quickstart"}]-->
+from langchain_anthropic import ChatAnthropic
+
+chat_model = ChatAnthropic(model="claude-3-sonnet-20240229", temperature=0.2, max_tokens=1024)
+```
+
+環境変数を設定したくない場合は、Anthropic ChatModelクラスのインスタンス化時に`api_key`パラメーターを直接渡すこともできます:
+
+```python
+chat_model = ChatAnthropic(api_key="...")
+```
+
+  </TabItem>
+  <TabItem value="cohere" label="Cohere">
+
+まずはCohereのパートナーパッケージをインストールする必要があります:
+
+```shell
+pip install langchain-cohere
+```
+
+APIにアクセスするには、[こちら](https://dashboard.cohere.com/api-keys)からアカウントを作成してAPIキーを取得する必要があります。キーを取得したら、以下のコマンドで環境変数に設定します:
+
+```shell
+export COHERE_API_KEY="..."
+```
+
+その後、モデルを初期化できます:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+chat_model = ChatCohere()
+```
+
+環境変数を設定したくない場合は、Cohere LLMクラスのインスタンス化時に`cohere_api_key`パラメーターを直接渡すこともできます:
+
+```python
+<!--IMPORTS:[{"imported": "ChatCohere", "source": "langchain_cohere", "docs": "https://api.python.langchain.com/en/latest/chat_models/langchain_cohere.chat_models.ChatCohere.html", "title": "Quickstart"}]-->
+from langchain_cohere import ChatCohere
+
+chat_model = ChatCohere(cohere_api_key="...")
+```
+
+  </TabItem>
+</Tabs>
+
+`llm`と`chat_model`はそれぞれ特定のモデルの設定を表すオブジェクトです。
+`temperature`などのパラメーターを設定して初期化し、必要に応じて渡すことができます。
+LLMオブジェクトは文字列を入力として受け取り、文字列を出力します。
+ChatModelオブジェクトはメッセージのリストを入力として受け取り、メッセージを出力します。
+
+LLMとChatModelの違いは、実際に呼び出したときに確認できます。
+
+```python
+<!--IMPORTS:[{"imported": "HumanMessage", "source": "langchain_core.messages", "docs": "https://api.python.langchain.com/en/latest/messages/langchain_core.messages.human.HumanMessage.html", "title": "Quickstart"}]-->
+from langchain_core.messages import HumanMessage
+
+text = "What would be a good company name for a company that makes colorful socks?"
+messages = [HumanMessage(content=text)]
+
+llm.invoke(text)
+# >> Feetful of Fun
+
+chat_model.invoke(messages)
+# >> AIMessage(content="Socks O'Color")
+```
+
+LLMは文字列を返しますが、ChatModelはメッセージを返します。
+
+## プロンプトテンプレート
+
+ほとんどのLLMアプリケーションでは、ユーザー入力をLLMに直接渡すのではなく、特定のタスクに関する追加のコンテキストを提供するより大きなテキストの一部として追加します。これらのテキストはプロンプトテンプレートと呼ばれます。
+
+前の例では、モデルに渡したテキストには会社名を生成するための指示が含まれていました。アプリケーションでは、ユーザーが会社/製品の説明を提供するだけで、モデルに指示を与える必要がないと良いでしょう。
+
+PromptTemplatesはまさにこれに役立ちます!
+ユーザー入力からフォーマットされたプロンプトを生成するためのロジックをすべてまとめることができます。
+これは非常に単純に始まります - 上記の文字列を生成するプロンプトは次のようになります:
+
+```python
+<!--IMPORTS:[{"imported": "PromptTemplate", "source": "langchain_core.prompts", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.prompt.PromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts import PromptTemplate
+
+prompt = PromptTemplate.from_template("What is a good name for a company that makes {product}?")
+prompt.format(product="colorful socks")
+```
+
+```python
+What is a good name for a company that makes colorful socks?
+```
+
+ただし、生の文字列フォーマットを使用するよりも、これらを使用する利点は複数あります。
+変数を「部分的に」フォーマットできます。
+異なるテンプレートを組み合わせて単一のプロンプトを作成できます。
+これらの機能の説明については、[プロンプトに関するセクション](/docs/modules/model_io/prompts)を参照してください。
+
+`PromptTemplate`は、メッセージのリストを生成することもできます。
+この場合、プロンプトには内容に関する情報だけでなく、各メッセージ(役割、リストの位置など)に関する情報も含まれます。
+ここで最も一般的に行われるのは、`ChatPromptTemplate`が`ChatMessageTemplates`のリストであることです。
+各`ChatMessageTemplate`には、その`ChatMessage`をフォーマットする方法(役割、コンテンツ)に関する指示が含まれています。
+以下でこれを見てみましょう:
+
+```python
+<!--IMPORTS:[{"imported": "ChatPromptTemplate", "source": "langchain_core.prompts.chat", "docs": "https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html", "title": "Quickstart"}]-->
+from langchain_core.prompts.chat import ChatPromptTemplate
+
+template = "You are a helpful assistant that translates {input_language} to {output_language}."
+human_template = "{text}"
+
+chat_prompt = ChatPromptTemplate.from_messages([
+    ("system", template),
+    ("human", human_template),
+])
+
+chat_prompt.format_messages(input_language="English", output_language="French", text="I love programming.")
+```
+
+```pycon
+[
+    SystemMessage(content="You are a helpful assistant that translates English to French.", additional_kwargs={}),
+    HumanMessage(content="I love programming.")
+]
+```
+
+ChatPromptTemplatesは他の方法でも構築できます - 詳細は[プロンプトに関するセクション](/docs/modules/model_io/prompts)を参照してください。
+
+## 出力パーサー
+
+`OutputParser`は、言語モデルの生の出力を、後続で使用できる形式に変換します。
+主な`OutputParser`のタイプには以下があります:
+
+- テキストを構造化情報(JSON など)に変換する
+- `ChatMessage`をただの文字列に変換する
+- メッセージ以外の追加情報(OpenAI の関数呼び出びなど)を文字列に変換する
+
+詳細については、[出力パーサーのセクション](/docs/modules/model_io/output_parsers)を参照してください。
+
+このスタートガイドでは、コンマ区切りの値のリストを解析する簡単なものを使用しています。
+
+```python
+<!--IMPORTS:[{"imported": "CommaSeparatedListOutputParser", "source": "langchain.output_parsers", "docs": "https://api.python.langchain.com/en/latest/output_parsers/langchain_core.output_parsers.list.CommaSeparatedListOutputParser.html", "title": "Quickstart"}]-->
+from langchain.output_parsers import CommaSeparatedListOutputParser
+
+output_parser = CommaSeparatedListOutputParser()
+output_parser.parse("hi, bye")
+# >> ['hi', 'bye']
+```
+
+## LCELを使った合成
+
+これらをすべて1つのチェーンに組み合わせることができます。
+このチェーンは、入力変数を受け取り、それらをプロンプトテンプレートに渡してプロンプトを作成し、プロンプトを言語モデルに渡し、(オプションの)出力パーサーを通して出力を渡します。
+これは、モジュール化された論理ピースをまとめる便利な方法です。
+実際の動作を見てみましょう!
+
+```python
+template = "Generate a list of 5 {text}.\n\n{format_instructions}"
+
+chat_prompt = ChatPromptTemplate.from_template(template)
+chat_prompt = chat_prompt.partial(format_instructions=output_parser.get_format_instructions())
+chain = chat_prompt | chat_model | output_parser
+chain.invoke({"text": "colors"})
+# >> ['red', 'blue', 'green', 'yellow', 'orange']
+```
+
+`|`構文を使ってこれらのコンポーネントを組み合わせています。
+この`|`構文はLangChain Expression Language (LCEL)によって提供され、これらのすべてのオブジェクトが実装する共通の`Runnable`インターフェイスに依存しています。
+LCELの詳細については、[ここのドキュメント](/docs/expression_language/)を参照してください。
+
+## 結論
+
+プロンプト、モデル、出力パーサーの基本的な使い方はこれで終わりです。これはほんの表面的な部分に過ぎません。詳細については、以下をチェックしてください:
+
+- [プロンプトのセクション](/docs/modules/model_io/prompts/)でプロンプトテンプレートの使い方を学ぶ
+- [LLMのセクション](/docs/modules/model_io/llms/)でLLMインターフェイスの詳細を学ぶ
+- [ChatModelのセクション](/docs/modules/model_io/chat/)でChatModelインターフェイスの詳細を学ぶ
+- [出力パーサーのセクション](/docs/modules/model_io/output_parsers/)で各種出力パーサーの詳細を学ぶ

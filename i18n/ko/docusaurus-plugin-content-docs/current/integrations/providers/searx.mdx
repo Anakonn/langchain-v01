@@ -1,0 +1,95 @@
+---
+translated: true
+---
+
+# SearxNG 검색 API
+
+이 페이지에서는 LangChain 내에서 SearxNG 검색 API를 사용하는 방법을 다룹니다.
+설치 및 설정, 그리고 특정 SearxNG API 래퍼에 대한 참조로 구성되어 있습니다.
+
+## 설치 및 설정
+
+공개 searx 인스턴스와 함께 래퍼를 사용할 수 있지만, 이러한 인스턴스는 종종 API 액세스를 허용하지 않으며(출력 형식에 대한 참고 사항 참조) 요청 빈도에 제한이 있습니다. 대신 자체 호스팅 인스턴스를 선택하는 것이 좋습니다.
+
+### 자체 호스팅 인스턴스:
+
+설치 지침은 [이 페이지](https://searxng.github.io/searxng/admin/installation.html)를 참조하세요.
+
+SearxNG를 설치할 때 기본적으로 활성화된 출력 형식은 HTML 형식입니다.
+API를 사용하려면 `json` 형식을 활성화해야 합니다. 이는 `settings.yml` 파일에 다음 줄을 추가하여 수행할 수 있습니다:
+
+```yaml
+search:
+    formats:
+        - html
+        - json
+```
+
+API가 작동하는지 확인하려면 API 엔드포인트에 curl 요청을 보내면 됩니다:
+
+`curl -kLX GET --data-urlencode q='langchain' -d format=json http://localhost:8888`
+
+이렇게 하면 결과가 포함된 JSON 객체가 반환됩니다.
+
+## 래퍼
+
+### 유틸리티
+
+래퍼를 사용하려면 다음 중 하나를 통해 SearxNG 인스턴스의 호스트를 전달해야 합니다:
+    1. 인스턴스 생성 시 `searx_host` 매개변수
+    2. `SEARXNG_HOST` 환경 변수 내보내기
+
+래퍼를 사용하여 SearxNG 인스턴스에서 결과를 가져올 수 있습니다.
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchWrapper", "source": "langchain_community.utilities", "docs": "https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.searx_search.SearxSearchWrapper.html", "title": "SearxNG Search API"}]-->
+from langchain_community.utilities import SearxSearchWrapper
+s = SearxSearchWrapper(searx_host="http://localhost:8888")
+s.run("what is a large language model?")
+```
+
+### 도구
+
+이 래퍼를 도구(Agent와 함께 사용)로 로드할 수도 있습니다.
+
+다음과 같이 수행할 수 있습니다:
+
+```python
+<!--IMPORTS:[{"imported": "load_tools", "source": "langchain.agents", "docs": "https://api.python.langchain.com/en/latest/agent_toolkits/langchain_community.agent_toolkits.load_tools.load_tools.html", "title": "SearxNG Search API"}]-->
+from langchain.agents import load_tools
+tools = load_tools(["searx-search"],
+                    searx_host="http://localhost:8888",
+                    engines=["github"])
+```
+
+참고로 사용자 정의 엔진을 전달할 수도 있습니다.
+
+*json* 형식으로 메타데이터가 포함된 결과를 얻으려면 다음을 사용할 수 있습니다:
+
+```python
+tools = load_tools(["searx-search-results-json"],
+                    searx_host="http://localhost:8888",
+                    num_results=5)
+```
+
+#### 도구 빠르게 만들기
+
+이 예제는 동일한 래퍼에서 여러 도구를 빠르게 만드는 방법을 보여줍니다.
+
+```python
+<!--IMPORTS:[{"imported": "SearxSearchResults", "source": "langchain_community.tools.searx_search.tool", "docs": "https://api.python.langchain.com/en/latest/tools/langchain_community.tools.searx_search.tool.SearxSearchResults.html", "title": "SearxNG Search API"}]-->
+from langchain_community.tools.searx_search.tool import SearxSearchResults
+
+wrapper = SearxSearchWrapper(searx_host="**")
+github_tool = SearxSearchResults(name="Github", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["github"],
+                                })
+
+arxiv_tool = SearxSearchResults(name="Arxiv", wrapper=wrapper,
+                            kwargs = {
+                                "engines": ["arxiv"]
+                                })
+```
+
+도구에 대한 자세한 내용은 [이 페이지](/docs/modules/tools/)를 참조하세요.

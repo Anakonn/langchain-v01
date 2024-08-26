@@ -1,0 +1,35 @@
+---
+sidebar_position: 1
+translated: true
+---
+
+# チャットメッセージ
+
+:::info
+3rd パーティのデータベースやツールとの組み込みメモリ統合に関するドキュメントは、[Integrations](/docs/integrations/memory/) を参照してください。
+:::
+
+ほとんどすべてのメモリモジュールの基礎となるコアユーティリティクラスの 1 つは `ChatMessageHistory` クラスです。
+これは、HumanMessages、AIMessages を保存し、それらをすべて取得するための便利なメソッドを提供する軽量なラッパーです。
+
+チェーンの外でメモリを管理する場合は、このクラスを直接使用したいかもしれません。
+
+```python
+<!--IMPORTS:[{"imported": "ChatMessageHistory", "source": "langchain.memory", "docs": "https://api.python.langchain.com/en/latest/chat_history/langchain_core.chat_history.ChatMessageHistory.html", "title": "Chat Messages"}]-->
+from langchain.memory import ChatMessageHistory
+
+history = ChatMessageHistory()
+
+history.add_user_message("hi!")
+
+history.add_ai_message("whats up?")
+```
+
+```python
+history.messages
+```
+
+```output
+    [HumanMessage(content='hi!', additional_kwargs={}),
+     AIMessage(content='whats up?', additional_kwargs={})]
+```

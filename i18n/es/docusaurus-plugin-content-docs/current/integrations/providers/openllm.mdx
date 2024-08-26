@@ -1,0 +1,77 @@
+---
+translated: true
+---
+
+# OpenLLM
+
+Esta página demuestra cómo usar [OpenLLM](https://github.com/bentoml/OpenLLM)
+con LangChain.
+
+`OpenLLM` es una plataforma abierta para operar modelos de lenguaje grandes (LLM) en
+producción. Permite a los desarrolladores ejecutar fácilmente inferencia con cualquier modelo de código abierto
+LLMs, implementar en la nube o en las instalaciones, y construir poderosas aplicaciones de IA.
+
+## Instalación y configuración
+
+Instala el paquete OpenLLM a través de PyPI:
+
+```bash
+pip install openllm
+```
+
+## LLM
+
+OpenLLM admite una amplia gama de LLM de código abierto, así como servir a los propios usuarios
+LLMs afinados. Usa el comando `openllm model` para ver todos los modelos disponibles que
+están preoptimizados para OpenLLM.
+
+## Envoltorios
+
+Existe un OpenLLM Wrapper que admite cargar LLM en el proceso o acceder a un
+servidor remoto de OpenLLM:
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+```
+
+### Envoltura para el servidor OpenLLM
+
+Este envoltorio admite la conexión a un servidor OpenLLM a través de HTTP o gRPC. El
+El servidor OpenLLM puede ejecutarse localmente o en la nube.
+
+Para probarlo localmente, inicia un servidor OpenLLM:
+
+```bash
+openllm start flan-t5
+```
+
+Uso del envoltorio:
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(server_url='http://localhost:3000')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### Envoltura para inferencia local
+
+También puede usar el envoltorio OpenLLM para cargar LLM en el proceso de Python actual para
+ejecutar inferencia.
+
+```python
+<!--IMPORTS:[{"imported": "OpenLLM", "source": "langchain_community.llms", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.openllm.OpenLLM.html", "title": "OpenLLM"}]-->
+from langchain_community.llms import OpenLLM
+
+llm = OpenLLM(model_name="dolly-v2", model_id='databricks/dolly-v2-7b')
+
+llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
+```
+
+### Uso
+
+Para un recorrido más detallado del OpenLLM Wrapper, consulta el
+[ejemplo de cuaderno](/docs/integrations/llms/openllm)

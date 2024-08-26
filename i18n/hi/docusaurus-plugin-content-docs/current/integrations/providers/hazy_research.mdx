@@ -1,0 +1,26 @@
+---
+translated: true
+---
+
+# धुंधला अनुसंधान
+
+यह पृष्ठ LangChain में Hazy Research पारिस्थितिकी तंत्र का उपयोग करने के बारे में कवर करता है।
+यह दो भागों में विभाजित है: स्थापना और सेटअप, और फिर विशिष्ट Hazy Research रैपर्स के संदर्भ।
+
+## स्थापना और सेटअप
+
+- `manifest` का उपयोग करने के लिए, `pip install manifest-ml` के साथ इसे स्थापित करें
+
+## रैपर्स
+
+### LLM
+
+Hazy Research के `manifest` लाइब्रेरी के चारों ओर एक LLM रैपर मौजूद है।
+`manifest` एक पायथन लाइब्रेरी है जो खुद कई मॉडल प्रदाताओं का एक रैपर है, और कैशिंग, इतिहास और अधिक जोड़ता है।
+
+इस रैपर का उपयोग करने के लिए:
+
+```python
+<!--IMPORTS:[{"imported": "ManifestWrapper", "source": "langchain_community.llms.manifest", "docs": "https://api.python.langchain.com/en/latest/llms/langchain_community.llms.manifest.ManifestWrapper.html", "title": "Hazy Research"}]-->
+from langchain_community.llms.manifest import ManifestWrapper
+```

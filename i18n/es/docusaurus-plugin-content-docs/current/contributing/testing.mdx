@@ -1,0 +1,148 @@
+---
+sidebar_position: 2
+translated: true
+---
+
+# Pruebas
+
+Todos nuestros paquetes tienen pruebas unitarias e integradas, y preferimos las pruebas unitarias sobre las pruebas integradas.
+
+Las pruebas unitarias se ejecutan en cada solicitud de extracción, por lo que deben ser rápidas y confiables.
+
+Las pruebas de integración se ejecutan una vez al día y requieren una configuración más compleja, por lo que deben reservarse para confirmar los puntos de interfaz con servicios externos.
+
+## Pruebas unitarias
+
+Las pruebas unitarias cubren la lógica modular que no requiere llamadas a APIs externas.
+Si agregas nueva lógica, agrega una prueba unitaria.
+
+Para instalar las dependencias para las pruebas unitarias:
+
+```bash
+poetry install --with test
+```
+
+Para ejecutar las pruebas unitarias:
+
+```bash
+make test
+```
+
+Para ejecutar las pruebas unitarias en Docker:
+
+```bash
+make docker_tests
+```
+
+Para ejecutar una prueba específica:
+
+```bash
+TEST_FILE=tests/unit_tests/test_imports.py make test
+```
+
+## Pruebas de integración
+
+Las pruebas de integración cubren la lógica que requiere hacer llamadas a APIs externas (a menudo integración con otros servicios).
+Si agregas soporte para una nueva API externa, agrega una nueva prueba de integración.
+
+**Advertencia:** Casi no debería haber pruebas de integración.
+
+  Las pruebas que requieren hacer conexiones de red dificultan que otros
+  desarrolladores prueben el código.
+
+  En su lugar, favorece confiar en la biblioteca `responses` y/o `mock.patch` para
+  simular solicitudes utilizando pequeños archivos de prueba.
+
+Para instalar las dependencias para las pruebas de integración:
+
+```bash
+poetry install --with test,test_integration
+```
+
+Para ejecutar las pruebas de integración:
+
+```bash
+make integration_tests
+```
+
+### Preparar
+
+Las pruebas de integración utilizan varios motores de búsqueda y bases de datos. Las pruebas
+tienen como objetivo verificar el comportamiento correcto de los motores y las bases de datos de
+acuerdo con sus especificaciones y requisitos.
+
+Para ejecutar algunas pruebas de integración, como las pruebas ubicadas en
+`tests/integration_tests/vectorstores/`, deberá instalar el siguiente
+software:
+
+- Docker
+- Python 3.8.1 o posterior
+
+Cualquier nueva dependencia debe agregarse ejecutando:
+
+```bash
+# add package and install it after adding:
+poetry add tiktoken@latest --group "test_integration" && poetry install --with test_integration
+```
+
+Antes de ejecutar cualquier prueba, debe iniciar un contenedor Docker específico que tenga todas las
+dependencias necesarias instaladas. Por ejemplo, usamos el contenedor `elasticsearch.yml`
+para `test_elasticsearch.py`:
+
+```bash
+cd tests/integration_tests/vectorstores/docker-compose
+docker-compose -f elasticsearch.yml up
+```
+
+Para entornos que requieren una preparación más compleja, busca `*.sh`. Por ejemplo,
+`opensearch.sh` construye una imagen de docker requerida y luego inicia opensearch.
+
+### Preparar variables de entorno para pruebas locales:
+
+- copia `tests/integration_tests/.env.example` a `tests/integration_tests/.env`
+- establece las variables en el archivo `tests/integration_tests/.env`, por ejemplo `OPENAI_API_KEY`
+
+Además, es importante tener en cuenta que algunas pruebas de integración pueden requerir que se
+establezcan ciertas variables de entorno, como `OPENAI_API_KEY`. Asegúrate de establecer todas las
+variables de entorno requeridas antes de ejecutar las pruebas para garantizar que se ejecuten
+correctamente.
+
+### Grabar interacciones HTTP con pytest-vcr
+
+Algunas de las pruebas de integración en este repositorio implican hacer solicitudes HTTP a
+servicios externos. Para evitar que se realicen estas solicitudes cada vez que se ejecutan las
+pruebas, usamos pytest-vcr para grabar y reproducir las interacciones HTTP.
+
+Cuando se ejecutan pruebas en una canalización de CI/CD, es posible que no desees modificar las
+grabaciones existentes. Puedes usar la opción de línea de comandos --vcr-record=none para
+deshabilitar la grabación de nuevas grabaciones. Aquí hay un ejemplo:
+
+```bash
+pytest --log-cli-level=10 tests/integration_tests/vectorstores/test_pinecone.py --vcr-record=none
+pytest tests/integration_tests/vectorstores/test_elasticsearch.py --vcr-record=none
+
+```
+
+### Ejecutar algunas pruebas con cobertura:
+
+```bash
+pytest tests/integration_tests/vectorstores/test_elasticsearch.py --cov=langchain --cov-report=html
+start "" htmlcov/index.html || open htmlcov/index.html
+
+```
+
+## Cobertura
+
+La cobertura del código (es decir, la cantidad de código que está cubierto por las pruebas unitarias) ayuda a identificar las áreas del código que pueden ser más o menos frágiles.
+
+La cobertura requiere las dependencias para las pruebas de integración:
+
+```bash
+poetry install --with test_integration
+```
+
+Para obtener un informe de la cobertura actual, ejecuta lo siguiente:
+
+```bash
+make coverage
+```

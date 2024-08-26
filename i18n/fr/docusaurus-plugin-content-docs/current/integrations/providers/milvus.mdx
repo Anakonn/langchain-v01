@@ -1,0 +1,30 @@
+---
+translated: true
+---
+
+# Milvus
+
+>[Milvus](https://milvus.io/docs/overview.md) est une base de données qui stocke, indexe et gère
+> des vecteurs d'intégration massifs générés par des réseaux neuronaux profonds et d'autres modèles d'apprentissage automatique (ML).
+
+## Installation et configuration
+
+Installez le SDK Python :
+
+```bash
+pip install pymilvus
+```
+
+## Magasin de vecteurs
+
+Il existe un wrapper autour des index `Milvus`, vous permettant de l'utiliser comme un vectorstore,
+que ce soit pour la recherche sémantique ou la sélection d'exemples.
+
+Pour importer ce vectorstore :
+
+```python
+<!--IMPORTS:[{"imported": "Milvus", "source": "langchain_community.vectorstores", "docs": "https://api.python.langchain.com/en/latest/vectorstores/langchain_community.vectorstores.milvus.Milvus.html", "title": "Milvus"}]-->
+from langchain_community.vectorstores import Milvus
+```
+
+Pour un parcours détaillé du wrapper `Miluvs`, voir [ce notebook](/docs/integrations/vectorstores/milvus)

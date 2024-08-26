@@ -1,0 +1,116 @@
+---
+keywords:
+- संगतता
+sidebar_class_name: hidden
+sidebar_position: 1
+translated: true
+---
+
+# एलएलएम
+
+## विशेषताएं (मूल रूप से समर्थित)
+
+सभी LLM रनेबल इंटरफ़ेस को लागू करते हैं, जिसमें सभी विधियों के डिफ़ॉल्ट कार्यान्वयन आते हैं, यानी `ainvoke`, `batch`, `abatch`, `stream`, `astream`। यह सभी LLM को असिंक्रोनस, स्ट्रीमिंग और बैच के लिए मूल समर्थन देता है, जो डिफ़ॉल्ट रूप से निम्नानुसार कार्यान्वित होता है:
+- *असिंक्रोनस* समर्थन डिफ़ॉल्ट रूप से asyncio के डिफ़ॉल्ट थ्रेड पूल एक्जीक्यूटर में संबंधित सिंक विधि को कॉल करता है। यह आपके एप्लिकेशन में अन्य असिंक्रोनस फ़ंक्शन को प्रगति करने देता है, जबकि LLM को निष्पादित किया जा रहा है, क्योंकि यह कॉल को पृष्ठभूमि थ्रेड में ले जाता है।
+- *स्ट्रीमिंग* समर्थन डिफ़ॉल्ट रूप से एक `Iterator` (या असिंक्रोनस स्ट्रीमिंग के मामले में `AsyncIterator`) एक मूल्य का लौटाता है, जो अंतिम परिणाम है जो अंतर्निहित LLM प्रदाता द्वारा लौटाया जाता है। यह स्पष्ट रूप से टोकन-द्वारा-टोकन स्ट्रीमिंग नहीं देता है, जिसके लिए LLM प्रदाता का मूल समर्थन आवश्यक है, लेकिन यह सुनिश्चित करता है कि टोकन के इटरेटर की उम्मीद करने वाला आपका कोड हमारे सभी LLM एकीकरणों के लिए काम कर सकता है।
+- *बैच* समर्थन डिफ़ॉल्ट रूप से थ्रेड पूल एक्जीक्यूटर (सिंक बैच मामले में) या `asyncio.gather` (असिंक्रोनस बैच मामले में) का उपयोग करके प्रत्येक इनपुट के लिए अंतर्निहित LLM को समानांतर रूप से कॉल करता है। `RunnableConfig` में `max_concurrency` कुंजी के साथ संचालन को नियंत्रित किया जा सकता है।
+
+प्रत्येक LLM एकीकरण वैकल्पिक रूप से असिंक्रोनस, स्ट्रीमिंग या बैच के लिए मूल कार्यान्वयन प्रदान कर सकता है, जो प्रदाताओं के लिए अधिक कुशल हो सकता है। तालिका में प्रत्येक एकीकरण के लिए किन सुविधाओं को मूल समर्थन के साथ कार्यान्वित किया गया है, दिखाया गया है।
+
+मॉडल|आमंत्रित|असिंक्रोनस आमंत्रण|स्ट्रीम|असिंक्रोनस स्ट्रीम|बैच|असिंक्रोनस बैच
+:-|:-:|:-:|:-:|:-:|:-:|:-:
+AI21|✅|❌|❌|❌|❌|❌
+AlephAlpha|✅|❌|❌|❌|❌|❌
+AmazonAPIGateway|✅|❌|❌|❌|❌|❌
+Anthropic|✅|✅|✅|✅|❌|❌
+Anyscale|✅|✅|✅|✅|✅|✅
+Aphrodite|✅|❌|❌|❌|✅|❌
+Arcee|✅|❌|❌|❌|❌|❌
+Aviary|✅|❌|❌|❌|❌|❌
+AzureMLOnlineEndpoint|✅|❌|❌|❌|✅|❌
+AzureOpenAI|✅|✅|✅|✅|✅|✅
+BaichuanLLM|✅|❌|❌|❌|❌|❌
+Banana|✅|❌|❌|❌|❌|❌
+Baseten|✅|❌|❌|❌|❌|❌
+Beam|✅|❌|❌|❌|❌|❌
+Bedrock|✅|✅|✅|✅|❌|❌
+CTransformers|✅|✅|❌|❌|❌|❌
+CTranslate2|✅|❌|❌|❌|✅|❌
+CerebriumAI|✅|❌|❌|❌|❌|❌
+ChatGLM|✅|❌|❌|❌|❌|❌
+Clarifai|✅|❌|❌|❌|❌|❌
+Cohere|✅|✅|❌|❌|❌|❌
+Databricks|✅|❌|❌|❌|❌|❌
+DeepInfra|✅|✅|✅|✅|❌|❌
+DeepSparse|✅|✅|✅|✅|❌|❌
+EdenAI|✅|✅|❌|❌|❌|❌
+Fireworks|✅|✅|✅|✅|✅|✅
+ForefrontAI|✅|❌|❌|❌|❌|❌
+Friendli|✅|✅|✅|✅|❌|❌
+GPT4All|✅|❌|❌|❌|❌|❌
+GigaChat|✅|✅|✅|✅|✅|✅
+GooglePalm|✅|❌|✅|❌|✅|❌
+GooseAI|✅|❌|❌|❌|❌|❌
+GradientLLM|✅|✅|❌|❌|✅|✅
+HuggingFaceEndpoint|✅|✅|✅|✅|❌|❌
+HuggingFaceHub|✅|❌|❌|❌|❌|❌
+HuggingFacePipeline|✅|❌|❌|❌|✅|❌
+HuggingFaceTextGenInference|✅|✅|✅|✅|❌|❌
+HumanInputLLM|✅|❌|❌|❌|❌|❌
+IpexLLM|✅|❌|❌|❌|❌|❌
+JavelinAIGateway|✅|✅|❌|❌|❌|❌
+KoboldApiLLM|✅|❌|❌|❌|❌|❌
+Konko|✅|✅|❌|❌|❌|❌
+LlamaCpp|✅|❌|✅|❌|❌|❌
+Llamafile|✅|❌|✅|❌|❌|❌
+MLXPipeline|✅|❌|✅|❌|❌|❌
+ManifestWrapper|✅|❌|❌|❌|❌|❌
+Minimax|✅|❌|❌|❌|❌|❌
+Mlflow|✅|❌|❌|❌|❌|❌
+MlflowAIGateway|✅|❌|❌|❌|❌|❌
+Modal|✅|❌|❌|❌|❌|❌
+MosaicML|✅|❌|❌|❌|❌|❌
+NIBittensorLLM|✅|❌|❌|❌|❌|❌
+NLPCloud|✅|❌|❌|❌|❌|❌
+Nebula|✅|❌|❌|❌|❌|❌
+OCIGenAI|✅|❌|❌|❌|❌|❌
+OCIModelDeploymentTGI|✅|❌|❌|❌|❌|❌
+OCIModelDeploymentVLLM|✅|❌|❌|❌|❌|❌
+OctoAIEndpoint|✅|✅|✅|✅|✅|✅
+Ollama|✅|❌|❌|❌|❌|❌
+OpaquePrompts|✅|❌|❌|❌|❌|❌
+OpenAI|✅|✅|✅|✅|✅|✅
+OpenLLM|✅|✅|❌|❌|❌|❌
+OpenLM|✅|✅|✅|✅|✅|✅
+PaiEasEndpoint|✅|❌|✅|❌|❌|❌
+Petals|✅|❌|❌|❌|❌|❌
+PipelineAI|✅|❌|❌|❌|❌|❌
+Predibase|✅|❌|❌|❌|❌|❌
+PredictionGuard|✅|❌|❌|❌|❌|❌
+PromptLayerOpenAI|✅|❌|❌|❌|❌|❌
+QianfanLLMEndpoint|✅|✅|✅|✅|❌|❌
+RWKV|✅|❌|❌|❌|❌|❌
+Replicate|✅|❌|✅|❌|❌|❌
+SagemakerEndpoint|✅|❌|❌|❌|❌|❌
+SambaStudio|✅|❌|✅|❌|❌|❌
+Sambaverse|✅|❌|✅|❌|❌|❌
+SelfHostedHuggingFaceLLM|✅|❌|❌|❌|❌|❌
+SelfHostedPipeline|✅|❌|❌|❌|❌|❌
+SparkLLM|✅|❌|✅|❌|❌|❌
+StochasticAI|✅|❌|❌|❌|❌|❌
+TextGen|✅|❌|❌|❌|❌|❌
+TitanTakeoff|✅|❌|✅|❌|❌|❌
+TitanTakeoffPro|✅|❌|✅|❌|❌|❌
+Together|✅|✅|❌|❌|❌|❌
+Tongyi|✅|✅|✅|✅|✅|✅
+VLLM|✅|❌|❌|❌|✅|❌
+VLLMOpenAI|✅|✅|✅|✅|✅|✅
+VertexAI|✅|✅|✅|❌|✅|✅
+VertexAIModelGarden|✅|✅|❌|❌|✅|✅
+VolcEngineMaasLLM|✅|❌|✅|❌|❌|❌
+WatsonxLLM|✅|❌|✅|❌|✅|❌
+WeightOnlyQuantPipeline|✅|❌|❌|❌|❌|❌
+Writer|✅|❌|❌|❌|❌|❌
+Xinference|✅|❌|❌|❌|❌|❌
+YandexGPT|✅|✅|❌|❌|❌|❌
+Yuan2|✅|❌|❌|❌|❌|❌

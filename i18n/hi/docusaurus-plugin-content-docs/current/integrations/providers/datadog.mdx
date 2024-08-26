@@ -1,0 +1,88 @@
+---
+translated: true
+---
+
+# डेटाडॉग ट्रेसिंग
+
+>[ddtrace](https://github.com/DataDog/dd-trace-py) एक डेटाडॉग एप्लिकेशन प्रदर्शन मॉनिटरिंग (APM) लाइब्रेरी है जो LangChain एप्लिकेशन की मॉनिटरिंग के लिए एक एकीकरण प्रदान करती है।
+
+LangChain के लिए ddtrace एकीकरण की प्रमुख सुविधाएं:
+- ट्रेस: LangChain अनुरोध, पैरामीटर, प्रॉम्प्ट-पूर्णता और LangChain ऑपरेशन को दृश्यमान करने में मदद करें।
+- मेट्रिक्स: LangChain अनुरोध लेटेंसी, त्रुटियां और टोकन/लागत उपयोग (OpenAI LLM और चैट मॉडल के लिए) को कैप्चर करें।
+- लॉग: प्रत्येक LangChain ऑपरेशन के लिए प्रॉम्प्ट पूर्णता डेटा को संग्रहीत करें।
+- डैशबोर्ड: मेट्रिक्स, लॉग और ट्रेस डेटा को एक एकल प्लेन में संयोजित करें ताकि LangChain अनुरोधों की मॉनिटरिंग की जा सके।
+- मॉनिटर: LangChain अनुरोध लेटेंसी या त्रुटि दर में उछाल के प्रतिक्रिया में अलर्ट प्रदान करें।
+
+नोट: ddtrace LangChain एकीकरण वर्तमान में LLM, चैट मॉडल, टेक्स्ट एम्बेडिंग मॉडल, श्रृंखला और वेक्टर स्टोर के लिए ट्रेसिंग प्रदान करता है।
+
+## स्थापना और सेटअप
+
+1. अपने डेटाडॉग एजेंट में APM और StatsD को सक्षम करें, साथ ही एक डेटाडॉग API कुंजी। उदाहरण के लिए, Docker में:
+
+```bash
+docker run -d --cgroupns host \
+              --pid host \
+              -v /var/run/docker.sock:/var/run/docker.sock:ro \
+              -v /proc/:/host/proc/:ro \
+              -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+              -e DD_API_KEY=<DATADOG_API_KEY> \
+              -p 127.0.0.1:8126:8126/tcp \
+              -p 127.0.0.1:8125:8125/udp \
+              -e DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true \
+              -e DD_APM_ENABLED=true \
+              gcr.io/datadoghq/agent:latest
+```
+
+2. डेटाडॉग APM पायथन लाइब्रेरी स्थापित करें।
+
+```bash
+pip install ddtrace>=1.17
+```
+
+3. LangChain एकीकरण को स्वचालित रूप से सक्षम किया जा सकता है जब आप अपने LangChain पायथन एप्लिकेशन कमांड को `ddtrace-run` से पूर्व-प्रिफिक्स करते हैं:
+
+```bash
+DD_SERVICE="my-service" DD_ENV="staging" DD_API_KEY=<DATADOG_API_KEY> ddtrace-run python <your-app>.py
+```
+
+**नोट**: यदि एजेंट गैर-डिफ़ॉल्ट होस्टनाम या पोर्ट का उपयोग कर रहा है, तो `DD_AGENT_HOST`, `DD_TRACE_AGENT_PORT` या `DD_DOGSTATSD_PORT` भी सेट करना सुनिश्चित करें।
+
+इसके अलावा, LangChain एकीकरण को `patch_all()` या `patch(langchain=True)` जोड़कर प्रोग्रामरूप से सक्षम किया जा सकता है `langchain` के पहले आयात से पहले।
+
+ध्यान रखें कि `ddtrace-run` या `patch_all()` का उपयोग करने से `requests` और `aiohttp` एकीकरण भी सक्षम हो जाएंगे जो LLM प्रदाताओं के लिए HTTP अनुरोधों को ट्रेस करते हैं, साथ ही `openai` एकीकरण भी जो OpenAI लाइब्रेरी के अनुरोधों को ट्रेस करता है।
+
+```python
+from ddtrace import config, patch
+
+# Note: be sure to configure the integration before calling ``patch()``!
+# e.g. config.langchain["logs_enabled"] = True
+
+patch(langchain=True)
+
+# to trace synchronous HTTP requests
+# patch(langchain=True, requests=True)
+
+# to trace asynchronous HTTP requests (to the OpenAI library)
+# patch(langchain=True, aiohttp=True)
+
+# to include underlying OpenAI spans from the OpenAI integration
+# patch(langchain=True, openai=True)patch_all
+```
+
+अधिक उन्नत उपयोग के लिए [APM पायथन लाइब्रेरी दस्तावेज़ीकरण](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html) देखें।
+
+## कॉन्फ़िगरेशन
+
+सभी उपलब्ध कॉन्फ़िगरेशन विकल्पों के लिए [APM पायथन लाइब्रेरी दस्तावेज़ीकरण](https://ddtrace.readthedocs.io/en/stable/integrations.html#langchain) देखें।
+
+### लॉग प्रॉम्प्ट और पूर्णता सैंपलिंग
+
+लॉग प्रॉम्प्ट और पूर्णता सैंपलिंग सक्षम करने के लिए, `DD_LANGCHAIN_LOGS_ENABLED=1` पर्यावरण चर सेट करें। डिफ़ॉल्ट रूप से, 10% ट्रेस किए गए अनुरोधों में प्रॉम्प्ट और पूर्णता सामग्री वाले लॉग उत्पन्न होंगे।
+
+लॉग सैंपल दर को समायोजित करने के लिए, [APM लाइब्रेरी दस्तावेज़ीकरण](https://ddtrace.readthedocs.io/en/stable/integrations.html#langchain) देखें।
+
+**नोट**: लॉग सबमिशन के लिए `DD_API_KEY` को `ddtrace-run` चलाते समय निर्दिष्ट किया जाना चाहिए।
+
+## समस्या निवारण
+
+मदद की जरूरत है? [ddtrace](https://github.com/DataDog/dd-trace-py) पर एक मुद्दा बनाएं या [Datadog समर्थन](https://docs.datadoghq.com/help/) से संपर्क करें।
